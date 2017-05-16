@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFUIDisplay-Medium.otf">
+            <string>SFUIDisplay-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TVC_WORKERITEM" rowHeight="51" id="Pzd-mM-38T" customClass="GANWorkerItemTVC">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pzd-mM-38T" id="sCc-yj-DsI">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="drp-JG-Pl0" userLabel="View - Container View">
+                        <rect key="frame" x="0.0" y="3" width="375" height="37.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="worker.id2017" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="der-Vz-TbK" userLabel="Label - Worker ID">
+                                <rect key="frame" x="15" y="0.0" width="345" height="37.5"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="13"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V8b-ND-wNv" userLabel="Label - Circle">
+                                <rect key="frame" x="357" y="15.5" width="6" height="6"/>
+                                <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="6" id="0qT-oi-1cu"/>
+                                    <constraint firstAttribute="width" constant="6" id="2P1-XK-ZbV"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="der-Vz-TbK" secondAttribute="trailing" constant="15" id="8Xg-Ls-oyN"/>
+                            <constraint firstItem="der-Vz-TbK" firstAttribute="height" secondItem="drp-JG-Pl0" secondAttribute="height" id="YbI-Kj-nHs"/>
+                            <constraint firstItem="V8b-ND-wNv" firstAttribute="centerY" secondItem="drp-JG-Pl0" secondAttribute="centerY" id="avD-H5-OBJ"/>
+                            <constraint firstAttribute="trailing" secondItem="V8b-ND-wNv" secondAttribute="trailing" constant="12" id="oEF-Lh-iVX"/>
+                            <constraint firstItem="der-Vz-TbK" firstAttribute="leading" secondItem="drp-JG-Pl0" secondAttribute="leading" constant="15" id="sxY-le-Zg7"/>
+                            <constraint firstItem="der-Vz-TbK" firstAttribute="centerY" secondItem="drp-JG-Pl0" secondAttribute="centerY" id="v8P-to-zU6"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="drp-JG-Pl0" firstAttribute="leading" secondItem="sCc-yj-DsI" secondAttribute="leading" id="GKj-CL-ly0"/>
+                    <constraint firstAttribute="bottom" secondItem="drp-JG-Pl0" secondAttribute="bottom" constant="3" id="mVz-Zc-YzA"/>
+                    <constraint firstAttribute="trailing" secondItem="drp-JG-Pl0" secondAttribute="trailing" id="mtY-A5-sw1"/>
+                    <constraint firstItem="drp-JG-Pl0" firstAttribute="top" secondItem="sCc-yj-DsI" secondAttribute="top" constant="3" id="r77-f6-I6M"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="lblCircle" destination="V8b-ND-wNv" id="RQ6-nu-Cpi"/>
+                <outlet property="lblWorkerId" destination="der-Vz-TbK" id="wlK-Xg-xmu"/>
+                <outlet property="viewContainer" destination="drp-JG-Pl0" id="oV1-6e-FV9"/>
+            </connections>
+            <point key="canvasLocation" x="26.5" y="52"/>
+        </tableViewCell>
+    </objects>
+</document>

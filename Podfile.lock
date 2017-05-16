@@ -1,0 +1,51 @@
+PODS:
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
+  - GoogleMaps (2.1.1):
+    - GoogleMaps/Maps (= 2.1.1)
+  - GoogleMaps/Base (2.1.1)
+  - GoogleMaps/Maps (2.1.1):
+    - GoogleMaps/Base
+  - HCSStarRatingView (1.5)
+  - IQKeyboardManager (4.0.8)
+  - OneSignal (2.4.2)
+  - SVProgressHUD (2.1.2)
+  - SVPullToRefresh (0.4.1)
+  - UIView+Shake (1.2.0)
+
+DEPENDENCIES:
+  - AFNetworking
+  - GoogleMaps
+  - HCSStarRatingView
+  - IQKeyboardManager
+  - OneSignal
+  - SVProgressHUD
+  - SVPullToRefresh
+  - UIView+Shake
+
+SPEC CHECKSUMS:
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  GoogleMaps: a5b5bbe47734e2443bde781a6aa64e69fdb6d785
+  HCSStarRatingView: 1d18f79654735514cd6f00e6d90e38cb6320dc31
+  IQKeyboardManager: 1a8189fa153bf09044355ee0ad36826f6767e7f7
+  OneSignal: a94d1ca53d05c29de4f4b150bad8ff9c4cc34f67
+  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
+  SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
+  UIView+Shake: a64f7d009222e33cf73d699b06c028cfab4cf2ad
+
+PODFILE CHECKSUM: 8488b8fdde6e7f523e09485fed06d7317a35f266
+
+COCOAPODS: 1.1.1

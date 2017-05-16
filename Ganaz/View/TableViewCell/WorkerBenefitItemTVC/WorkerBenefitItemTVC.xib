@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFUIDisplay-Medium.otf">
+            <string>SFUIDisplay-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TVC_WORKER_BENEFITITEM" rowHeight="57" id="ewv-ie-Ksj" customClass="GANWorkerBenefitItemTVC">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ewv-ie-Ksj" id="CDF-76-nl3">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gwt-bX-2ye" userLabel="View - Container View">
+                        <rect key="frame" x="0.0" y="3" width="375" height="43.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Job Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9d-0C-Ggg" userLabel="Label - Title">
+                                <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="f9d-0C-Ggg" firstAttribute="leading" secondItem="Gwt-bX-2ye" secondAttribute="leading" constant="15" id="0PX-v3-Hnm"/>
+                            <constraint firstItem="f9d-0C-Ggg" firstAttribute="centerY" secondItem="Gwt-bX-2ye" secondAttribute="centerY" id="IZm-aE-gPy"/>
+                            <constraint firstAttribute="trailing" secondItem="f9d-0C-Ggg" secondAttribute="trailing" constant="15" id="Nwh-3X-fgf"/>
+                            <constraint firstItem="f9d-0C-Ggg" firstAttribute="height" secondItem="Gwt-bX-2ye" secondAttribute="height" id="pT3-rm-JhC"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="Gwt-bX-2ye" secondAttribute="trailing" id="0d3-ta-g7m"/>
+                    <constraint firstItem="Gwt-bX-2ye" firstAttribute="leading" secondItem="CDF-76-nl3" secondAttribute="leading" id="FN8-8d-ZJX"/>
+                    <constraint firstAttribute="bottom" secondItem="Gwt-bX-2ye" secondAttribute="bottom" constant="3" id="LYL-3Q-EWr"/>
+                    <constraint firstItem="Gwt-bX-2ye" firstAttribute="top" secondItem="CDF-76-nl3" secondAttribute="top" constant="3" id="bCk-Z7-zCv"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="lblTitle" destination="f9d-0C-Ggg" id="3og-l0-gXo"/>
+                <outlet property="viewContainer" destination="Gwt-bX-2ye" id="WSU-eY-6S9"/>
+            </connections>
+            <point key="canvasLocation" x="26.5" y="55"/>
+        </tableViewCell>
+    </objects>
+</document>

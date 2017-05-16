@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFUIDisplay-Medium.otf">
+            <string>SFUIDisplay-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TVC_WORKER_JOBLIST_ITEM" rowHeight="83" id="D7m-YM-oLF" customClass="GANWorkerJobListItemTVC">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="76"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="D7m-YM-oLF" id="R2Q-La-A3U">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rf2-Xq-FfN" userLabel="View - Container View">
+                        <rect key="frame" x="0.0" y="3" width="375" height="70"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PQP-hs-orV" userLabel="Label - Separator">
+                                <rect key="frame" x="281" y="0.0" width="1" height="70"/>
+                                <color key="backgroundColor" red="0.87450980389999999" green="0.87450980389999999" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="1" id="c4B-v6-mKc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Job Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6sj-qO-u8q" userLabel="Label - Title">
+                                <rect key="frame" x="15" y="15" width="252" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="VFX-Ze-SfX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Company Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tIp-Bk-Zqd" userLabel="Label - Company">
+                                <rect key="frame" x="15" y="39" width="252" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="RwP-QQ-Gt7"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="13"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.5mi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="a0n-Qc-9my" userLabel="Label - Distance">
+                                <rect key="frame" x="293" y="23" width="74" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="w99-ry-IZq"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="16"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="a0n-Qc-9my" secondAttribute="trailing" constant="8" id="6eN-P1-z8J"/>
+                            <constraint firstItem="PQP-hs-orV" firstAttribute="centerX" secondItem="Rf2-Xq-FfN" secondAttribute="centerX" multiplier="1.5" id="HVj-h1-QgF"/>
+                            <constraint firstItem="PQP-hs-orV" firstAttribute="centerY" secondItem="Rf2-Xq-FfN" secondAttribute="centerY" id="Q4A-xr-4Om"/>
+                            <constraint firstItem="PQP-hs-orV" firstAttribute="height" secondItem="Rf2-Xq-FfN" secondAttribute="height" id="VBG-Gv-Gkp"/>
+                            <constraint firstItem="6sj-qO-u8q" firstAttribute="leading" secondItem="Rf2-Xq-FfN" secondAttribute="leading" constant="15" id="WlS-oh-wOJ"/>
+                            <constraint firstItem="tIp-Bk-Zqd" firstAttribute="width" secondItem="6sj-qO-u8q" secondAttribute="width" id="YR9-yx-HTZ"/>
+                            <constraint firstItem="6sj-qO-u8q" firstAttribute="top" secondItem="Rf2-Xq-FfN" secondAttribute="top" constant="15" id="ZEf-NS-eNq"/>
+                            <constraint firstItem="tIp-Bk-Zqd" firstAttribute="centerX" secondItem="6sj-qO-u8q" secondAttribute="centerX" id="baa-4M-JZM"/>
+                            <constraint firstItem="6sj-qO-u8q" firstAttribute="trailing" secondItem="PQP-hs-orV" secondAttribute="trailing" constant="-15" id="c8i-y9-oVw"/>
+                            <constraint firstItem="a0n-Qc-9my" firstAttribute="centerY" secondItem="Rf2-Xq-FfN" secondAttribute="centerY" id="kyX-Rm-b2I"/>
+                            <constraint firstItem="tIp-Bk-Zqd" firstAttribute="top" secondItem="6sj-qO-u8q" secondAttribute="bottom" constant="3" id="mSB-gW-V7F"/>
+                            <constraint firstItem="a0n-Qc-9my" firstAttribute="leading" secondItem="PQP-hs-orV" secondAttribute="trailing" constant="11" id="vf9-Aq-6AF"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Rf2-Xq-FfN" firstAttribute="top" secondItem="R2Q-La-A3U" secondAttribute="top" constant="3" id="D0q-jP-OU4"/>
+                    <constraint firstAttribute="trailing" secondItem="Rf2-Xq-FfN" secondAttribute="trailing" id="FAa-Rr-hCR"/>
+                    <constraint firstAttribute="bottom" secondItem="Rf2-Xq-FfN" secondAttribute="bottom" constant="3" id="iWI-FJ-ALq"/>
+                    <constraint firstItem="Rf2-Xq-FfN" firstAttribute="leading" secondItem="R2Q-La-A3U" secondAttribute="leading" id="nLJ-8b-Z7x"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="lblCompany" destination="tIp-Bk-Zqd" id="Ord-a7-N4W"/>
+                <outlet property="lblDistance" destination="a0n-Qc-9my" id="BQk-Lp-Kjn"/>
+                <outlet property="lblTitle" destination="6sj-qO-u8q" id="Dwy-xu-1fC"/>
+                <outlet property="viewContainer" destination="Rf2-Xq-FfN" id="ya8-5b-tr0"/>
+            </connections>
+            <point key="canvasLocation" x="26.5" y="68"/>
+        </tableViewCell>
+    </objects>
+</document>

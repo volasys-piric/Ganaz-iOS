@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Laz-hH-wpK">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="gMR-JU-XHc">
+            <objects>
+                <navigationController navigationBarHidden="YES" id="Laz-hH-wpK" sceneMemberID="viewController">
+                    <nil key="simulatedTopBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="abs-ky-yJy">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="3am-Z8-gV4" kind="relationship" relationship="rootViewController" id="0BS-7q-BAr"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MZo-km-gUZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-385" y="205"/>
+        </scene>
+        <!--Main LoadingVC-->
+        <scene sceneID="Jzs-Nw-iWh">
+            <objects>
+                <viewController storyboardIdentifier="STORYBOARD_MAIN_LOADING" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3am-Z8-gV4" customClass="GANMainLoadingVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Pju-kt-wB0"/>
+                        <viewControllerLayoutGuide type="bottom" id="AbC-Dk-GNf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="nBX-Yl-Aan">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nV0-kg-AtX" userLabel="View - Main Container">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="1t0-a7-gpi" userLabel="Image - Background">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-tag" translatesAutoresizingMaskIntoConstraints="NO" id="zFH-i8-vLe" userLabel="Image - Logo">
+                                        <rect key="frame" x="94" y="275" width="187" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="ieM-E9-Exe"/>
+                                            <constraint firstAttribute="width" secondItem="zFH-i8-vLe" secondAttribute="height" multiplier="124:33" id="w2d-BM-h1U"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="1t0-a7-gpi" firstAttribute="top" secondItem="nV0-kg-AtX" secondAttribute="top" id="8a9-Z7-WQE"/>
+                                    <constraint firstAttribute="trailing" secondItem="1t0-a7-gpi" secondAttribute="trailing" id="ULt-Uw-gde"/>
+                                    <constraint firstItem="zFH-i8-vLe" firstAttribute="centerX" secondItem="nV0-kg-AtX" secondAttribute="centerX" id="euR-DW-w0L"/>
+                                    <constraint firstAttribute="bottom" secondItem="1t0-a7-gpi" secondAttribute="bottom" id="gYd-DN-atE"/>
+                                    <constraint firstItem="1t0-a7-gpi" firstAttribute="leading" secondItem="nV0-kg-AtX" secondAttribute="leading" id="pCJ-jR-MaY"/>
+                                    <constraint firstItem="zFH-i8-vLe" firstAttribute="centerY" secondItem="nV0-kg-AtX" secondAttribute="centerY" multiplier="0.9" id="qfh-nG-yY2"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nV0-kg-AtX" firstAttribute="leading" secondItem="nBX-Yl-Aan" secondAttribute="leading" id="7Rs-Xb-nhN"/>
+                            <constraint firstAttribute="trailing" secondItem="nV0-kg-AtX" secondAttribute="trailing" id="Cad-cU-fo5"/>
+                            <constraint firstItem="nV0-kg-AtX" firstAttribute="top" secondItem="nBX-Yl-Aan" secondAttribute="top" id="CdP-Q3-4JX"/>
+                            <constraint firstAttribute="bottom" secondItem="nV0-kg-AtX" secondAttribute="bottom" id="cLd-gE-XQq"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="pcx-Ez-ruS"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aHL-8V-Agw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="399" y="205"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="background" width="15" height="1000"/>
+        <image name="logo-tag" width="200" height="48"/>
+    </resources>
+</document>
