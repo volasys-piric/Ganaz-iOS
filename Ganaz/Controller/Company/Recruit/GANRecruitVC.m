@@ -194,13 +194,15 @@
 - (void) doSubmitRecruit{
     GANJobManager *managerJob = [GANJobManager sharedInstance];
     GANRecruitManager *managerRecruit = [GANRecruitManager sharedInstance];
-    GANRecruitRequestDataModel *recruitRequest = [[GANRecruitRequestDataModel alloc] init];
+    NSMutableArray *arrJobIds = [[NSMutableArray alloc] init];
+    NSMutableArray *arrReRecruitUserIds = [[NSMutableArray alloc] init];
+    float fBroadcast = 0;
     
     for (int i = 0; i < (int) [self.arrJobSelected count]; i++){
         BOOL isSelected = [[self.arrJobSelected objectAtIndex:i] boolValue];
         if (isSelected == YES){
             GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:i];
-            [recruitRequest.arrJobIds addObject:job.szId];
+            [arrJobIds addObject:job.szId];
         }
     }
     
@@ -208,17 +210,17 @@
         BOOL isSelected = [[self.arrWorkerSelected objectAtIndex:i] boolValue];
         if (isSelected == YES){
             GANMyWorkerDataModel *myWorker = [[GANMyWorkersManager sharedInstance].arrMyWorkers objectAtIndex:i];
-            [recruitRequest.arrReRecruitUserIds addObject:myWorker.szWorkerUserId];
+            [arrReRecruitUserIds addObject:myWorker.szWorkerUserId];
         }
     }
     
     NSString *sz = self.txtMiles.text;
     if (sz.length > 0){
-        recruitRequest.fBroadcast = [GANGenericFunctionManager refineFloat:sz DefaultValue:-1];
+        fBroadcast = [GANGenericFunctionManager refineFloat:sz DefaultValue:-1];
     }
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [managerRecruit requestSubmitRecruit:recruitRequest Callback:^(int status, int count) {
+    [managerRecruit requestSubmitRecruitWithJobIds:arrJobIds Broadcast:fBroadcast ReRecruitUserIds:arrReRecruitUserIds Callback:^(int status, int count) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:[NSString stringWithFormat:@"%d worker(s) received your recruitment request.", count] DismissAfter:-1 Callback:nil];
         }
@@ -239,7 +241,7 @@
 
 - (void) configureJobItemCell: (GANJobItemTVC *) cell AtIndex: (int) index{
     GANJobDataModel *job = [[GANJobManager sharedInstance].arrMyJobs objectAtIndex:index];
-    cell.lblTitle.text = job.szTitle;
+    cell.lblTitle.text = [job getTitleEN];
     cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f", job.fPayRate];
     cell.lblUnit.text = (job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"per hour" : @"per lb";
     cell.lblDate.text = [NSString stringWithFormat:@"%@ - %@", [GANGenericFunctionManager getBeautifiedDate:job.dateFrom], [GANGenericFunctionManager getBeautifiedDate:job.dateTo]];
@@ -254,7 +256,7 @@
 
 - (void) configureWorkerItemCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
     GANMyWorkerDataModel *myWorker = [[GANMyWorkersManager sharedInstance].arrMyWorkers objectAtIndex:index];
-    cell.lblWorkerId.text = myWorker.szUserName;
+    cell.lblWorkerId.text = myWorker.modelWorker.szUserName;
     
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

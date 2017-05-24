@@ -164,7 +164,7 @@
     return [self.modelName getTextEN];
 }
 
-- (NSString *) getBussinessNameES{
+- (NSString *) getBusinessNameES{
     return [self.modelName getTextES];
 }
 

@@ -48,9 +48,17 @@
 
 #pragma mark - Request
 
-- (void) requestSubmitRecruit: (GANRecruitRequestDataModel *) recruitRequest Callback: (void (^) (int status, int count)) callback{
+- (void) requestSubmitRecruitWithJobIds: (NSArray *) arrJobIds Broadcast: (float) fBroadcast ReRecruitUserIds: (NSArray *) arrReRecruitUserIds Callback: (void (^) (int status, int count)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForSubmitRecruit];
-    NSDictionary *params = [recruitRequest serializeToDictionary];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    
+    [params setObject:arrJobIds forKey:@"job_ids"];
+    if (fBroadcast > 0){
+        [params setObject:[NSString stringWithFormat:@"%.02f", fBroadcast] forKey:@"broadcast"];
+    }
+    if ([arrReRecruitUserIds count] > 0){
+        [params setObject:arrReRecruitUserIds forKey:@"re_recruit_worker_user_ids"];
+    }
     
     [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;

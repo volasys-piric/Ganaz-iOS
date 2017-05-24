@@ -25,7 +25,7 @@
     self.lblAvatar.layer.cornerRadius = 18;
     if (type == GANENUM_MESSAGE_TYPE_MESSAGE) self.lblAvatar.text = @"MSG";
     if (type == GANENUM_MESSAGE_TYPE_RECRUIT) self.lblAvatar.text = @"JOB";
-    if (type == GANENUM_MESSAGE_TYPE_APPLICATION_NEW) self.lblAvatar.text = @"APP";
+    if (type == GANENUM_MESSAGE_TYPE_APPLICATION) self.lblAvatar.text = @"APP";
 }
 
 @end

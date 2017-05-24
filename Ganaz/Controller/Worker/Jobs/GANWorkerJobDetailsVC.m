@@ -10,7 +10,7 @@
 #import "GANWorkerBenefitItemTVC.h"
 #import "GANLocationManager.h"
 
-#import "GANMyCompaniesManager.h"
+#import "GANCompanyManager.h"
 #import "GANUserCompanyDataModel.h"
 #import "GANJobManager.h"
 #import "GANJobDataModel.h"
@@ -47,7 +47,7 @@
 @property (strong, nonatomic) CLLocation *locationCenter;
 
 @property (strong, nonatomic) NSMutableArray *arrBenefit;
-@property (strong, nonatomic) GANUserCompanyDataModel *company;
+@property (strong, nonatomic) GANCompanyDataModel *company;
 @property (strong, nonatomic) GANJobDataModel *job;
 
 @end
@@ -103,7 +103,7 @@
 }
 
 - (void) refreshFields{
-    self.company = [[GANMyCompaniesManager sharedInstance].arrCompaniesFound objectAtIndex:self.indexMyCompany];
+    self.company = [[GANCompanyManager sharedInstance].arrCompaniesFound objectAtIndex:self.indexCompany];
     self.job = [self.company.arrJobs objectAtIndex:self.indexJob];
     
     GANENUM_COMPANY_BADGE_TYPE enumType = [self.company getBadgeType];
@@ -124,15 +124,15 @@
         self.lblBadge.text = @"EMPRESA DORADA";
     }
     
-    self.lblCompanyName.text = [self.company getTranslatedBusinessName];
-    self.lblJobTitle.text = [self.job getTranslatedTitle];
-    self.navigationItem.title = [self.job getTranslatedTitle];
+    self.lblCompanyName.text = [self.company getBusinessNameES];
+    self.lblJobTitle.text = [self.job getTitleES];
+    self.navigationItem.title = [self.job getTitleES];
     
     self.lblPrice.text = [NSString stringWithFormat:@"$%.02f", self.job.fPayRate];
     self.lblDate.text = [NSString stringWithFormat:@"%@ - %@", [GANGenericFunctionManager getBeautifiedSpanishDate:self.job.dateFrom], [GANGenericFunctionManager getBeautifiedSpanishDate:self.job.dateTo]];
     self.lblUnit.text = (self.job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"por hora" : @"por libra";
     self.lblPositions.text = [NSString stringWithFormat:@"%d puestos", self.job.nPositions];
-    self.lblDescription.text = [self.job getTranslatedComments];
+    self.lblDescription.text = [self.job getCommentsES];
     
     if ([self.job isPayRateSpecified] == YES){
         self.lblPriceNA.hidden = YES;
@@ -264,7 +264,7 @@
         szPay = [NSString stringWithFormat:@", %@ %@", self.lblPrice.text, self.lblUnit.text];
     }
     
-    NSString *message = [NSString stringWithFormat:@"Pensé que te interesaría este trabajo: %@, %@%@. Hay más información y más trabajo en la aplicación Ganaz", self.company.szBusinessName, [self.job getTranslatedTitle], szPay];
+    NSString *message = [NSString stringWithFormat:@"Pensé que te interesaría este trabajo: %@, %@%@. Hay más información y más trabajo en la aplicación Ganaz", [self.company getBusinessNameES], [self.job getTitleES], szPay];
     
     
 //    NSString *message = [NSString stringWithFormat:@"Here is very interesting job for farm workers: %@, %@ %@. Find more jobs here: ", self.job.szTitle, self.lblPrice.text, self.lblUnit.text];
@@ -277,7 +277,7 @@
 }
 
 - (void) updateTranslatedDescription{
-    self.lblDescription.text = self.job.szCommentsTranslated;
+    self.lblDescription.text = [self.job getCommentsES];
 }
 
 #pragma mark - UITableView Delegate

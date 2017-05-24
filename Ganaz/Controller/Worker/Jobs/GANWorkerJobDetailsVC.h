@@ -10,7 +10,7 @@
 
 @interface GANWorkerJobDetailsVC : UIViewController
 
-@property (assign, atomic) int indexMyCompany;
+@property (assign, atomic) int indexCompany;
 @property (assign, atomic) int indexJob;
 @property (assign, atomic) BOOL isRecruited;
 

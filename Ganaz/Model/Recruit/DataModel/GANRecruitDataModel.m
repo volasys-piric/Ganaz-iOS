@@ -29,7 +29,7 @@
     [self initialize];
     
     self.szJobId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"job_id"]];
-    NSArray *arrReRecruitUserIds = [dict objectForKey:@"re_recruit_user_ids"];
+    NSArray *arrReRecruitUserIds = [dict objectForKey:@"re_recruit_worker_user_ids"];
     self.fBroadcast = [GANGenericFunctionManager refineFloat:[dict objectForKey:@"broadcast"] DefaultValue:-1];
     
     if (arrReRecruitUserIds != nil && [arrReRecruitUserIds isKindOfClass:[NSArray class]] == YES){
@@ -46,7 +46,7 @@
         [dict setObject:[NSString stringWithFormat:@"%.02f", self.fBroadcast] forKey:@"broadcast"];
     }
     if ([self.arrReRecruitUserIds count] > 0){
-        [dict setObject:self.arrReRecruitUserIds forKey:@"re_recruit_user_ids"];
+        [dict setObject:self.arrReRecruitUserIds forKey:@"re_recruit_worker_user_ids"];
     }
     return dict;
 }

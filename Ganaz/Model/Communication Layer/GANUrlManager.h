@@ -32,7 +32,6 @@
 
 #pragma mark - Endpoint for Job
 
-+ (NSString *) getEndpointForGetMyJobs;
 + (NSString *) getEndpointForSearchJobs;
 + (NSString *) getEndpointForGetJobDetailsWithJobId: (NSString *) jobId;
 + (NSString *) getEndpointForAddJob;
@@ -46,8 +45,8 @@
 
 #pragma mark - Endpoint for MyWorkers
 
-+ (NSString *) getEndpointForGetMyWorkers;
-+ (NSString *) getEndpointForAddMyWorkers;
++ (NSString *) getEndpointForGetMyWorkersWithCompanyId: (NSString *) companyId;
++ (NSString *) getEndpointForAddMyWorkersWithCompanyId: (NSString *) companyId;
 
 #pragma mark - Messages
 

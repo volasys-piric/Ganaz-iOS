@@ -14,7 +14,7 @@
 #import "GANLocationManager.h"
 #import "GANJobManager.h"
 #import "GANJobDataModel.h"
-#import "GANMyCompaniesManager.h"
+#import "GANCompanyManager.h"
 #import "GANUserManager.h"
 #import "GANGlobalVCManager.h"
 #import "Global.h"
@@ -127,7 +127,7 @@
         CLLocationCoordinate2D position = CLLocationCoordinate2DMake(site.fLatitude, site.fLongitude);
         
         GMSMarker *marker = [GMSMarker markerWithPosition:position];
-        marker.title = [NSString stringWithFormat:@"%@, %d positions", [job getTranslatedTitle], job.nPositions];
+        marker.title = [NSString stringWithFormat:@"%@, %d positions", [job getTitleES], job.nPositions];
         marker.infoWindowAnchor = CGPointMake(0.5, 0);
         marker.map = self.mapView;
         marker.appearAnimation = kGMSMarkerAnimationPop;
@@ -202,18 +202,18 @@
     GANJobDataModel *job = [[GANJobManager sharedInstance].arrJobsSearchResult objectAtIndex:index];
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
-    [[GANMyCompaniesManager sharedInstance] requestGetCompanyDetailsByCompanyUserId:job.szCompanyId Callback:^(int index) {
+    [[GANCompanyManager sharedInstance] requestGetCompanyDetailsByCompanyId:job.szCompanyId Callback:^(int index) {
         [GANGlobalVCManager hideHudProgress];
         if (index != -1){
-            [self gotoCompanyDetailsAtMyCompanyIndex:index];
+            [self gotoCompanyDetailsAtCompanyIndex:index];
         }
     }];
 }
 
-- (void) gotoCompanyDetailsAtMyCompanyIndex: (int) indexMyCompany{
+- (void) gotoCompanyDetailsAtCompanyIndex: (int) indexCompany{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
     GANWorkerCompanyDetailsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_COMPANYDETAILS"];
-    vc.indexMyCompany = indexMyCompany;
+    vc.indexCompany = indexCompany;
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
@@ -222,10 +222,10 @@
 
 - (void) configureCell: (GANWorkerJobListItemTVC *) cell AtIndex: (int) index{
     GANJobDataModel *job = [[GANJobManager sharedInstance].arrJobsSearchResult objectAtIndex:index];
-    cell.lblTitle.text = [job getTranslatedTitle];
+    cell.lblTitle.text = [job getTitleES];
     cell.lblCompany.text = @"";
-    [[GANMyCompaniesManager sharedInstance] getCompanyBusinessNameByCompanyUserId:job.szCompanyId Callback:^(NSString *businessName) {
-        cell.lblCompany.text = businessName;
+    [[GANCompanyManager sharedInstance] getCompanyBusinessNameESByCompanyId:job.szCompanyId Callback:^(NSString *businessNameES) {
+        cell.lblCompany.text = businessNameES;
     }];
     cell.lblDistance.text = [NSString stringWithFormat:@"%.2fmi", [job getNearestDistance]];
     cell.viewContainer.layer.cornerRadius = 4;

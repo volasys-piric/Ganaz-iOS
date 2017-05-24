@@ -36,7 +36,6 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableview.rowHeight = UITableViewAutomaticDimension;
     self.tableview.estimatedRowHeight = 75;
     
@@ -81,7 +80,7 @@
         GANMessageDataModel *message = [managerMessage.arrMessages objectAtIndex:i];
         if ([message amIReceiver] == NO && [message amISender] == NO) continue;
         if ((message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE) ||
-            (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION_NEW)){
+            (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION)){
             [self.arrMessages addObject:message];
         }
     }
@@ -109,15 +108,15 @@
     cell.lblDateTime.text = [GANGenericFunctionManager getBeautifiedPastTime:message.dateSent];
     
     if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE){
-        cell.lblTitle.text = [NSString stringWithFormat:@"Sent to %d worker(s)", (int) [message.arrReceiverUserIds count]];
-        cell.lblMessage.text = message.szMessage;
+        cell.lblTitle.text = [NSString stringWithFormat:@"Message To: %@", message.szReceiverUserId];
+        cell.lblMessage.text = [message getContentsEN];
     }
-    else if (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION_NEW){
+    else if (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION){
         GANJobManager *managerJob = [GANJobManager sharedInstance];
         int indexJob = [managerJob getIndexForMyJobsByJobId:message.szJobId];
         if (indexJob != -1){
             GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:indexJob];
-            cell.lblTitle.text = [NSString stringWithFormat:@"Worker interested: %@", job.szTitle];
+            cell.lblTitle.text = [NSString stringWithFormat:@"Worker interested: %@", [job getTitleEN]];
         }
         else {
             cell.lblTitle.text = @"New job inquiry";

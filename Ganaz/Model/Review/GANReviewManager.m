@@ -47,10 +47,10 @@
     return (int) [self.arrReviews count] - 1;
 }
 
-- (int) getIndexForReviewByCompanyUserId: (NSString *) companyUserId{
+- (int) getIndexForReviewByCompanyId: (NSString *) companyId{
     for (int i = 0; i < (int) [self.arrReviews count]; i++){
         GANReviewDataModel *review = [self.arrReviews objectAtIndex:i];
-        if ([review.szCompanyUserId isEqualToString:companyUserId] == YES) return i;
+        if ([review.szCompanyId isEqualToString:companyId] == YES) return i;
     }
     return -1;
 }
@@ -58,8 +58,18 @@
 #pragma mark - Request
 
 - (void) requestGetReviewsListWithCallback: (void (^) (int status)) callback{
+    NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
     NSString *szUrl = [GANUrlManager getEndpointForGetReviews];
-    [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:YES parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    if ([[GANUserManager sharedInstance] isCompanyUser] == YES){
+        NSString *szCompanyId = [GANUserManager getCompanyDataModel].szId;
+        [param setObject:szCompanyId forKey:@"company_id"];
+    }
+    else {
+        NSString *szWorkerUserId = [GANUserManager sharedInstance].modelUser.szId;
+        [param setObject:szWorkerUserId forKey:@"worker_user_id"];
+    }
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;
         BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
         if (success){

@@ -198,7 +198,7 @@ typedef enum _ENUM_PAYUNIT{
     GANJobManager *managerJob = [GANJobManager sharedInstance];
     GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:self.indexJob];
     
-    self.txtTitle.text = job.szTitle;
+    self.txtTitle.text = [job getTitleEN];
     self.txtPrice.text = [NSString stringWithFormat:@"%d", (int) job.fPayRate];
     if ([job isPayRateSpecified] == NO){
         self.txtPrice.text = @"";
@@ -218,7 +218,7 @@ typedef enum _ENUM_PAYUNIT{
                             ];
     self.arrBenefit = [NSMutableArray arrayWithArray:arrBenefit];
     
-    self.textviewComments.text = job.szComments;
+    self.textviewComments.text = [job getCommentsEN];
     self.isAutoTranslate = job.isAutoTranslate;
 }
 
@@ -519,8 +519,8 @@ typedef enum _ENUM_PAYUNIT{
     NSString *szComments = self.textviewComments.text;
     
     job.szCompanyId = [GANUserManager getUserCompanyDataModel].szId;
-    job.szTitle = szTitle;
-    job.szTitleTranslated = titleTranslated;
+    job.modelTitle.szTextEN = szTitle;
+    job.modelTitle.szTextES = titleTranslated;
     job.fPayRate = fPrice;
     job.enumPayUnit = self.enumPayUnit;
     job.dateFrom = self.dateFrom;
@@ -532,8 +532,8 @@ typedef enum _ENUM_PAYUNIT{
     job.isBenefitTransportation = [[self.arrBenefit objectAtIndex:3] boolValue];
     job.isBenefitBonus = [[self.arrBenefit objectAtIndex:4] boolValue];
     job.isBenefitScholarships = [[self.arrBenefit objectAtIndex:5] boolValue];
-    job.szComments = szComments;
-    job.szCommentsTranslated = commentsTranslated;
+    job.modelComments.szTextEN = szComments;
+    job.modelComments.szTextES = commentsTranslated;
     job.isAutoTranslate = self.isAutoTranslate;
     // Working site is already set
     

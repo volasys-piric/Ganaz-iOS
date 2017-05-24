@@ -197,7 +197,7 @@
 
 - (void) configureCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
     GANMyWorkerDataModel *myWorker = [[GANMyWorkersManager sharedInstance].arrMyWorkers objectAtIndex:index];
-    cell.lblWorkerId.text = myWorker.szUserName;
+    cell.lblWorkerId.text = myWorker.modelWorker.szUserName;
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     

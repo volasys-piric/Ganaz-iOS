@@ -10,6 +10,6 @@
 
 @interface GANWorkerCompanyDetailsVC : UIViewController
 
-@property (assign, atomic) int indexMyCompany;
+@property (assign, atomic) int indexCompany;
 
 @end

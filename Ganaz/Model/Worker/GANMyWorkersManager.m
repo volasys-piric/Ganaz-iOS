@@ -83,7 +83,8 @@
 #pragma mark - Requests
 
 - (void) requestGetMyWorkersListWithCallback: (void (^) (int status)) callback{
-    NSString *szUrl = [GANUrlManager getEndpointForGetMyWorkers];
+    NSString *companyId = [GANUserManager getCompanyDataModel].szId;
+    NSString *szUrl = [GANUrlManager getEndpointForGetMyWorkersWithCompanyId:companyId];
     self.isMyWorkersLoading = YES;
     
     [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:YES parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -119,7 +120,8 @@
 }
 
 - (void) requestAddMyWorkerWithUserIds: (NSArray *) arrUserIds Callback: (void (^) (int status)) callback{
-    NSString *szUrl = [GANUrlManager getEndpointForAddMyWorkers];
+    NSString *companyId = [GANUserManager getCompanyDataModel].szId;
+    NSString *szUrl = [GANUrlManager getEndpointForAddMyWorkersWithCompanyId:companyId];
     NSDictionary *params = @{@"user_ids": arrUserIds};
     [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;

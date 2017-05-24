@@ -11,7 +11,7 @@
 #import "GANWorkerJobDetailsVC.h"
 #import "GANWorkerCompanyReviewVC.h"
 
-#import "GANMyCompaniesManager.h"
+#import "GANCompanyManager.h"
 #import "GANUserCompanyDataModel.h"
 #import "GANJobDataModel.h"
 #import "GANUserManager.h"
@@ -31,7 +31,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTableviewTopSpacing;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTableviewHeight;
 
-@property (strong, nonatomic) GANUserCompanyDataModel *company;
+@property (strong, nonatomic) GANCompanyDataModel *company;
 
 @end
 
@@ -74,10 +74,10 @@
 }
 
 - (void) refreshFields{
-    self.company = [[GANMyCompaniesManager sharedInstance].arrCompaniesFound objectAtIndex:self.indexMyCompany];
+    self.company = [[GANCompanyManager sharedInstance].arrCompaniesFound objectAtIndex:self.indexCompany];
     
-    self.lblTitle.text = [self.company getTranslatedBusinessName];
-    self.lblDescription.text = [self.company getTranslatedDescription];
+    self.lblTitle.text = [self.company getBusinessNameES];
+    self.lblDescription.text = [self.company getDescriptionES];
     
     GANENUM_COMPANY_BADGE_TYPE enumType = [self.company getBadgeType];
     if (enumType == GANENUM_COMPANY_BADGE_TYPE_NONE){
@@ -127,7 +127,7 @@
 - (void) gotoJobDetailsAtIndex: (int) index{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
     GANWorkerJobDetailsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_JOBDETAILS"];
-    vc.indexMyCompany = self.indexMyCompany;
+    vc.indexCompany = self.indexCompany;
     vc.indexJob = index;
     vc.isRecruited = NO;
     
@@ -139,7 +139,7 @@
     if ([[GANUserManager sharedInstance] isUserLoggedIn] == YES){
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
         GANWorkerCompanyReviewVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_COMPANYREVIEW"];
-        vc.indexMyCompany = self.indexMyCompany;
+        vc.indexCompany = self.indexCompany;
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
@@ -156,7 +156,7 @@
 - (void) configureCell: (GANJobItemTVC *) cell AtIndex: (int) index{
     GANJobDataModel *job = [self.company.arrJobs objectAtIndex:index];
     
-    cell.lblTitle.text = [job getTranslatedTitle];
+    cell.lblTitle.text = [job getTitleES];
     cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f", job.fPayRate];
     cell.lblUnit.text = (job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"por hora" : @"por libra";
     cell.lblDate.text = [NSString stringWithFormat:@"%@ - %@", [GANGenericFunctionManager getBeautifiedSpanishDate:job.dateFrom], [GANGenericFunctionManager getBeautifiedSpanishDate:job.dateTo]];

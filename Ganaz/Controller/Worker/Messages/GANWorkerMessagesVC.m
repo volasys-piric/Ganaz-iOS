@@ -14,7 +14,7 @@
 #import "GANUserManager.h"
 #import "GANJobManager.h"
 
-#import "GANMyCompaniesManager.h"
+#import "GANCompanyManager.h"
 #import "GANGlobalVCManager.h"
 #import "GANWorkerJobDetailsVC.h"
 #import "Global.h"
@@ -108,20 +108,20 @@
     [self.tableview reloadData];
 }
 
-- (void) gotoJobDetailsVCWithJobId: (NSString *) jobId CompanyUserId: (NSString *) companyUserId{
+- (void) gotoJobDetailsVCWithJobId: (NSString *) jobId CompanyId: (NSString *) companyId{
     if (jobId.length == 0) return;
-    if (companyUserId.length == 0) return;
+    if (companyId.length == 0) return;
     
-    GANMyCompaniesManager *managerMyCompany = [GANMyCompaniesManager sharedInstance];
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
-    [managerMyCompany requestGetCompanyDetailsByCompanyUserId:companyUserId Callback:^(int indexMyCompany) {
-        if (indexMyCompany == -1) {
+    [managerCompany requestGetCompanyDetailsByCompanyId:companyId Callback:^(int indexCompany) {
+        if (indexCompany == -1) {
             [GANGlobalVCManager hideHudProgress];
             return;
         }
         
-        GANUserCompanyDataModel *company = [[GANMyCompaniesManager sharedInstance].arrCompaniesFound objectAtIndex:indexMyCompany];
+        GANCompanyDataModel *company = [managerCompany.arrCompaniesFound objectAtIndex:indexCompany];
         [company requestJobsListWithCallback:^(int status) {
             [GANGlobalVCManager hideHudProgress];
             if (status != SUCCESS_WITH_NO_ERROR){
@@ -132,7 +132,7 @@
             
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
             GANWorkerJobDetailsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_JOBDETAILS"];
-            vc.indexMyCompany = indexMyCompany;
+            vc.indexCompany = indexCompany;
             vc.indexJob = indexJob;
             vc.isRecruited = YES;
             
@@ -145,7 +145,7 @@
 - (void) gotoMessageDetailsAtIndex: (int) index{
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
     if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT){
-        [self gotoJobDetailsVCWithJobId:message.szJobId CompanyUserId:message.szSenderUserId];
+        [self gotoJobDetailsVCWithJobId:message.szJobId CompanyId:message.szSenderCompanyId];
     }
 }
 
@@ -153,20 +153,20 @@
 
 - (void) configureCell: (GANMessageItemTVC *) cell AtIndex: (int) index{
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
-    cell.lblMessage.text = [message getTranslatedMessage];
+    cell.lblMessage.text = [message getContentsES];
     cell.lblDateTime.text = [GANGenericFunctionManager getBeautifiedPastTime:message.dateSent];
     
     if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE){
         cell.lblTitle.text = @"";
-        [[GANMyCompaniesManager sharedInstance] getCompanyBusinessNameByCompanyUserId:message.szSenderUserId Callback:^(NSString *businessName) {
-            cell.lblTitle.text = businessName;
+        [[GANCompanyManager sharedInstance] getCompanyBusinessNameESByCompanyId:message.szSenderCompanyId Callback:^(NSString *businessNameES) {
+            cell.lblTitle.text = businessNameES;
         }];
     }
     else if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT){
         cell.lblTitle.text = @"";
         cell.lblMessage.text = @"Nuevo trabajo disponible";
-        [[GANMyCompaniesManager sharedInstance] getCompanyBusinessNameByCompanyUserId:message.szSenderUserId Callback:^(NSString *businessName) {
-            cell.lblTitle.text = businessName;
+        [[GANCompanyManager sharedInstance] getCompanyBusinessNameESByCompanyId:message.szSenderCompanyId Callback:^(NSString *businessNameES) {
+            cell.lblTitle.text = businessNameES;
         }];
     }
     

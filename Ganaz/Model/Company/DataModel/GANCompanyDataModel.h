@@ -57,7 +57,7 @@
 - (GANENUM_COMPANY_BADGE_TYPE) getBadgeType;
 
 - (NSString *) getBusinessNameEN;
-- (NSString *) getBussinessNameES;
+- (NSString *) getBusinessNameES;
 - (NSString *) getDescriptionEN;
 - (NSString *) getDescriptionES;
 

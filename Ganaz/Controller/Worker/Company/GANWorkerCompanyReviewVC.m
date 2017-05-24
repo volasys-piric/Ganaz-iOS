@@ -9,7 +9,7 @@
 #import "GANWorkerCompanyReviewVC.h"
 #import "GANWorkerCompanyReviewItemTVC.h"
 #import "GANGenericFunctionManager.h"
-#import "GANMyCompaniesManager.h"
+#import "GANCompanyManager.h"
 #import "GANUserManager.h"
 #import "GANReviewManager.h"
 #import "GANGlobalVCManager.h"
@@ -26,7 +26,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTableviewHeight;
 
 @property (strong, nonatomic) NSArray *arrItem;
-@property (strong, nonatomic) GANUserCompanyDataModel *company;
+@property (strong, nonatomic) GANCompanyDataModel *company;
 @property (strong, nonatomic) GANReviewDataModel *review;
 @property (assign, atomic) int indexReview;
 
@@ -65,8 +65,8 @@
 }
 
 - (void) refreshFields{
-    self.company = [[GANMyCompaniesManager sharedInstance].arrCompaniesFound objectAtIndex:self.indexMyCompany];
-    self.indexReview = [[GANReviewManager sharedInstance] getIndexForReviewByCompanyUserId:self.company.szId];
+    self.company = [[GANCompanyManager sharedInstance].arrCompaniesFound objectAtIndex:self.indexCompany];
+    self.indexReview = [[GANReviewManager sharedInstance] getIndexForReviewByCompanyId:self.company.szId];
     if (self.indexReview == -1){
         self.review = [[GANReviewDataModel alloc] init];
     }
@@ -107,7 +107,7 @@
     }
     if ([self checkMandatoryFields] == NO) return;
     
-    self.review.szCompanyUserId = self.company.szId;
+    self.review.szCompanyId = self.company.szId;
     self.review.szWorkerUserId = [GANUserManager getUserWorkerDataModel].szId;
     self.review.szComments = self.textviewComments.text;
     

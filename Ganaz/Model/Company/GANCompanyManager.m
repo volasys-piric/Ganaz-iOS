@@ -59,18 +59,18 @@
     return -1;
 }
 
-- (void) getCompanyBusinessNameByCompanyId: (NSString *) companyId Callback: (void (^) (NSString *businessName)) callback{
+- (void) getCompanyBusinessNameESByCompanyId: (NSString *) companyId Callback: (void (^) (NSString *businessNameES)) callback{
     int index = [self getIndexForCompanyByCompanyId:companyId];
     if (index != -1){
         GANCompanyDataModel *company = [self.arrCompaniesFound objectAtIndex:index];
-        if (callback) callback([company getBusinessNameEN]);
+        if (callback) callback([company getBusinessNameES]);
         return;
     }
     else {
-        [self requestGetCompanyDetailsByCompanyId:companyId Callback:^(int index) {
-            if (index != -1){
-                GANCompanyDataModel *company = [self.arrCompaniesFound objectAtIndex:index];
-                if (callback) callback([company getBusinessNameEN]);
+        [self requestGetCompanyDetailsByCompanyId:companyId Callback:^(int indexCompany) {
+            if (indexCompany != -1){
+                GANCompanyDataModel *company = [self.arrCompaniesFound objectAtIndex:indexCompany];
+                if (callback) callback([company getBusinessNameES]);
             }
             else {
                 if (callback) callback(@"Unknown");
@@ -104,10 +104,10 @@
     }];
 }
 
-- (void) requestGetCompanyDetailsByCompanyId: (NSString *) companyId Callback: (void (^) (int status)) callback{
+- (void) requestGetCompanyDetailsByCompanyId: (NSString *) companyId Callback: (void (^) (int indexCompany)) callback{
     int index = [self getIndexForCompanyByCompanyId:companyId];
     if (index != -1){
-        if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        if (callback) callback(index);
         return;
     }
     else {
@@ -119,16 +119,15 @@
                 GANCompanyDataModel *company = [[GANCompanyDataModel alloc] init];
                 NSDictionary *dictCompany = [dict objectForKey:@"company"];
                 [company setWithDictionary:dictCompany];
-                [self addCompanyIfNeeded:company];
+                int indexCompany = [self addCompanyIfNeeded:company];
                 
-                if (callback) callback(SUCCESS_WITH_NO_ERROR);
+                if (callback) callback(indexCompany);
             }
             else {
-                NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
-                if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+                if (callback) callback(-1);
             }
         } failure:^(int status, NSDictionary *error) {
-            if (callback) callback(status);
+            if (callback) callback(-1);
         }];
     }
 }

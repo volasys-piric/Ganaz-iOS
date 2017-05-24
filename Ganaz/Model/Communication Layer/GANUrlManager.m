@@ -63,10 +63,6 @@
 
 #pragma mark - Endpoint for Job
 
-+ (NSString *) getEndpointForGetMyJobs{
-    return [NSString stringWithFormat:@"%@/job", GANURL_BASEURL];
-}
-
 + (NSString *) getEndpointForAddJob{
     return [NSString stringWithFormat:@"%@/job", GANURL_BASEURL];
 }
@@ -99,12 +95,12 @@
 
 #pragma mark - Endpoint for MyWorkers
 
-+ (NSString *) getEndpointForGetMyWorkers{
-    return [NSString stringWithFormat:@"%@/company/my-workers", GANURL_BASEURL];
++ (NSString *) getEndpointForGetMyWorkersWithCompanyId: (NSString *) companyId{
+    return [NSString stringWithFormat:@"%@/company/%@/my-workers", GANURL_BASEURL, companyId];
 }
 
-+ (NSString *) getEndpointForAddMyWorkers{
-    return [NSString stringWithFormat:@"%@/company/my-workers", GANURL_BASEURL];
++ (NSString *) getEndpointForAddMyWorkersWithCompanyId: (NSString *) companyId{
+    return [NSString stringWithFormat:@"%@/company/%@/my-workers", GANURL_BASEURL, companyId];
 }
 
 #pragma mark - Messages
@@ -120,7 +116,7 @@
 #pragma mark - Reviews
 
 + (NSString *) getEndpointForGetReviews{
-    return [NSString stringWithFormat:@"%@/review", GANURL_BASEURL];
+    return [NSString stringWithFormat:@"%@/review/search", GANURL_BASEURL];
 }
 
 + (NSString *) getEndpointForAddReview{

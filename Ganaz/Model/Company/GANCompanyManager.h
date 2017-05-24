@@ -17,12 +17,12 @@
 - (void) initializeManager;
 
 + (NSString *) generateCompanyCodeFromName: (NSString *) companyName;
-- (void) getCompanyBusinessNameByCompanyId: (NSString *) companyId Callback: (void (^) (NSString *businessName)) callback;
+- (void) getCompanyBusinessNameESByCompanyId: (NSString *) companyId Callback: (void (^) (NSString *businessNameES)) callback;
 
 #pragma mark - Requests
 
 - (void) requestCreateCompany: (GANCompanyDataModel *) company Callback: (void (^) (int status, GANCompanyDataModel *companyNew)) callback;
 
-- (void) requestGetCompanyDetailsByCompanyId: (NSString *) companyId Callback: (void (^) (int status)) callback;
+- (void) requestGetCompanyDetailsByCompanyId: (NSString *) companyId Callback: (void (^) (int indexCompany)) callback;
 
 @end

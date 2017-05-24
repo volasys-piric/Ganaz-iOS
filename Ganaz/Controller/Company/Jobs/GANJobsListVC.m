@@ -127,7 +127,7 @@
 
 - (void) configureCell: (GANJobItemTVC *) cell AtIndex: (int) index{
     GANJobDataModel *job = [[GANJobManager sharedInstance].arrMyJobs objectAtIndex:index];
-    cell.lblTitle.text = job.szTitle;
+    cell.lblTitle.text = [job getTitleEN];
     cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f", job.fPayRate];
     cell.lblUnit.text = (job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"per hour" : @"per lb";
     cell.lblDate.text = [NSString stringWithFormat:@"%@ - %@", [GANGenericFunctionManager getBeautifiedDate:job.dateFrom], [GANGenericFunctionManager getBeautifiedDate:job.dateTo]];
