@@ -120,7 +120,7 @@
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager hideHudProgressWithCallback:^{
                 GANUserManager *managerUser = [GANUserManager sharedInstance];
-                if ([managerUser isCompany] == YES){
+                if ([managerUser isCompanyUser] == YES){
                     [self gotoCompanyMain];
                 }
                 else {

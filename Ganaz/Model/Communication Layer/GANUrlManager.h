@@ -17,6 +17,10 @@
 + (NSString *) getEndpointForGooglemapsPlaceDetails;
 + (NSString *) getEndpointForGooglemapsDirections;
 
+#pragma mark - Endpoint for Company
+
++ (NSString *) getEndpointForCreateCompany;
+
 #pragma mark - Endpoint for User
 
 + (NSString *) getEndpointForUserDetailsWithUserId: (NSString *) userId;
@@ -61,6 +65,10 @@
 #pragma mark - Invite
 
 + (NSString *) getEndpointForInvite;
+
+#pragma mark - Membership PLan
+
++ (NSString *) getEndpointForMembershipPlans;
 
 #pragma mark - Google Translate
 

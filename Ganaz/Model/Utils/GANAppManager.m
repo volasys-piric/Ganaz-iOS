@@ -15,6 +15,7 @@
 #import "GANReviewManager.h"
 #import "GANMyCompaniesManager.h"
 #import "GANRecruitManager.h"
+#import "GANMembershipPlanManager.h"
 
 #import <IQKeyboardManager.h>
 #import <GoogleMaps/GoogleMaps.h>
@@ -49,6 +50,8 @@
     
     [GMSServices provideAPIKey:GOOGLEMAPS_API_KEY];
     [[GANLocationManager sharedInstance] initializeManager];
+    
+    [[GANMembershipPlanManager sharedInstance] requestGetMembershipPlanListWithCallback:nil];
 }
 
 - (void) initializeManagersAfterLogin{

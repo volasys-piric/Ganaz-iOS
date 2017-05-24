@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GANCompanyDataModel.h"
 
 @interface GANMyCompaniesManager : NSObject
 
-@property (strong, nonatomic) NSMutableArray *arrCompaniesFound;
+@property (strong, nonatomic) NSMutableArray<GANCompanyDataModel *> *arrCompaniesFound;
 
 + (instancetype) sharedInstance;
 - (void) initializeManager;

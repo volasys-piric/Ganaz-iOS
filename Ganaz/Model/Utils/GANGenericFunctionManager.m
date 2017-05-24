@@ -376,6 +376,7 @@
 
 + (NSString *) getNormalizedStringFromDateTime:(NSDate *)dt{
     // yyyy-MM-dd HH:mm:ss zzz
+    if (dt == nil) return @"";
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss zzz"];
@@ -395,6 +396,7 @@
 
 + (NSString *) getNormalizedStringFromDate:(NSDate *)dt{
     // yyyy-MM-dd
+    if (dt == nil) return @"";
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd"];

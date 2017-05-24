@@ -29,6 +29,12 @@
     return @"https://maps.googleapis.com/maps/api/directions/json";
 }
 
+#pragma mark - Endpoint for Company
+
++ (NSString *) getEndpointForCreateCompany{
+    return [NSString stringWithFormat:@"%@/company", GANURL_BASEURL];
+}
+
 #pragma mark - Endpoint for User
 
 + (NSString *) getEndpointForUserSignup{
@@ -127,6 +133,12 @@
 
 + (NSString *) getEndpointForInvite{
     return [NSString stringWithFormat:@"%@/invite", GANURL_BASEURL];
+}
+
+#pragma mark - Membership PLan
+
++ (NSString *) getEndpointForMembershipPlans{
+    return [NSString stringWithFormat:@"%@/plans", GANURL_BASEURL];
 }
 
 #pragma mark - Google Translate

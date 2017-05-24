@@ -9,6 +9,9 @@
 #import "GANSignupCompanyVC.h"
 
 #import "GANUserManager.h"
+#import "GANCompanyManager.h"
+#import "GANMembershipPlanManager.h"
+
 #import "GANAppManager.h"
 
 #import "GANUIPhoneTextField.h"
@@ -232,12 +235,6 @@
         return;
     }
     
-    NSString *szCompanyName = self.txtCompanyName.text;
-    NSString *szDescription = self.textviewDescription.text;
-    NSString *szStreet1 = self.txtStreet1.text;
-    NSString *szStreet2 = self.txtStreet2.text;
-    NSString *szCity = self.txtCity.text;
-    NSString *szState = self.txtState.text;
     NSString *szFirstName = self.txtFirstName.text;
     NSString *szLastName = self.txtLastName.text;
     NSString *szEmail = self.txtEmail.text;
@@ -245,43 +242,93 @@
     NSString *szCompanyId = self.txtCompanyId.text;
     NSString *szPassword = self.txtPassword.text;
     
-    GANUserManager *managerUser = [GANUserManager sharedInstance];
-    [managerUser initializeManagerWithType:GANENUM_USER_TYPE_COMPANY];
-    
-    GANUserCompanyDataModel *modelCompany = [GANUserManager getUserCompanyDataModel];
-    modelCompany.szBusinessName = szCompanyName;
-    modelCompany.szBusinessNameTranslated = businessNameTranslated;
-    modelCompany.szDescription = szDescription;
-    modelCompany.szDescriptionTranslated = descriptionTranslated;
-    modelCompany.isAutoTranslate = self.isAutoTranslate;
-    
-    modelCompany.modelAddress.szAddress1 = szStreet1;
-    modelCompany.modelAddress.szAddress2 = szStreet2;
-    modelCompany.modelAddress.szCity = szCity;
-    modelCompany.modelAddress.szState = szState;
-    modelCompany.szFirstName = szFirstName;
-    modelCompany.szLastName = szLastName;
-    modelCompany.szEmail = szEmail;
-    modelCompany.modelPhone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:szPhone];
-    modelCompany.szUserName = szCompanyId;
-    modelCompany.szPassword = szPassword;
-    modelCompany.szPlayerId = [GANPushNotificationManager sharedInstance].szOneSignalPlayerId;
-    
-    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [[GANUserManager sharedInstance] requestUserSignupWithCallback:^(int status) {
+    [self doCreateCompany:businessNameTranslated DescriptionTranslated:descriptionTranslated Callback:^(int status, GANCompanyDataModel *companyNew) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            [GANGlobalVCManager hideHudProgressWithCallback:^{
-                [self gotoCompanyMain];
+            GANUserManager *managerUser = [GANUserManager sharedInstance];
+            [managerUser initializeManagerWithType:GANENUM_USER_TYPE_COMPANY_ADMIN];
+            
+            GANUserCompanyDataModel *modelCompanyUser = [GANUserManager getUserCompanyDataModel];
+            modelCompanyUser.modelCompany = companyNew;
+            modelCompanyUser.szCompanyId = companyNew.szId;
+            
+            modelCompanyUser.szFirstName = szFirstName;
+            modelCompanyUser.szLastName = szLastName;
+            modelCompanyUser.szEmail = szEmail;
+            modelCompanyUser.modelPhone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:szPhone];
+            modelCompanyUser.szUserName = szCompanyId;
+            modelCompanyUser.szPassword = szPassword;
+            modelCompanyUser.szPlayerId = [GANPushNotificationManager sharedInstance].szOneSignalPlayerId;
+            
+            [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+            [[GANUserManager sharedInstance] requestUserSignupWithCallback:^(int status) {
+                if (status == SUCCESS_WITH_NO_ERROR){
+                    [GANGlobalVCManager hideHudProgressWithCallback:^{
+                        [self gotoCompanyMain];
+                    }];
+                }
+                else if (status == ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT){
+                    [GANGlobalVCManager showHudErrorWithMessage:@"User name is already registered." DismissAfter:3 Callback:nil];
+                }
+                else if (status == ERROR_USER_SIGNUPFAILED_EMAILCONFLICT){
+                    [GANGlobalVCManager showHudErrorWithMessage:@"Same email address is already registered." DismissAfter:3 Callback:nil];
+                }
+                else {
+                    [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:3 Callback:nil];
+                }
             }];
         }
-        else if (status == ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT){
-            [GANGlobalVCManager showHudErrorWithMessage:@"User name is already registered." DismissAfter:3 Callback:nil];
-        }
-        else if (status == ERROR_USER_SIGNUPFAILED_EMAILCONFLICT){
-            [GANGlobalVCManager showHudErrorWithMessage:@"Same email address is already registered." DismissAfter:3 Callback:nil];
+    }];
+}
+
+- (void) doCreateCompany: (NSString *) nameTranslated DescriptionTranslated: (NSString *) descriptionTranslated Callback: (void (^) (int status, GANCompanyDataModel *companyNew)) callback{
+    
+    NSString *szCompanyName = self.txtCompanyName.text;
+    NSString *szDescription = self.textviewDescription.text;
+    NSString *szStreet1 = self.txtStreet1.text;
+    NSString *szStreet2 = self.txtStreet2.text;
+    NSString *szCity = self.txtCity.text;
+    NSString *szState = self.txtState.text;
+    
+    GANCompanyDataModel *company = [[GANCompanyDataModel alloc] init];
+    GANMembershipPlanDataModel *plan = [[GANMembershipPlanManager sharedInstance] getPlanByType:GANENUM_MEMBERSHIPPLAN_TYPE_FREE];
+    
+    company.modelName.szTextEN = szCompanyName;
+    company.modelName.szTextES = nameTranslated;
+    company.modelDescription.szTextEN = szDescription;
+    company.modelDescription.szTextES = descriptionTranslated;
+    company.isAutoTranslate = self.isAutoTranslate;
+    company.szCode = [GANCompanyManager generateCompanyCodeFromName:szCompanyName];
+    company.modelAddress.szAddress1 = szStreet1;
+    company.modelAddress.szAddress2 = szStreet2;
+    company.modelAddress.szCity = szCity;
+    company.modelAddress.szState = szState;
+    
+    company.modelPlan.type = plan.type;
+    company.modelPlan.szTitle = plan.szTitle;
+    company.modelPlan.fFee = plan.fFee;
+    company.modelPlan.nJobs = plan.nJobs;
+    company.modelPlan.nRecruits = plan.nRecruits;
+    company.modelPlan.nMessages = plan.nMessages;
+    company.modelPlan.dateStart = [NSDate date];
+    company.modelPlan.dateEnd = [NSDate date];
+    company.modelPlan.isAutoRenewal = NO;
+    
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    [managerCompany requestCreateCompany:company Callback:^(int status, GANCompanyDataModel *companyNew) {
+        if (status == SUCCESS_WITH_NO_ERROR){
+            [GANGlobalVCManager hideHudProgressWithCallback:^{
+                if (callback){
+                    callback(status, companyNew);
+                }
+            }];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:3 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:3 Callback:^{
+                if (callback){
+                    callback(status, nil);
+                }
+            }];
         }
     }];
 }

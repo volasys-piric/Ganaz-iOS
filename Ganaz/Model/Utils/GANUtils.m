@@ -129,6 +129,47 @@
 
 @end
 
+// Translated Contents Data Model
+
+@implementation GANTransContentsDataModel
+
+- (instancetype) init{
+    self = [super init];
+    if (self){
+        [self initialize];
+    }
+    return self;
+}
+
+- (void) initialize{
+    self.szTextEN = @"";
+    self.szTextES = @"";
+}
+
+- (void) setWithDictionary:(NSDictionary *)dict{
+    [self initialize];
+    self.szTextES = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"en"]];
+    self.szTextES = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"es"]];
+}
+
+- (NSDictionary *) serializeToDictionary{
+    return @{@"en": self.szTextEN,
+             @"es": self.szTextES,
+             };
+}
+
+- (NSString *) getTextEN{
+    return self.szTextEN;
+}
+
+- (NSString *) getTextES{
+    if (self.szTextES.length > 0) return self.szTextES;
+    return self.szTextEN;
+}
+
+@end
+
+
 @implementation GANUtils
 
 // User Auth Type
@@ -163,15 +204,19 @@
     if ([szType caseInsensitiveCompare:@"worker"] == NSOrderedSame){
         return GANENUM_USER_TYPE_WORKER;
     }
-    if ([szType caseInsensitiveCompare:@"company"] == NSOrderedSame){
-        return GANENUM_USER_TYPE_COMPANY;
+    if ([szType caseInsensitiveCompare:@"company-regular"] == NSOrderedSame){
+        return GANENUM_USER_TYPE_COMPANY_REGULAR;
+    }
+    if ([szType caseInsensitiveCompare:@"company-admin"] == NSOrderedSame){
+        return GANENUM_USER_TYPE_COMPANY_ADMIN;
     }
     return GANENUM_USER_TYPE_WORKER;
 }
 
 + (NSString *) getStringFromUserType: (GANENUM_USER_TYPE) type{
     if (type == GANENUM_USER_TYPE_WORKER) return @"worker";
-    if (type == GANENUM_USER_TYPE_COMPANY) return @"company";
+    if (type == GANENUM_USER_TYPE_COMPANY_REGULAR) return @"company-regular";
+    if (type == GANENUM_USER_TYPE_COMPANY_ADMIN) return @"company-admin";
     return @"worker";
 }
 
@@ -216,6 +261,20 @@
     if (type == GANENUM_PUSHNOTIFICATION_TYPE_RECRUIT) return @"recruit";
     if (type == GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE) return @"message";
     return @"";
+}
+
+// Membership Plan Type
+
++ (GANENUM_MEMBERSHIPPLAN_TYPE) getMembershipPlayTypeFromString: (NSString *) szType{
+    if ([szType caseInsensitiveCompare:@"free"] == NSOrderedSame) return GANENUM_MEMBERSHIPPLAN_TYPE_FREE;
+    if ([szType caseInsensitiveCompare:@"premium"] == NSOrderedSame) return GANENUM_MEMBERSHIPPLAN_TYPE_PREMIUM;
+    return GANENUM_MEMBERSHIPPLAN_TYPE_FREE;
+}
+
++ (NSString *) getStringFromMembershipPlanType: (GANENUM_MEMBERSHIPPLAN_TYPE) type{
+    if (type == GANENUM_MEMBERSHIPPLAN_TYPE_FREE) return @"free";
+    if (type == GANENUM_MEMBERSHIPPLAN_TYPE_PREMIUM) return @"premium";
+    return @"free";
 }
 
 // Translate

@@ -12,11 +12,16 @@
 #define GANLOG( s, ... ) NSLog( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
 
 #warning This should be removed before submission!
-#define GANENVIRONMENT_DEV
+#define GANENVIRONMENT_STAGING
 
 // BASE URL
 
-#ifdef GANENVIRONMENT_DEV
+#ifdef GANENVIRONMENT_STAGING
+
+#define ONESIGNAL_APPID                             @"37c1d731-1cbd-40cf-9ba3-3936174602e1"
+#define GANURL_BASEURL                              @"http://35.166.132.188:8000/api/v1"
+
+#elif GANENVIRONMENT_DEV
 
 #define ONESIGNAL_APPID                             @"37c1d731-1cbd-40cf-9ba3-3936174602e1"
 #define GANURL_BASEURL                              @"http://34.210.63.91:8000/api/v1"
@@ -86,6 +91,8 @@
 #define GANLOCALNOTIFICATION_REVIEW_LIST_UPDATE_FAILED                  @"GANLOCALNOTIFICATION_REVIEW_LIST_UPDATE_FAILED"
 #define GANLOCALNOTIFICATION_LOCATION_UPDATED                           @"GANLOCALNOTIFICATION_LOCATION_UPDATED"
 #define GANLOCALNOTIFICATION_CONTENTS_TRANSLATED                        @"GANLOCALNOTIFICATION_CONTENTS_TRANSLATED"
+#define GANLOCALNOTIFICATION_MEMBERSHIPPLAN_LIST_UPDATED                @"GANLOCALNOTIFICATION_MEMBERSHIPPLAN_LIST_UPDATED"
+#define GANLOCALNOTIFICATION_MEMBERSHIPPLAN_LIST_UPDATE_FAILED          @"GANLOCALNOTIFICATION_MEMBERSHIPPLAN_LIST_UPDATE_FAILED"
 
 #define LOCALSTORAGE_PREFIX                                             @"GANAZLOCALSTORAGE_"
 #define LOCALSTORAGE_USER_LOGIN                                         @"USER_LOGIN"

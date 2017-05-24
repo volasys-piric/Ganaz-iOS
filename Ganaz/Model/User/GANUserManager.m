@@ -37,7 +37,7 @@
     if (type == GANENUM_USER_TYPE_WORKER){
         self.modelUser = [[GANUserWorkerDataModel alloc] init];
     }
-    else if (type == GANENUM_USER_TYPE_COMPANY){
+    else if (type == GANENUM_USER_TYPE_COMPANY_REGULAR || type == GANENUM_USER_TYPE_COMPANY_ADMIN){
         self.modelUser = [[GANUserCompanyDataModel alloc] init];
     }
 }
@@ -48,6 +48,10 @@
 
 + (GANUserCompanyDataModel *) getUserCompanyDataModel{
     return (GANUserCompanyDataModel *) [GANUserManager sharedInstance].modelUser;
+}
+
++ (GANCompanyDataModel *) getCompanyDataModel{
+    return [self getUserCompanyDataModel].modelCompany;
 }
 
 - (BOOL) isUserLoggedIn{
@@ -78,8 +82,9 @@
 
 #pragma mark - Utils
 
-- (BOOL) isCompany{
-    return (self.modelUser.enumType == GANENUM_USER_TYPE_COMPANY);
+- (BOOL) isCompanyUser{
+    return ((self.modelUser.enumType == GANENUM_USER_TYPE_COMPANY_REGULAR) ||
+            (self.modelUser.enumType == GANENUM_USER_TYPE_COMPANY_ADMIN));
 }
 
 - (BOOL) isWorker{

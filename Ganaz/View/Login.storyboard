@@ -17,6 +17,9 @@
         <array key="SFUIDisplay-Medium.otf">
             <string>SFUIDisplay-Medium</string>
         </array>
+        <array key="SFUIDisplay-Regular.otf">
+            <string>SFUIDisplay-Regular</string>
+        </array>
     </customFonts>
     <scenes>
         <!--Navigation Controller-->
@@ -863,7 +866,7 @@
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Company" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rJ3-jH-k1E" userLabel="Label - Text 1">
                                                         <rect key="frame" x="20" y="40" width="335" height="24"/>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="20"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="20"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -872,7 +875,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="Dfg-a2-ArK"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -903,7 +906,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="qzC-cO-tKQ"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -958,7 +961,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="qDX-yz-jAA"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -989,7 +992,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="3Ui-GN-YyJ"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -1020,7 +1023,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="tqV-aT-z0z"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -1051,7 +1054,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="ZXK-0E-2Q4"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -1079,24 +1082,24 @@
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rx2-lc-aGW" userLabel="Label - Text 2">
                                                         <rect key="frame" x="20" y="786" width="335" height="24"/>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="20"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="20"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UAb-Ic-KtD" userLabel="Label - First Name">
-                                                        <rect key="frame" x="20" y="834" width="158" height="24"/>
+                                                        <rect key="frame" x="20" y="834" width="157.5" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="V3h-kv-7dO"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QHJ-rm-ejp" userLabel="View - First Name Panel">
-                                                        <rect key="frame" x="20" y="872" width="158" height="44"/>
+                                                        <rect key="frame" x="20" y="872" width="157.5" height="44"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rFE-ys-n9o" userLabel="Text Field - First Name">
-                                                                <rect key="frame" x="12" y="0.0" width="134" height="44"/>
+                                                                <rect key="frame" x="12" y="0.0" width="133.5" height="44"/>
                                                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
@@ -1115,19 +1118,19 @@
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EiQ-3g-B5V" userLabel="Label - Last Name">
-                                                        <rect key="frame" x="198" y="834" width="157" height="24"/>
+                                                        <rect key="frame" x="197.5" y="834" width="157.5" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="t6u-PC-0zg"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hju-zt-xEI" userLabel="View - Last Name Panel">
-                                                        <rect key="frame" x="198" y="872" width="157" height="44"/>
+                                                        <rect key="frame" x="197.5" y="872" width="157.5" height="44"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Vpa-gl-nEc" userLabel="Text Field - Last Name">
-                                                                <rect key="frame" x="12" y="0.0" width="133" height="44"/>
+                                                                <rect key="frame" x="12" y="0.0" width="133.5" height="44"/>
                                                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
@@ -1150,7 +1153,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="o8r-w8-Z0z"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -1181,7 +1184,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="NIQ-8T-bep"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -1209,7 +1212,7 @@
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dg0-Bq-LUY" userLabel="Label - Text 3">
                                                         <rect key="frame" x="20" y="1172" width="335" height="24"/>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="20"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="20"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -1218,7 +1221,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="Usp-QA-7WF"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -1249,7 +1252,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="Bpb-uz-2h0"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -1280,7 +1283,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="bnv-Jt-sJe"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>

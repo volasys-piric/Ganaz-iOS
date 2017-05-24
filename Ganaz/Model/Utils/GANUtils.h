@@ -53,11 +53,27 @@
 
 @end
 
+// Translated Contents Data Model
+
+@interface GANTransContentsDataModel : NSObject
+
+@property (strong, nonatomic) NSString *szTextEN;
+@property (strong, nonatomic) NSString *szTextES;
+
+- (void) setWithDictionary: (NSDictionary *) dict;
+- (NSDictionary *) serializeToDictionary;
+
+- (NSString *) getTextEN;
+- (NSString *) getTextES;
+
+@end
+
 // Enum User Type
 
 typedef enum _ENUM_USER_TYPE{
     GANENUM_USER_TYPE_WORKER = 0,
-    GANENUM_USER_TYPE_COMPANY = 1,
+    GANENUM_USER_TYPE_COMPANY_REGULAR = 1,
+    GANENUM_USER_TYPE_COMPANY_ADMIN = 2,
 }GANENUM_USER_TYPE;
 
 // Enum User Auth Type
@@ -108,6 +124,13 @@ typedef enum _ENUM_PUSHNOTIFICATION_TYPE{
     GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE
 }GANENUM_PUSHNOTIFICATION_TYPE;
 
+// Enum Membership Plan Type
+
+typedef enum _ENUM_MEMBERSHIPPLAN_TYPE{
+    GANENUM_MEMBERSHIPPLAN_TYPE_FREE,
+    GANENUM_MEMBERSHIPPLAN_TYPE_PREMIUM,
+}GANENUM_MEMBERSHIPPLAN_TYPE;
+
 @interface GANUtils : NSObject
 
 + (GANENUM_USER_TYPE) getUserTypeFromString: (NSString *) szType;
@@ -123,6 +146,11 @@ typedef enum _ENUM_PUSHNOTIFICATION_TYPE{
 
 + (GANENUM_PUSHNOTIFICATION_TYPE) getPushNotificationTypeFromString: (NSString *) szType;
 + (NSString *) getStringFromPushNotificationType: (GANENUM_PUSHNOTIFICATION_TYPE) type;
+
+// Membership Plan Type
+
++ (GANENUM_MEMBERSHIPPLAN_TYPE) getMembershipPlayTypeFromString: (NSString *) szType;
++ (NSString *) getStringFromMembershipPlanType: (GANENUM_MEMBERSHIPPLAN_TYPE) type;
 
 + (void) requestTranslate: (NSString *) text Translate: (BOOL) shouldTranslate Callback: (void (^) (int status, NSString *translatedText)) callback;
 

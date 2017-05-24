@@ -10,6 +10,8 @@
 #import "GANJobItemTVC.h"
 #import "GANJobsDetailsVC.h"
 
+#import "GANCompanyDataModel.h"
+
 #import "GANUserManager.h"
 #import "GANJobManager.h"
 #import "GANJobDataModel.h"
@@ -65,10 +67,12 @@
 }
 
 - (void) refreshViews{
-    self.viewBadge.layer.cornerRadius = 2;
-    self.lblTitle.text = [GANUserManager getUserCompanyDataModel].szBusinessName;
+    GANCompanyDataModel *company = [GANUserManager getCompanyDataModel];
     
-    GANENUM_COMPANY_BADGE_TYPE enumType = [[GANUserManager getUserCompanyDataModel] getBadgeType];
+    self.viewBadge.layer.cornerRadius = 2;
+    self.lblTitle.text = [company getBusinessNameEN];
+    
+    GANENUM_COMPANY_BADGE_TYPE enumType = [company getBadgeType];
     if (enumType == GANENUM_COMPANY_BADGE_TYPE_NONE){
         self.viewBadge.hidden = YES;
         self.constraintTableviewTopSpacing.constant = 14;
