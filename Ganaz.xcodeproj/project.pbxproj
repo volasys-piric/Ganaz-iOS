@@ -31,7 +31,6 @@
 		834F01F21E85DF5900D58989 /* GANLocalstorageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 834F01F11E85DF5900D58989 /* GANLocalstorageManager.m */; };
 		838735DE1E7A232C00CFFB15 /* GANMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 838735DD1E7A232C00CFFB15 /* GANMessageManager.m */; };
 		838735E21E7A234400CFFB15 /* GANMessageDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 838735E11E7A234400CFFB15 /* GANMessageDataModel.m */; };
-		838735E71E7B25B800CFFB15 /* GANMyCompaniesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 838735E61E7B25B800CFFB15 /* GANMyCompaniesManager.m */; };
 		838AAC1D1E578A9E006CC33D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 838AAC1C1E578A9E006CC33D /* main.m */; };
 		838AAC201E578A9E006CC33D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 838AAC1F1E578A9E006CC33D /* AppDelegate.m */; };
 		838AAC261E578A9F006CC33D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 838AAC241E578A9F006CC33D /* Main.storyboard */; };
@@ -142,8 +141,6 @@
 		838735DD1E7A232C00CFFB15 /* GANMessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANMessageManager.m; path = Model/Messages/GANMessageManager.m; sourceTree = "<group>"; };
 		838735E01E7A234400CFFB15 /* GANMessageDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANMessageDataModel.h; path = Model/Messages/DataModel/GANMessageDataModel.h; sourceTree = "<group>"; };
 		838735E11E7A234400CFFB15 /* GANMessageDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANMessageDataModel.m; path = Model/Messages/DataModel/GANMessageDataModel.m; sourceTree = "<group>"; };
-		838735E51E7B25B800CFFB15 /* GANMyCompaniesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANMyCompaniesManager.h; path = "Model/My-Companies/GANMyCompaniesManager.h"; sourceTree = "<group>"; };
-		838735E61E7B25B800CFFB15 /* GANMyCompaniesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANMyCompaniesManager.m; path = "Model/My-Companies/GANMyCompaniesManager.m"; sourceTree = "<group>"; };
 		838AAC181E578A9E006CC33D /* Ganaz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ganaz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		838AAC1C1E578A9E006CC33D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		838AAC1E1E578A9E006CC33D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -391,15 +388,6 @@
 			name = "Data Model";
 			sourceTree = "<group>";
 		};
-		838735E31E7B257200CFFB15 /* My-Companies */ = {
-			isa = PBXGroup;
-			children = (
-				838735E51E7B25B800CFFB15 /* GANMyCompaniesManager.h */,
-				838735E61E7B25B800CFFB15 /* GANMyCompaniesManager.m */,
-			);
-			name = "My-Companies";
-			sourceTree = "<group>";
-		};
 		838AAC0F1E578A9E006CC33D = {
 			isa = PBXGroup;
 			children = (
@@ -472,7 +460,6 @@
 				838735DB1E7A22FF00CFFB15 /* Messages */,
 				83AC85551E718C80005B9422 /* Job */,
 				83B8835A1E7897AD000EE4AC /* My-Workers */,
-				838735E31E7B257200CFFB15 /* My-Companies */,
 				83AC85441E709831005B9422 /* User */,
 				83CA214B1E5CF57700C0D787 /* Communication Layer */,
 				838AAC4C1E57A158006CC33D /* Utils */,
@@ -983,7 +970,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				838735E71E7B25B800CFFB15 /* GANMyCompaniesManager.m in Sources */,
 				834F01E11E83BECD00D58989 /* GANWorkerUpdateLocaionVC.m in Sources */,
 				83CA213E1E5CA3D300C0D787 /* GANWorkingSiteItemTVC.m in Sources */,
 				83CA210C1E57EF7800C0D787 /* GANAppManager.m in Sources */,

@@ -11,11 +11,18 @@
 
 @interface GANCompanyManager : NSObject
 
+@property (strong, nonatomic) NSMutableArray<GANCompanyDataModel *> *arrCompaniesFound;
+
 + (instancetype) sharedInstance;
 - (void) initializeManager;
 
 + (NSString *) generateCompanyCodeFromName: (NSString *) companyName;
+- (void) getCompanyBusinessNameByCompanyId: (NSString *) companyId Callback: (void (^) (NSString *businessName)) callback;
+
+#pragma mark - Requests
 
 - (void) requestCreateCompany: (GANCompanyDataModel *) company Callback: (void (^) (int status, GANCompanyDataModel *companyNew)) callback;
+
+- (void) requestGetCompanyDetailsByCompanyId: (NSString *) companyId Callback: (void (^) (int status)) callback;
 
 @end

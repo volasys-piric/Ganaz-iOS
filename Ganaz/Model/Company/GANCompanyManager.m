@@ -32,6 +32,7 @@
 }
 
 - (void) initializeManager{
+    self.arrCompaniesFound = [[NSMutableArray alloc] init];
 }
 
 + (NSString *) generateCompanyCodeFromName: (NSString *) companyName{
@@ -40,6 +41,42 @@
     sz = [sz stringByReplacingOccurrencesOfString:@"--" withString:@"-"];
     sz = [sz stringByAppendingString:[GANGenericFunctionManager generateRandomString:4]];
     return sz;
+}
+
+- (int) addCompanyIfNeeded: (GANCompanyDataModel *) company{
+    int index = [self getIndexForCompanyByCompanyId:company.szId];
+    if (index != -1) return index;
+    
+    [self.arrCompaniesFound addObject:company];
+    return (int) [self.arrCompaniesFound count] - 1;
+}
+
+- (int) getIndexForCompanyByCompanyId: (NSString *) companyId{
+    for (int i = 0; i < (int) [self.arrCompaniesFound count]; i++){
+        GANCompanyDataModel *company = [self.arrCompaniesFound objectAtIndex:i];
+        if ([company.szId isEqualToString:companyId] == YES) return i;
+    }
+    return -1;
+}
+
+- (void) getCompanyBusinessNameByCompanyId: (NSString *) companyId Callback: (void (^) (NSString *businessName)) callback{
+    int index = [self getIndexForCompanyByCompanyId:companyId];
+    if (index != -1){
+        GANCompanyDataModel *company = [self.arrCompaniesFound objectAtIndex:index];
+        if (callback) callback([company getBusinessNameEN]);
+        return;
+    }
+    else {
+        [self requestGetCompanyDetailsByCompanyId:companyId Callback:^(int index) {
+            if (index != -1){
+                GANCompanyDataModel *company = [self.arrCompaniesFound objectAtIndex:index];
+                if (callback) callback([company getBusinessNameEN]);
+            }
+            else {
+                if (callback) callback(@"Unknown");
+            }
+        }];
+    }
 }
 
 #pragma mark - Request
@@ -54,6 +91,7 @@
             GANCompanyDataModel *companyNew = [[GANCompanyDataModel alloc] init];
             NSDictionary *dictCompany = [dict objectForKey:@"company"];
             [companyNew setWithDictionary:dictCompany];
+            [self addCompanyIfNeeded:companyNew];
             
             if (callback) callback(SUCCESS_WITH_NO_ERROR, companyNew);
         }
@@ -64,6 +102,35 @@
     } failure:^(int status, NSDictionary *error) {
         if (callback) callback(status, nil);
     }];
+}
+
+- (void) requestGetCompanyDetailsByCompanyId: (NSString *) companyId Callback: (void (^) (int status)) callback{
+    int index = [self getIndexForCompanyByCompanyId:companyId];
+    if (index != -1){
+        if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        return;
+    }
+    else {
+        NSString *szUrl = [GANUrlManager getEndpointForGetCompanyDetailsByCompanyId:companyId];
+        [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:NO parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSDictionary *dict = responseObject;
+            BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+            if (success){
+                GANCompanyDataModel *company = [[GANCompanyDataModel alloc] init];
+                NSDictionary *dictCompany = [dict objectForKey:@"company"];
+                [company setWithDictionary:dictCompany];
+                [self addCompanyIfNeeded:company];
+                
+                if (callback) callback(SUCCESS_WITH_NO_ERROR);
+            }
+            else {
+                NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+                if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+            }
+        } failure:^(int status, NSDictionary *error) {
+            if (callback) callback(status);
+        }];
+    }
 }
 
 @end

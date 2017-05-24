@@ -13,25 +13,29 @@
 
 @property (strong, nonatomic) NSString *szId;
 @property (strong, nonatomic) NSString *szCompanyId;
-@property (strong, nonatomic) NSString *szTitle;
-@property (strong, nonatomic) NSString *szTitleTranslated;
+@property (strong, nonatomic) NSString *szCompanyUserId;
+
+@property (strong, nonatomic) GANTransContentsDataModel *modelTitle;
+@property (strong, nonatomic) GANTransContentsDataModel *modelComments;
+@property (assign, atomic) BOOL isAutoTranslate;
+
 @property (assign, atomic) float fPayRate;
 @property (assign, atomic) GANENUM_PAY_UNIT enumPayUnit;
+
 @property (strong, nonatomic) NSDate *dateFrom;
 @property (strong, nonatomic) NSDate *dateTo;
+
+@property (assign, atomic) GANENUM_FIELDCONDITION_TYPE enumFieldCondition;
 @property (assign, atomic) int nPositions;
+
 @property (assign, atomic) BOOL isBenefitTraining;
 @property (assign, atomic) BOOL isBenefitHealth;
 @property (assign, atomic) BOOL isBenefitHousing;
 @property (assign, atomic) BOOL isBenefitTransportation;
 @property (assign, atomic) BOOL isBenefitBonus;
 @property (assign, atomic) BOOL isBenefitScholarships;
-@property (strong, nonatomic) NSString *szComments;
-@property (strong, nonatomic) NSString *szCommentsTranslated;
 
-@property (assign, atomic) BOOL isAutoTranslate;
-
-@property (strong, nonatomic) NSMutableArray *arrSite;
+@property (strong, nonatomic) NSMutableArray<GANLocationDataModel *> *arrSite;
 
 - (instancetype) init;
 - (void) initializeWithJob: (GANJobDataModel *) job;
@@ -41,7 +45,9 @@
 - (GANLocationDataModel *) getNearestSite;
 - (BOOL) isPayRateSpecified;
 
-- (NSString *) getTranslatedComments;
-- (NSString *) getTranslatedTitle;
+- (NSString *) getTitleEN;
+- (NSString *) getTitleES;
+- (NSString *) getCommentsEN;
+- (NSString *) getCommentsES;
 
 @end

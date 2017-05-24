@@ -10,7 +10,7 @@
 
 @interface GANRecruitRequestDataModel : NSObject
 
-@property (strong, nonatomic) NSMutableArray *arrJobIds;
+@property (strong, nonatomic) NSString *szJobId;
 @property (strong, nonatomic) NSMutableArray *arrReRecruitUserIds;
 @property (assign, atomic) float fBroadcast;
 
@@ -23,6 +23,8 @@
 @interface GANRecruitDataModel : NSObject
 
 @property (strong, nonatomic) NSString *szId;
+@property (strong, nonatomic) NSString *szCompanyId;
+@property (strong, nonatomic) NSString *szCompanyUserId;
 @property (strong, nonatomic) GANRecruitRequestDataModel *modelRequest;
 @property (strong, nonatomic) NSMutableArray *arrReceivedUserIds;
 

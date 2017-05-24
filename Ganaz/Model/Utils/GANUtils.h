@@ -62,6 +62,7 @@
 
 - (void) setWithDictionary: (NSDictionary *) dict;
 - (NSDictionary *) serializeToDictionary;
+- (void) setWithContents: (GANTransContentsDataModel *) contents;
 
 - (NSString *) getTextEN;
 - (NSString *) getTextES;
@@ -92,13 +93,29 @@ typedef enum _ENUM_PAY_UNIT{
     GANENUM_PAY_UNIT_LB
 }GANENUM_PAY_UNIT;
 
+// Enum Field Condition
+
+typedef enum _ENUM_FIELDCONDITION_TYPE{
+    GANENUM_FIELDCONDITION_TYPE_POOR,
+    GANENUM_FIELDCONDITION_TYPE_AVERAGE,
+    GANENUM_FIELDCONDITION_TYPE_GOOD,
+    GANENUM_FIELDCONDITION_TYPE_EXCELLENT,
+}GANENUM_FIELDCONDITION_TYPE;
+
 // Enum Message Type
 
 typedef enum _ENUM_MESSAGE_TYPE{
     GANENUM_MESSAGE_TYPE_MESSAGE,
-    GANENUM_MESSAGE_TYPE_APPLICATION_NEW,
+    GANENUM_MESSAGE_TYPE_APPLICATION,
     GANENUM_MESSAGE_TYPE_RECRUIT,
 }GANENUM_MESSAGE_TYPE;
+
+// Enum Message Read Status
+
+typedef enum _ENUM_MESSAGE_STATUS{
+    GANENUM_MESSAGE_STATUS_NEW,
+    GANENUM_MESSAGE_STATUS_READ,
+}GANENUM_MESSAGE_STATUS;
 
 // Enum Company Badge Type
 
@@ -141,8 +158,14 @@ typedef enum _ENUM_MEMBERSHIPPLAN_TYPE{
 
 + (GANENUM_PAY_UNIT) getPayUnitFromString: (NSString *) szUnit;
 
++ (GANENUM_FIELDCONDITION_TYPE) getFieldConditionTypeFromString: (NSString *) szType;
++ (NSString *) getStringFromFieldConditionType: (GANENUM_FIELDCONDITION_TYPE) type;
+
 + (GANENUM_MESSAGE_TYPE) getMessageTypeFromString: (NSString *) szType;
 + (NSString *) getStringFromMessageType: (GANENUM_MESSAGE_TYPE) type;
+
++ (GANENUM_MESSAGE_STATUS) getMessageStatusFromString: (NSString *) szStatus;
++ (NSString *) getStringFromMessageStatus: (GANENUM_MESSAGE_STATUS) status;
 
 + (GANENUM_PUSHNOTIFICATION_TYPE) getPushNotificationTypeFromString: (NSString *) szType;
 + (NSString *) getStringFromPushNotificationType: (GANENUM_PUSHNOTIFICATION_TYPE) type;

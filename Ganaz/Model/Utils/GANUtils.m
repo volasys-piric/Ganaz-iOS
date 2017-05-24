@@ -152,6 +152,11 @@
     self.szTextES = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"es"]];
 }
 
+- (void) setWithContents: (GANTransContentsDataModel *) contents{
+    self.szTextEN = contents.szTextEN;
+    self.szTextES = contents.szTextES;
+}
+
 - (NSDictionary *) serializeToDictionary{
     return @{@"en": self.szTextEN,
              @"es": self.szTextES,
@@ -233,20 +238,53 @@
     return GANENUM_PAY_UNIT_HOUR;
 }
 
+// Field Condition Type
+
++ (GANENUM_FIELDCONDITION_TYPE) getFieldConditionTypeFromString: (NSString *) szType{
+    if ([szType caseInsensitiveCompare:@"poor"] == NSOrderedSame) return GANENUM_FIELDCONDITION_TYPE_POOR;
+    if ([szType caseInsensitiveCompare:@"average"] == NSOrderedSame) return GANENUM_FIELDCONDITION_TYPE_AVERAGE;
+    if ([szType caseInsensitiveCompare:@"good"] == NSOrderedSame) return GANENUM_FIELDCONDITION_TYPE_GOOD;
+    if ([szType caseInsensitiveCompare:@"excellent"] == NSOrderedSame) return GANENUM_FIELDCONDITION_TYPE_EXCELLENT;
+    return GANENUM_FIELDCONDITION_TYPE_GOOD;
+}
+
++ (NSString *) getStringFromFieldConditionType: (GANENUM_FIELDCONDITION_TYPE) type{
+    if (type == GANENUM_FIELDCONDITION_TYPE_POOR) return @"poor";
+    if (type == GANENUM_FIELDCONDITION_TYPE_AVERAGE) return @"average";
+    if (type == GANENUM_FIELDCONDITION_TYPE_GOOD) return @"good";
+    if (type == GANENUM_FIELDCONDITION_TYPE_EXCELLENT) return @"excellent";
+    
+    return @"good";
+}
+
 // Message Type
 
 + (GANENUM_MESSAGE_TYPE) getMessageTypeFromString: (NSString *) szType{
     if ([szType caseInsensitiveCompare:@"message"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_MESSAGE;
-    if ([szType caseInsensitiveCompare:@"application-new"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_APPLICATION_NEW;
+    if ([szType caseInsensitiveCompare:@"application"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_APPLICATION;
     if ([szType caseInsensitiveCompare:@"recruit"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_RECRUIT;
     return GANENUM_MESSAGE_TYPE_MESSAGE;
 }
 
 + (NSString *) getStringFromMessageType: (GANENUM_MESSAGE_TYPE) type{
     if (type == GANENUM_MESSAGE_TYPE_MESSAGE) return @"message";
-    if (type == GANENUM_MESSAGE_TYPE_APPLICATION_NEW) return @"application-new";
+    if (type == GANENUM_MESSAGE_TYPE_APPLICATION) return @"application";
     if (type == GANENUM_MESSAGE_TYPE_RECRUIT) return @"recruit";
     return @"message";
+}
+
+// Message Read Status
+
++ (GANENUM_MESSAGE_STATUS) getMessageStatusFromString: (NSString *) szStatus{
+    if ([szStatus caseInsensitiveCompare:@"new"] == NSOrderedSame) return GANENUM_MESSAGE_STATUS_NEW;
+    if ([szStatus caseInsensitiveCompare:@"read"] == NSOrderedSame) return GANENUM_MESSAGE_STATUS_READ;
+    return GANENUM_MESSAGE_STATUS_READ;
+}
+
++ (NSString *) getStringFromMessageStatus: (GANENUM_MESSAGE_STATUS) status{
+    if (status == GANENUM_MESSAGE_STATUS_NEW) return @"new";
+    if (status == GANENUM_MESSAGE_STATUS_READ) return @"read";
+    return @"read";
 }
 
 // Push Notification Type

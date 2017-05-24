@@ -8,6 +8,7 @@
 
 #import "GANMessageManager.h"
 #import "GANMessageDataModel.h"
+#import "GANUserManager.h"
 #import "GANNetworkRequestManager.h"
 #import "GANUrlManager.h"
 #import "GANGenericFunctionManager.h"
@@ -100,13 +101,24 @@
 - (void) requestSendMessageWithJobId: (NSString *) jobId Type: (GANENUM_MESSAGE_TYPE) type Receivers: (NSArray *) receiverUserIds Message: (NSString *) message AutoTranslate: (BOOL) isAutoTranslate Callback: (void (^) (int status)) callback{
     [GANUtils requestTranslate:message Translate:isAutoTranslate Callback:^(int status, NSString *translatedText) {
         if (status != SUCCESS_WITH_NO_ERROR) translatedText = message;
-        
         NSString *szUrl = [GANUrlManager getEndpointForSendMessage];
+        GANUserManager *managerUser = [GANUserManager sharedInstance];
+        NSString *szSenderUserId = managerUser.modelUser.szId;
+        NSString *szSenderCompanyId = @"";
+        
+        if ([managerUser isCompanyUser] == YES){
+            szSenderCompanyId = [GANUserManager getCompanyDataModel].szId;
+        }
+        
         NSDictionary *params = @{@"job_id": jobId,
                                  @"type": [GANUtils getStringFromMessageType:type],
+                                 @"sender": @{@"user_id": szSenderUserId,
+                                              @"company_id": szSenderCompanyId
+                                              },
                                  @"receivers": receiverUserIds,
-                                 @"message": message,
-                                 @"message_translated": translatedText,
+                                 @"message": @{@"en": message,
+                                               @"es": translatedText
+                                               },
                                  @"auto_translate": (isAutoTranslate == YES) ? @"true" : @"false"
                                  };
         

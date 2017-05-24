@@ -102,11 +102,7 @@
                 GANMyWorkerDataModel *myWorkerNew = [[GANMyWorkerDataModel alloc] init];
                 [myWorkerNew setWithDictionary:dictMyWorker];
                 [self addMyWorkerIfNeeded:myWorkerNew];
-                
-                GANUserWorkerDataModel *workerNew = [[GANUserWorkerDataModel alloc] init];
-                [workerNew setWithDictionary:dictMyWorker];
-                workerNew.szId = myWorkerNew.szWorkerUserId;
-                [self addWorkerFoundIfNeeded:workerNew];
+                [self addWorkerFoundIfNeeded:myWorkerNew.modelWorker];
             }
             if (callback) callback(SUCCESS_WITH_NO_ERROR);
             [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATED object:nil];
@@ -135,11 +131,7 @@
                 GANMyWorkerDataModel *myWorkerNew = [[GANMyWorkerDataModel alloc] init];
                 [myWorkerNew setWithDictionary:dictMyWorker];
                 [self addMyWorkerIfNeeded:myWorkerNew];
-                
-                GANUserWorkerDataModel *workerNew = [[GANUserWorkerDataModel alloc] init];
-                [workerNew setWithDictionary:dictMyWorker];
-                workerNew.szId = myWorkerNew.szWorkerUserId;
-                [self addWorkerFoundIfNeeded:workerNew];
+                [self addWorkerFoundIfNeeded:myWorkerNew.modelWorker];
             }
             if (callback) callback(SUCCESS_WITH_NO_ERROR);
             [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATED object:nil];

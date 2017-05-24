@@ -15,48 +15,34 @@
 - (instancetype) init{
     self = [super init];
     if (self){
-//        [self initialize];
+        [self initialize];
     }
     return self;
 }
 
 - (void) initialize{
-    self.szWorkerUserId = @"";
-    self.szCompanyUserId = @"";
     self.szId = @"";
-    self.szAccessToken = @"";
-    self.szFirstName = @"";
-    self.szLastName = @"";
-    self.szUserName = @"";
-    self.szPassword = @"";
-    self.szEmail = @"";
-    self.enumType = GANENUM_USER_TYPE_WORKER;
-    self.modelPhone = [[GANPhoneDataModel alloc] init];
-    self.enumAuthType = GANENUM_USER_AUTHTYPE_EMAIL;
-    self.szExternalId = @"";
-    self.szPlayerId = @"";
-    
-    self.modelLocation = [[GANLocationDataModel alloc] init];
-    
-    GANLocationManager *managerLocation = [GANLocationManager sharedInstance];
-    if (managerLocation.location != nil){
-        self.modelLocation.fLatitude = managerLocation.location.coordinate.latitude;
-        self.modelLocation.fLongitude = managerLocation.location.coordinate.longitude;
-        self.modelLocation.szAddress = managerLocation.szAddress;
-    }
+    self.szWorkerUserId = @"";
+    self.szCompanyId = @"";
+    self.szCrewId = @"";
+    self.modelWorker = [[GANUserWorkerDataModel alloc] init];
 }
 
 - (void) setWithDictionary:(NSDictionary *)dict{
-    [super setWithDictionary:dict];
-    
+    self.szId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"_id"]];
     self.szWorkerUserId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"worker_user_id"]];
-    self.szCompanyUserId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"company_user_id"]];
+    self.szCompanyId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"company_id"]];
+    self.szCrewId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"crew_id"]];
+    
+    NSDictionary *dictWorker = [dict objectForKey:@"worker"];
+    [self.modelWorker setWithDictionary:dictWorker];
 }
 
 - (NSDictionary *) serializeToDictionary{
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super serializeToDictionary]];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    [dict setObject:self.szCompanyId forKey:@"company_id"];
     [dict setObject:self.szWorkerUserId forKey:@"worker_user_id"];
-    [dict setObject:self.szCompanyUserId forKey:@"company_user_id"];
+    [dict setObject:self.szCrewId forKey:@"crew_id"];
     return dict;
 }
 

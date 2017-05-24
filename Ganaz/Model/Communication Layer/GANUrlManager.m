@@ -35,6 +35,10 @@
     return [NSString stringWithFormat:@"%@/company", GANURL_BASEURL];
 }
 
++ (NSString *) getEndpointForGetCompanyDetailsByCompanyId: (NSString *) companyId{
+    return [NSString stringWithFormat:@"%@/company/%@", GANURL_BASEURL, companyId];
+}
+
 #pragma mark - Endpoint for User
 
 + (NSString *) getEndpointForUserSignup{

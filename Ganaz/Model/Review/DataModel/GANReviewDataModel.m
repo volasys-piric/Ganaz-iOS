@@ -21,6 +21,7 @@
 
 - (void) initialize{
     self.szId = @"";
+    self.szCompanyId = @"";
     self.szCompanyUserId = @"";
     self.szWorkerUserId = @"";
     self.szComments = @"";
@@ -33,8 +34,9 @@
 
 - (void) setWithDictionary:(NSDictionary *)dict{
     self.szId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"_id"]];
+    self.szCompanyId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"company_id"]];
     self.szCompanyUserId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"company_user_id"]];
-    self.szWorkerUserId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"reviewer_user_id"]];
+    self.szWorkerUserId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"worker_user_id"]];
     self.szComments = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"comments"]];
     
     NSDictionary *dictRating = [dict objectForKey:@"rating"];
@@ -47,8 +49,9 @@
 
 - (NSDictionary *) serializeToDictionary{
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    [dict setObject:self.szCompanyId forKey:@"company_id"];
     [dict setObject:self.szCompanyUserId forKey:@"company_user_id"];
-    [dict setObject:self.szWorkerUserId forKey:@"reviewer_user_id"];
+    [dict setObject:self.szWorkerUserId forKey:@"worker_user_id"];
     [dict setObject:self.szComments forKey:@"comments"];
     [dict setObject:@{@"pay": @(self.ratingPay),
                       @"benefits": @(self.ratingBenefits),
