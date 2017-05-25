@@ -148,7 +148,7 @@
 
 - (void) setWithDictionary:(NSDictionary *)dict{
     [self initialize];
-    self.szTextES = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"en"]];
+    self.szTextEN = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"en"]];
     self.szTextES = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"es"]];
 }
 

@@ -37,9 +37,11 @@
 
 // CONSTANTS
 
+#define TRANSITION_FADEOUT_DURATION                         0.25f
+
 #define GANLOCATION_DEFAULT_LATITUDE                        40.7128
 #define GANLOCATION_DEFAULT_LONGITUDE                       -74.0059
-#define GOOGLEMAPS_API_KEY                                  @"AIzaSyAvrIo6cGEl-wLfr4d75HMdij5VjikgnxA"
+#define GOOGLEMAPS_API_KEY                                  @"AIzaSyCrYm3QN8cfIN5rbGcFHBEGSAye8G4lUho"
 #define GOOGLE_TRANSLATE_API_KEY                            @"AIzaSyCVm0nvaYBqtNOOepzALr7iCKNW1_96J6o"
 
 // UICOLOR

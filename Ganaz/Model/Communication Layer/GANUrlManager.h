@@ -21,6 +21,7 @@
 
 + (NSString *) getEndpointForCreateCompany;
 + (NSString *) getEndpointForGetCompanyDetailsByCompanyId: (NSString *) companyId;
++ (NSString *) getEndpointForSearchCompany;
 
 #pragma mark - Endpoint for User
 

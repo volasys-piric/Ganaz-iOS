@@ -39,7 +39,8 @@
     NSString *sz = [companyName lowercaseString];
     sz = [sz stringByReplacingOccurrencesOfString:@" " withString:@"-"];
     sz = [sz stringByReplacingOccurrencesOfString:@"--" withString:@"-"];
-    sz = [sz stringByAppendingString:[GANGenericFunctionManager generateRandomString:4]];
+    sz = [NSString stringWithFormat:@"%@-%@", sz, [GANGenericFunctionManager generateRandomString:4]];
+    sz = [sz lowercaseString];
     return sz;
 }
 
@@ -59,6 +60,13 @@
     return -1;
 }
 
+- (int) getIndexForCompanyByCompanyCode: (NSString *) companyCode{
+    for (int i = 0; i < (int) [self.arrCompaniesFound count]; i++){
+        GANCompanyDataModel *company = [self.arrCompaniesFound objectAtIndex:i];
+        if ([company.szCode caseInsensitiveCompare:companyCode] == NSOrderedSame) return i;
+    }
+    return -1;
+}
 - (void) getCompanyBusinessNameESByCompanyId: (NSString *) companyId Callback: (void (^) (NSString *businessNameES)) callback{
     int index = [self getIndexForCompanyByCompanyId:companyId];
     if (index != -1){
@@ -121,6 +129,39 @@
                 [company setWithDictionary:dictCompany];
                 int indexCompany = [self addCompanyIfNeeded:company];
                 
+                if (callback) callback(indexCompany);
+            }
+            else {
+                if (callback) callback(-1);
+            }
+        } failure:^(int status, NSDictionary *error) {
+            if (callback) callback(-1);
+        }];
+    }
+}
+
+- (void) requestGetCompanyDetailsByCompanyCode: (NSString *) companyCode Callback: (void (^) (int indexCompany)) callback{
+    int index = [self getIndexForCompanyByCompanyCode:companyCode];
+    if (index != -1){
+        if (callback) callback(index);
+        return;
+    }
+    else {
+        NSString *szUrl = [GANUrlManager getEndpointForSearchCompany];
+        NSDictionary *param = @{@"code": companyCode};
+        
+        [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:NO parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSDictionary *dict = responseObject;
+            BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+            if (success){
+                NSArray *arr = [dict objectForKey:@"companies"];
+                for (int i = 0; i < (int) [arr count]; i++){
+                    NSDictionary *dictCompany = [arr objectAtIndex:i];
+                    GANCompanyDataModel *company = [[GANCompanyDataModel alloc] init];
+                    [company setWithDictionary:dictCompany];
+                    [self addCompanyIfNeeded:company];
+                }
+                int indexCompany = [self getIndexForCompanyByCompanyCode:companyCode];
                 if (callback) callback(indexCompany);
             }
             else {

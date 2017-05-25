@@ -40,6 +40,7 @@
     else if (type == GANENUM_USER_TYPE_COMPANY_REGULAR || type == GANENUM_USER_TYPE_COMPANY_ADMIN){
         self.modelUser = [[GANUserCompanyDataModel alloc] init];
     }
+    self.modelUser.enumType = type;
 }
 
 + (GANUserWorkerDataModel *) getUserWorkerDataModel{

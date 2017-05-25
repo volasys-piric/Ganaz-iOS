@@ -87,9 +87,14 @@
     self.nTotalJobs = 0;
     self.nTotalRecruits = 0;
     self.nTotalMessages = 0;
+    
+    self.arrJobs = [[NSMutableArray alloc] init];
+    self.isJobListLoaded = NO;
 }
 
 - (void) setWithDictionary:(NSDictionary *)dict{
+    self.szId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"_id"]];
+    
     NSDictionary *dictName = [dict objectForKey:@"name"];
     NSDictionary *dictDescription = [dict objectForKey:@"description"];
     NSDictionary *dictPlan = [dict objectForKey:@"plan"];
@@ -115,7 +120,7 @@
 - (NSDictionary *) serializeToDictionary{
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:[self.modelName serializeToDictionary] forKey:@"name"];
-    [dict setObject:[self.modelDescription serializeToDictionary] forKey:@"name"];
+    [dict setObject:[self.modelDescription serializeToDictionary] forKey:@"description"];
     [dict setObject:(self.isAutoTranslate == YES) ? @"true": @"false" forKey:@"auto_translate"];
     [dict setObject:self.szCode forKey:@"code"];
     [dict setObject:[self.modelAddress serializeToDictionary] forKey:@"address"];

@@ -128,6 +128,8 @@
         [arrSite addObject:[site serializeToDictionary]];
     }
     
+    [dict setObject:self.szCompanyId forKey:@"company_id"];
+    [dict setObject:self.szCompanyUserId forKey:@"company_user_id"];
     [dict setObject:[self.modelTitle serializeToDictionary] forKey:@"title"];
     [dict setObject:[self.modelComments serializeToDictionary] forKey:@"comments"];
     [dict setObject:(self.isAutoTranslate == YES) ? @"true": @"false" forKey:@"auto_translate"];

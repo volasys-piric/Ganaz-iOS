@@ -27,7 +27,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="YOU-Fo-t0T" sceneMemberID="viewController">
                     <nil key="simulatedTopBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="BKu-Ev-L5b">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="BKu-Ev-L5b">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -78,7 +78,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5xB-Jy-QIq" userLabel="View - Text Container">
-                                                <rect key="frame" x="97" y="24" width="181" height="18"/>
+                                                <rect key="frame" x="97.5" y="24" width="181" height="18"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Crear una cuenta / Signup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b6J-or-D7i" userLabel="Label - Signup 1">
                                                         <rect key="frame" x="0.0" y="0.0" width="181" height="18"/>
@@ -591,7 +591,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="VoV-3X-lnM"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -619,7 +619,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="rDm-Sh-8qG"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -647,7 +647,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="5IF-uz-WWR"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -675,7 +675,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="NtV-hY-i3k"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -879,6 +879,20 @@
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Cz-1M-7lS" userLabel="Button - Company Code">
+                                                        <rect key="frame" x="264" y="81" width="91" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="30" id="6Gy-eP-EKY"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="13"/>
+                                                        <color key="tintColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <state key="normal" title="Company Code">
+                                                            <color key="titleColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="onBtnCompanyCodeClick:" destination="aUR-wz-rxc" eventType="touchUpInside" id="qbU-Gy-nE6"/>
+                                                        </connections>
+                                                    </button>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0jD-9Q-cAb" userLabel="View - Company Name Panel">
                                                         <rect key="frame" x="20" y="122" width="335" height="44"/>
                                                         <subviews>
@@ -1378,6 +1392,7 @@
                                                     <constraint firstItem="EiQ-3g-B5V" firstAttribute="centerX" secondItem="Hju-zt-xEI" secondAttribute="centerX" id="Juh-fH-bKU"/>
                                                     <constraint firstItem="fO9-H4-Aw1" firstAttribute="width" secondItem="rJ3-jH-k1E" secondAttribute="width" id="K7c-qe-5qP"/>
                                                     <constraint firstItem="Rx2-lc-aGW" firstAttribute="width" secondItem="rJ3-jH-k1E" secondAttribute="width" id="KD6-04-E46"/>
+                                                    <constraint firstItem="7Cz-1M-7lS" firstAttribute="trailing" secondItem="rJ3-jH-k1E" secondAttribute="trailing" id="KbU-uI-SEs"/>
                                                     <constraint firstItem="0jD-9Q-cAb" firstAttribute="top" secondItem="dfP-Te-MoE" secondAttribute="bottom" constant="14" id="L1K-00-myt"/>
                                                     <constraint firstItem="cZv-ap-SdM" firstAttribute="width" secondItem="Rx2-lc-aGW" secondAttribute="width" id="Mn6-o7-5Yn"/>
                                                     <constraint firstItem="WKv-Wy-Qhd" firstAttribute="top" secondItem="caR-HS-6DV" secondAttribute="bottom" constant="24" id="NDp-XV-7c8"/>
@@ -1419,6 +1434,7 @@
                                                     <constraint firstAttribute="bottom" secondItem="BrN-aX-80V" secondAttribute="bottom" constant="20" id="hfH-eR-teC"/>
                                                     <constraint firstItem="0Qb-RU-b1Y" firstAttribute="centerX" secondItem="Rx2-lc-aGW" secondAttribute="centerX" id="iib-lE-eG4"/>
                                                     <constraint firstItem="QHJ-rm-ejp" firstAttribute="leading" secondItem="Rx2-lc-aGW" secondAttribute="leading" id="iki-nb-Dw1"/>
+                                                    <constraint firstItem="7Cz-1M-7lS" firstAttribute="centerY" secondItem="dfP-Te-MoE" secondAttribute="centerY" id="jxg-6F-XSl"/>
                                                     <constraint firstItem="WKv-Wy-Qhd" firstAttribute="width" secondItem="Rx2-lc-aGW" secondAttribute="width" id="kAI-WF-97F"/>
                                                     <constraint firstItem="Jgi-9u-Xc9" firstAttribute="centerX" secondItem="rJ3-jH-k1E" secondAttribute="centerX" id="keH-Cv-Mk7"/>
                                                     <constraint firstAttribute="trailing" secondItem="rJ3-jH-k1E" secondAttribute="trailing" constant="20" id="ky7-BN-aDf"/>
@@ -1477,8 +1493,8 @@
                         <outlet property="scrollView" destination="agX-nf-60z" id="5Fg-bz-ena"/>
                         <outlet property="textviewDescription" destination="Dv4-Is-SlA" id="HHA-cl-NO5"/>
                         <outlet property="txtCity" destination="pnu-es-6sw" id="svd-qT-YdZ"/>
-                        <outlet property="txtCompanyId" destination="5kk-O4-GEf" id="fxM-Yb-YJL"/>
                         <outlet property="txtCompanyName" destination="idB-Ah-2hy" id="nkQ-lL-3zc"/>
+                        <outlet property="txtCompanyUserId" destination="5kk-O4-GEf" id="Gcc-Mx-SyO"/>
                         <outlet property="txtConfirmPassword" destination="cqd-2S-2Sj" id="TCJ-4y-NoD"/>
                         <outlet property="txtEmail" destination="90F-q1-rd4" id="OJw-HP-ljT"/>
                         <outlet property="txtFirstName" destination="rFE-ys-n9o" id="74b-hh-jBg"/>
@@ -1489,8 +1505,8 @@
                         <outlet property="txtStreet1" destination="0vh-lP-WUF" id="eoe-Ig-WUc"/>
                         <outlet property="txtStreet2" destination="BKh-ot-zAm" id="DsI-YD-laT"/>
                         <outlet property="viewCity" destination="dGk-bi-44J" id="8r4-P3-Uq1"/>
-                        <outlet property="viewCompanyId" destination="mx3-9q-qa7" id="kzK-OU-nfa"/>
                         <outlet property="viewCompanyName" destination="0jD-9Q-cAb" id="b5a-V6-Zuy"/>
+                        <outlet property="viewCompanyUserId" destination="mx3-9q-qa7" id="WU7-Eo-CEA"/>
                         <outlet property="viewConfirmPassword" destination="0Qb-RU-b1Y" id="ZBi-k7-7kF"/>
                         <outlet property="viewDescription" destination="Jgi-9u-Xc9" id="bvA-Wc-FBv"/>
                         <outlet property="viewEmail" destination="caR-HS-6DV" id="AqO-IM-DNS"/>

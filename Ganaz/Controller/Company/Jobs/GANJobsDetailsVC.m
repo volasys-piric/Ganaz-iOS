@@ -518,23 +518,27 @@ typedef enum _ENUM_PAYUNIT{
     int nPos = [self.txtPositions.text intValue];
     NSString *szComments = self.textviewComments.text;
     
-    job.szCompanyId = [GANUserManager getUserCompanyDataModel].szId;
+    job.szCompanyId = [GANUserManager getCompanyDataModel].szId;
+    job.szCompanyUserId = [GANUserManager getUserCompanyDataModel].szId;
     job.modelTitle.szTextEN = szTitle;
     job.modelTitle.szTextES = titleTranslated;
+    job.modelComments.szTextEN = szComments;
+    job.modelComments.szTextES = commentsTranslated;
+    job.isAutoTranslate = self.isAutoTranslate;
+
     job.fPayRate = fPrice;
     job.enumPayUnit = self.enumPayUnit;
     job.dateFrom = self.dateFrom;
     job.dateTo = self.dateTo;
     job.nPositions = nPos;
+    job.enumFieldCondition = GANENUM_FIELDCONDITION_TYPE_GOOD;
+    
     job.isBenefitTraining = [[self.arrBenefit objectAtIndex:0] boolValue];
     job.isBenefitHealth = [[self.arrBenefit objectAtIndex:1] boolValue];
     job.isBenefitHousing = [[self.arrBenefit objectAtIndex:2] boolValue];
     job.isBenefitTransportation = [[self.arrBenefit objectAtIndex:3] boolValue];
     job.isBenefitBonus = [[self.arrBenefit objectAtIndex:4] boolValue];
     job.isBenefitScholarships = [[self.arrBenefit objectAtIndex:5] boolValue];
-    job.modelComments.szTextEN = szComments;
-    job.modelComments.szTextES = commentsTranslated;
-    job.isAutoTranslate = self.isAutoTranslate;
     // Working site is already set
     
     if (self.indexJob == -1){

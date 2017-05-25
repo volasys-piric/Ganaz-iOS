@@ -29,6 +29,7 @@
     self.szUserName = @"";
     self.szPassword = @"";
     self.szEmail = @"";
+    self.enumType = GANENUM_USER_TYPE_COMPANY_ADMIN;
     self.modelPhone = [[GANPhoneDataModel alloc] init];
     self.enumAuthType = GANENUM_USER_AUTHTYPE_EMAIL;
     self.szExternalId = @"";
