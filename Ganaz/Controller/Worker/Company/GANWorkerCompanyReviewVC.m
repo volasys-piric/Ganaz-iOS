@@ -9,7 +9,7 @@
 #import "GANWorkerCompanyReviewVC.h"
 #import "GANWorkerCompanyReviewItemTVC.h"
 #import "GANGenericFunctionManager.h"
-#import "GANCompanyManager.h"
+#import "GANCacheManager.h"
 #import "GANUserManager.h"
 #import "GANReviewManager.h"
 #import "GANGlobalVCManager.h"
@@ -65,7 +65,7 @@
 }
 
 - (void) refreshFields{
-    self.company = [[GANCompanyManager sharedInstance].arrCompaniesFound objectAtIndex:self.indexCompany];
+    self.company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
     self.indexReview = [[GANReviewManager sharedInstance] getIndexForReviewByCompanyId:self.company.szId];
     if (self.indexReview == -1){
         self.review = [[GANReviewDataModel alloc] init];

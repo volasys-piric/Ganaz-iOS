@@ -90,7 +90,7 @@
 
 - (void) requestMyJobListWithCallback: (void (^) (int status)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForSearchJobs];
-    NSDictionary *params = @{@"company_id": [GANUserManager getUserCompanyDataModel].szId,
+    NSDictionary *params = @{@"company_id": [GANUserManager getCompanyDataModel].szId,
                             @"status": @"all"
                             };
     

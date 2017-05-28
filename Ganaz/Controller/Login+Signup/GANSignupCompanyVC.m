@@ -10,6 +10,7 @@
 
 #import "GANUserManager.h"
 #import "GANCompanyManager.h"
+#import "GANCacheManager.h"
 #import "GANMembershipPlanManager.h"
 
 #import "GANAppManager.h"
@@ -164,8 +165,7 @@
         [self.textviewDescription setEditable:YES];
     }
     else {
-        GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
-        GANCompanyDataModel *company = [managerCompany.arrCompaniesFound objectAtIndex:self.indexCompany];
+        GANCompanyDataModel *company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
         self.txtCompanyName.text = [company getBusinessNameEN];
         self.textviewDescription.text = [company getDescriptionEN];
         self.txtStreet1.text = company.modelAddress.szAddress1;
@@ -289,49 +289,17 @@
         return;
     }
     
-    NSString *szFirstName = self.txtFirstName.text;
-    NSString *szLastName = self.txtLastName.text;
-    NSString *szEmail = self.txtEmail.text;
-    NSString *szPhone = self.txtPhone.text;
-    NSString *szCompanyUserId = self.txtCompanyUserId.text;
-    NSString *szPassword = self.txtPassword.text;
-    
-    [self doCreateCompany:businessNameTranslated DescriptionTranslated:descriptionTranslated Callback:^(int status, GANCompanyDataModel *companyNew) {
-        if (status == SUCCESS_WITH_NO_ERROR){
-            GANUserManager *managerUser = [GANUserManager sharedInstance];
-            [managerUser initializeManagerWithType:GANENUM_USER_TYPE_COMPANY_ADMIN];
-            
-            GANUserCompanyDataModel *modelCompanyUser = [GANUserManager getUserCompanyDataModel];
-            modelCompanyUser.modelCompany = companyNew;
-            modelCompanyUser.szCompanyId = companyNew.szId;
-            
-            modelCompanyUser.szFirstName = szFirstName;
-            modelCompanyUser.szLastName = szLastName;
-            modelCompanyUser.szEmail = szEmail;
-            modelCompanyUser.modelPhone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:szPhone];
-            modelCompanyUser.szUserName = szCompanyUserId;
-            modelCompanyUser.szPassword = szPassword;
-            modelCompanyUser.szPlayerId = [GANPushNotificationManager sharedInstance].szOneSignalPlayerId;
-            
-            [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-            [[GANUserManager sharedInstance] requestUserSignupWithCallback:^(int status) {
-                if (status == SUCCESS_WITH_NO_ERROR){
-                    [GANGlobalVCManager hideHudProgressWithCallback:^{
-                        [self gotoCompanyMain];
-                    }];
-                }
-                else if (status == ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT){
-                    [GANGlobalVCManager showHudErrorWithMessage:@"User name is already registered." DismissAfter:3 Callback:nil];
-                }
-                else if (status == ERROR_USER_SIGNUPFAILED_EMAILCONFLICT){
-                    [GANGlobalVCManager showHudErrorWithMessage:@"Same email address is already registered." DismissAfter:3 Callback:nil];
-                }
-                else {
-                    [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:3 Callback:nil];
-                }
-            }];
-        }
-    }];
+    if (self.indexCompany == -1){
+        [self doCreateCompany:businessNameTranslated DescriptionTranslated:descriptionTranslated Callback:^(int status, GANCompanyDataModel *companyNew) {
+            if (status == SUCCESS_WITH_NO_ERROR){
+                [self doCreateCompanyUserWithCompany:companyNew UserType:GANENUM_USER_TYPE_COMPANY_ADMIN];
+            }
+        }];
+    }
+    else {
+        GANCompanyDataModel *company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
+        [self doCreateCompanyUserWithCompany:company UserType:GANENUM_USER_TYPE_COMPANY_REGULAR];
+    }
 }
 
 - (void) doCreateCompany: (NSString *) nameTranslated DescriptionTranslated: (NSString *) descriptionTranslated Callback: (void (^) (int status, GANCompanyDataModel *companyNew)) callback{
@@ -383,6 +351,48 @@
                     callback(status, nil);
                 }
             }];
+        }
+    }];
+}
+
+- (void) doCreateCompanyUserWithCompany: (GANCompanyDataModel *) company UserType: (GANENUM_USER_TYPE) type{
+    NSString *szFirstName = self.txtFirstName.text;
+    NSString *szLastName = self.txtLastName.text;
+    NSString *szEmail = self.txtEmail.text;
+    NSString *szPhone = self.txtPhone.text;
+    NSString *szCompanyUserId = self.txtCompanyUserId.text;
+    NSString *szPassword = self.txtPassword.text;
+    
+    GANUserManager *managerUser = [GANUserManager sharedInstance];
+    [managerUser initializeManagerWithType:type];
+    
+    GANUserCompanyDataModel *modelCompanyUser = [GANUserManager getUserCompanyDataModel];
+    modelCompanyUser.modelCompany = company;
+    modelCompanyUser.szCompanyId = company.szId;
+    
+    modelCompanyUser.szFirstName = szFirstName;
+    modelCompanyUser.szLastName = szLastName;
+    modelCompanyUser.szEmail = szEmail;
+    modelCompanyUser.modelPhone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:szPhone];
+    modelCompanyUser.szUserName = szCompanyUserId;
+    modelCompanyUser.szPassword = szPassword;
+    modelCompanyUser.szPlayerId = [GANPushNotificationManager sharedInstance].szOneSignalPlayerId;
+    
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [[GANUserManager sharedInstance] requestUserSignupWithCallback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR){
+            [GANGlobalVCManager hideHudProgressWithCallback:^{
+                [self gotoCompanyMain];
+            }];
+        }
+        else if (status == ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT){
+            [GANGlobalVCManager showHudErrorWithMessage:@"User name is already registered." DismissAfter:3 Callback:nil];
+        }
+        else if (status == ERROR_USER_SIGNUPFAILED_EMAILCONFLICT){
+            [GANGlobalVCManager showHudErrorWithMessage:@"Same email address is already registered." DismissAfter:3 Callback:nil];
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:3 Callback:nil];
         }
     }];
 }
@@ -459,6 +469,7 @@
 #pragma mark - GANCompanyCodePopupDelegate
 
 - (void)didCompanyCodeVerify:(int)indexCompany{
+    self.indexCompany = indexCompany;
     [self refreshCompanyFields];
 }
 

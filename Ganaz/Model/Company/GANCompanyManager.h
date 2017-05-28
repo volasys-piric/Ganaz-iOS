@@ -8,21 +8,25 @@
 
 #import <Foundation/Foundation.h>
 #import "GANCompanyDataModel.h"
+#import "GANMyWorkerDataModel.h"
 
 @interface GANCompanyManager : NSObject
 
-@property (strong, nonatomic) NSMutableArray<GANCompanyDataModel *> *arrCompaniesFound;
+@property (strong, nonatomic) NSMutableArray<GANMyWorkerDataModel *> *arrMyWorkers;
+@property (assign, atomic) BOOL isMyWorkersLoading;
 
 + (instancetype) sharedInstance;
 - (void) initializeManager;
 
 + (NSString *) generateCompanyCodeFromName: (NSString *) companyName;
-- (void) getCompanyBusinessNameESByCompanyId: (NSString *) companyId Callback: (void (^) (NSString *businessNameES)) callback;
 
 #pragma mark - Requests
 
 - (void) requestCreateCompany: (GANCompanyDataModel *) company Callback: (void (^) (int status, GANCompanyDataModel *companyNew)) callback;
-- (void) requestGetCompanyDetailsByCompanyId: (NSString *) companyId Callback: (void (^) (int indexCompany)) callback;
-- (void) requestGetCompanyDetailsByCompanyCode: (NSString *) companyCode Callback: (void (^) (int indexCompany)) callback;
+
+- (void) requestGetMyWorkersListWithCallback: (void (^) (int status)) callback;
+- (void) requestAddMyWorkerWithUserIds: (NSArray *) arrUserIds Callback: (void (^) (int status)) callback;
+- (void) requestSearchNewWorkersByPhoneNumber: (NSString *) phoneNumber Callback: (void (^) (int status, NSArray *arrWorkers)) callback;
+- (void) requestSendInvite: (GANPhoneDataModel *) phone CompanyUserId: (NSString *) companyUserId Callback: (void (^) (int status)) callback;
 
 @end

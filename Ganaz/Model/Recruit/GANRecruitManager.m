@@ -54,7 +54,7 @@
     
     [params setObject:arrJobIds forKey:@"job_ids"];
     if (fBroadcast > 0){
-        [params setObject:[NSString stringWithFormat:@"%.02f", fBroadcast] forKey:@"broadcast"];
+        [params setObject:[NSString stringWithFormat:@"%.02f", fBroadcast] forKey:@"broadcast_radius"];
     }
     if ([arrReRecruitUserIds count] > 0){
         [params setObject:arrReRecruitUserIds forKey:@"re_recruit_worker_user_ids"];

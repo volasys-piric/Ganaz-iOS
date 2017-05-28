@@ -14,7 +14,7 @@
 #import "GANLocationManager.h"
 #import "GANJobManager.h"
 #import "GANJobDataModel.h"
-#import "GANCompanyManager.h"
+#import "GANCacheManager.h"
 #import "GANUserManager.h"
 #import "GANGlobalVCManager.h"
 #import "Global.h"
@@ -202,7 +202,7 @@
     GANJobDataModel *job = [[GANJobManager sharedInstance].arrJobsSearchResult objectAtIndex:index];
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
-    [[GANCompanyManager sharedInstance] requestGetCompanyDetailsByCompanyId:job.szCompanyId Callback:^(int index) {
+    [[GANCacheManager sharedInstance] requestGetCompanyDetailsByCompanyId:job.szCompanyId Callback:^(int index) {
         [GANGlobalVCManager hideHudProgress];
         if (index != -1){
             [self gotoCompanyDetailsAtCompanyIndex:index];
@@ -224,7 +224,7 @@
     GANJobDataModel *job = [[GANJobManager sharedInstance].arrJobsSearchResult objectAtIndex:index];
     cell.lblTitle.text = [job getTitleES];
     cell.lblCompany.text = @"";
-    [[GANCompanyManager sharedInstance] getCompanyBusinessNameESByCompanyId:job.szCompanyId Callback:^(NSString *businessNameES) {
+    [[GANCacheManager sharedInstance] getCompanyBusinessNameESByCompanyId:job.szCompanyId Callback:^(NSString *businessNameES) {
         cell.lblCompany.text = businessNameES;
     }];
     cell.lblDistance.text = [NSString stringWithFormat:@"%.2fmi", [job getNearestDistance]];

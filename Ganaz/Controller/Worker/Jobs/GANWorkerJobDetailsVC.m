@@ -10,7 +10,7 @@
 #import "GANWorkerBenefitItemTVC.h"
 #import "GANLocationManager.h"
 
-#import "GANCompanyManager.h"
+#import "GANCacheManager.h"
 #import "GANUserCompanyDataModel.h"
 #import "GANJobManager.h"
 #import "GANJobDataModel.h"
@@ -103,7 +103,7 @@
 }
 
 - (void) refreshFields{
-    self.company = [[GANCompanyManager sharedInstance].arrCompaniesFound objectAtIndex:self.indexCompany];
+    self.company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
     self.job = [self.company.arrJobs objectAtIndex:self.indexJob];
     
     GANENUM_COMPANY_BADGE_TYPE enumType = [self.company getBadgeType];

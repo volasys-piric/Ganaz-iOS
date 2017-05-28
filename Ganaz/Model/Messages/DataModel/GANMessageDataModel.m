@@ -78,12 +78,28 @@
 
 - (BOOL) amISender{
     NSString *szUserId = [GANUserManager sharedInstance].modelUser.szId;
-    return ([self.szSenderUserId isEqualToString:szUserId] == YES);
+    NSString *szCompanyId = @"";
+    if ([[GANUserManager sharedInstance] isCompanyUser]){
+        szCompanyId = [GANUserManager getCompanyDataModel].szId;
+        return ([self.szSenderCompanyId isEqualToString:szCompanyId] == YES);
+    }
+    else{
+        return ([self.szSenderUserId isEqualToString:szUserId] == YES);
+    }
+    return NO;
 }
 
 - (BOOL) amIReceiver{
     NSString *szUserId = [GANUserManager sharedInstance].modelUser.szId;
-    return ([self.szReceiverUserId isEqualToString:szUserId] == YES);
+    NSString *szCompanyId = @"";
+    if ([[GANUserManager sharedInstance] isCompanyUser]){
+        szCompanyId = [GANUserManager getCompanyDataModel].szId;
+        return ([self.szReceiverCompanyId isEqualToString:szCompanyId] == YES);
+    }
+    else{
+        return ([self.szReceiverUserId isEqualToString:szUserId] == YES);
+    }
+    return NO;
 }
 
 - (NSString *) getContentsEN{

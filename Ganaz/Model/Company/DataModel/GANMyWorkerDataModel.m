@@ -34,7 +34,7 @@
     self.szCompanyId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"company_id"]];
     self.szCrewId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"crew_id"]];
     
-    NSDictionary *dictWorker = [dict objectForKey:@"worker"];
+    NSDictionary *dictWorker = [dict objectForKey:@"worker_account"];
     [self.modelWorker setWithDictionary:dictWorker];
 }
 

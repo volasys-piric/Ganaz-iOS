@@ -14,7 +14,7 @@
 #import "GANUserManager.h"
 #import "GANJobManager.h"
 
-#import "GANCompanyManager.h"
+#import "GANCacheManager.h"
 #import "GANGlobalVCManager.h"
 #import "GANWorkerJobDetailsVC.h"
 #import "Global.h"
@@ -112,16 +112,16 @@
     if (jobId.length == 0) return;
     if (companyId.length == 0) return;
     
-    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    GANCacheManager *managerCache = [GANCacheManager sharedInstance];
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
-    [managerCompany requestGetCompanyDetailsByCompanyId:companyId Callback:^(int indexCompany) {
+    [managerCache requestGetCompanyDetailsByCompanyId:companyId Callback:^(int indexCompany) {
         if (indexCompany == -1) {
             [GANGlobalVCManager hideHudProgress];
             return;
         }
         
-        GANCompanyDataModel *company = [managerCompany.arrCompaniesFound objectAtIndex:indexCompany];
+        GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
         [company requestJobsListWithCallback:^(int status) {
             [GANGlobalVCManager hideHudProgress];
             if (status != SUCCESS_WITH_NO_ERROR){
@@ -158,14 +158,14 @@
     
     if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE){
         cell.lblTitle.text = @"";
-        [[GANCompanyManager sharedInstance] getCompanyBusinessNameESByCompanyId:message.szSenderCompanyId Callback:^(NSString *businessNameES) {
+        [[GANCacheManager sharedInstance] getCompanyBusinessNameESByCompanyId:message.szSenderCompanyId Callback:^(NSString *businessNameES) {
             cell.lblTitle.text = businessNameES;
         }];
     }
     else if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT){
         cell.lblTitle.text = @"";
         cell.lblMessage.text = @"Nuevo trabajo disponible";
-        [[GANCompanyManager sharedInstance] getCompanyBusinessNameESByCompanyId:message.szSenderCompanyId Callback:^(NSString *businessNameES) {
+        [[GANCacheManager sharedInstance] getCompanyBusinessNameESByCompanyId:message.szSenderCompanyId Callback:^(NSString *businessNameES) {
             cell.lblTitle.text = businessNameES;
         }];
     }

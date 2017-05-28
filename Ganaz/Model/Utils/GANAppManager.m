@@ -10,7 +10,7 @@
 #import "GANLocationManager.h"
 #import "GANUserManager.h"
 #import "GANJobManager.h"
-#import "GANMyWorkersManager.h"
+#import "GANCompanyManager.h"
 #import "GANMessageManager.h"
 #import "GANReviewManager.h"
 #import "GANCompanyManager.h"
@@ -58,7 +58,7 @@
     GANUserManager *managerUser = [GANUserManager sharedInstance];
     if ([managerUser isCompanyUser] == YES){
         [[GANJobManager sharedInstance] requestMyJobListWithCallback:nil];
-        [[GANMyWorkersManager sharedInstance] requestGetMyWorkersListWithCallback:nil];
+        [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:nil];
         [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
     }
     else {
@@ -70,7 +70,7 @@
 
 - (void) initializeManagersAfterLogout{
     [[GANJobManager sharedInstance] initializeManager];
-    [[GANMyWorkersManager sharedInstance] initializeManager];
+    [[GANCompanyManager sharedInstance] initializeManager];
     [[GANMessageManager sharedInstance] initializeManager];
     [[GANReviewManager sharedInstance] initializeManager];
     [[GANUserManager sharedInstance] doLogout];

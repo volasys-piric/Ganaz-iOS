@@ -65,9 +65,18 @@
 
 - (void) requestGetMessageListWithCallback: (void (^) (int status)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForGetMessages];
+    NSString *userId = [GANUserManager sharedInstance].modelUser.szId;
+    NSString *companyId = @"";
+    if ([[GANUserManager sharedInstance] isCompanyUser]){
+        companyId = [GANUserManager getCompanyDataModel].szId;
+    }
+
+    NSDictionary *param = @{@"user_id": userId,
+                            @"company_id": companyId
+                            };
     self.isLoading = YES;
     
-    [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:YES parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
         self.isLoading = NO;
         
         NSDictionary *dict = responseObject;
@@ -98,7 +107,7 @@
     }];
 }
 
-- (void) requestSendMessageWithJobId: (NSString *) jobId Type: (GANENUM_MESSAGE_TYPE) type Receivers: (NSArray *) receiverUserIds Message: (NSString *) message AutoTranslate: (BOOL) isAutoTranslate Callback: (void (^) (int status)) callback{
+- (void) requestSendMessageWithJobId: (NSString *) jobId Type: (GANENUM_MESSAGE_TYPE) type Receivers: (NSArray *) receivers Message: (NSString *) message AutoTranslate: (BOOL) isAutoTranslate Callback: (void (^) (int status)) callback{
     [GANUtils requestTranslate:message Translate:isAutoTranslate Callback:^(int status, NSString *translatedText) {
         if (status != SUCCESS_WITH_NO_ERROR) translatedText = message;
         NSString *szUrl = [GANUrlManager getEndpointForSendMessage];
@@ -115,7 +124,7 @@
                                  @"sender": @{@"user_id": szSenderUserId,
                                               @"company_id": szSenderCompanyId
                                               },
-                                 @"receivers": receiverUserIds,
+                                 @"receivers": receivers,
                                  @"message": @{@"en": message,
                                                @"es": translatedText
                                                },
@@ -126,10 +135,13 @@
             NSDictionary *dict = responseObject;
             BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
             if (success){
-                NSDictionary *dictMessage = [dict objectForKey:@"message"];
-                GANMessageDataModel *message = [[GANMessageDataModel alloc] init];
-                [message setWithDictionary:dictMessage];
-                [self addMessageIfNeeded:message];
+                NSArray *arrMessages = [dict objectForKey:@"messages"];
+                for (int i = 0; i < (int) [arrMessages count]; i++){
+                    NSDictionary *dictMessage = [arrMessages objectAtIndex:i];
+                    GANMessageDataModel *message = [[GANMessageDataModel alloc] init];
+                    [message setWithDictionary:dictMessage];
+                    [self addMessageIfNeeded:message];
+                }
                 
                 if (callback) callback(SUCCESS_WITH_NO_ERROR);
                 [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATED object:nil];

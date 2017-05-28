@@ -11,7 +11,7 @@
 #import "GANWorkerJobDetailsVC.h"
 #import "GANWorkerCompanyReviewVC.h"
 
-#import "GANCompanyManager.h"
+#import "GANCacheManager.h"
 #import "GANUserCompanyDataModel.h"
 #import "GANJobDataModel.h"
 #import "GANUserManager.h"
@@ -74,7 +74,7 @@
 }
 
 - (void) refreshFields{
-    self.company = [[GANCompanyManager sharedInstance].arrCompaniesFound objectAtIndex:self.indexCompany];
+    self.company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
     
     self.lblTitle.text = [self.company getBusinessNameES];
     self.lblDescription.text = [self.company getDescriptionES];

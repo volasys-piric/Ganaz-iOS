@@ -2,12 +2,12 @@
 //  GANCompanyCodePopupVC.m
 //  Ganaz
 //
-//  Created by Chris Lin on 5/25/17.
+//  Created by Piric Djordje on 5/25/17.
 //  Copyright © 2017 Ganaz. All rights reserved.
 //
 
 #import "GANCompanyCodePopupVC.h"
-#import "GANCompanyManager.h"
+#import "GANCacheManager.h"
 #import "Global.h"
 #import "GANGlobalVCManager.h"
 #import <UIView+Shake.h>
@@ -46,8 +46,7 @@
         self.txtCode.text = @"";
     }
     else {
-        GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
-        GANCompanyDataModel *company = [managerCompany.arrCompaniesFound objectAtIndex:self.indexCompany];
+        GANCompanyDataModel *company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
         self.txtCode.text = company.szCode;
     }
 }
@@ -81,7 +80,7 @@
     
     NSString *code = [self.txtCode.text lowercaseString];
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [[GANCompanyManager sharedInstance] requestGetCompanyDetailsByCompanyCode:code Callback:^(int indexCompany) {
+    [[GANCacheManager sharedInstance] requestGetCompanyDetailsByCompanyCode:code Callback:^(int indexCompany) {
         if (indexCompany == -1){
             [GANGlobalVCManager showHudErrorWithMessage:@"No company found!" DismissAfter:-1 Callback:nil];
         }

@@ -13,8 +13,8 @@
 
 #import "GANJobManager.h"
 #import "GANUserManager.h"
-#import "GANMyWorkersManager.h"
-#import "GANMyWorkerDataModel.h"
+#import "GANCacheManager.h"
+#import "GANCompanyManager.h"
 #import "GANRecruitManager.h"
 
 #import "GANGenericFunctionManager.h"
@@ -117,7 +117,7 @@
 
 - (void) buildWorkerList{
     [self.arrWorkerSelected removeAllObjects];
-    int count = (int) [[GANMyWorkersManager sharedInstance].arrMyWorkers count];
+    int count = (int) [[GANCompanyManager sharedInstance].arrMyWorkers count];
     
     for (int i = 0; i < count; i++){
         [self.arrWorkerSelected addObject:@(NO)];
@@ -209,7 +209,7 @@
     for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
         BOOL isSelected = [[self.arrWorkerSelected objectAtIndex:i] boolValue];
         if (isSelected == YES){
-            GANMyWorkerDataModel *myWorker = [[GANMyWorkersManager sharedInstance].arrMyWorkers objectAtIndex:i];
+            GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:i];
             [arrReRecruitUserIds addObject:myWorker.szWorkerUserId];
         }
     }
@@ -222,7 +222,7 @@
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [managerRecruit requestSubmitRecruitWithJobIds:arrJobIds Broadcast:fBroadcast ReRecruitUserIds:arrReRecruitUserIds Callback:^(int status, int count) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            [GANGlobalVCManager showHudSuccessWithMessage:[NSString stringWithFormat:@"%d worker(s) received your recruitment request.", count] DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudSuccessWithMessage:[NSString stringWithFormat:@"Worker(s) are recruited."] DismissAfter:-1 Callback:nil];
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
@@ -255,7 +255,7 @@
 }
 
 - (void) configureWorkerItemCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
-    GANMyWorkerDataModel *myWorker = [[GANMyWorkersManager sharedInstance].arrMyWorkers objectAtIndex:index];
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:index];
     cell.lblWorkerId.text = myWorker.modelWorker.szUserName;
     
     cell.viewContainer.layer.cornerRadius = 4;
@@ -273,7 +273,7 @@
     if (tableView == self.tableviewJobs){
         return [[GANJobManager sharedInstance].arrMyJobs count];
     }
-    return [[GANMyWorkersManager sharedInstance].arrMyWorkers count];
+    return [[GANCompanyManager sharedInstance].arrMyWorkers count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

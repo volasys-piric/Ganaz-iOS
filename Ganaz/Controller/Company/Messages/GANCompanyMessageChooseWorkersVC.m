@@ -9,7 +9,8 @@
 #import "GANCompanyMessageChooseWorkersVC.h"
 #import "GANWorkerItemTVC.h"
 
-#import "GANMyWorkersManager.h"
+#import "GANCompanyManager.h"
+#import "GANCacheManager.h"
 #import "GANMyWorkerDataModel.h"
 
 #import "GANMessageManager.h"
@@ -44,7 +45,6 @@
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.isPopupShowing = NO;
     self.isAutoTranslate = NO;
@@ -105,9 +105,9 @@
 
 - (void) buildWorkerList{
     self.arrWorkerSelected = [[NSMutableArray alloc] init];
-    GANMyWorkersManager *managerWorker = [GANMyWorkersManager sharedInstance];
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     
-    for (int i = 0; i < (int)[managerWorker.arrMyWorkers count]; i++){
+    for (int i = 0; i < (int)[managerCompany.arrMyWorkers count]; i++){
         [self.arrWorkerSelected addObject:@(NO)];
     }
     
@@ -171,17 +171,19 @@
     NSString *szMessage = self.textview.text;
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
-    NSMutableArray *arrReceiverUserIds = [[NSMutableArray alloc] init];
-    GANMyWorkersManager *managerWorker = [GANMyWorkersManager sharedInstance];
+    NSMutableArray *arrReceivers = [[NSMutableArray alloc] init];
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     
     for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
         if ([[self.arrWorkerSelected objectAtIndex:i] boolValue] == YES){
-            GANMyWorkerDataModel *myWorker = [managerWorker.arrMyWorkers objectAtIndex:i];
-            [arrReceiverUserIds addObject:myWorker.szWorkerUserId];
+            GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:i];
+            [arrReceivers addObject:@{@"user_id": myWorker.szWorkerUserId,
+                                           @"company_id": @""
+                                            }];
         }
     }
 
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceiverUserIds Message:szMessage AutoTranslate:self.isAutoTranslate Callback:^(int status) {
+    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers Message:szMessage AutoTranslate:self.isAutoTranslate Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"Message is sent!" DismissAfter:-1 Callback:^{
                 [self.navigationController popViewControllerAnimated:YES];
@@ -196,7 +198,7 @@
 #pragma mark - UITableView Delegate
 
 - (void) configureCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
-    GANMyWorkerDataModel *myWorker = [[GANMyWorkersManager sharedInstance].arrMyWorkers objectAtIndex:index];
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:index];
     cell.lblWorkerId.text = myWorker.modelWorker.szUserName;
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -210,7 +212,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [[GANMyWorkersManager sharedInstance].arrMyWorkers count];
+    return [[GANCompanyManager sharedInstance].arrMyWorkers count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

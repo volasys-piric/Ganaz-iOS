@@ -11,7 +11,7 @@
 #import "GANUIPhoneTextField.h"
 
 #import "GANUserWorkerDataModel.h"
-#import "GANMyWorkersManager.h"
+#import "GANCompanyManager.h"
 #import "GANUserManager.h"
 
 #import "GANUtils.h"
@@ -100,7 +100,7 @@
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
-    [[GANMyWorkersManager sharedInstance] requestSearchNewWorkersByPhoneNumber:szPhoneNumber Callback:^(int status, NSArray *arrWorkers) {
+    [[GANCompanyManager sharedInstance] requestSearchNewWorkersByPhoneNumber:szPhoneNumber Callback:^(int status, NSArray *arrWorkers) {
         if (status == SUCCESS_WITH_NO_ERROR && arrWorkers != nil){
             int count = (int) [arrWorkers count];
             if (count == 0){
@@ -147,7 +147,7 @@
     if ([arrUserIds count] == 0) return;
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [[GANMyWorkersManager sharedInstance] requestAddMyWorkerWithUserIds:arrUserIds Callback:^(int status) {
+    [[GANCompanyManager sharedInstance] requestAddMyWorkerWithUserIds:arrUserIds Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"Worker is added successfully." DismissAfter:-3 Callback:^{
                 [self.navigationController popViewControllerAnimated:YES];
@@ -165,7 +165,7 @@
     phone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:self.txtPhone.text];
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
-    [[GANMyWorkersManager sharedInstance] requestSendInvite:phone CompanyUserId:szCompanyUserId Callback:^(int status) {
+    [[GANCompanyManager sharedInstance] requestSendInvite:phone CompanyUserId:szCompanyUserId Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"Invitation SMS will be sent shortly." DismissAfter:-1 Callback:nil];
         }
