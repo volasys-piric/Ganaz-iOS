@@ -376,7 +376,7 @@
     modelCompanyUser.modelPhone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:szPhone];
     modelCompanyUser.szUserName = szCompanyUserId;
     modelCompanyUser.szPassword = szPassword;
-    modelCompanyUser.szPlayerId = [GANPushNotificationManager sharedInstance].szOneSignalPlayerId;
+    [modelCompanyUser addPlayerIdIfNeeded:[GANPushNotificationManager sharedInstance].szOneSignalPlayerId];
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [[GANUserManager sharedInstance] requestUserSignupWithCallback:^(int status) {

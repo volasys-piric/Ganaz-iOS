@@ -59,13 +59,12 @@
     if ([managerUser isCompanyUser] == YES){
         [[GANJobManager sharedInstance] requestMyJobListWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:nil];
-        [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
     }
     else {
         [[GANJobManager sharedInstance] requestGetMyApplicationsWithCallback:nil];
-        [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
-        [[GANReviewManager sharedInstance] requestGetReviewsListWithCallback:nil];
     }
+    [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
+    [[GANReviewManager sharedInstance] requestGetReviewsListWithCallback:nil];
 }
 
 - (void) initializeManagersAfterLogout{

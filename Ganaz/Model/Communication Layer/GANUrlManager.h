@@ -53,6 +53,7 @@
 
 + (NSString *) getEndpointForGetMessages;
 + (NSString *) getEndpointForSendMessage;
++ (NSString *) getEndpointForMessageMarkAsRead;
 
 #pragma mark - Reviews
 

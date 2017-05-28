@@ -62,10 +62,8 @@
         enumType == GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE){
         if ([[GANUserManager sharedInstance] isUserLoggedIn] == YES &&
             [[GANUserManager sharedInstance] isWorker] == YES){
-            [[GANMessageManager sharedInstance] increaseUnreadMessageCount];
             [GANGlobalVCManager showHudInfoWithMessage:@"New message is arrived" DismissAfter:-1 Callback:nil];
-            [GANGlobalVCManager updateMessageBadge];
-//            [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
+            [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
         }
     }
 }
@@ -86,8 +84,8 @@
         if ([self.szOneSignalPlayerId isEqualToString:playerId] == NO){
             self.szOneSignalPlayerId = playerId;
             GANUserManager *managerUser = [GANUserManager sharedInstance];
-            if ([managerUser isUserLoggedIn] == YES && ([managerUser.modelUser.szPlayerId isEqualToString:self.szOneSignalPlayerId] == NO)){
-                managerUser.modelUser.szPlayerId = self.szOneSignalPlayerId;
+            if ([managerUser isUserLoggedIn] == YES && ([managerUser.modelUser getIndexForPlayerId:self.szOneSignalPlayerId] == -1)){
+                [managerUser.modelUser addPlayerIdIfNeeded:self.szOneSignalPlayerId];
                 [managerUser requestUpdateOneSignalPlayerIdWithCallback:nil];
             }
         }

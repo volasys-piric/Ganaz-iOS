@@ -136,7 +136,7 @@
     modelWorker.szUserName = szWorkerId;
     modelWorker.modelPhone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:szPhone];
     modelWorker.szPassword = szPassword;
-    modelWorker.szPlayerId = [GANPushNotificationManager sharedInstance].szOneSignalPlayerId;
+    [modelWorker addPlayerIdIfNeeded:[GANPushNotificationManager sharedInstance].szOneSignalPlayerId];
     
 #warning Following attributes should be [optional] in API
     

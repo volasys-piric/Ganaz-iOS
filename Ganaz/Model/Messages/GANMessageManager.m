@@ -14,6 +14,7 @@
 #import "GANGenericFunctionManager.h"
 #import "GANErrorManager.h"
 #import "Global.h"
+#import "GANGlobalVCManager.h"
 
 @implementation GANMessageManager
 
@@ -39,6 +40,14 @@
     self.nUnreadMessages = 0;
 }
 
+- (int) getIndexForMessageWithId: (NSString *) messageId{
+    for (int i = 0; i < (int) [self.arrMessages count]; i++){
+        GANMessageDataModel *message = [self.arrMessages objectAtIndex:i];
+        if ([message.szId isEqualToString:messageId] == YES) return i;
+    }
+    return -1;
+}
+
 - (BOOL) addMessageIfNeeded: (GANMessageDataModel *) newMessage{
     if (newMessage == nil) return NO;
     for (int i = 0; i < (int) [self.arrMessages count]; i++){
@@ -49,34 +58,30 @@
     return YES;
 }
 
-- (void) clearUnreadMessage{
-    self.nUnreadMessages = 0;
-}
-
 - (int) getUnreadMessageCount{
-    return self.nUnreadMessages;
-}
-
-- (void) increaseUnreadMessageCount{
-    self.nUnreadMessages++;
+    int count = 0;
+    for (int i = 0; i < (int) [self.arrMessages count]; i++){
+        GANMessageDataModel *message = [self.arrMessages objectAtIndex:i];
+        if ([message amIReceiver] == YES && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW) count++;
+    }
+    return count;
 }
 
 #pragma mark - Request
 
 - (void) requestGetMessageListWithCallback: (void (^) (int status)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForGetMessages];
-    NSString *userId = [GANUserManager sharedInstance].modelUser.szId;
-    NSString *companyId = @"";
+    NSDictionary *param;
     if ([[GANUserManager sharedInstance] isCompanyUser]){
-        companyId = [GANUserManager getCompanyDataModel].szId;
+        param = @{@"company_id": [GANUserManager getCompanyDataModel].szId};
+    }
+    else {
+        param = @{@"user_id": [GANUserManager sharedInstance].modelUser.szId};
     }
 
-    NSDictionary *param = @{@"user_id": userId,
-                            @"company_id": companyId
-                            };
     self.isLoading = YES;
     
-    [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
         self.isLoading = NO;
         
         NSDictionary *dict = responseObject;
@@ -91,7 +96,7 @@
                 [message setWithDictionary:dictMessage];
                 [self.arrMessages addObject:message];
             }
-            [self clearUnreadMessage];
+            [GANGlobalVCManager updateMessageBadge];
             
             if (callback) callback(SUCCESS_WITH_NO_ERROR);
             [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATED object:nil];
@@ -142,6 +147,7 @@
                     [message setWithDictionary:dictMessage];
                     [self addMessageIfNeeded:message];
                 }
+                [GANGlobalVCManager updateMessageBadge];
                 
                 if (callback) callback(SUCCESS_WITH_NO_ERROR);
                 [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATED object:nil];
@@ -155,6 +161,51 @@
             if (callback) callback(status);
             [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATEFAILED object:nil];
         }];
+    }];
+}
+
+- (void) requestMarkAsReadAllMessagesWithCallback: (void (^) (int status)) callback{
+    NSMutableArray *arrMessageIds = [[NSMutableArray alloc] init];
+    for (int i = 0; i < (int) [self.arrMessages count]; i++){
+        GANMessageDataModel *message = [self.arrMessages objectAtIndex:i];
+        if ([message amIReceiver] == YES && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW){
+            [arrMessageIds addObject:message.szId];
+        }
+    }
+    [self requestMarkAsRead:arrMessageIds Callback:callback];
+}
+
+- (void) requestMarkAsRead: (NSArray *) arrMessageIds Callback: (void (^) (int status)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForMessageMarkAsRead];
+    NSDictionary *param = @{@"message_ids": arrMessageIds,
+                            @"status": @"read"};
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            for (int i = 0; i < (int) [arrMessageIds count]; i++){
+                NSString *messageId = [arrMessageIds objectAtIndex:i];
+                int index = [self getIndexForMessageWithId:messageId];
+                if (index == -1) continue;
+                
+                GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
+                message.enumStatus = GANENUM_MESSAGE_STATUS_READ;
+            }
+            
+            [GANGlobalVCManager updateMessageBadge];
+            
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATED object:nil];
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATEFAILED object:nil];
     }];
 }
 

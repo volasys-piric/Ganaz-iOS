@@ -86,6 +86,10 @@
     return -1;
 }
 
++ (BOOL) isValidJobId: (NSString *) jobId{
+    return (([jobId caseInsensitiveCompare:@"NONE"] != NSOrderedSame) && (jobId.length > 0));
+}
+
 #pragma mark - Request for <Company> Users
 
 - (void) requestMyJobListWithCallback: (void (^) (int status)) callback{

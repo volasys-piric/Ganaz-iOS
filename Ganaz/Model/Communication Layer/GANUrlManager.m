@@ -110,11 +110,15 @@
 #pragma mark - Messages
 
 + (NSString *) getEndpointForGetMessages{
-    return [NSString stringWithFormat:@"%@/message", GANURL_BASEURL];
+    return [NSString stringWithFormat:@"%@/message/search", GANURL_BASEURL];
 }
 
 + (NSString *) getEndpointForSendMessage{
     return [NSString stringWithFormat:@"%@/message", GANURL_BASEURL];
+}
+
++ (NSString *) getEndpointForMessageMarkAsRead{
+    return [NSString stringWithFormat:@"%@/message/status-update", GANURL_BASEURL];
 }
 
 #pragma mark - Reviews

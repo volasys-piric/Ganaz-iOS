@@ -154,8 +154,8 @@
             [self saveToLocalstorage];
             
             GANPushNotificationManager *managerPush = [GANPushNotificationManager sharedInstance];
-            if (managerPush.szOneSignalPlayerId.length > 0 && [self.modelUser.szPlayerId isEqualToString:managerPush.szOneSignalPlayerId] == NO){
-                self.modelUser.szPlayerId = managerPush.szOneSignalPlayerId;
+            if (managerPush.szOneSignalPlayerId.length > 0 && [self.modelUser getIndexForPlayerId:managerPush.szOneSignalPlayerId] == -1){
+                [self.modelUser addPlayerIdIfNeeded:managerPush.szOneSignalPlayerId];
                 [self requestUpdateOneSignalPlayerIdWithCallback:nil];
             }
             
@@ -245,8 +245,7 @@
 
 - (void) requestUpdateOneSignalPlayerIdWithCallback: (void (^) (int status)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForUserUpdateProfile];
-    NSDictionary *params = @{@"account": @{@"player_id": [GANPushNotificationManager sharedInstance].szOneSignalPlayerId}};
-
+    NSDictionary *params = @{@"account": @{@"player_ids": self.modelUser.arrPlayerIds}};
     
     [[GANNetworkRequestManager sharedInstance] PATCH:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;

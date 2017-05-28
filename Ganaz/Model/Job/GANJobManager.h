@@ -33,6 +33,7 @@
 
 - (int) getIndexForMyJobsByJobId: (NSString *) jobId;
 - (int) getIndexForMyApplicationsByJobId: (NSString *) jobId;
++ (BOOL) isValidJobId: (NSString *) jobId;
 
 #pragma mark - Request For <Company> User
 

@@ -33,7 +33,7 @@
     self.modelPhone = [[GANPhoneDataModel alloc] init];
     self.enumAuthType = GANENUM_USER_AUTHTYPE_EMAIL;
     self.szExternalId = @"";
-    self.szPlayerId = @"";
+    self.arrPlayerIds = [[NSMutableArray alloc] init];
     
     self.szCompanyId = @"";
     self.modelCompany = [[GANCompanyDataModel alloc] init];

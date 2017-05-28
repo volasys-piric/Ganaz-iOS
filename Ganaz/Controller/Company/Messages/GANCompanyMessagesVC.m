@@ -85,15 +85,18 @@
     [self.tableview registerNib:[UINib nibWithNibName:@"MessageItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_MESSAGEITEM"];
 }
 
+- (void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if ([[GANMessageManager sharedInstance] getUnreadMessageCount] > 0){
+        [[GANMessageManager sharedInstance] requestMarkAsReadAllMessagesWithCallback:nil];
+    }
+}
+
 - (void) refreshViews{
     self.btnSendMessage.layer.cornerRadius = 3;
     self.btnReply.layer.cornerRadius = 3;
     self.viewMessage.layer.cornerRadius = 3;
     [self refreshAutoTranslateView];
-}
-
-- (void) refreshPopupView{
-    self.viewPopupWrapper.hidden = !self.isPopupShowing;
 }
 
 - (void) refreshAutoTranslateView{
@@ -266,7 +269,7 @@
             cell.lblMessage.text = [message getContentsEN];
             [managerCache requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Message From: %@", user.szUserName];
+                cell.lblTitle.text = [NSString stringWithFormat:@"Message from: %@", user.szUserName];
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION){
@@ -291,7 +294,7 @@
         }
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [cell refreshViewsWithType:message.enumType];
+    [cell refreshViewsWithType:message.enumType Status:message.enumStatus];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

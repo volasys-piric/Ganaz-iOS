@@ -26,7 +26,12 @@
     self.szUserName = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"username"]];
     self.szEmail = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"email_address"]];
     self.szExternalId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"external_id"]];
-    self.szPlayerId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"player_id"]];
+    
+    NSArray *arrPlayerIds = [dict objectForKey:@"player_ids"];
+    self.arrPlayerIds = [[NSMutableArray alloc] init];
+    for (int i = 0; i < (int) [arrPlayerIds count]; i++){
+        [self.arrPlayerIds addObject:[GANGenericFunctionManager refineNSString:[arrPlayerIds objectAtIndex:i]]];
+    }
     
     NSDictionary *dictPhone = [dict objectForKey:@"phone_number"];
     self.modelPhone = [[GANPhoneDataModel alloc] init];
@@ -44,8 +49,24 @@
              @"type": [GANUtils getStringFromUserType:self.enumType],
              @"auth_type": [GANUtils getStringFromUserAuthType:self.enumAuthType],
              @"external_id": self.szExternalId,
-             @"player_id": self.szPlayerId,
+             @"player_ids": self.arrPlayerIds,
              };
+}
+
+- (int) getIndexForPlayerId: (NSString *) playerId{
+    for (int i = 0; i < (int) [self.arrPlayerIds count]; i++){
+        NSString *sz = [self.arrPlayerIds objectAtIndex:i];
+        if ([sz isEqualToString:playerId] == YES){
+            return i;
+        }
+    }
+    return -1;
+}
+
+- (void) addPlayerIdIfNeeded: (NSString *) playerId{
+    if (playerId.length == 0) return;
+    if ([self getIndexForPlayerId:playerId] != -1) return;
+    [self.arrPlayerIds addObject:playerId];
 }
 
 @end

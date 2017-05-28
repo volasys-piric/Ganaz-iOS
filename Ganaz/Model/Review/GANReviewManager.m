@@ -98,7 +98,7 @@
 }
 
 - (void) requestAddReview: (GANReviewDataModel *) review Callback: (void (^) (int status)) callback{
-    NSString *szUrl = [GANUrlManager getEndpointForGetReviews];
+    NSString *szUrl = [GANUrlManager getEndpointForAddReview];
     NSDictionary *params = [review serializeToDictionary];
     
     [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {

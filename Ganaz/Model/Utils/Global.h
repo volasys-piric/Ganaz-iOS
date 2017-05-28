@@ -47,6 +47,7 @@
 // UICOLOR
 
 #define GANUICOLOR_THEMECOLOR_MAIN                              [UIColor colorWithRed:(51 / 255.0) green:(51 / 255.0) blue:(51 / 255.0) alpha:1]
+#define GANUICOLOR_THEMECOLOR_GREEN                             [UIColor colorWithRed:(100 / 255.0) green:(179 / 255.0) blue:(31 / 255.0) alpha:1]
 #define GANUICOLOR_THEMECOLOR_TABBAR_SELECTED                   [UIColor colorWithRed:(67 / 255.0) green:(137 / 255.0) blue:(6 / 255.0) alpha:1]
 #define GANUICOLOR_THEMECOLOR_PLACEHOLDER                       [UIColor colorWithRed:(255 / 255.0) green:(255 / 255.0) blue:(255 / 255.0) alpha:0.5]
 #define GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR                  [UIColor colorWithRed:(51 / 255.0) green:(51 / 255.0) blue:(51 / 255.0) alpha:0.6]

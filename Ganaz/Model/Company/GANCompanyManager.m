@@ -186,9 +186,9 @@
     }];
 }
 
-- (void) requestSendInvite: (GANPhoneDataModel *) phone CompanyUserId: (NSString *) companyUserId Callback: (void (^) (int status)) callback{
+- (void) requestSendInvite: (GANPhoneDataModel *) phone CompanyId: (NSString *) companyId Callback: (void (^) (int status)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForInvite];
-    NSDictionary *params = @{@"company_user_id": companyUserId,
+    NSDictionary *params = @{@"company_id": companyId,
                              @"phone_number": [phone serializeToDictionary]
                              };
     [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
