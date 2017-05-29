@@ -18,7 +18,7 @@
 
 #ifdef GANENVIRONMENT_STAGING
 
-#define ONESIGNAL_APPID                             @"37c1d731-1cbd-40cf-9ba3-3936174602e1"
+#define ONESIGNAL_APPID                             @"ade7e4b5-b439-4d82-9bb2-c040372c1f14"
 #define GANURL_BASEURL                              @"http://35.166.132.188:8000/api/v1"
 
 #elif GANENVIRONMENT_DEV

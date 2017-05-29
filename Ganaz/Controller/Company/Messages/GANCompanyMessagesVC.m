@@ -109,6 +109,8 @@
 }
 
 - (void) buildMessageList{
+    [GANGlobalVCManager updateMessageBadge];
+    
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     [self.arrMessages removeAllObjects];
     

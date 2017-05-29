@@ -29,10 +29,12 @@
     if (type == GANENUM_MESSAGE_TYPE_APPLICATION) self.lblAvatar.text = @"APP";
     
     if (status == GANENUM_MESSAGE_STATUS_NEW){
-        self.lblAvatar.layer.backgroundColor = GANUICOLOR_THEMECOLOR_GREEN.CGColor;
+        self.lblAvatar.backgroundColor = GANUICOLOR_THEMECOLOR_GREEN;
+        GANLOG(@"Green Color");
     }
     else {
-        self.lblAvatar.layer.backgroundColor = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
+        self.lblAvatar.backgroundColor = GANUICOLOR_THEMECOLOR_MAIN;
+        GANLOG(@"Gray Color");
     }
 }
 

@@ -65,11 +65,13 @@
                                                  name:nil
                                                object:nil];
     
-    [NSTimer scheduledTimerWithTimeInterval:60.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableview reloadData];
-        });
-    }];
+    [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(refreshData) userInfo:nil repeats:YES];    
+}
+
+- (void) refreshData{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableview reloadData];
+    });
 }
 
 - (void) dealloc{
@@ -92,13 +94,14 @@
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     if ([[GANMessageManager sharedInstance] getUnreadMessageCount] > 0){
-        [[GANMessageManager sharedInstance] requestMarkAsReadAllMessagesWithCallback:nil];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [[GANMessageManager sharedInstance] requestMarkAsReadAllMessagesWithCallback:nil];
+        });
     }
 }
 
 - (void) refreshViews{
     [self buildMessageList];
-    
     self.btnReply.layer.cornerRadius = 3;
     self.viewMessage.layer.cornerRadius = 3;
     [self refreshAutoTranslateView];
@@ -114,6 +117,8 @@
 }
 
 - (void) buildMessageList{
+    [GANGlobalVCManager updateMessageBadge];
+    
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     [self.arrMessages removeAllObjects];
     
@@ -314,23 +319,30 @@
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION){
-            GANJobManager *managerJob = [GANJobManager sharedInstance];
-            int indexJob = [managerJob getIndexForMyJobsByJobId:message.szJobId];
-            if (indexJob != -1){
-                GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:indexJob];
-                cell.lblMessage.text = [NSString stringWithFormat:@"Job inquiry: %@", [job getTitleES]];
-            }
-            else {
-                cell.lblTitle.text = @"New job inquiry";
-            }
+            cell.lblTitle.text = @"Job application";
+            cell.lblMessage.text = @"New job inquiry";
             
-            cell.lblMessage.text = @"Job application";
-            
-            [[GANCacheManager sharedInstance] requestGetCompanyDetailsByCompanyId:message.szReceiverCompanyId Callback:^(int indexCompany) {
-                if (index != -1){
-                    GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
-                    cell.lblMessage.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
+            [managerCache requestGetCompanyDetailsByCompanyId:message.szReceiverCompanyId Callback:^(int indexCompany) {
+                if (indexCompany == -1) {
+                    return;
                 }
+                
+                GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
+                cell.lblTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
+                
+                [company requestJobsListWithCallback:^(int status) {
+                    if (status != SUCCESS_WITH_NO_ERROR){
+                        return;
+                    }
+                    int indexJob = [company getIndexForJob:message.szJobId];
+                    if (indexJob != -1){
+                        GANJobDataModel *job = [company.arrJobs objectAtIndex:indexJob];
+                        cell.lblMessage.text = [NSString stringWithFormat:@"Job inquiry: %@", [job getTitleES]];
+                    }
+                    else {
+                        cell.lblMessage.text = @"Job not found";
+                    }
+                }];
             }];
         }
     }
@@ -354,6 +366,8 @@
                 }
                 
                 GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
+                cell.lblTitle.text = [NSString stringWithFormat:@"Recruited by %@", [company getBusinessNameES]];
+
                 [company requestJobsListWithCallback:^(int status) {
                     if (status != SUCCESS_WITH_NO_ERROR){
                         return;
@@ -367,14 +381,6 @@
                         cell.lblMessage.text = @"Job not found";
                     }
                 }];
-            }];
-
-            
-            [managerCache requestGetCompanyDetailsByCompanyId:message.szSenderCompanyId Callback:^(int indexCompany) {
-                if (indexCompany != -1){
-                    GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
-                    cell.lblTitle.text = [NSString stringWithFormat:@"Recruited by %@", [company getBusinessNameES]];
-                }
             }];
         }
     }
@@ -403,7 +409,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     int index = (int) indexPath.row;
     [self showActionSheetForMessageAtIndex:index];
-//    [self gotoMessageDetailsAtIndex:index];
 }
 
 #pragma mark - UIButton Delegate
@@ -434,7 +439,7 @@
 - (void) onLocalNotificationReceived:(NSNotification *) notification{
     if (([[notification name] isEqualToString:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATED]) ||
         ([[notification name] isEqualToString:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATEFAILED])){
-        [self refreshViews];
+        [self buildMessageList];
     }
     else if ([[notification name] isEqualToString:GANLOCALNOTIFICATION_CONTENTS_TRANSLATED]){
         [self.tableview reloadData];
