@@ -37,6 +37,7 @@
 @property (assign, atomic) BOOL isPopupShowing;
 @property (assign, atomic) BOOL isAutoTranslate;
 @property (assign, atomic) int indexMessageForReply;
+@property (assign, atomic) BOOL isVCVisible;
 
 @property (strong, nonatomic) NSMutableArray *arrMessages;
 
@@ -54,6 +55,7 @@
     self.tableview.rowHeight = UITableViewAutomaticDimension;
     self.tableview.estimatedRowHeight = 75;
     
+    self.isVCVisible = NO;
     self.isPopupShowing = NO;
     self.isAutoTranslate = NO;
     self.arrMessages = [[NSMutableArray alloc] init];
@@ -95,10 +97,18 @@
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    self.isVCVisible = YES;
     [self updateReadStatusIfNeeded];
 }
 
+- (void) viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    self.isVCVisible = NO;
+}
+
 - (void) updateReadStatusIfNeeded{
+    if (self.isVCVisible == NO) return;
     if ([[GANMessageManager sharedInstance] getUnreadMessageCount] > 0){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [[GANMessageManager sharedInstance] requestMarkAsReadAllMessagesWithCallback:nil];
