@@ -58,14 +58,25 @@
     
     NSString *type = [GANGenericFunctionManager refineNSString:[additionalData objectForKey:@"type"]];
     GANENUM_PUSHNOTIFICATION_TYPE enumType = [GANUtils getPushNotificationTypeFromString:type];
-    if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_RECRUIT ||
-        enumType == GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE){
-        if ([[GANUserManager sharedInstance] isUserLoggedIn] == YES &&
-            [[GANUserManager sharedInstance] isWorker] == YES){
-            [GANGlobalVCManager showHudInfoWithMessage:@"New message is arrived" DismissAfter:-1 Callback:nil];
-            [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
+    if ([[GANUserManager sharedInstance] isUserLoggedIn] == NO) return;
+    
+    if ([[GANUserManager sharedInstance] isWorker] == YES){
+        if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE){
+            [GANGlobalVCManager showHudInfoWithMessage:@"New message is arrived." DismissAfter:-1 Callback:nil];
+        }
+        else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_RECRUIT){
+            [GANGlobalVCManager showHudInfoWithMessage:@"Good news! You are recruited." DismissAfter:-1 Callback:nil];
         }
     }
+    else {
+        if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE){
+            [GANGlobalVCManager showHudInfoWithMessage:@"New message is arrived." DismissAfter:-1 Callback:nil];
+        }
+        else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_APPLICATION){
+            [GANGlobalVCManager showHudInfoWithMessage:@"New job inquiry is arrived." DismissAfter:-1 Callback:nil];
+        }
+    }
+    [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
 }
 
 - (void) didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{

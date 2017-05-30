@@ -273,9 +273,9 @@
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     __weak typeof(self) wSelf = self;
     
-    [GANUtils requestTranslate:szDescription Translate:shouldTranslate Callback:^(int status, NSString *translatedText) {
+    [GANUtils requestTranslate:szDescription Translate:shouldTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status, NSString *translatedText) {
         if (status == SUCCESS_WITH_NO_ERROR) szDescriptionTranslated = translatedText;
-        [GANUtils requestTranslate:szBusinessName Translate:shouldTranslate Callback:^(int status, NSString *translatedText) {
+        [GANUtils requestTranslate:szBusinessName Translate:shouldTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status, NSString *translatedText) {
             __strong typeof(self) sSelf = wSelf;
             if (status == SUCCESS_WITH_NO_ERROR) szBusinessNameTranslated = translatedText;
             [sSelf doSignupWithTranslatedBusinessName:szBusinessNameTranslated DescriptionTranslated:szDescriptionTranslated];

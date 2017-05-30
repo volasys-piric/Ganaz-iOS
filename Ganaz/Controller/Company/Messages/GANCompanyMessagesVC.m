@@ -66,6 +66,14 @@
                                              selector:@selector(onLocalNotificationReceived:)
                                                  name:nil
                                                object:nil];
+    
+    [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(refreshData) userInfo:nil repeats:YES];
+}
+
+- (void) refreshData{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableview reloadData];
+    });
 }
 
 - (void) dealloc{
@@ -87,8 +95,14 @@
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self updateReadStatusIfNeeded];
+}
+
+- (void) updateReadStatusIfNeeded{
     if ([[GANMessageManager sharedInstance] getUnreadMessageCount] > 0){
-        [[GANMessageManager sharedInstance] requestMarkAsReadAllMessagesWithCallback:nil];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [[GANMessageManager sharedInstance] requestMarkAsReadAllMessagesWithCallback:nil];
+        });
     }
 }
 
@@ -216,7 +230,7 @@
     NSString *szMessage = self.textview.text;
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers Message:szMessage AutoTranslate:self.isAutoTranslate Callback:^(int status) {
+    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers Message:szMessage AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"Message is succesfully sent!" DismissAfter:-1 Callback:^{
                 [self animateToHidePopup];
@@ -243,7 +257,7 @@
             cell.lblMessage.text = [message getContentsEN];
             [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Message To: %@", user.szUserName];
+                cell.lblTitle.text = [NSString stringWithFormat:@"Message To %@", user.szUserName];
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT){
@@ -271,7 +285,7 @@
             cell.lblMessage.text = [message getContentsEN];
             [managerCache requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Message from: %@", user.szUserName];
+                cell.lblTitle.text = [NSString stringWithFormat:@"Message from %@", user.szUserName];
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION){
@@ -295,8 +309,9 @@
             }];
         }
     }
+    BOOL didRead = !([message amIReceiver] && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [cell refreshViewsWithType:message.enumType Status:message.enumStatus];
+    [cell refreshViewsWithType:message.enumType DidRead:didRead];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -354,6 +369,7 @@
     if (([[notification name] isEqualToString:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATED]) ||
         ([[notification name] isEqualToString:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATEFAILED])){
         [self buildMessageList];
+        [self updateReadStatusIfNeeded];
     }
 }
 

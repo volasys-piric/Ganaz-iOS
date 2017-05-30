@@ -138,7 +138,8 @@ typedef enum _ENUM_CONTENTS_TRANSLATE_REQUEST_STATUS{
 typedef enum _ENUM_PUSHNOTIFICATION_TYPE{
     GANENUM_PUSHNOTIFICATION_TYPE_NONE,
     GANENUM_PUSHNOTIFICATION_TYPE_RECRUIT,
-    GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE
+    GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE,
+    GANENUM_PUSHNOTIFICATION_TYPE_APPLICATION,
 }GANENUM_PUSHNOTIFICATION_TYPE;
 
 // Enum Membership Plan Type
@@ -147,6 +148,9 @@ typedef enum _ENUM_MEMBERSHIPPLAN_TYPE{
     GANENUM_MEMBERSHIPPLAN_TYPE_FREE,
     GANENUM_MEMBERSHIPPLAN_TYPE_PREMIUM,
 }GANENUM_MEMBERSHIPPLAN_TYPE;
+
+#define GANCONSTANTS_TRANSLATE_LANGUAGE_EN                      @"en"
+#define GANCONSTANTS_TRANSLATE_LANGUAGE_ES                      @"es"
 
 @interface GANUtils : NSObject
 
@@ -175,6 +179,10 @@ typedef enum _ENUM_MEMBERSHIPPLAN_TYPE{
 + (GANENUM_MEMBERSHIPPLAN_TYPE) getMembershipPlayTypeFromString: (NSString *) szType;
 + (NSString *) getStringFromMembershipPlanType: (GANENUM_MEMBERSHIPPLAN_TYPE) type;
 
-+ (void) requestTranslate: (NSString *) text Translate: (BOOL) shouldTranslate Callback: (void (^) (int status, NSString *translatedText)) callback;
++ (void) requestTranslate: (NSString *) text
+                Translate: (BOOL) shouldTranslate
+             FromLanguage: (NSString *) fromLanguage
+               ToLanguage: (NSString *) toLanguage
+                 Callback: (void (^) (int status, NSString *translatedText)) callback;
 
 @end

@@ -292,12 +292,14 @@
 + (GANENUM_PUSHNOTIFICATION_TYPE) getPushNotificationTypeFromString: (NSString *) szType{
     if ([szType caseInsensitiveCompare:@"recruit"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_RECRUIT;
     if ([szType caseInsensitiveCompare:@"message"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE;
+    if ([szType caseInsensitiveCompare:@"application"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_APPLICATION;
     return GANENUM_PUSHNOTIFICATION_TYPE_NONE;
 }
 
 + (NSString *) getStringFromPushNotificationType: (GANENUM_PUSHNOTIFICATION_TYPE) type{
     if (type == GANENUM_PUSHNOTIFICATION_TYPE_RECRUIT) return @"recruit";
     if (type == GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE) return @"message";
+    if (type == GANENUM_PUSHNOTIFICATION_TYPE_APPLICATION) return @"application";
     return @"";
 }
 
@@ -317,7 +319,12 @@
 
 // Translate
 
-+ (void) requestTranslate: (NSString *) text Translate: (BOOL) shouldTranslate Callback: (void (^) (int status, NSString *translatedText)) callback{
++ (void) requestTranslate: (NSString *) text
+                Translate: (BOOL) shouldTranslate
+             FromLanguage: (NSString *) fromLanguage
+               ToLanguage: (NSString *) toLanguage
+                 Callback: (void (^) (int status, NSString *translatedText)) callback{
+    
     if (shouldTranslate == NO){
         if (callback) callback(SUCCESS_WITH_NO_ERROR, text);
         return;
@@ -325,8 +332,8 @@
     
     NSString *szUrl = [GANUrlManager getEndpointForGoogleTranslate];
     NSDictionary *params = @{@"key": GOOGLE_TRANSLATE_API_KEY,
-                             @"source": @"en",
-                             @"target": @"es",
+                             @"source": fromLanguage,
+                             @"target": toLanguage,
                              @"q": text,
                              };
     

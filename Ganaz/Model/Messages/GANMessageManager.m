@@ -112,8 +112,16 @@
     }];
 }
 
-- (void) requestSendMessageWithJobId: (NSString *) jobId Type: (GANENUM_MESSAGE_TYPE) type Receivers: (NSArray *) receivers Message: (NSString *) message AutoTranslate: (BOOL) isAutoTranslate Callback: (void (^) (int status)) callback{
-    [GANUtils requestTranslate:message Translate:isAutoTranslate Callback:^(int status, NSString *translatedText) {
+- (void) requestSendMessageWithJobId: (NSString *) jobId
+                                Type: (GANENUM_MESSAGE_TYPE) type
+                           Receivers: (NSArray *) receivers
+                             Message: (NSString *) message
+                       AutoTranslate: (BOOL) isAutoTranslate
+                        FromLanguage: (NSString *) fromLanguage
+                          ToLanguage: (NSString *) toLanguage
+                            Callback: (void (^) (int status)) callback{
+    
+    [GANUtils requestTranslate:message Translate:isAutoTranslate FromLanguage:fromLanguage ToLanguage:toLanguage Callback:^(int status, NSString *translatedText) {
         if (status != SUCCESS_WITH_NO_ERROR) translatedText = message;
         NSString *szUrl = [GANUrlManager getEndpointForSendMessage];
         GANUserManager *managerUser = [GANUserManager sharedInstance];
@@ -130,8 +138,8 @@
                                               @"company_id": szSenderCompanyId
                                               },
                                  @"receivers": receivers,
-                                 @"message": @{@"en": message,
-                                               @"es": translatedText
+                                 @"message": @{fromLanguage: message,
+                                               toLanguage: translatedText
                                                },
                                  @"auto_translate": (isAutoTranslate == YES) ? @"true" : @"false"
                                  };

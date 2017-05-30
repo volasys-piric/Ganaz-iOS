@@ -1195,8 +1195,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ganaz.ganazapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "75aca039-b2b6-403c-b526-980464223391";
-				PROVISIONING_PROFILE_SPECIFIER = "com.ganaz.ganazapp-dev-2017-04-25";
+				PROVISIONING_PROFILE = "22409b64-195f-44e6-b202-2c9643c76639";
+				PROVISIONING_PROFILE_SPECIFIER = "com.ganaz.ganazapp-dev-2017-05-30";
 			};
 			name = Debug;
 		};

@@ -24,7 +24,14 @@
 #pragma mark - Request
 
 - (void) requestGetMessageListWithCallback: (void (^) (int status)) callback;
-- (void) requestSendMessageWithJobId: (NSString *) jobId Type: (GANENUM_MESSAGE_TYPE) type Receivers: (NSArray *) receivers Message: (NSString *) message AutoTranslate: (BOOL) isAutoTranslate Callback: (void (^) (int status)) callback;
 - (void) requestMarkAsReadAllMessagesWithCallback: (void (^) (int status)) callback;
+- (void) requestSendMessageWithJobId: (NSString *) jobId
+                                Type: (GANENUM_MESSAGE_TYPE) type
+                           Receivers: (NSArray *) receivers
+                             Message: (NSString *) message
+                       AutoTranslate: (BOOL) isAutoTranslate
+                        FromLanguage: (NSString *) fromLanguage
+                          ToLanguage: (NSString *) toLanguage
+                            Callback: (void (^) (int status)) callback;
 
 @end

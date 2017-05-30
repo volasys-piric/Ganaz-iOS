@@ -169,17 +169,19 @@
 #pragma mark - Badge
 
 + (void) updateMessageBadge{
-    if ([[GANUserManager sharedInstance] isUserLoggedIn] == YES &&
-        [[GANUserManager sharedInstance] isWorker] == YES){
+    if ([[GANUserManager sharedInstance] isUserLoggedIn] == YES){
+        int indexTab = 1;
+        if ([[GANUserManager sharedInstance] isCompanyUser] == YES) indexTab = 2;
+        
         int count = [[GANMessageManager sharedInstance] getUnreadMessageCount];
         UIViewController *vc = [GANGlobalVCManager getTopMostViewController];
         UITabBarController *tbc = vc.tabBarController;
         if (tbc != nil && [tbc isKindOfClass:[UITabBarController class]]){
             if (count > 0){
-                [[tbc.tabBar.items objectAtIndex:1] setBadgeValue:[NSString stringWithFormat:@"%d", count]];
+                [[tbc.tabBar.items objectAtIndex:indexTab] setBadgeValue:[NSString stringWithFormat:@"%d", count]];
             }
             else {
-                [[tbc.tabBar.items objectAtIndex:1] setBadgeValue:nil];
+                [[tbc.tabBar.items objectAtIndex:indexTab] setBadgeValue:nil];
             }
         }
     }

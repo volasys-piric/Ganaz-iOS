@@ -52,8 +52,8 @@
     self.tableview.rowHeight = UITableViewAutomaticDimension;
     self.tableview.estimatedRowHeight = 75;
     
-    self.isPopupShowing = NO;
     self.isAutoTranslate = NO;
+    self.isPopupShowing = NO;
     self.arrMessages = [[NSMutableArray alloc] init];
     
     [self buildMessageList];
@@ -93,13 +93,16 @@
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self updateReadStatusIfNeeded];
+}
+
+- (void) updateReadStatusIfNeeded{
     if ([[GANMessageManager sharedInstance] getUnreadMessageCount] > 0){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [[GANMessageManager sharedInstance] requestMarkAsReadAllMessagesWithCallback:nil];
         });
     }
 }
-
 - (void) refreshViews{
     [self buildMessageList];
     self.btnReply.layer.cornerRadius = 3;
@@ -173,6 +176,13 @@
 
 #pragma mark - UI Stuff
 
+- (void) showPopupForReplyMessage: (BOOL) isAutoTranslate{
+    // If incoming message is translated, the outgoing message will be translated automatically.
+    self.isAutoTranslate = isAutoTranslate;
+    self.textview.text = @"";
+    [self animateToShowPopup];
+}
+
 - (void) animateToShowPopup{
     if (self.isPopupShowing == YES) return;
     self.isPopupShowing = YES;
@@ -218,7 +228,7 @@
 - (void) showActionSheetForMessageAtIndex: (int) index{
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
     if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE){
-        [self animateToShowPopup];
+        [self showPopupForReplyMessage:message.isAutoTranslate];
     }
     else if ((message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT) || (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION)){
         UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -270,7 +280,7 @@
         }
     }];
     
-    [self animateToShowPopup];
+    [self showPopupForReplyMessage:message.isAutoTranslate];
 }
 
 - (void) doReplyMessage{
@@ -285,16 +295,18 @@
     }
     
     NSString *szMessage = self.textview.text;
-    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    // Please wait...
+    [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers Message:szMessage AutoTranslate:self.isAutoTranslate Callback:^(int status) {
+    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers Message:szMessage AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"Message is succesfully sent!" DismissAfter:-1 Callback:^{
                 [self animateToHidePopup];
             }];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
+            // Sorry, we've encountered an issue.
+            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
         }
     }];
 }
@@ -314,7 +326,7 @@
             [managerCache requestGetCompanyDetailsByCompanyId:message.szReceiverCompanyId Callback:^(int indexCompany) {
                 if (indexCompany != -1){
                     GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
-                    cell.lblTitle.text = [NSString stringWithFormat:@"Message to:%@", [company getBusinessNameES]];
+                    cell.lblTitle.text = [NSString stringWithFormat:@"Message to %@", [company getBusinessNameES]];
                 }
             }];
         }
@@ -353,7 +365,7 @@
             [managerCache requestGetCompanyDetailsByCompanyId:message.szSenderCompanyId Callback:^(int indexCompany) {
                 if (index != -1){
                     GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
-                    cell.lblTitle.text = [NSString stringWithFormat:@"Message from: %@", [company getBusinessNameES]];
+                    cell.lblTitle.text = [NSString stringWithFormat:@"Message from %@", [company getBusinessNameES]];
                 }
             }];
         }
@@ -384,8 +396,9 @@
             }];
         }
     }
+    BOOL didRead = !([message amIReceiver] && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [cell refreshViewsWithType:message.enumType Status:message.enumStatus];
+    [cell refreshViewsWithType:message.enumType DidRead:didRead];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -440,6 +453,7 @@
     if (([[notification name] isEqualToString:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATED]) ||
         ([[notification name] isEqualToString:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATEFAILED])){
         [self buildMessageList];
+        [self updateReadStatusIfNeeded];
     }
     else if ([[notification name] isEqualToString:GANLOCALNOTIFICATION_CONTENTS_TRANSLATED]){
         [self.tableview reloadData];

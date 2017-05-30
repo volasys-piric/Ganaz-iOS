@@ -770,7 +770,7 @@
                                                         </constraints>
                                                     </view>
                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f4E-AO-Ggi" userLabel="Button - Share">
-                                                        <rect key="frame" x="20" y="717" width="128" height="50"/>
+                                                        <rect key="frame" x="20" y="717" width="127.5" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="izw-oX-3Ph"/>
                                                         </constraints>
@@ -784,7 +784,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zvU-8h-G2B" userLabel="Button - Apply">
-                                                        <rect key="frame" x="164" y="717" width="191" height="50"/>
+                                                        <rect key="frame" x="163.5" y="717" width="191.5" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="PuQ-GD-3BB"/>
                                                         </constraints>

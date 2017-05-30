@@ -498,9 +498,9 @@ typedef enum _ENUM_PAYUNIT{
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     __weak typeof(self) wSelf = self;
     
-    [GANUtils requestTranslate:szComments Translate:shouldTranslate Callback:^(int status, NSString *translatedText) {
+    [GANUtils requestTranslate:szComments Translate:shouldTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status, NSString *translatedText) {
         if (status == SUCCESS_WITH_NO_ERROR) szCommentsTranslated = translatedText;
-        [GANUtils requestTranslate:szTitle Translate:shouldTranslate Callback:^(int status, NSString *translatedText) {
+        [GANUtils requestTranslate:szTitle Translate:shouldTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status, NSString *translatedText) {
             __strong typeof(self) sSelf = wSelf;
             if (status == SUCCESS_WITH_NO_ERROR) szTitleTranslated = translatedText;
             [sSelf doPostWithTranslatedTitle:szTitleTranslated TranslatedComments:szCommentsTranslated];

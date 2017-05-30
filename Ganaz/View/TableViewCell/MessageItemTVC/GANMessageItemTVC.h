@@ -16,6 +16,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblMessage;
 
-- (void) refreshViewsWithType: (GANENUM_MESSAGE_TYPE) type Status: (GANENUM_MESSAGE_STATUS) status;
+- (void) refreshViewsWithType: (GANENUM_MESSAGE_TYPE) type DidRead: (BOOL) didRead;
 
 @end

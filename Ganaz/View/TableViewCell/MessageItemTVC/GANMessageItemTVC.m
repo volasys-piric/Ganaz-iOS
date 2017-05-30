@@ -22,19 +22,17 @@
     // Configure the view for the selected state
 }
 
-- (void) refreshViewsWithType: (GANENUM_MESSAGE_TYPE) type Status: (GANENUM_MESSAGE_STATUS) status{
+- (void) refreshViewsWithType: (GANENUM_MESSAGE_TYPE) type DidRead: (BOOL) didRead{
     self.lblAvatar.layer.cornerRadius = 18;
     if (type == GANENUM_MESSAGE_TYPE_MESSAGE) self.lblAvatar.text = @"MSG";
     if (type == GANENUM_MESSAGE_TYPE_RECRUIT) self.lblAvatar.text = @"JOB";
     if (type == GANENUM_MESSAGE_TYPE_APPLICATION) self.lblAvatar.text = @"APP";
     
-    if (status == GANENUM_MESSAGE_STATUS_NEW){
+    if (didRead == NO){
         self.lblAvatar.backgroundColor = GANUICOLOR_THEMECOLOR_GREEN;
-        GANLOG(@"Green Color");
     }
     else {
         self.lblAvatar.backgroundColor = GANUICOLOR_THEMECOLOR_MAIN;
-        GANLOG(@"Gray Color");
     }
 }
 
