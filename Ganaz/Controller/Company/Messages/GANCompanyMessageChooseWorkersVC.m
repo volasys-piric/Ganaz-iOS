@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnAutoTranslate;
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 @property (weak, nonatomic) IBOutlet UIButton *btnContinue;
+@property (weak, nonatomic) IBOutlet UIButton *btnAddWorker;
 @property (weak, nonatomic) IBOutlet UITextView *textview;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintPopupPanelBottomSpace;
 
@@ -80,6 +81,7 @@
     self.btnContinue.layer.cornerRadius = 3;
     self.btnSubmit.layer.cornerRadius = 3;
     self.viewMessage.layer.cornerRadius = 3;
+    self.btnAddWorker.layer.cornerRadius = 3;
     [self refreshAutoTranslateView];
 }
 

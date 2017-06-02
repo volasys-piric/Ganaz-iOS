@@ -112,14 +112,15 @@
 }
 
 - (void) addMapMarker{
+    [self.mapView clear];
+    [self.arrMarkers removeAllObjects];
+
     NSArray *arrJobs = [GANJobManager sharedInstance].arrJobsSearchResult;
     if (arrJobs.count == 0) return;
     
     CLLocation *locationCurrent = [[GANUserManager sharedInstance] getCurrentLocation];
     UIImage *imgPin = [UIImage imageNamed:@"map-pin"];
     
-    [self.mapView clear];
-    [self.arrMarkers removeAllObjects];
     
     for (int i = 0; i < (int) [arrJobs count]; i++){
         GANJobDataModel *job = [arrJobs objectAtIndex:i];

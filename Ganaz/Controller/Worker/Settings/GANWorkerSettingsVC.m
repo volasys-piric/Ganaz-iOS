@@ -15,6 +15,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *btnSignout;
 @property (weak, nonatomic) IBOutlet UIButton *btnChangeLocation;
+@property (weak, nonatomic) IBOutlet UIButton *btnToS;
 
 @end
 
@@ -42,6 +43,10 @@
     self.btnChangeLocation.layer.cornerRadius = 3;
     self.btnChangeLocation.layer.borderWidth = 1;
     self.btnChangeLocation.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
+    
+    self.btnToS.layer.cornerRadius = 3;
+    self.btnToS.layer.borderWidth = 1;
+    self.btnToS.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
 }
 
 - (void) gotoUpdateLocationVC{
@@ -51,6 +56,15 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
+- (void) gotoToSVC{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_TOS"];
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+}
+
+#pragma mark - UIButton Delegate
+
 - (IBAction)onBtnSignoutClick:(id)sender {
 //    [self.tabBarController dismissViewControllerAnimated:YES completion:nil];
     [GANGlobalVCManager logoutToLoginVC:self.tabBarController];
@@ -59,6 +73,10 @@
 
 - (IBAction)onBtnChangeLocationClick:(id)sender {
     [self gotoUpdateLocationVC];
+}
+
+- (IBAction)onBtnToSClick:(id)sender {
+    [self gotoToSVC];
 }
 
 @end

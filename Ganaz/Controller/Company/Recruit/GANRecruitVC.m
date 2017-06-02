@@ -34,6 +34,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *btnContinue;
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
+@property (weak, nonatomic) IBOutlet UIButton *btnAddWorker;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintPopupPanelTopSpacing;
 
@@ -97,6 +98,7 @@
     self.viewBroadcastPanel.layer.cornerRadius = 3;
     self.btnSubmit.layer.cornerRadius = 3;
     self.btnContinue.layer.cornerRadius = 3;
+    self.btnAddWorker.layer.cornerRadius = 3;
 }
 
 - (void) refreshPopupView{

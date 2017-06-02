@@ -260,8 +260,9 @@
     GANJobManager *managerJob = [GANJobManager sharedInstance];
     
     cell.lblDateTime.text = [GANGenericFunctionManager getBeautifiedPastTime:message.dateSent];
+    BOOL amISender = [message amISender];
     
-    if ([message amISender] == YES){
+    if (amISender == YES){
         if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE){
             cell.lblTitle.text = @"Message sent";
             cell.lblMessage.text = [message getContentsEN];
@@ -321,7 +322,7 @@
     }
     BOOL didRead = !([message amIReceiver] && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [cell refreshViewsWithType:message.enumType DidRead:didRead];
+    [cell refreshViewsWithType:message.enumType DidRead:didRead DidSend:amISender];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

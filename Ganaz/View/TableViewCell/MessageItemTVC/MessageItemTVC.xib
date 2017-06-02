@@ -31,7 +31,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aKN-nZ-zcy" userLabel="View - Content View">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JOB" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lJw-lB-wdX" userLabel="Label - Avatar">
                                 <rect key="frame" x="12" y="17" width="36" height="36"/>
@@ -40,10 +40,17 @@
                                     <constraint firstAttribute="width" secondItem="lJw-lB-wdX" secondAttribute="height" multiplier="1:1" id="ONu-Uu-M4m"/>
                                     <constraint firstAttribute="width" constant="36" id="rCG-rJ-fTE"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="11"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="10"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-message-received" translatesAutoresizingMaskIntoConstraints="NO" id="eTm-zN-9bA" userLabel="Image - Indicator">
+                                <rect key="frame" x="34" y="39" width="18" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="18" id="Ct5-nA-CQE"/>
+                                    <constraint firstAttribute="width" secondItem="eTm-zN-9bA" secondAttribute="height" multiplier="1:1" id="iJb-n4-wsb"/>
+                                </constraints>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jun 21, 2017" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="orV-T0-Vph" userLabel="Label - Date Time">
                                 <rect key="frame" x="283" y="12" width="80" height="18"/>
                                 <constraints>
@@ -64,7 +71,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="The fields are still wet. Please wait till you get confirmation" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gn1-ja-muL" userLabel="Label - Message">
-                                <rect key="frame" x="62" y="42" width="301" height="15.5"/>
+                                <rect key="frame" x="62" y="42" width="301" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="Xk2-6z-N5k"/>
                                 </constraints>
@@ -73,7 +80,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q2I-uA-NLI" userLabel="Label - Separator">
-                                <rect key="frame" x="62" y="68.5" width="313" height="1"/>
+                                <rect key="frame" x="62" y="69" width="313" height="1"/>
                                 <color key="backgroundColor" red="0.96078431372549022" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="oQu-tZ-7aL"/>
@@ -92,10 +99,12 @@
                             <constraint firstItem="gn1-ja-muL" firstAttribute="trailing" secondItem="orV-T0-Vph" secondAttribute="trailing" id="APT-0F-cE2"/>
                             <constraint firstItem="T7J-zy-FyE" firstAttribute="top" secondItem="aKN-nZ-zcy" secondAttribute="top" constant="10" id="J5c-LO-ySU"/>
                             <constraint firstItem="T7J-zy-FyE" firstAttribute="leading" secondItem="lJw-lB-wdX" secondAttribute="trailing" constant="14" id="O5k-mp-X2E"/>
+                            <constraint firstItem="eTm-zN-9bA" firstAttribute="bottom" secondItem="lJw-lB-wdX" secondAttribute="bottom" constant="4" id="QaK-tq-QQu"/>
                             <constraint firstItem="lJw-lB-wdX" firstAttribute="leading" secondItem="aKN-nZ-zcy" secondAttribute="leading" constant="12" id="Sdz-MZ-ezi"/>
                             <constraint firstAttribute="trailing" secondItem="Q2I-uA-NLI" secondAttribute="trailing" id="SlC-pA-cJJ"/>
                             <constraint firstItem="gn1-ja-muL" firstAttribute="leading" secondItem="T7J-zy-FyE" secondAttribute="leading" id="Z7l-IF-Ie3"/>
                             <constraint firstItem="Q2I-uA-NLI" firstAttribute="leading" secondItem="gn1-ja-muL" secondAttribute="leading" id="bV9-kt-itd"/>
+                            <constraint firstItem="eTm-zN-9bA" firstAttribute="trailing" secondItem="lJw-lB-wdX" secondAttribute="trailing" constant="4" id="hzu-nH-k28"/>
                             <constraint firstAttribute="bottom" secondItem="Q2I-uA-NLI" secondAttribute="bottom" id="jnN-Nt-qEA"/>
                             <constraint firstAttribute="trailing" secondItem="orV-T0-Vph" secondAttribute="trailing" constant="12" id="tPj-NG-e8Q"/>
                             <constraint firstItem="orV-T0-Vph" firstAttribute="leading" secondItem="T7J-zy-FyE" secondAttribute="trailing" constant="8" id="vV9-st-wib"/>
@@ -103,13 +112,14 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="aKN-nZ-zcy" firstAttribute="leading" secondItem="dVU-WV-EU4" secondAttribute="leading" id="10H-ER-vjU"/>
-                    <constraint firstAttribute="trailing" secondItem="aKN-nZ-zcy" secondAttribute="trailing" id="8uu-ch-dgF"/>
-                    <constraint firstItem="aKN-nZ-zcy" firstAttribute="top" secondItem="dVU-WV-EU4" secondAttribute="top" id="Tk3-zr-efH"/>
-                    <constraint firstAttribute="bottom" secondItem="aKN-nZ-zcy" secondAttribute="bottom" id="uaK-yE-rZu"/>
+                    <constraint firstItem="aKN-nZ-zcy" firstAttribute="top" secondItem="dVU-WV-EU4" secondAttribute="top" id="epv-4i-bIi"/>
+                    <constraint firstAttribute="bottom" secondItem="aKN-nZ-zcy" secondAttribute="bottom" id="odS-rC-wn4"/>
+                    <constraint firstAttribute="trailing" secondItem="aKN-nZ-zcy" secondAttribute="trailing" id="pDA-cX-e4o"/>
+                    <constraint firstItem="aKN-nZ-zcy" firstAttribute="leading" secondItem="dVU-WV-EU4" secondAttribute="leading" id="sDj-rt-ZvM"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="imgIndicator" destination="eTm-zN-9bA" id="el8-DN-brT"/>
                 <outlet property="lblAvatar" destination="lJw-lB-wdX" id="44h-cd-CkG"/>
                 <outlet property="lblDateTime" destination="orV-T0-Vph" id="h5B-sY-rqZ"/>
                 <outlet property="lblMessage" destination="gn1-ja-muL" id="MGr-Af-elK"/>
@@ -118,4 +128,7 @@
             <point key="canvasLocation" x="-63.5" y="-174"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="icon-message-received" width="32" height="32"/>
+    </resources>
 </document>

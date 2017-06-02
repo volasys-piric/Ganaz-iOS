@@ -20,6 +20,7 @@
 
 - (void) setWithDictionary:(NSDictionary *)dict{
     self.szId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"_id"]];
+    self.enumType = [GANUtils getUserTypeFromString:[GANGenericFunctionManager refineNSString:[dict objectForKey:@"type"]]];
     self.szAccessToken = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"access_token"]];
     self.szFirstName = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"firstname"]];
     self.szLastName = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"lastname"]];
@@ -67,6 +68,10 @@
     if (playerId.length == 0) return;
     if ([self getIndexForPlayerId:playerId] != -1) return;
     [self.arrPlayerIds addObject:playerId];
+}
+
+- (NSString *) getFullName{
+    return [NSString stringWithFormat:@"%@ %@", self.szFirstName, self.szLastName];
 }
 
 @end

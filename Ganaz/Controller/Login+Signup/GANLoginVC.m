@@ -185,6 +185,9 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
+    if (textField == self.txtPassword){
+        [self doLogin];
+    }
     return YES;
 }
 

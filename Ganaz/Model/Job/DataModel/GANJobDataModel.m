@@ -134,7 +134,7 @@
     [dict setObject:[self.modelComments serializeToDictionary] forKey:@"comments"];
     [dict setObject:(self.isAutoTranslate == YES) ? @"true": @"false" forKey:@"auto_translate"];
 
-    [dict setObject:@{@"rate": @((int) self.fPayRate),
+    [dict setObject:@{@"rate": [NSString stringWithFormat:@"%.2f", self.fPayRate],
                       @"unit": ((self.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"hr" : @"lb")
                       }
              forKey:@"pay"];

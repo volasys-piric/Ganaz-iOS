@@ -329,8 +329,8 @@
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
 
     cell.lblDateTime.text = [GANGenericFunctionManager getBeautifiedPastTime:message.dateSent];
-    
-    if ([message amISender] == YES){
+    BOOL amISender = [message amISender];
+    if (amISender == YES){
         if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE){
             cell.lblTitle.text = @"Message sent";
             cell.lblMessage.text = [message getContentsES];
@@ -409,7 +409,7 @@
     }
     BOOL didRead = !([message amIReceiver] && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [cell refreshViewsWithType:message.enumType DidRead:didRead];
+    [cell refreshViewsWithType:message.enumType DidRead:didRead DidSend:amISender];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

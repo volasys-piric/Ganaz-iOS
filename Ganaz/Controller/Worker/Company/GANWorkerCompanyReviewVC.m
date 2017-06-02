@@ -79,7 +79,7 @@
                      @{@"icon": @"icon-review-benefit", @"title": @"Prestaciones"},
                      @{@"icon": @"icon-review-supervision", @"title": @"Supervisores"},
                      @{@"icon": @"icon-review-security", @"title": @"Salud y Seguridad"},
-                     @{@"icon": @"icon-review-comfort", @"title": @"Confiable"},
+                     @{@"icon": @"icon-review-handshake", @"title": @"Honestidad"},
                      ];
 }
 

@@ -49,6 +49,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnSignup;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogin;
 @property (weak, nonatomic) IBOutlet UIButton *btnAutoTranslate;
+@property (weak, nonatomic) IBOutlet UIButton *btnCompanyCode;
 
 @property (weak, nonatomic) IBOutlet UITextField *txtCompanyName;
 @property (weak, nonatomic) IBOutlet UITextView *textviewDescription;
@@ -112,6 +113,7 @@
     
     self.btnSignup.layer.cornerRadius = 3;
     self.btnLogin.layer.cornerRadius = 3;
+    self.btnCompanyCode.layer.cornerRadius = 3;
     self.btnLogin.layer.borderWidth = 1;
     self.btnLogin.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
     
@@ -408,14 +410,23 @@
     */
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-    UITabBarController *tbc = [storyboard instantiateInitialViewController];
-    [self.navigationController setViewControllers:@[tbc] animated:YES];
+    UIViewController *vc = [storyboard instantiateInitialViewController];
+    UINavigationController *nav = self.navigationController;
+    [self presentViewController:vc animated:YES completion:^{
+        [self.navigationController setViewControllers:@[[nav.viewControllers objectAtIndex:0]]];
+    }];
     
     [[GANAppManager sharedInstance] initializeManagersAfterLogin];
 }
 
 - (void) gotoLogin{
     [[GANGlobalVCManager sharedInstance] gotoLoginVC];
+}
+
+- (void) gotoToS{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_LOGIN_TOS"];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - UITextField Delegate
@@ -471,6 +482,11 @@
 - (void)didCompanyCodeVerify:(int)indexCompany{
     self.indexCompany = indexCompany;
     [self refreshCompanyFields];
+}
+
+- (IBAction)onBtnToSClick:(id)sender {
+    [self.view endEditing:YES];
+    [self gotoToS];
 }
 
 @end

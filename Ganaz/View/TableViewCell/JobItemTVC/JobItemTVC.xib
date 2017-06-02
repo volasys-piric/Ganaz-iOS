@@ -27,6 +27,10 @@
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5ER-Wz-Jrj" userLabel="View - Container View">
                         <rect key="frame" x="0.0" y="3" width="375" height="69.5"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mya-3B-OfY" userLabel="View - Right Background">
+                                <rect key="frame" x="282" y="0.0" width="93" height="69.5"/>
+                                <color key="backgroundColor" red="0.40000000000000002" green="0.70588235290000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4fq-de-4yr" userLabel="Label - Separator">
                                 <rect key="frame" x="281" y="0.0" width="1" height="69.5"/>
                                 <color key="backgroundColor" red="0.87450980392156863" green="0.87450980392156863" blue="0.85490196078431369" alpha="1" colorSpace="calibratedRGB"/>
@@ -61,7 +65,7 @@
                                     <constraint firstAttribute="height" constant="24" id="uY8-1G-q0D"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="20"/>
-                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="per hour" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oBZ-V1-7gF" userLabel="Label - Unit">
@@ -70,13 +74,13 @@
                                     <constraint firstAttribute="height" constant="16" id="O9S-b4-dDQ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="13"/>
-                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="N/A" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="RPk-eg-N8R" userLabel="Label - Price NA">
                                 <rect key="frame" x="293" y="-0.5" width="74" height="69.5"/>
                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="20"/>
-                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -90,13 +94,17 @@
                             <constraint firstItem="RPk-eg-N8R" firstAttribute="width" secondItem="7VN-2v-iZC" secondAttribute="width" id="BXp-ki-qe1"/>
                             <constraint firstAttribute="trailing" secondItem="7VN-2v-iZC" secondAttribute="trailing" constant="8" id="H74-4C-V21"/>
                             <constraint firstItem="ZIH-cu-XTk" firstAttribute="width" secondItem="TKP-0G-BLh" secondAttribute="width" id="IAK-Re-EkH"/>
+                            <constraint firstItem="Mya-3B-OfY" firstAttribute="leading" secondItem="4fq-de-4yr" secondAttribute="trailing" id="Mnw-B2-CfK"/>
                             <constraint firstItem="TKP-0G-BLh" firstAttribute="leading" secondItem="5ER-Wz-Jrj" secondAttribute="leading" constant="15" id="P0l-Wk-9CX"/>
                             <constraint firstItem="RPk-eg-N8R" firstAttribute="centerY" secondItem="5ER-Wz-Jrj" secondAttribute="centerY" id="SZ1-5G-RBC"/>
+                            <constraint firstAttribute="trailing" secondItem="Mya-3B-OfY" secondAttribute="trailing" id="YMJ-xY-rt1"/>
                             <constraint firstItem="oBZ-V1-7gF" firstAttribute="width" secondItem="7VN-2v-iZC" secondAttribute="width" id="f8K-DI-38l"/>
                             <constraint firstItem="RPk-eg-N8R" firstAttribute="height" secondItem="5ER-Wz-Jrj" secondAttribute="height" id="h9d-hE-hZ7"/>
                             <constraint firstItem="4fq-de-4yr" firstAttribute="height" secondItem="5ER-Wz-Jrj" secondAttribute="height" id="jpV-T0-Zkk"/>
                             <constraint firstItem="ZIH-cu-XTk" firstAttribute="top" secondItem="TKP-0G-BLh" secondAttribute="bottom" constant="3" id="kLK-CL-mCM"/>
                             <constraint firstItem="oBZ-V1-7gF" firstAttribute="centerX" secondItem="7VN-2v-iZC" secondAttribute="centerX" id="klV-qa-9af"/>
+                            <constraint firstItem="Mya-3B-OfY" firstAttribute="height" secondItem="5ER-Wz-Jrj" secondAttribute="height" id="oKE-z1-bJO"/>
+                            <constraint firstItem="Mya-3B-OfY" firstAttribute="centerY" secondItem="5ER-Wz-Jrj" secondAttribute="centerY" id="pQl-fE-FBM"/>
                             <constraint firstItem="TKP-0G-BLh" firstAttribute="top" secondItem="5ER-Wz-Jrj" secondAttribute="top" constant="15" id="qY4-h4-hFE"/>
                             <constraint firstItem="TKP-0G-BLh" firstAttribute="trailing" secondItem="4fq-de-4yr" secondAttribute="trailing" constant="-15" id="tBC-1o-X3E"/>
                             <constraint firstItem="RPk-eg-N8R" firstAttribute="centerX" secondItem="7VN-2v-iZC" secondAttribute="centerX" id="whr-ot-IX2"/>
@@ -118,6 +126,7 @@
                 <outlet property="lblTitle" destination="TKP-0G-BLh" id="OZ3-Z2-aLI"/>
                 <outlet property="lblUnit" destination="oBZ-V1-7gF" id="AZA-yD-F3E"/>
                 <outlet property="viewContainer" destination="5ER-Wz-Jrj" id="3yQ-mC-GHb"/>
+                <outlet property="viewRightBackground" destination="Mya-3B-OfY" id="8HZ-3f-1vg"/>
             </connections>
             <point key="canvasLocation" x="26.5" y="68"/>
         </tableViewCell>

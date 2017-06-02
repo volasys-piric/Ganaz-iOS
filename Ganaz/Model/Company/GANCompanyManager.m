@@ -34,6 +34,7 @@
 
 - (void) initializeManager{
     self.arrMyWorkers = [[NSMutableArray alloc] init];
+    self.arrCompanyUsers = [[NSMutableArray alloc] init];
     self.isMyWorkersLoading = NO;
 }
 
@@ -56,6 +57,16 @@
     return -1;
 }
 
+- (int) getIndexForCompanyUserWithUserId: (NSString *) userId{
+    for (int i = 0; i < (int) [self.arrCompanyUsers count]; i++){
+        GANUserCompanyDataModel *user = [self.arrCompanyUsers objectAtIndex:i];
+        if ([user.szId isEqualToString:userId]){
+            return i;
+        }
+    }
+    return -1;
+}
+
 - (int) addMyWorkerIfNeeded: (GANMyWorkerDataModel *) myWorkerNew{
     for (int i = 0; i < (int) [self.arrMyWorkers count]; i++){
         GANMyWorkerDataModel *myWorker = [self.arrMyWorkers objectAtIndex:i];
@@ -65,6 +76,15 @@
     }
     [self.arrMyWorkers addObject:myWorkerNew];
     return (int) [self.arrMyWorkers count] - 1;
+}
+
+- (int) addCompanyUserIfNeeded: (GANUserCompanyDataModel *) userNew{
+    for (int i = 0; i < (int) [self.arrCompanyUsers count]; i++){
+        GANUserCompanyDataModel *user = [self.arrCompanyUsers objectAtIndex:i];
+        if ([user.szId isEqualToString:userNew.szId] == YES) return i;
+    }
+    [self.arrCompanyUsers addObject:userNew];
+    return (int) [self.arrCompanyUsers count] - 1;
 }
 
 #pragma mark - Request
@@ -195,6 +215,67 @@
         NSDictionary *dict = responseObject;
         BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
         if (success){
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+    }];
+}
+
+#pragma mark - Company Users
+
+- (void) requestGetCompanyUsersWithCallback: (void (^) (int status)) callback{
+    NSString *companyId = [GANUserManager getCompanyDataModel].szId;
+    NSString *szUrl = [GANUrlManager getEndpointForUserSearch];
+    NSDictionary *param = @{@"company_id": companyId};
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:NO parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            NSArray *arrUsers = [dict objectForKey:@"users"];
+            [self.arrCompanyUsers removeAllObjects];
+            
+            GANUserCompanyDataModel *me = [GANUserManager getUserCompanyDataModel];
+            for (int i = 0; i < (int) [arrUsers count]; i++){
+                NSDictionary *dictUser = [arrUsers objectAtIndex:i];
+                
+                GANUserCompanyDataModel *userNew = [[GANUserCompanyDataModel alloc] init];
+                [userNew setWithDictionary:dictUser];
+                if ([userNew.szId isEqualToString:me.szId] == NO){
+                    [self addCompanyUserIfNeeded:userNew];
+                    [[GANCacheManager sharedInstance] addUserIfNeeded:userNew];
+                }
+            }
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_COMPANYUSERSLIST_UPDATED object:nil];
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_COMPANYUSERSLIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_COMPANYUSERSLIST_UPDATEFAILED object:nil];
+    }];
+}
+
+- (void) requestUpdateCompanyUserType: (NSString *) userId Type: (GANENUM_USER_TYPE) type Callback: (void (^) (int status)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForUserUpdateTypeWithUserId:userId];
+    NSDictionary *param = @{@"type": [GANUtils getStringFromUserType:type]};
+    
+    [[GANNetworkRequestManager sharedInstance] PATCH:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            int index = [self getIndexForCompanyUserWithUserId:userId];
+            GANUserCompanyDataModel *user = [self.arrCompanyUsers objectAtIndex:index];
+            user.enumType = type;
             if (callback) callback(SUCCESS_WITH_NO_ERROR);
         }
         else {

@@ -65,6 +65,10 @@
     return [NSString stringWithFormat:@"%@/user/%@", GANURL_BASEURL, userId];
 }
 
++ (NSString *) getEndpointForUserUpdateTypeWithUserId: (NSString *) userId{
+    return [NSString stringWithFormat:@"%@/user/%@/type", GANURL_BASEURL, userId];
+}
+
 #pragma mark - Endpoint for Job
 
 + (NSString *) getEndpointForAddJob{

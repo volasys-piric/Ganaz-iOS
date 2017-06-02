@@ -199,7 +199,7 @@ typedef enum _ENUM_PAYUNIT{
     GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:self.indexJob];
     
     self.txtTitle.text = [job getTitleEN];
-    self.txtPrice.text = [NSString stringWithFormat:@"%d", (int) job.fPayRate];
+    self.txtPrice.text = [NSString stringWithFormat:@"%.2f", job.fPayRate];
     if ([job isPayRateSpecified] == NO){
         self.txtPrice.text = @"";
     }

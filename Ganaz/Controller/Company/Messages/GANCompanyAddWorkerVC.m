@@ -20,6 +20,12 @@
 #import "GANGlobalVCManager.h"
 #import <UIView+Shake.h>
 
+typedef enum _ENUM_FOUNDSTATUS{
+    GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE,
+    GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_FOUND,
+    GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND
+}GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS;
+
 @interface GANCompanyAddWorkerVC () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
@@ -28,9 +34,13 @@
 @property (weak, nonatomic) IBOutlet GANUIPhoneTextField *txtPhone;
 @property (weak, nonatomic) IBOutlet UIButton *btnAdd;
 @property (weak, nonatomic) IBOutlet UIButton *btnInvite;
+@property (weak, nonatomic) IBOutlet UILabel *lblNote;
+@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 
 @property (strong, nonatomic) NSMutableArray *arrWorkersFound;
 @property (strong, nonatomic) NSMutableArray *arrWorkersSelected;
+
+@property (assign, atomic) GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS enumStatus;
 
 @end
 
@@ -43,8 +53,11 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
+    self.viewPhone.layer.cornerRadius = 3;
+    self.btnAdd.layer.cornerRadius = 3;
+    
+    self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE;
     self.arrWorkersSelected = [[NSMutableArray alloc] init];
     self.arrWorkersFound = [[NSMutableArray alloc] init];
     
@@ -66,8 +79,27 @@
 }
 
 - (void) refreshViews{
-    self.viewPhone.layer.cornerRadius = 3;
-    self.btnAdd.layer.cornerRadius = 3;
+    if (self.enumStatus == GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE){
+        self.lblTitle.text = @"Enter phone number";
+        self.lblNote.text = @"If you have a large number of workers to add, you can send Ganaz a list of those workers at info@ganazapp.com and we’ll happily add them for you.";
+        self.btnInvite.hidden = YES;
+        self.btnAdd.hidden = YES;
+        [self.btnAdd setTitle:@"Search" forState:UIControlStateNormal];
+    }
+    else if (self.enumStatus == GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_FOUND){
+        self.lblTitle.text = @"Worker(s) found";
+        self.lblNote.text = @"";
+        self.btnInvite.hidden = YES;
+        self.btnAdd.hidden = NO;
+        [self.btnAdd setTitle:@"Add worker" forState:UIControlStateNormal];
+    }
+    else if (self.enumStatus == GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND){
+        self.lblTitle.text = @"Worker not found";
+        self.lblNote.text = @"Note: any worker you invite to Ganaz will receive recruiting messages exclusively from you for 12 months unless they otherwise opt-out";
+        self.btnInvite.hidden = YES;
+        self.btnAdd.hidden = NO;
+        [self.btnAdd setTitle:@"Invite to Ganaz" forState:UIControlStateNormal];
+    }
 }
 
 #pragma mark - Biz Logic
@@ -84,12 +116,6 @@
     [viewContainer shake:6 withDelta:8 speed:0.07];
 }
 
-- (void) showEmptyPanel: (BOOL) show{
-    self.btnInvite.hidden = !show;
-    self.tableview.hidden = show;
-    self.btnAdd.hidden = show;
-}
-
 - (void) searchWorkers{
     NSString *szPhoneNumber = self.txtPhone.text;
     szPhoneNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:szPhoneNumber];
@@ -104,17 +130,20 @@
         if (status == SUCCESS_WITH_NO_ERROR && arrWorkers != nil){
             int count = (int) [arrWorkers count];
             if (count == 0){
-                [self showEmptyPanel:NO];
+                self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND;
+                [self refreshViews];
                 [GANGlobalVCManager showHudInfoWithMessage:@"No new worker found!" DismissAfter:-1 Callback:nil];
             }
             else {
                 [self buildSearchResultWithArray:arrWorkers];
-                [self showEmptyPanel:NO];
+                self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_FOUND;
+                [self refreshViews];
                 [GANGlobalVCManager showHudSuccessWithMessage:[NSString stringWithFormat:@"%d worker(s) found!", (int) [arrWorkers count]] DismissAfter:-1 Callback:nil];
             }
         }
         else if (status == ERROR_NOT_FOUND){
-            [self showEmptyPanel:YES];
+            self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND;
+            [self refreshViews];
             [GANGlobalVCManager showHudInfoWithMessage:@"No worker found!" DismissAfter:-1 Callback:nil];
         }
         else {
@@ -220,11 +249,22 @@
 
 - (IBAction)onBtnAddClick:(id)sender {
     [self.view endEditing:YES];
-    if ([self isWorkerSelected] == NO){
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please select workers to add!" DismissAfter:-1 Callback:nil];
-        return;
+    if (self.enumStatus == GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE){
+        // Search
+        [self searchWorkers];
     }
-    [self doAddMyWorkers];
+    else if (self.enumStatus == GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_FOUND){
+        // Add
+        if ([self isWorkerSelected] == NO){
+            [GANGlobalVCManager showHudErrorWithMessage:@"Please select workers to add!" DismissAfter:-1 Callback:nil];
+            return;
+        }
+        [self doAddMyWorkers];
+    }
+    else if (self.enumStatus == GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND){
+        // Invite
+        [self doInvite];
+    }
 }
 
 - (IBAction)onBtnInviteClick:(id)sender {

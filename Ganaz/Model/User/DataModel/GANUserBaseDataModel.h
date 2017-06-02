@@ -31,4 +31,6 @@
 - (int) getIndexForPlayerId: (NSString *) playerId;
 - (void) addPlayerIdIfNeeded: (NSString *) playerId;
 
+- (NSString *) getFullName;
+
 @end

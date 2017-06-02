@@ -8,11 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "GANCompanyDataModel.h"
+#import "GANUserCompanyDataModel.h"
 #import "GANMyWorkerDataModel.h"
 
 @interface GANCompanyManager : NSObject
 
 @property (strong, nonatomic) NSMutableArray<GANMyWorkerDataModel *> *arrMyWorkers;
+@property (strong, nonatomic) NSMutableArray<GANUserCompanyDataModel *> *arrCompanyUsers;
+
 @property (assign, atomic) BOOL isMyWorkersLoading;
 
 + (instancetype) sharedInstance;
@@ -28,5 +31,10 @@
 - (void) requestAddMyWorkerWithUserIds: (NSArray *) arrUserIds Callback: (void (^) (int status)) callback;
 - (void) requestSearchNewWorkersByPhoneNumber: (NSString *) phoneNumber Callback: (void (^) (int status, NSArray *arrWorkers)) callback;
 - (void) requestSendInvite: (GANPhoneDataModel *) phone CompanyId: (NSString *) companyId Callback: (void (^) (int status)) callback;
+
+#pragma mark - Company Users
+
+- (void) requestGetCompanyUsersWithCallback: (void (^) (int status)) callback;
+- (void) requestUpdateCompanyUserType: (NSString *) userId Type: (GANENUM_USER_TYPE) type Callback: (void (^) (int status)) callback;
 
 @end

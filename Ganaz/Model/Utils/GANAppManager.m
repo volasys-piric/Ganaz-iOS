@@ -59,6 +59,8 @@
     if ([managerUser isCompanyUser] == YES){
         [[GANJobManager sharedInstance] requestMyJobListWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:nil];
+        [[GANCompanyManager sharedInstance] requestGetCompanyUsersWithCallback:nil];
+        
     }
     else {
         [[GANJobManager sharedInstance] requestGetMyApplicationsWithCallback:nil];
