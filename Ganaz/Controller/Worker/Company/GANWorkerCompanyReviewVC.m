@@ -76,7 +76,7 @@
     }
     
     self.arrItem = @[@{@"icon": @"icon-review-pay", @"title": @"Pago"},
-                     @{@"icon": @"icon-review-benefit", @"title": @"Prestaciones"},
+                     @{@"icon": @"icon-review-benefit", @"title": @"Beneficios"},
                      @{@"icon": @"icon-review-supervision", @"title": @"Supervisores"},
                      @{@"icon": @"icon-review-security", @"title": @"Salud y Seguridad"},
                      @{@"icon": @"icon-review-handshake", @"title": @"Honestidad"},
