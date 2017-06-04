@@ -12,6 +12,7 @@
 
 @property (assign, atomic) int indexCompany;
 @property (assign, atomic) int indexJob;
-@property (assign, atomic) BOOL isRecruited;
+
+- (void) refreshOnChange;
 
 @end

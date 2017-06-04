@@ -8,68 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
-
-// Phone Data Model
-
-@interface GANPhoneDataModel : NSObject
-
-@property (strong, nonatomic) NSString *szCountry;
-@property (strong, nonatomic) NSString *szCountryCode;
-@property (strong, nonatomic) NSString *szLocalNumber;
-
-- (void) setWithDictionary:(NSDictionary *)dict;
-- (NSDictionary *) serializeToDictionary;
-- (NSString *) getBeautifiedPhoneNumber;
-
-@end
-
-// Location Data Model
-
-@interface GANLocationDataModel : NSObject
-
-@property (assign, atomic) float fLatitude;
-@property (assign, atomic) float fLongitude;
-@property (strong, nonatomic) NSString *szAddress;
-
-- (void) setWithDictionary:(NSDictionary *)dict;
-- (void) initializeWithLocation: (GANLocationDataModel *) location;
-- (NSDictionary *) serializeToDictionary;
-- (CLLocation *) generateCLLocation;
-
-@end
-
-// Address Data Model
-
-@interface GANAddressDataModel : NSObject
-
-@property (strong, nonatomic) NSString *szAddress1;
-@property (strong, nonatomic) NSString *szAddress2;
-@property (strong, nonatomic) NSString *szCity;
-@property (strong, nonatomic) NSString *szState;
-@property (strong, nonatomic) NSString *szCountry;
-
-- (void) setWithDictionary:(NSDictionary *)dict;
-- (NSDictionary *) serializeToDictionary;
-
-@end
-
-// Translated Contents Data Model
-
-@interface GANTransContentsDataModel : NSObject
-
-@property (strong, nonatomic) NSString *szTextEN;
-@property (strong, nonatomic) NSString *szTextES;
-
-- (void) setWithDictionary: (NSDictionary *) dict;
-- (NSDictionary *) serializeToDictionary;
-- (void) setWithContents: (GANTransContentsDataModel *) contents;
-
-- (NSString *) getTextEN;
-- (NSString *) getTextES;
-
-@end
-
-// Enum User Type
+#import "GANPhoneDataModel.h"
+#import "GANLocationDataModel.h"
+#import "GANAddressDataModel.h"
+#import "GANTransContentsDataModel.h"
+#import "GANBenefitDataModel.h"
 
 typedef enum _ENUM_USER_TYPE{
     GANENUM_USER_TYPE_WORKER = 0,

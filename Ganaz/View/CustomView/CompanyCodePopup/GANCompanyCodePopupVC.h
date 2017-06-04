@@ -19,4 +19,6 @@
 @property (assign, atomic) int indexCompany;
 @property (weak, nonatomic) id<GANCompanyCodePopupDelegate> delegate;
 
+- (void) refreshFields;
+
 @end

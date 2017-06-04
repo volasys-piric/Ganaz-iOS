@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -24,21 +25,41 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gwt-bX-2ye" userLabel="View - Container View">
-                        <rect key="frame" x="0.0" y="3" width="375" height="43.5"/>
+                        <rect key="frame" x="0.0" y="3" width="375" height="44"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Job Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9d-0C-Ggg" userLabel="Label - Title">
-                                <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-benefit-bonus" translatesAutoresizingMaskIntoConstraints="NO" id="Lb0-En-T2P" userLabel="Image View - Icon">
+                                <rect key="frame" x="16" y="10" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Lb0-En-T2P" secondAttribute="height" multiplier="1:1" id="IoK-MK-PNu"/>
+                                    <constraint firstAttribute="width" constant="24" id="uHo-Ep-If9"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Benefit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9d-0C-Ggg" userLabel="Label - Title">
+                                <rect key="frame" x="56" y="12" width="304" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="FUJ-qJ-KzS"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
-                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-information" translatesAutoresizingMaskIntoConstraints="NO" id="X8w-Dn-e01" userLabel="Image View - Arrow">
+                                <rect key="frame" x="347" y="14" width="16" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="X8w-Dn-e01" secondAttribute="height" multiplier="1:1" id="6i6-Rm-z9Q"/>
+                                    <constraint firstAttribute="width" constant="16" id="r2k-Y2-vX5"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="f9d-0C-Ggg" firstAttribute="leading" secondItem="Gwt-bX-2ye" secondAttribute="leading" constant="15" id="0PX-v3-Hnm"/>
-                            <constraint firstItem="f9d-0C-Ggg" firstAttribute="centerY" secondItem="Gwt-bX-2ye" secondAttribute="centerY" id="IZm-aE-gPy"/>
+                            <constraint firstItem="f9d-0C-Ggg" firstAttribute="centerY" secondItem="Lb0-En-T2P" secondAttribute="centerY" id="2bX-EL-n6J"/>
+                            <constraint firstItem="Lb0-En-T2P" firstAttribute="centerY" secondItem="Gwt-bX-2ye" secondAttribute="centerY" id="Cig-f0-egb"/>
+                            <constraint firstItem="X8w-Dn-e01" firstAttribute="centerY" secondItem="Lb0-En-T2P" secondAttribute="centerY" id="MjY-Mc-WE5"/>
                             <constraint firstAttribute="trailing" secondItem="f9d-0C-Ggg" secondAttribute="trailing" constant="15" id="Nwh-3X-fgf"/>
-                            <constraint firstItem="f9d-0C-Ggg" firstAttribute="height" secondItem="Gwt-bX-2ye" secondAttribute="height" id="pT3-rm-JhC"/>
+                            <constraint firstItem="Lb0-En-T2P" firstAttribute="leading" secondItem="Gwt-bX-2ye" secondAttribute="leading" constant="16" id="PpF-I3-AQx"/>
+                            <constraint firstAttribute="trailing" secondItem="X8w-Dn-e01" secondAttribute="trailing" constant="12" id="WDn-KA-XOM"/>
+                            <constraint firstItem="f9d-0C-Ggg" firstAttribute="leading" secondItem="Lb0-En-T2P" secondAttribute="trailing" constant="16" id="q2X-sQ-UCq"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -50,10 +71,16 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="imgArrow" destination="X8w-Dn-e01" id="xKP-dX-DRX"/>
+                <outlet property="imgIcon" destination="Lb0-En-T2P" id="e4Y-11-T0h"/>
                 <outlet property="lblTitle" destination="f9d-0C-Ggg" id="3og-l0-gXo"/>
                 <outlet property="viewContainer" destination="Gwt-bX-2ye" id="WSU-eY-6S9"/>
             </connections>
             <point key="canvasLocation" x="26.5" y="55"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="icon-benefit-bonus" width="58" height="46"/>
+        <image name="icon-information" width="40" height="40"/>
+    </resources>
 </document>

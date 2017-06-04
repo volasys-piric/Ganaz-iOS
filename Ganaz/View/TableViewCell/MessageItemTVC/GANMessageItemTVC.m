@@ -30,32 +30,50 @@
 - (void) refreshViewsWithType: (GANENUM_MESSAGE_TYPE) type DidRead: (BOOL) didRead DidSend: (BOOL) didSend{
     self.lblAvatar.layer.cornerRadius = 18;
     if (type == GANENUM_MESSAGE_TYPE_MESSAGE){
-        self.lblAvatar.text = @"MSG";
-        self.lblAvatar.backgroundColor = UICOLOR_MESSAGEITEM_BLACK;
+        self.lblAvatar.text = @"";  // MSG
+        self.lblAvatar.backgroundColor = [UIColor clearColor];
         self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_WHITE;
+        self.imgAvatar.hidden = NO;
+        if (didRead == YES){
+            if (didSend == YES){
+                [self.imgAvatar setImage:[UIImage imageNamed:@"icon-message-black-sent"]];
+            }
+            else {
+                [self.imgAvatar setImage:[UIImage imageNamed:@"icon-message-black-received"]];
+            }
+        }
+        else {
+            if (didSend == YES){
+                [self.imgAvatar setImage:[UIImage imageNamed:@"icon-message-green-sent"]];
+            }
+            else {
+                [self.imgAvatar setImage:[UIImage imageNamed:@"icon-message-green-received"]];
+            }
+        }
     }
     else if (type == GANENUM_MESSAGE_TYPE_RECRUIT) {
         self.lblAvatar.text = @"JOB";
-        self.lblAvatar.backgroundColor = UICOLOR_MESSAGEITEM_YELLOW;
-        self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_BLACK;
+        self.imgAvatar.hidden = YES;
+        if (didRead == YES){
+            self.lblAvatar.backgroundColor = UICOLOR_MESSAGEITEM_YELLOW;
+            self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_BLACK;
+        }
+        else {
+            self.lblAvatar.backgroundColor = UICOLOR_MESSAGEITEM_GREEN;
+            self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_WHITE;
+        }
     }
-    
     else if (type == GANENUM_MESSAGE_TYPE_APPLICATION) {
         self.lblAvatar.text = @"APP";
-        self.lblAvatar.backgroundColor = UICOLOR_MESSAGEITEM_YELLOW;
-        self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_BLACK;
-    }
-    
-    if (didRead == NO){
-        self.lblAvatar.backgroundColor = UICOLOR_MESSAGEITEM_GREEN;
-        self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_WHITE;
-    }
-    
-    if (didSend == YES){
-        [self.imgIndicator setImage:[UIImage imageNamed:@"icon-message-sent"]];
-    }
-    else {
-        [self.imgIndicator setImage:[UIImage imageNamed:@"icon-message-received"]];
+        self.imgAvatar.hidden = YES;
+        if (didRead == YES){
+            self.lblAvatar.backgroundColor = UICOLOR_MESSAGEITEM_YELLOW;
+            self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_BLACK;
+        }
+        else {
+            self.lblAvatar.backgroundColor = UICOLOR_MESSAGEITEM_GREEN;
+            self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_WHITE;
+        }
     }
 }
 

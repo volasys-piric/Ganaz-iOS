@@ -15,7 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblDateTime;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblMessage;
-@property (weak, nonatomic) IBOutlet UIImageView *imgIndicator;
+@property (weak, nonatomic) IBOutlet UIImageView *imgAvatar;
 
 - (void) refreshViewsWithType: (GANENUM_MESSAGE_TYPE) type DidRead: (BOOL) didRead DidSend: (BOOL) didSend;
 

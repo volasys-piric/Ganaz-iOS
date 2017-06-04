@@ -62,10 +62,12 @@
     
     if ([[GANUserManager sharedInstance] isWorker] == YES){
         if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE){
-            [GANGlobalVCManager showHudInfoWithMessage:@"New message is arrived." DismissAfter:-1 Callback:nil];
+            // New message is arrived.
+            [GANGlobalVCManager showHudInfoWithMessage:@"Nuevo mensaje llegó." DismissAfter:-1 Callback:nil];
         }
         else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_RECRUIT){
-            [GANGlobalVCManager showHudInfoWithMessage:@"Good news! You are recruited." DismissAfter:-1 Callback:nil];
+            // Good news! There is a new job for you.
+            [GANGlobalVCManager showHudInfoWithMessage:@"Buenas noticias! Nuevo trabajo para ud." DismissAfter:-1 Callback:nil];
         }
     }
     else {

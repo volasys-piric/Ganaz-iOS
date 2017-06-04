@@ -76,6 +76,13 @@
     return szResult;
 }
 
++ (NSString *) stripNonAlphanumericsFromNSString :(NSString *) sz{
+    NSString *szResult = sz;
+    
+    szResult = [[szResult componentsSeparatedByCharactersInSet: [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789-"] invertedSet]] componentsJoinedByString:@""];
+    return szResult;
+}
+
 + (NSString *) getLongStringFromDate: (NSDate *) dt{
     if (dt == nil) return @"";
     NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];

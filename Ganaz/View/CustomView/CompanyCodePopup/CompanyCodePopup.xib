@@ -35,7 +35,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mm2-tJ-rcF" userLabel="Button - Wrapper">
-                            <rect key="frame" x="-1" y="-1" width="376" height="668"/>
+                            <rect key="frame" x="-0.5" y="-0.5" width="375" height="667"/>
                             <state key="normal" title="Button"/>
                             <connections>
                                 <action selector="onBtnWrapperClick:" destination="-1" eventType="touchUpInside" id="gVd-gc-n6l"/>
@@ -117,7 +117,7 @@
                                             <rect key="frame" x="20" y="66" width="260" height="44"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gHj-WW-pwU" userLabel="Text Field - Company Code">
-                                                    <rect key="frame" x="13" y="0.0" width="236" height="44"/>
+                                                    <rect key="frame" x="12" y="0.0" width="236" height="44"/>
                                                     <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>

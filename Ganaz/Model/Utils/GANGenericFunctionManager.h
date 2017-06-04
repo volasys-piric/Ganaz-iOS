@@ -21,6 +21,8 @@
 + (BOOL) isValidUsername: (NSString *) candidate;
 + (NSString *) getLongStringFromDate: (NSDate *) dt;
 + (NSString *) stripNonnumericsFromNSString :(NSString *) sz;
++ (NSString *) stripNonAlphanumericsFromNSString :(NSString *) sz;
+
 + (NSString *) beautifyPhoneNumber: (NSString *) localNumber CountryCode: (NSString *) countryCode;
 
 + (NSString *) generateRandomString :(int) length;

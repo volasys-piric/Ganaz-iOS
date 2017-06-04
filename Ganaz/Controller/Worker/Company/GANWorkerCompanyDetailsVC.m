@@ -125,11 +125,27 @@
 }
 
 - (void) gotoJobDetailsAtIndex: (int) index{
+    NSArray *arrOldVCs = self.navigationController.viewControllers;
+    for (int i = 0; i < (int) [arrOldVCs count]; i++){
+        UIViewController *vc = [arrOldVCs objectAtIndex:i];
+        if ([vc isKindOfClass:[GANWorkerJobDetailsVC class]] == YES){
+            // If JobDetailsVC is already in nav stack, we need to go back, refreshing all the fields of JobDetails VC.
+            
+            GANWorkerJobDetailsVC *vcJobDetails = (GANWorkerJobDetailsVC *)vc;
+            vcJobDetails.indexCompany = self.indexCompany;
+            vcJobDetails.indexJob = index;
+            [vcJobDetails refreshOnChange];
+            [self.navigationController popToViewController:vcJobDetails animated:YES];
+            
+            return;
+        }
+    }
+    // if JobDetailsVC is not in nav stack yet, we initiate VC and push to nav stack
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
     GANWorkerJobDetailsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_JOBDETAILS"];
     vc.indexCompany = self.indexCompany;
     vc.indexJob = index;
-    vc.isRecruited = NO;
     
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];

@@ -42,6 +42,7 @@
     NSString *sz = [companyName lowercaseString];
     sz = [sz stringByReplacingOccurrencesOfString:@" " withString:@"-"];
     sz = [sz stringByReplacingOccurrencesOfString:@"--" withString:@"-"];
+    sz = [GANGenericFunctionManager stripNonAlphanumericsFromNSString:sz];
     sz = [NSString stringWithFormat:@"%@-%@", sz, [GANGenericFunctionManager generateRandomString:4]];
     sz = [sz lowercaseString];
     return sz;

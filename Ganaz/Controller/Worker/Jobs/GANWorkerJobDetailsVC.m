@@ -7,6 +7,7 @@
 //
 
 #import "GANWorkerJobDetailsVC.h"
+#import "GANWorkerCompanyDetailsVC.h"
 #import "GANWorkerBenefitItemTVC.h"
 #import "GANLocationManager.h"
 
@@ -17,6 +18,10 @@
 
 #import "GANUserManager.h"
 #import "GANGlobalVCManager.h"
+#import "GANDataManager.h"
+#import "GANFadeTransitionDelegate.h"
+#import "GANBenefitInfoPopupVC.h"
+
 #import "Global.h"
 #import "GANGenericFunctionManager.h"
 
@@ -40,19 +45,26 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *btnShare;
 @property (weak, nonatomic) IBOutlet UIButton *btnApply;
+@property (weak, nonatomic) IBOutlet UIButton *btnCompanyDetails;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintViewJobSummaryTopSpacing;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTableviewHeight;
 @property (strong, nonatomic) GMSMapView *mapView;
 @property (strong, nonatomic) CLLocation *locationCenter;
 
-@property (strong, nonatomic) NSMutableArray *arrBenefit;
+@property (strong, nonatomic) NSMutableArray<GANBenefitDataModel *> *arrBenefit;
+// @property (strong, nonatomic) NSMutableArray *arrBenefitSelected;
+
 @property (strong, nonatomic) GANCompanyDataModel *company;
 @property (strong, nonatomic) GANJobDataModel *job;
+
+@property (strong, nonatomic) GANFadeTransitionDelegate *transController;
+@property (assign, atomic) BOOL isRecruited;
 
 @end
 
 #define CONSTANT_TABLEVIEWCELL_HEIGHT               50
+#define CONSTANT_BENEFIT_CONTENTS                   @"It won’t be a bigger problem to find one video game lover in your neighbor. Since the introduction of Virtual Game, it has been achieving great heights so far as its popularity and technological advancement are concerned. The history of video game is as interesting as a fairy tale."
 
 @implementation GANWorkerJobDetailsVC
 
@@ -63,9 +75,13 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tableviewBenefits.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableviewBenefits.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
     self.locationCenter = nil;
     
     self.arrBenefit = [[NSMutableArray alloc] init];
+//    self.arrBenefitSelected = [[NSMutableArray alloc] init];
+    
+    self.transController = [[GANFadeTransitionDelegate alloc] init];
     
     [self refreshFields];
     [self registerTableViewCellFromNib];
@@ -100,6 +116,14 @@
 
 - (void) registerTableViewCellFromNib{
     [self.tableviewBenefits registerNib:[UINib nibWithNibName:@"WorkerBenefitItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_WORKER_BENEFITITEM"];
+}
+
+- (void) refreshOnChange{
+    [self refreshFields];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self addMapMarker];
+        [self.tableviewBenefits reloadData];
+    });
 }
 
 - (void) refreshFields{
@@ -146,23 +170,25 @@
     }
     
     [self.arrBenefit removeAllObjects];
+    GANDataManager *managerData = [GANDataManager sharedInstance];
+    
     if (self.job.isBenefitTraining == YES){
-        [self.arrBenefit addObject:@"Capacitación"];
+        [self.arrBenefit addObject:[managerData.arrBenefits objectAtIndex:0]];
     }
     if (self.job.isBenefitHealth == YES){
-        [self.arrBenefit addObject:@"Salud"];
+        [self.arrBenefit addObject:[managerData.arrBenefits objectAtIndex:1]];
     }
     if (self.job.isBenefitHousing == YES){
-        [self.arrBenefit addObject:@"Vivienda"];
+        [self.arrBenefit addObject:[managerData.arrBenefits objectAtIndex:2]];
     }
     if (self.job.isBenefitTransportation == YES){
-        [self.arrBenefit addObject:@"Transportación"];
+        [self.arrBenefit addObject:[managerData.arrBenefits objectAtIndex:3]];
     }
     if (self.job.isBenefitBonus == YES){
-        [self.arrBenefit addObject:@"Bono"];
+        [self.arrBenefit addObject:[managerData.arrBenefits objectAtIndex:4]];
     }
     if (self.job.isBenefitScholarships == YES){
-        [self.arrBenefit addObject:@"Becas"];
+        [self.arrBenefit addObject:[managerData.arrBenefits objectAtIndex:5]];
     }
 }
 
@@ -170,6 +196,7 @@
     self.viewBadge.layer.cornerRadius = 2;
     self.btnApply.layer.cornerRadius = 3;
     self.btnShare.layer.cornerRadius = 3;
+    self.btnCompanyDetails.layer.cornerRadius = 3;
     self.btnShare.layer.borderWidth = 1;
     self.btnShare.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
     
@@ -182,6 +209,13 @@
     self.constraintTableviewHeight.constant = CONSTANT_TABLEVIEWCELL_HEIGHT * [self.arrBenefit count];
     [self.view layoutIfNeeded];
 }
+
+/*
+- (void) updateTableviewHeight{
+    [self.tableviewBenefits layoutIfNeeded];
+    self.constraintTableviewHeight.constant = self.tableviewBenefits.contentSize.height;
+}
+*/
 
 - (void) buildMapView{
     self.locationCenter = [GANLocationManager sharedInstance].location;
@@ -280,13 +314,50 @@
     self.lblDescription.text = [self.job getCommentsES];
 }
 
+- (void) showDlgForBenefitAtIndex: (int) index{
+    GANBenefitDataModel *benefit = [self.arrBenefit objectAtIndex:index];
+    int indexBenefit = [[GANDataManager sharedInstance] getIndexForBenefitsByName:benefit.szName];
+    if (indexBenefit == -1) return;
+    
+    GANBenefitInfoPopupVC *vc = [[GANBenefitInfoPopupVC alloc] initWithNibName:@"BenefitInfoPopup" bundle:nil];
+    vc.view.backgroundColor = [UIColor clearColor];
+    vc.indexBenefit = indexBenefit;
+    
+    [vc refreshFields];
+    
+    [vc setTransitioningDelegate:self.transController];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (void) gotoCompanyDetailsVC{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
+    GANWorkerCompanyDetailsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_COMPANYDETAILS"];
+    vc.indexCompany = self.indexCompany;
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+}
+
 #pragma mark - UITableView Delegate
 
 - (void) configureCell: (GANWorkerBenefitItemTVC *) cell AtIndex: (int) index{
-    cell.viewContainer.layer.cornerRadius = 4;
+    GANBenefitDataModel *benefit = [self.arrBenefit objectAtIndex:index];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    cell.lblTitle.text = [GANGenericFunctionManager refineNSString:[self.arrBenefit objectAtIndex:index]];
+    cell.lblTitle.text = [benefit getTitleES];
+    [cell.imgIcon setImage:[UIImage imageNamed:benefit.szIcon]];
+    
+    /*
+    BOOL isSelected = [[self.arrBenefitSelected objectAtIndex:index] boolValue];
+    if (isSelected == YES){
+        cell.lblDescription.text = [NSString stringWithFormat:@"%@", CONSTANT_BENEFIT_CONTENTS];
+        [cell.imgArrow setImage:[UIImage imageNamed:@"button-arrow-up"]];
+    }
+    else {
+        cell.lblDescription.text = @"";
+        [cell.imgArrow setImage:[UIImage imageNamed:@"button-arrow-down"]];
+    }
+     */
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -304,11 +375,40 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 50;
+    return CONSTANT_TABLEVIEWCELL_HEIGHT;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    int index = (int) indexPath.row;
+    [self showDlgForBenefitAtIndex:index];
 }
+
+/*
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    int index = (int) indexPath.row;
+    
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:^{
+        [self updateTableviewHeight];
+    }];
+    [tableView beginUpdates];
+    for (int i = 0; i < (int) [self.arrBenefitSelected count]; i++){
+        BOOL isSelected = [[self.arrBenefitSelected objectAtIndex:i] boolValue];
+        if (i == index){
+            [self.arrBenefitSelected replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:!isSelected]];
+        }
+        else {
+            if (isSelected == YES){
+                [self.arrBenefitSelected replaceObjectAtIndex:i withObject:[NSNumber numberWithBool:NO]];
+                [self configureCell:[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]] AtIndex:i];
+            }
+        }
+    }
+    [self configureCell:[tableView cellForRowAtIndexPath:indexPath] AtIndex:index];
+    [tableView endUpdates];
+    [CATransaction commit];
+}
+*/
 
 #pragma mark - UIButton Delegate
 
@@ -330,6 +430,10 @@
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         return;
     }
+}
+
+- (IBAction)onBtnCompanyDetails:(id)sender {
+    [self gotoCompanyDetailsVC];
 }
 
 #pragma mark -NSNotification

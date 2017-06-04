@@ -10,6 +10,7 @@
 #import "GANWorkerJobListItemTVC.h"
 #import "GANWorkerJobsListFilterVC.h"
 #import "GANWorkerCompanyDetailsVC.h"
+#import "GANWorkerJobDetailsVC.h"
 #import "GANGenericFunctionManager.h"
 #import "GANLocationManager.h"
 #import "GANJobManager.h"
@@ -211,12 +212,50 @@
     }];
 }
 
+- (void) prepareGotoJobDetailsAtIndex: (int) index{
+    GANJobDataModel *job = [[GANJobManager sharedInstance].arrJobsSearchResult objectAtIndex:index];
+    [self gotoJobDetailsVCWithJobId:job.szId CompanyId:job.szCompanyId];
+}
+
 - (void) gotoCompanyDetailsAtCompanyIndex: (int) indexCompany{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
     GANWorkerCompanyDetailsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_COMPANYDETAILS"];
     vc.indexCompany = indexCompany;
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+}
+
+- (void) gotoJobDetailsVCWithJobId: (NSString *) jobId CompanyId: (NSString *) companyId{
+    if ([GANJobManager isValidJobId:jobId] == NO) return;
+    if (companyId.length == 0) return;
+    
+    GANCacheManager *managerCache = [GANCacheManager sharedInstance];
+    // Please wait...
+    [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
+    [managerCache requestGetCompanyDetailsByCompanyId:companyId Callback:^(int indexCompany) {
+        if (indexCompany == -1) {
+            [GANGlobalVCManager hideHudProgress];
+            return;
+        }
+        
+        GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
+        [company requestJobsListWithCallback:^(int status) {
+            [GANGlobalVCManager hideHudProgress];
+            if (status != SUCCESS_WITH_NO_ERROR){
+                return;
+            }
+            int indexJob = [company getIndexForJob:jobId];
+            if (indexJob == -1) return;
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
+            GANWorkerJobDetailsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_JOBDETAILS"];
+            vc.indexCompany = indexCompany;
+            vc.indexJob = indexJob;
+            
+            [self.navigationController pushViewController:vc animated:YES];
+            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        }];
+    }];
 }
 
 #pragma mark - UITableView Delegate
@@ -254,7 +293,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     int index = (int) indexPath.row;
     
-    [self prepareGotoCompanyDetailsAtIndex:index];
+//    [self prepareGotoCompanyDetailsAtIndex:index];
+    [self prepareGotoJobDetailsAtIndex:index];
 }
 
 #pragma mark - UIButton
@@ -282,7 +322,8 @@
     for (int i = 0; i < (int) [self.arrMarkers count]; i++){
         GMSMarker *m = [self.arrMarkers objectAtIndex:i];
         if (m == marker){
-            [self prepareGotoCompanyDetailsAtIndex:i];
+//            [self prepareGotoCompanyDetailsAtIndex:i];
+            [self prepareGotoJobDetailsAtIndex:i];
             return;
         }
     }

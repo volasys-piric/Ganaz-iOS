@@ -189,10 +189,10 @@
 
 - (void) showDlgForCompanyCodeVerify{
     GANCompanyCodePopupVC *vc = [[GANCompanyCodePopupVC alloc] initWithNibName:@"CompanyCodePopup" bundle:nil];
-//    vc.indexLog = -1;
+
     vc.delegate = self;
     vc.view.backgroundColor = [UIColor clearColor];
-//    [vc refreshFields];
+    [vc refreshFields];
     
     [vc setTransitioningDelegate:self.transController];
     vc.modalPresentationStyle = UIModalPresentationCustom;

@@ -16,6 +16,7 @@
 #import "GANCompanyManager.h"
 #import "GANRecruitManager.h"
 #import "GANMembershipPlanManager.h"
+#import "GANDataManager.h"
 
 #import <IQKeyboardManager.h>
 #import <GoogleMaps/GoogleMaps.h>
@@ -52,6 +53,7 @@
     [[GANLocationManager sharedInstance] initializeManager];
     
     [[GANMembershipPlanManager sharedInstance] requestGetMembershipPlanListWithCallback:nil];
+    [[GANDataManager sharedInstance] loadBenefits];
 }
 
 - (void) initializeManagersAfterLogin{
