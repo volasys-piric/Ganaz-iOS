@@ -239,7 +239,7 @@
         }
         
         GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
-        [company requestJobsListWithCallback:^(int status) {
+        [company requestJobsListWithJobId:jobId Callback:^(int status) {
             [GANGlobalVCManager hideHudProgress];
             if (status != SUCCESS_WITH_NO_ERROR){
                 return;
@@ -267,7 +267,7 @@
     [[GANCacheManager sharedInstance] getCompanyBusinessNameESByCompanyId:job.szCompanyId Callback:^(NSString *businessNameES) {
         cell.lblCompany.text = businessNameES;
     }];
-    cell.lblDistance.text = [NSString stringWithFormat:@"%.2fmi", [job getNearestDistance]];
+    cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f / %@", job.fPayRate, ((job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"hr" : @"lb")];
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 }

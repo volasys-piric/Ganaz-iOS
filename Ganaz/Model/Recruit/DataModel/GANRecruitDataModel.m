@@ -88,4 +88,8 @@
     }
 }
 
+- (int) getNumberOfRecruitedUsers{
+    return (int) [self.arrReceivedUserIds count];
+}
+
 @end

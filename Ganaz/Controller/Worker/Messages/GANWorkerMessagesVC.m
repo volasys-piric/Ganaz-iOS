@@ -167,7 +167,7 @@
         }
         
         GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
-        [company requestJobsListWithCallback:^(int status) {
+        [company requestJobsListWithJobId:jobId Callback:^(int status) {
             [GANGlobalVCManager hideHudProgress];
             if (status != SUCCESS_WITH_NO_ERROR){
                 return;
@@ -361,7 +361,7 @@
                 GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
                 cell.lblTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
                 
-                [company requestJobsListWithCallback:^(int status) {
+                [company requestJobsListWithJobId:message.szJobId Callback:^(int status) {
                     if (status != SUCCESS_WITH_NO_ERROR){
                         return;
                     }
@@ -399,7 +399,7 @@
                 GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
                 cell.lblTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
 
-                [company requestJobsListWithCallback:^(int status) {
+                [company requestJobsListWithJobId:message.szJobId Callback:^(int status) {
                     if (status != SUCCESS_WITH_NO_ERROR){
                         return;
                     }

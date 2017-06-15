@@ -52,13 +52,14 @@
 - (NSDictionary *) serializeToDictionary;
 
 - (int) getIndexForJob: (NSString *) jobId;
-
-- (void) requestJobsListWithCallback: (void (^) (int status)) callback;
 - (GANENUM_COMPANY_BADGE_TYPE) getBadgeType;
 
 - (NSString *) getBusinessNameEN;
 - (NSString *) getBusinessNameES;
 - (NSString *) getDescriptionEN;
 - (NSString *) getDescriptionES;
+
+- (void) requestJobsListWithJobId: (NSString *) jobId Callback: (void (^) (int status)) callback;
+- (void) requestJobsList: (BOOL) force Callback: (void (^) (int status)) callback;
 
 @end

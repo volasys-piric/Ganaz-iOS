@@ -60,7 +60,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$10.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7VN-2v-iZC" userLabel="Label - Price">
-                                <rect key="frame" x="293" y="14" width="74" height="24"/>
+                                <rect key="frame" x="290" y="14" width="77" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="uY8-1G-q0D"/>
                                 </constraints>
@@ -69,7 +69,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="per hour" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oBZ-V1-7gF" userLabel="Label - Unit">
-                                <rect key="frame" x="293" y="39" width="74" height="16"/>
+                                <rect key="frame" x="290" y="39" width="77" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="O9S-b4-dDQ"/>
                                 </constraints>
@@ -78,7 +78,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="N/A" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="RPk-eg-N8R" userLabel="Label - Price NA">
-                                <rect key="frame" x="293" y="-0.5" width="74" height="69.5"/>
+                                <rect key="frame" x="290" y="-0.5" width="77" height="69.5"/>
                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="20"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -90,7 +90,7 @@
                             <constraint firstItem="ZIH-cu-XTk" firstAttribute="centerX" secondItem="TKP-0G-BLh" secondAttribute="centerX" id="4ig-tE-A0a"/>
                             <constraint firstItem="4fq-de-4yr" firstAttribute="centerX" secondItem="5ER-Wz-Jrj" secondAttribute="centerX" multiplier="1.5" id="5pm-LY-Sw1"/>
                             <constraint firstItem="7VN-2v-iZC" firstAttribute="centerY" secondItem="TKP-0G-BLh" secondAttribute="centerY" id="7nm-xS-iHA"/>
-                            <constraint firstItem="7VN-2v-iZC" firstAttribute="leading" secondItem="4fq-de-4yr" secondAttribute="trailing" constant="11" id="BTc-dv-4Ky"/>
+                            <constraint firstItem="7VN-2v-iZC" firstAttribute="leading" secondItem="4fq-de-4yr" secondAttribute="trailing" constant="8" id="BTc-dv-4Ky"/>
                             <constraint firstItem="RPk-eg-N8R" firstAttribute="width" secondItem="7VN-2v-iZC" secondAttribute="width" id="BXp-ki-qe1"/>
                             <constraint firstAttribute="trailing" secondItem="7VN-2v-iZC" secondAttribute="trailing" constant="8" id="H74-4C-V21"/>
                             <constraint firstItem="ZIH-cu-XTk" firstAttribute="width" secondItem="TKP-0G-BLh" secondAttribute="width" id="IAK-Re-EkH"/>

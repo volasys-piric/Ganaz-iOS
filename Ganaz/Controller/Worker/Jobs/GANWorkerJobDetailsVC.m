@@ -197,6 +197,9 @@
     self.btnApply.layer.cornerRadius = 3;
     self.btnShare.layer.cornerRadius = 3;
     self.btnCompanyDetails.layer.cornerRadius = 3;
+    self.btnCompanyDetails.layer.borderWidth = 1;
+    self.btnCompanyDetails.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
+    
     self.btnShare.layer.borderWidth = 1;
     self.btnShare.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
     

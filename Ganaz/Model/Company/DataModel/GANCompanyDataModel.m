@@ -139,24 +139,6 @@
     return -1;
 }
 
-- (void) requestJobsListWithCallback: (void (^) (int status)) callback{
-    if (self.isJobListLoaded == YES){
-        if (callback) callback(SUCCESS_WITH_NO_ERROR);
-        return;
-    }
-    
-    [[GANJobManager sharedInstance] requestSearchJobsByCompanyId:self.szId Callback:^(int status, NSArray *arrJobs) {
-        if (status == SUCCESS_WITH_NO_ERROR){
-            if (arrJobs != nil){
-                [self.arrJobs removeAllObjects];
-                [self.arrJobs addObjectsFromArray:arrJobs];
-            }
-            self.isJobListLoaded = YES;
-        }
-        if (callback) callback(status);
-    }];
-}
-
 - (GANENUM_COMPANY_BADGE_TYPE) getBadgeType{
     if (self.nTotalReviews < 5) return GANENUM_COMPANY_BADGE_TYPE_NONE;
     float fAvg = self.fTotalAvgRating / self.nTotalReviews;
@@ -179,6 +161,33 @@
 
 - (NSString *) getDescriptionES{
     return [self.modelDescription getTextES];
+}
+
+- (void) requestJobsListWithJobId: (NSString *) jobId Callback: (void (^) (int status)) callback{
+    int index = [self getIndexForJob:jobId];
+    if (index != -1){
+        if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        return;
+    }
+    [self requestJobsList:YES Callback:callback];
+}
+
+- (void) requestJobsList: (BOOL) force Callback: (void (^) (int status)) callback{
+    if (force == NO && self.isJobListLoaded == YES){
+        if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        return;
+    }
+    
+    [[GANJobManager sharedInstance] requestSearchJobsByCompanyId:self.szId Callback:^(int status, NSArray *arrJobs) {
+        if (status == SUCCESS_WITH_NO_ERROR){
+            if (arrJobs != nil){
+                [self.arrJobs removeAllObjects];
+                [self.arrJobs addObjectsFromArray:arrJobs];
+            }
+            self.isJobListLoaded = YES;
+        }
+        if (callback) callback(status);
+    }];
 }
 
 @end

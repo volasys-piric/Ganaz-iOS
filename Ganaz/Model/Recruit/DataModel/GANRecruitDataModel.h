@@ -30,5 +30,6 @@
 
 - (instancetype) init;
 - (void) setWithDictionary: (NSDictionary *) dict;
+- (int) getNumberOfRecruitedUsers;
 
 @end

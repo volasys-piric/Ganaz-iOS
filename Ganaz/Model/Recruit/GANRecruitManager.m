@@ -64,11 +64,18 @@
         NSDictionary *dict = responseObject;
         BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
         if (success){
-            NSDictionary *dictRecruit = [dict objectForKey:@"recruit"];
-            GANRecruitDataModel *recruitNew = [[GANRecruitDataModel alloc] init];
-            [recruitNew setWithDictionary:dictRecruit];
-            [self addRecruitIfNeeded:recruitNew];
-            if (callback) callback(SUCCESS_WITH_NO_ERROR, (int) [recruitNew.arrReceivedUserIds count]);
+            NSArray *arrRecruits = [dict objectForKey:@"recruits"];
+            int totalRecruits = 0;
+            if ([arrRecruits isKindOfClass:[NSArray class]] == YES){
+                for (int i = 0; i < (int) [arrRecruits count]; i++){
+                    NSDictionary *dictRecruit = [arrRecruits objectAtIndex:i];
+                    GANRecruitDataModel *recruitNew = [[GANRecruitDataModel alloc] init];
+                    [recruitNew setWithDictionary:dictRecruit];
+                    [self addRecruitIfNeeded:recruitNew];
+                    totalRecruits = totalRecruits + [recruitNew getNumberOfRecruitedUsers];
+                }
+            }
+            if (callback) callback(SUCCESS_WITH_NO_ERROR, totalRecruits);
         }
         else {
             NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];

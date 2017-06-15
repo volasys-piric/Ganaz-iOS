@@ -320,7 +320,7 @@ typedef enum _ENUM_PAYUNIT{
 
 - (void) addMapMarker{
     NSArray *arrSite = [GANJobManager sharedInstance].modelOnboardingJob.arrSite;
-    if (arrSite.count == 0){
+    if ([arrSite count] == 0){
         self.viewMapMaskEmpty.hidden = NO;
         return;
     }
@@ -483,7 +483,15 @@ typedef enum _ENUM_PAYUNIT{
     
     if (positions == 0){
         [self shakeInvalidFields:self.viewPositions];
+        return NO;
     }
+    
+    NSArray *arrSite = [GANJobManager sharedInstance].modelOnboardingJob.arrSite;
+    if ([arrSite count] == 0){
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please add at least one working site!" DismissAfter:-1 Callback:nil];
+        return NO;
+    }
+    
     return YES;
 }
 

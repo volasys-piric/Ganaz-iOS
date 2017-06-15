@@ -201,7 +201,7 @@
                                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lgd-pG-LBX" userLabel="Button - Add Workers">
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lgd-pG-LBX" userLabel="Button - Add Workers">
                                                                         <rect key="frame" x="255" y="14" width="100" height="40"/>
                                                                         <color key="backgroundColor" red="0.40000000000000002" green="0.70588235290000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <constraints>
@@ -345,7 +345,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="iJU-eR-HVA" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Recruit" image="tab-recruit" id="PZV-ec-WC1"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oC6-jv-mUH">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="oC6-jv-mUH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -902,7 +902,7 @@ opt-out</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uTe-3a-X90" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Messages" image="tab-message" id="HiR-VK-JAF"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZES-Oq-N2i">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="ZES-Oq-N2i">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1101,7 +1101,7 @@ opt-out</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KRB-R9-5dL" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Settings" image="tab-settings" id="1OE-FK-kTO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="973-Uq-eLR">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="973-Uq-eLR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

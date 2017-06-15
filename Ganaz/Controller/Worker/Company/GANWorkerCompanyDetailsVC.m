@@ -99,7 +99,7 @@
     
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
-    [self.company requestJobsListWithCallback:^(int status) {
+    [self.company requestJobsList:NO Callback:^(int status) {
         [GANGlobalVCManager hideHudProgress];
         self.constraintTableviewHeight.constant = CONSTANT_TABLEVIEWCELL_HEIGHT * [self.company.arrJobs count];
         [self.tableview reloadData];
@@ -173,8 +173,9 @@
     GANJobDataModel *job = [self.company.arrJobs objectAtIndex:index];
     
     cell.lblTitle.text = [job getTitleES];
-    cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f", job.fPayRate];
-    cell.lblUnit.text = (job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"por hora" : @"por libra";
+    cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f / %@", job.fPayRate, ((job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"hr" : @"lb")];
+    // View Details...
+    cell.lblUnit.text = @"Ver más";
     cell.lblDate.text = [NSString stringWithFormat:@"%@ - %@", [GANGenericFunctionManager getBeautifiedSpanishDate:job.dateFrom], [GANGenericFunctionManager getBeautifiedSpanishDate:job.dateTo]];
     [cell showPayRate:[job isPayRateSpecified]];
     

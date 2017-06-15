@@ -13,6 +13,6 @@
 @property (weak, nonatomic) IBOutlet UIView *viewContainer;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblCompany;
-@property (weak, nonatomic) IBOutlet UILabel *lblDistance;
+@property (weak, nonatomic) IBOutlet UILabel *lblPrice;
 
 @end
