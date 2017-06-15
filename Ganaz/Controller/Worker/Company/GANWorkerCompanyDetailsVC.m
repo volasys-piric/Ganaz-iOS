@@ -19,6 +19,7 @@
 #import "GANGlobalVCManager.h"
 #import "GANGenericFunctionManager.h"
 #import "Global.h"
+#import "GANAppManager.h"
 
 @interface GANWorkerCompanyDetailsVC () <UITableViewDelegate, UITableViewDataSource>
 
@@ -125,6 +126,8 @@
 }
 
 - (void) gotoJobDetailsAtIndex: (int) index{
+    GANACTIVITY_REPORT(@"Worker - Go to job details from Company details");
+    
     NSArray *arrOldVCs = self.navigationController.viewControllers;
     for (int i = 0; i < (int) [arrOldVCs count]; i++){
         UIViewController *vc = [arrOldVCs objectAtIndex:i];

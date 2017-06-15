@@ -9,6 +9,7 @@
 #import "GANWorkerJobDetailsVC.h"
 #import "GANWorkerCompanyDetailsVC.h"
 #import "GANWorkerBenefitItemTVC.h"
+#import "GANWorkerBenefitItemCVC.h"
 #import "GANLocationManager.h"
 
 #import "GANCacheManager.h"
@@ -24,13 +25,15 @@
 
 #import "Global.h"
 #import "GANGenericFunctionManager.h"
+#import "GANAppManager.h"
 
-@interface GANWorkerJobDetailsVC ()
+@interface GANWorkerJobDetailsVC () </*UITableViewDelegate, UITableViewDataSource, */UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UIView *viewBadge;
 @property (weak, nonatomic) IBOutlet UIView *viewMapContainer;
 
-@property (weak, nonatomic) IBOutlet UITableView *tableviewBenefits;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionviewBenefits;
+//@property (weak, nonatomic) IBOutlet UITableView *tableviewBenefits;
 @property (weak, nonatomic) IBOutlet UIImageView *imgBadge;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblCompanyName;
@@ -48,12 +51,13 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnCompanyDetails;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintViewJobSummaryTopSpacing;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTableviewHeight;
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTableviewHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintCollectionviewHeight;
+
 @property (strong, nonatomic) GMSMapView *mapView;
 @property (strong, nonatomic) CLLocation *locationCenter;
 
 @property (strong, nonatomic) NSMutableArray<GANBenefitDataModel *> *arrBenefit;
-// @property (strong, nonatomic) NSMutableArray *arrBenefitSelected;
 
 @property (strong, nonatomic) GANCompanyDataModel *company;
 @property (strong, nonatomic) GANJobDataModel *job;
@@ -73,18 +77,18 @@
     // Do any additional setup after loading the view.
     
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.tableviewBenefits.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableviewBenefits.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+//    self.tableviewBenefits.separatorStyle = UITableViewCellSeparatorStyleNone;
+//    self.tableviewBenefits.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     self.locationCenter = nil;
     
     self.arrBenefit = [[NSMutableArray alloc] init];
-//    self.arrBenefitSelected = [[NSMutableArray alloc] init];
     
     self.transController = [[GANFadeTransitionDelegate alloc] init];
     
     [self refreshFields];
-    [self registerTableViewCellFromNib];
+    [self registerCollectionViewCellFromNib];
+//    [self registerTableViewCellFromNib];
     [self refreshViews];
     [self buildMapView];
     
@@ -114,15 +118,21 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
+- (void) registerCollectionViewCellFromNib{
+    [self.collectionviewBenefits registerNib:[UINib nibWithNibName:@"WorkerBenefitItemCVC" bundle:nil] forCellWithReuseIdentifier:@"CVC_WORKER_BENEFITITEM"];
+}
+
+/*
 - (void) registerTableViewCellFromNib{
     [self.tableviewBenefits registerNib:[UINib nibWithNibName:@"WorkerBenefitItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_WORKER_BENEFITITEM"];
 }
+*/
 
 - (void) refreshOnChange{
     [self refreshFields];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self addMapMarker];
-        [self.tableviewBenefits reloadData];
+//        [self.tableviewBenefits reloadData];
     });
 }
 
@@ -209,16 +219,23 @@
 }
 
 - (void) viewDidLayoutSubviews{
-    self.constraintTableviewHeight.constant = CONSTANT_TABLEVIEWCELL_HEIGHT * [self.arrBenefit count];
+//    self.constraintTableviewHeight.constant = CONSTANT_TABLEVIEWCELL_HEIGHT * [self.arrBenefit count];
     [self.view layoutIfNeeded];
+    
+    NSInteger section = 0;
+    NSInteger totalItemsInSection = [self.collectionviewBenefits numberOfItemsInSection:section];
+    
+    UIEdgeInsets collectionViewInset = UIEdgeInsetsMake(0, 0, 0, 0);    // Inset: 0 0  0 0
+    
+    CGFloat collectionViewWidth = CGRectGetWidth(self.collectionviewBenefits.frame) - collectionViewInset.left - collectionViewInset.right;
+    CGFloat cellWidth = 40;
+    CGFloat cellSpacing = 20;
+    
+    NSInteger totalItemsInRow = floor(((CGFloat)collectionViewWidth + cellSpacing) / (cellWidth + cellSpacing));
+    NSInteger numberOfRows = ceil((CGFloat)totalItemsInSection / totalItemsInRow);
+    self.constraintCollectionviewHeight.constant = (cellWidth + cellSpacing) * numberOfRows - cellSpacing;
+    
 }
-
-/*
-- (void) updateTableviewHeight{
-    [self.tableviewBenefits layoutIfNeeded];
-    self.constraintTableviewHeight.constant = self.tableviewBenefits.contentSize.height;
-}
-*/
 
 - (void) buildMapView{
     self.locationCenter = [GANLocationManager sharedInstance].location;
@@ -293,6 +310,8 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
         }
     }];
+    
+    GANACTIVITY_REPORT(@"Worker - Apply for job");
 }
 
 - (void) doShare{
@@ -304,13 +323,13 @@
     NSString *message = [NSString stringWithFormat:@"Pensé que te interesaría este trabajo: %@, %@%@. Hay más información y más trabajo en la aplicación Ganaz", [self.company getBusinessNameES], [self.job getTitleES], szPay];
     
     
-//    NSString *message = [NSString stringWithFormat:@"Here is very interesting job for farm workers: %@, %@ %@. Find more jobs here: ", self.job.szTitle, self.lblPrice.text, self.lblUnit.text];
-    
     NSURL *url = [NSURL URLWithString:GANURL_APPSTORE];
     NSArray *objShare = @[message, url];
     
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objShare applicationActivities:nil];
     [self presentViewController:activityVC animated:YES completion:nil];
+    
+    GANACTIVITY_REPORT(@"Worker - Share job via social network");
 }
 
 - (void) updateTranslatedDescription{
@@ -331,6 +350,7 @@
     [vc setTransitioningDelegate:self.transController];
     vc.modalPresentationStyle = UIModalPresentationCustom;
     [self presentViewController:vc animated:YES completion:nil];
+    GANACTIVITY_REPORT(@"Worker - View benefit details of job");
 }
 
 - (void) gotoCompanyDetailsVC{
@@ -339,8 +359,11 @@
     vc.indexCompany = self.indexCompany;
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+    GANACTIVITY_REPORT(@"Worker - Go to company details from job details");
 }
 
+/*
 #pragma mark - UITableView Delegate
 
 - (void) configureCell: (GANWorkerBenefitItemTVC *) cell AtIndex: (int) index{
@@ -349,18 +372,6 @@
     
     cell.lblTitle.text = [benefit getTitleES];
     [cell.imgIcon setImage:[UIImage imageNamed:benefit.szIcon]];
-    
-    /*
-    BOOL isSelected = [[self.arrBenefitSelected objectAtIndex:index] boolValue];
-    if (isSelected == YES){
-        cell.lblDescription.text = [NSString stringWithFormat:@"%@", CONSTANT_BENEFIT_CONTENTS];
-        [cell.imgArrow setImage:[UIImage imageNamed:@"button-arrow-up"]];
-    }
-    else {
-        cell.lblDescription.text = @"";
-        [cell.imgArrow setImage:[UIImage imageNamed:@"button-arrow-down"]];
-    }
-     */
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -385,33 +396,33 @@
     int index = (int) indexPath.row;
     [self showDlgForBenefitAtIndex:index];
 }
-
-/*
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    int index = (int) indexPath.row;
-    
-    [CATransaction begin];
-    [CATransaction setCompletionBlock:^{
-        [self updateTableviewHeight];
-    }];
-    [tableView beginUpdates];
-    for (int i = 0; i < (int) [self.arrBenefitSelected count]; i++){
-        BOOL isSelected = [[self.arrBenefitSelected objectAtIndex:i] boolValue];
-        if (i == index){
-            [self.arrBenefitSelected replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:!isSelected]];
-        }
-        else {
-            if (isSelected == YES){
-                [self.arrBenefitSelected replaceObjectAtIndex:i withObject:[NSNumber numberWithBool:NO]];
-                [self configureCell:[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]] AtIndex:i];
-            }
-        }
-    }
-    [self configureCell:[tableView cellForRowAtIndexPath:indexPath] AtIndex:index];
-    [tableView endUpdates];
-    [CATransaction commit];
-}
 */
+
+#pragma mark - UICollectionView Delegate
+
+- (void) configureCell: (GANWorkerBenefitItemCVC *) cell AtIndex: (int) index{
+    GANBenefitDataModel *benefit = [self.arrBenefit objectAtIndex:index];
+    [cell.imgIcon setImage:[UIImage imageNamed:benefit.szIcon]];
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    return [self.arrBenefit count];
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    GANWorkerBenefitItemCVC *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CVC_WORKER_BENEFITITEM" forIndexPath:indexPath];
+    [self configureCell:cell AtIndex:(int) indexPath.row];
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    int index = (int) indexPath.row;
+    [self showDlgForBenefitAtIndex:index];
+}
 
 #pragma mark - UIButton Delegate
 

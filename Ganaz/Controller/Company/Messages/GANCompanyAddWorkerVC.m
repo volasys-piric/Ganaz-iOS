@@ -19,6 +19,7 @@
 #import "Global.h"
 #import "GANGlobalVCManager.h"
 #import <UIView+Shake.h>
+#import "GANAppManager.h"
 
 typedef enum _ENUM_FOUNDSTATUS{
     GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE,
@@ -186,6 +187,7 @@ typedef enum _ENUM_FOUNDSTATUS{
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
         }
     }];
+    GANACTIVITY_REPORT(@"Company - Add worker");
 }
 
 - (void) doInvite{
@@ -202,6 +204,7 @@ typedef enum _ENUM_FOUNDSTATUS{
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error" DismissAfter:-1 Callback:nil];
         }
     }];
+    GANACTIVITY_REPORT(@"Company - Send invite");
 }
 
 #pragma mark - UITableView Delegate

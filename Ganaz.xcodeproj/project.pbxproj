@@ -45,6 +45,9 @@
 		834F01E11E83BECD00D58989 /* GANWorkerUpdateLocaionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 834F01E01E83BECD00D58989 /* GANWorkerUpdateLocaionVC.m */; };
 		834F01E41E83C90B00D58989 /* GANMainLoadingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 834F01E31E83C90B00D58989 /* GANMainLoadingVC.m */; };
 		834F01F21E85DF5900D58989 /* GANLocalstorageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 834F01F11E85DF5900D58989 /* GANLocalstorageManager.m */; };
+		837E63DE1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837E63DD1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib */; };
+		837E63E11EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 837E63E01EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.m */; };
+		837E63E31EF3191B001EFBE1 /* Privacy-Policy.htm in Resources */ = {isa = PBXBuildFile; fileRef = 837E63E21EF3191B001EFBE1 /* Privacy-Policy.htm */; };
 		838735DE1E7A232C00CFFB15 /* GANMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 838735DD1E7A232C00CFFB15 /* GANMessageManager.m */; };
 		838735E21E7A234400CFFB15 /* GANMessageDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 838735E11E7A234400CFFB15 /* GANMessageDataModel.m */; };
 		838AAC1D1E578A9E006CC33D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 838AAC1C1E578A9E006CC33D /* main.m */; };
@@ -184,6 +187,10 @@
 		834F01E31E83C90B00D58989 /* GANMainLoadingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANMainLoadingVC.m; path = Controller/Main/GANMainLoadingVC.m; sourceTree = "<group>"; };
 		834F01F01E85DF5900D58989 /* GANLocalstorageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANLocalstorageManager.h; path = Model/Utils/GANLocalstorageManager.h; sourceTree = "<group>"; };
 		834F01F11E85DF5900D58989 /* GANLocalstorageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANLocalstorageManager.m; path = Model/Utils/GANLocalstorageManager.m; sourceTree = "<group>"; };
+		837E63DD1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WorkerBenefitItemCVC.xib; path = View/TableViewCell/WorkerBenefitItemCVC/WorkerBenefitItemCVC.xib; sourceTree = "<group>"; };
+		837E63DF1EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANWorkerBenefitItemCVC.h; path = View/TableViewCell/WorkerBenefitItemCVC/GANWorkerBenefitItemCVC.h; sourceTree = "<group>"; };
+		837E63E01EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANWorkerBenefitItemCVC.m; path = View/TableViewCell/WorkerBenefitItemCVC/GANWorkerBenefitItemCVC.m; sourceTree = "<group>"; };
+		837E63E21EF3191B001EFBE1 /* Privacy-Policy.htm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "Privacy-Policy.htm"; path = "Data/Privacy-Policy.htm"; sourceTree = "<group>"; };
 		838735DC1E7A232C00CFFB15 /* GANMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANMessageManager.h; path = Model/Messages/GANMessageManager.h; sourceTree = "<group>"; };
 		838735DD1E7A232C00CFFB15 /* GANMessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANMessageManager.m; path = Model/Messages/GANMessageManager.m; sourceTree = "<group>"; };
 		838735E01E7A234400CFFB15 /* GANMessageDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANMessageDataModel.h; path = Model/Messages/DataModel/GANMessageDataModel.h; sourceTree = "<group>"; };
@@ -465,6 +472,16 @@
 			name = "Data Model";
 			sourceTree = "<group>";
 		};
+		837E63DC1EF3099E001EFBE1 /* WorkerBenefitItemCVC */ = {
+			isa = PBXGroup;
+			children = (
+				837E63DD1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib */,
+				837E63DF1EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.h */,
+				837E63E01EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.m */,
+			);
+			name = WorkerBenefitItemCVC;
+			sourceTree = "<group>";
+		};
 		838735DB1E7A22FF00CFFB15 /* Messages */ = {
 			isa = PBXGroup;
 			children = (
@@ -582,6 +599,7 @@
 		838AAC361E578C99006CC33D /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				837E63E21EF3191B001EFBE1 /* Privacy-Policy.htm */,
 				834A87D41EE1FD2300EB6E51 /* Benefits.plist */,
 			);
 			name = Data;
@@ -774,6 +792,7 @@
 		83CA212A1E5BE42900C0D787 /* TableViewCell */ = {
 			isa = PBXGroup;
 			children = (
+				837E63DC1EF3099E001EFBE1 /* WorkerBenefitItemCVC */,
 				834A87C81EE108EC00EB6E51 /* CompanyUserItemTVC */,
 				83CB263A1E623F8E00C2D8C7 /* WorkerCompanyReviewItemTVC */,
 				83CB26311E611F3700C2D8C7 /* WorkerBenefitItemTVC */,
@@ -1012,6 +1031,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				837E63E31EF3191B001EFBE1 /* Privacy-Policy.htm in Resources */,
 				83CA212C1E5BE46700C0D787 /* JobItemTVC.xib in Resources */,
 				834A87CA1EE1091F00EB6E51 /* CompanyUserItemTVC.xib in Resources */,
 				83CA21291E5BD3B900C0D787 /* Company.storyboard in Resources */,
@@ -1023,6 +1043,7 @@
 				838AAC481E579AA1006CC33D /* SFUIDisplay-Regular.otf in Resources */,
 				838AAC381E578CF4006CC33D /* Login.storyboard in Resources */,
 				838AAC431E579AA1006CC33D /* SFUIDisplay-Black.otf in Resources */,
+				837E63DE1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib in Resources */,
 				838AAC2B1E578A9F006CC33D /* LaunchScreen.storyboard in Resources */,
 				838AAC471E579AA1006CC33D /* SFUIDisplay-Medium.otf in Resources */,
 				83CA213B1E5CA3BF00C0D787 /* WorkingSiteItemTVC.xib in Resources */,
@@ -1056,7 +1077,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		85D0510D8F1575ABE8C55BA4 /* [CP] Embed Pods Frameworks */ = {
@@ -1140,6 +1161,7 @@
 				834F01DB1E83403400D58989 /* GANRecruitManager.m in Sources */,
 				83AC855C1E71D447005B9422 /* GANJobManager.m in Sources */,
 				834A87DF1EE201B600EB6E51 /* GANLocationDataModel.m in Sources */,
+				837E63E11EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.m in Sources */,
 				83081AFE1E5DCDB0004E8E14 /* GANCompanyMessageChooseWorkersVC.m in Sources */,
 				83CB26301E611CED00C2D8C7 /* GANWorkerCompanyDetailsVC.m in Sources */,
 				83CA21441E5CA62C00C0D787 /* GANJobsWorkingsitesVC.m in Sources */,

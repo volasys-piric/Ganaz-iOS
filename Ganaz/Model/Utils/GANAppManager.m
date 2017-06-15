@@ -21,6 +21,7 @@
 #import <IQKeyboardManager.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import "Global.h"
+#import <Mixpanel.h>
 
 @implementation GANAppManager
 
@@ -54,6 +55,9 @@
     
     [[GANMembershipPlanManager sharedInstance] requestGetMembershipPlanListWithCallback:nil];
     [[GANDataManager sharedInstance] loadBenefits];
+    
+    [Mixpanel sharedInstanceWithToken:MIXPANEL_PROJECTTOKEN];
+    [self logActivity:@"App launched"];
 }
 
 - (void) initializeManagersAfterLogin{
@@ -62,7 +66,6 @@
         [[GANJobManager sharedInstance] requestMyJobListWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetCompanyUsersWithCallback:nil];
-        
     }
     else {
         [[GANJobManager sharedInstance] requestGetMyApplicationsWithCallback:nil];
@@ -79,6 +82,11 @@
     [[GANUserManager sharedInstance] doLogout];
     [[GANCompanyManager sharedInstance] initializeManager];
     [[GANRecruitManager sharedInstance] initializeManager];
+    GANACTIVITY_REPORT(@"User logged out");
+}
+
+- (void) logActivity: (NSString *) activity{
+    [[Mixpanel sharedInstance] track:activity];
 }
 
 @end

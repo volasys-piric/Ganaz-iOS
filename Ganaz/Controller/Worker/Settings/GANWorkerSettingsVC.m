@@ -57,6 +57,7 @@
 }
 
 - (void) gotoToSVC{
+    GANACTIVITY_REPORT(@"Worker - Open privacy policy");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_TOS"];
     [self.navigationController pushViewController:vc animated:YES];

@@ -10,6 +10,7 @@
 #import "GANGenericFunctionManager.h"
 #import "GANUserManager.h"
 #import "Global.h"
+#import "GANAppManager.h"
 
 @interface GANWorkerJobsListFilterVC () <UITextFieldDelegate>
 
@@ -147,6 +148,7 @@
                                                                                                                                               @"date_from": self.dateFrom}];
     }
     [self.navigationController popViewControllerAnimated:YES];
+    GANACTIVITY_REPORT(@"Worker - Filter job");
 }
 
 - (IBAction)onBtnClearDateClick:(id)sender {

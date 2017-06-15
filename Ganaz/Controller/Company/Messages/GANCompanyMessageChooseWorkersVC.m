@@ -17,6 +17,7 @@
 
 #import "Global.h"
 #import "GANGlobalVCManager.h"
+#import "GANAppManager.h"
 
 @interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource>
 
@@ -103,6 +104,8 @@
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+    GANACTIVITY_REPORT(@"Company - Go to add-worker from Message");
 }
 
 - (void) buildWorkerList{
@@ -195,6 +198,7 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
         }
     }];
+    GANACTIVITY_REPORT(@"Company - Send message");
 }
 
 #pragma mark - UITableView Delegate

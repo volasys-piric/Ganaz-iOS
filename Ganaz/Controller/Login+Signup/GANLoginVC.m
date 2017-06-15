@@ -126,6 +126,7 @@
                 else {
                     [self gotoWorkerMain];
                 }
+                GANACTIVITY_REPORT(@"User logged in");
             }];
         }
         else if (status == ERROR_USER_LOGINFAILED_USERNOTFOUND || status == ERROR_USER_LOGINFAILED_PASSWORDWRONG){

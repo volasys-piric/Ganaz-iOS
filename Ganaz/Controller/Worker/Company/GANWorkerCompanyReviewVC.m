@@ -14,6 +14,7 @@
 #import "GANReviewManager.h"
 #import "GANGlobalVCManager.h"
 #import "Global.h"
+#import "GANAppManager.h"
 
 @interface GANWorkerCompanyReviewVC () <UITableViewDelegate, UITableViewDataSource, GANWorkerCompanyReviewItemCellDelegate>
 
@@ -125,6 +126,7 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
         }
     }];
+    GANACTIVITY_REPORT(@"Worker - Leave review");
 }
 
 #pragma mark - UITableView Delegate

@@ -19,6 +19,7 @@
 #import "GANUserManager.h"
 #import "GANGlobalVCManager.h"
 #import "Global.h"
+#import "GANAppManager.h"
 
 @interface GANWorkerJobsListVC () <UITableViewDataSource, UITableViewDelegate, GMSMapViewDelegate>
 
@@ -215,6 +216,8 @@
 - (void) prepareGotoJobDetailsAtIndex: (int) index{
     GANJobDataModel *job = [[GANJobManager sharedInstance].arrJobsSearchResult objectAtIndex:index];
     [self gotoJobDetailsVCWithJobId:job.szId CompanyId:job.szCompanyId];
+    
+    GANACTIVITY_REPORT(@"Worker - Go to job details from job search");
 }
 
 - (void) gotoCompanyDetailsAtCompanyIndex: (int) indexCompany{

@@ -19,6 +19,7 @@
 #import "GANGenericFunctionManager.h"
 #import "GANGlobalVCManager.h"
 #import "Global.h"
+#import "GANAppManager.h"
 
 @interface GANJobsListVC () <UITableViewDelegate, UITableViewDataSource>
 
@@ -98,6 +99,7 @@
     vc.indexJob = index;
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to job details from job list");
 }
 
 - (void) deleteJobAtIndex: (int) index{
@@ -112,6 +114,7 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:3 Callback:nil];
         }
     }];
+    GANACTIVITY_REPORT(@"Company - Delete job from job list");
 }
 
 - (void) promptForDeleteAtIndex: (int) index{

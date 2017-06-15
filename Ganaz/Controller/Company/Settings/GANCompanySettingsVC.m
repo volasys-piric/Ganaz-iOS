@@ -49,6 +49,7 @@
 }
 
 - (void) gotoManageRolesVC{
+    GANACTIVITY_REPORT(@"Company - Manage Roles");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MANAGEROLE"];
     [self.navigationController pushViewController:vc animated:YES];
@@ -56,6 +57,7 @@
 }
 
 - (void) gotoToSVC{
+    GANACTIVITY_REPORT(@"Company - Open privacy policy");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_TOS"];
     [self.navigationController pushViewController:vc animated:YES];

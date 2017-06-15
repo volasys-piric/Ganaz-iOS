@@ -14,6 +14,7 @@
 #import "Global.h"
 #import "GANGlobalVCManager.h"
 #import "GANGenericFunctionManager.h"
+#import "GANAppManager.h"
 
 @interface GANCompanyManageRoleVC () <UITableViewDelegate, UITableViewDataSource>
 
@@ -127,7 +128,7 @@
                 }                
             });
         }];
-        
+        GANACTIVITY_REPORT(@"Company - Change user role");
     } CallbackNo:nil];
 }
 

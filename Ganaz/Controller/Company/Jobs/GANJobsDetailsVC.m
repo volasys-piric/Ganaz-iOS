@@ -19,6 +19,7 @@
 #import "GANUtils.h"
 #import "Global.h"
 #import <UIView+Shake/UIView+Shake.h>
+#import "GANAppManager.h"
 
 typedef enum _ENUM_POPUPFOR{
     GANENUM_POPUPFOR_NONE,
@@ -560,6 +561,7 @@ typedef enum _ENUM_PAYUNIT{
                 [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:3 Callback:nil];
             }
         }];
+        GANACTIVITY_REPORT(@"Company - Post new job");
     }
     else {
         [managerJob requestUpdateJobAtIndex:self.indexJob Job:job Callback:^(int status) {
@@ -572,7 +574,7 @@ typedef enum _ENUM_PAYUNIT{
                 [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:3 Callback:nil];
             }
         }];
-
+        GANACTIVITY_REPORT(@"Company - Update job");
     }
 }
 
@@ -588,6 +590,7 @@ typedef enum _ENUM_PAYUNIT{
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:3 Callback:nil];
         }
     }];
+    GANACTIVITY_REPORT(@"Company - Delete job from job details");
 }
 
 - (void) promptForDelete{

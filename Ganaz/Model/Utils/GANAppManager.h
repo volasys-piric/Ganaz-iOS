@@ -14,5 +14,6 @@
 - (void) initializeManagersAfterLaunch;
 - (void) initializeManagersAfterLogin;
 - (void) initializeManagersAfterLogout;
+- (void) logActivity: (NSString *) activity;
 
 @end

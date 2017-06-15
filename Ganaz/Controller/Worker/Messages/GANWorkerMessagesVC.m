@@ -19,6 +19,7 @@
 #import "GANWorkerJobDetailsVC.h"
 #import "Global.h"
 #import "GANGenericFunctionManager.h"
+#import "GANAppManager.h"
 
 @interface GANWorkerMessagesVC () <UITableViewDelegate, UITableViewDataSource>
 
@@ -272,6 +273,7 @@
     else {
         [self gotoJobDetailsVCWithJobId:message.szJobId CompanyId:message.szSenderCompanyId];
     }
+    GANACTIVITY_REPORT(@"Worker - Go to job details from Message item");
 }
 
 - (void) replyMessageAtIndex: (int) index{
@@ -328,6 +330,8 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
         }
     }];
+    
+    GANACTIVITY_REPORT(@"Worker - Reply Message");
 }
 
 #pragma mark - UITableView Delegate

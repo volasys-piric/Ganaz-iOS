@@ -63,17 +63,17 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$12.05 / hr" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="a0n-Qc-9my" userLabel="Label - Price">
-                                <rect key="frame" x="285" y="12.5" width="87" height="24"/>
+                                <rect key="frame" x="290" y="12.5" width="77" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="w99-ry-IZq"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="13"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ver más" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pxb-64-iv2">
-                                <rect key="frame" x="285" y="38" width="87" height="20.5"/>
-                                <fontDescription key="fontDescription" name="SFUIDisplay-Semibold" family="SF UI Display" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ver más" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="pxb-64-iv2">
+                                <rect key="frame" x="290" y="39.5" width="77" height="18"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Semibold" family="SF UI Display" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -81,7 +81,7 @@
                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="pxb-64-iv2" firstAttribute="centerY" secondItem="tIp-Bk-Zqd" secondAttribute="centerY" id="4Zc-3y-gnx"/>
-                            <constraint firstAttribute="trailing" secondItem="a0n-Qc-9my" secondAttribute="trailing" constant="3" id="6eN-P1-z8J"/>
+                            <constraint firstAttribute="trailing" secondItem="a0n-Qc-9my" secondAttribute="trailing" constant="8" id="6eN-P1-z8J"/>
                             <constraint firstItem="0gt-EL-WS7" firstAttribute="height" secondItem="Rf2-Xq-FfN" secondAttribute="height" id="ExJ-Hq-DAb"/>
                             <constraint firstAttribute="trailing" secondItem="0gt-EL-WS7" secondAttribute="trailing" id="GLF-nE-qfJ"/>
                             <constraint firstItem="PQP-hs-orV" firstAttribute="centerX" secondItem="Rf2-Xq-FfN" secondAttribute="centerX" multiplier="1.5" id="HVj-h1-QgF"/>
@@ -97,7 +97,7 @@
                             <constraint firstItem="0gt-EL-WS7" firstAttribute="leading" secondItem="PQP-hs-orV" secondAttribute="trailing" id="pN5-2j-jeh"/>
                             <constraint firstItem="0gt-EL-WS7" firstAttribute="centerY" secondItem="Rf2-Xq-FfN" secondAttribute="centerY" id="sBu-E8-chZ"/>
                             <constraint firstItem="pxb-64-iv2" firstAttribute="centerX" secondItem="a0n-Qc-9my" secondAttribute="centerX" id="t4U-0Q-OBx"/>
-                            <constraint firstItem="a0n-Qc-9my" firstAttribute="leading" secondItem="PQP-hs-orV" secondAttribute="trailing" constant="3" id="vf9-Aq-6AF"/>
+                            <constraint firstItem="a0n-Qc-9my" firstAttribute="leading" secondItem="PQP-hs-orV" secondAttribute="trailing" constant="8" id="vf9-Aq-6AF"/>
                             <constraint firstItem="pxb-64-iv2" firstAttribute="width" secondItem="a0n-Qc-9my" secondAttribute="width" id="ySx-01-igD"/>
                         </constraints>
                     </view>

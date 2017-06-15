@@ -19,6 +19,7 @@
 
 #import "Global.h"
 #import "GANGenericFunctionManager.h"
+#import "GANAppManager.h"
 
 @interface GANCompanyMessagesVC () <UITableViewDelegate, UITableViewDataSource>
 
@@ -158,6 +159,8 @@
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES_CHOOSEWORKER"];
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+    GANACTIVITY_REPORT(@"Company - Go to send message from Messages");
 }
 
 #pragma mark - UI Stuff
@@ -250,6 +253,7 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
         }
     }];
+    GANACTIVITY_REPORT(@"Company - Reply message");
 }
 
 #pragma mark - UITableView Delegate

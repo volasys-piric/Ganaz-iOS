@@ -19,6 +19,7 @@
 
 #import "GANGenericFunctionManager.h"
 #import "Global.h"
+#import "GANAppManager.h"
 
 @interface GANRecruitVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
@@ -229,6 +230,7 @@
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
         }
+        GANACTIVITY_REPORT(@"Company - Recruit");
     }];
 }
 
@@ -237,6 +239,7 @@
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to add-worker from Recruit");
 }
 
 #pragma mark - UITableView Delegate
