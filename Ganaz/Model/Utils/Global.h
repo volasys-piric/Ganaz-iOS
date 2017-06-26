@@ -21,19 +21,19 @@
 
 #define ONESIGNAL_APPID                             @"ade7e4b5-b439-4d82-9bb2-c040372c1f14"
 #define GANURL_BASEURL                              @"http://35.166.132.188:8000/api/v1"
-#define MIXPANEL_PROJECTTOKEN                       @"17d773276ab9b573f6cff727dff74eac"
+#define MIXPANEL_PROJECTTOKEN                       @"d1bee23a670fbbe63a19373daba332b0"
 
 #elif GANENVIRONMENT_DEMO
 
 #define ONESIGNAL_APPID                             @"37c1d731-1cbd-40cf-9ba3-3936174602e1"
 #define GANURL_BASEURL                              @"http://34.210.63.91:8000/api/v1"
-#define MIXPANEL_APPID                              @"17d773276ab9b573f6cff727dff74eac"
+#define MIXPANEL_APPID                              @"3f0f41f4cfc0c55f1762ef08f7692b86"
 
 #else
 
 #define ONESIGNAL_APPID                             @"160b5387-8178-46e2-b194-ad193dc5efac"
 #define GANURL_BASEURL                              @"http://35.163.42.136:8000/api/v1"
-#define MIXPANEL_APPID                              @"17d773276ab9b573f6cff727dff74eac"
+#define MIXPANEL_APPID                              @"50fffae37bad52c48cf0e691f36cd1a4"
 
 #endif
 

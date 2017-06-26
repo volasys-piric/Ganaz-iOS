@@ -7,11 +7,13 @@
 //
 
 #import "GANLoginTosVC.h"
+#import "GANGlobalVCManager.h"
 
-@interface GANLoginTosVC ()
+@interface GANLoginTosVC () <UIWebViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UIWebView *webview;
+@property (assign, atomic) BOOL isLoaded;
 
 @end
 
@@ -21,7 +23,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.automaticallyAdjustsScrollViewInsets = NO;
-    [self.webview loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Privacy-Policy" ofType:@"htm"]isDirectory:NO]]];
+    self.webview.delegate = self;
+    [self.webview loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"privacy-policy" ofType:@"html"]isDirectory:NO]]];
+    self.isLoaded = NO;
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
 
 }
 
@@ -42,6 +47,14 @@
 - (void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:NO];
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView{
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView{
+    self.isLoaded = YES;
+    [GANGlobalVCManager hideHudProgress];
 }
 
 #pragma mark - UIButton Delegate
