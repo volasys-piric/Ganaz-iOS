@@ -10,6 +10,9 @@
 
 @interface GANGenericFunctionManager : NSObject
 
++ (NSString *) getAppVersionString;
++ (NSString *) getAppBuildString;
+
 #pragma mark -String Manipulation
 
 + (NSString *) refineNSString: (NSString *)sz;

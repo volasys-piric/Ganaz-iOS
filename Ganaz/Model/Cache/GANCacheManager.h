@@ -2,7 +2,7 @@
 //  GANCacheManager.h
 //  Ganaz
 //
-//  Created by Chris Lin on 5/28/17.
+//  Created by Piric Djordje on 5/28/17.
 //  Copyright © 2017 Ganaz. All rights reserved.
 //
 

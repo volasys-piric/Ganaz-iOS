@@ -2,7 +2,7 @@
 //  GANCompanyUserItemTVC.m
 //  Ganaz
 //
-//  Created by Chris Lin on 6/2/17.
+//  Created by Piric Djordje on 6/2/17.
 //  Copyright © 2017 Ganaz. All rights reserved.
 //
 

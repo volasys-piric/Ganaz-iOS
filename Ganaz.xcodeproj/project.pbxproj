@@ -45,6 +45,10 @@
 		834F01E11E83BECD00D58989 /* GANWorkerUpdateLocaionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 834F01E01E83BECD00D58989 /* GANWorkerUpdateLocaionVC.m */; };
 		834F01E41E83C90B00D58989 /* GANMainLoadingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 834F01E31E83C90B00D58989 /* GANMainLoadingVC.m */; };
 		834F01F21E85DF5900D58989 /* GANLocalstorageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 834F01F11E85DF5900D58989 /* GANLocalstorageManager.m */; };
+		836C87EC1F09EA9500968D40 /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = 836C87EB1F09EA9500968D40 /* config.json */; };
+		836C87EF1F0A46BB00968D40 /* GANAppConfigDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 836C87EE1F0A46BB00968D40 /* GANAppConfigDataModel.m */; };
+		836C87F21F0AA1CF00968D40 /* AppUpdatesPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836C87F11F0AA1CF00968D40 /* AppUpdatesPopup.xib */; };
+		836C87F81F0AA23200968D40 /* GANAppUpdatesPopupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 836C87F71F0AA23200968D40 /* GANAppUpdatesPopupVC.m */; };
 		837E63DE1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837E63DD1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib */; };
 		837E63E11EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 837E63E01EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.m */; };
 		838735DE1E7A232C00CFFB15 /* GANMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 838735DD1E7A232C00CFFB15 /* GANMessageManager.m */; };
@@ -189,6 +193,12 @@
 		834F01E31E83C90B00D58989 /* GANMainLoadingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANMainLoadingVC.m; path = Controller/Main/GANMainLoadingVC.m; sourceTree = "<group>"; };
 		834F01F01E85DF5900D58989 /* GANLocalstorageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANLocalstorageManager.h; path = Model/Utils/GANLocalstorageManager.h; sourceTree = "<group>"; };
 		834F01F11E85DF5900D58989 /* GANLocalstorageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANLocalstorageManager.m; path = Model/Utils/GANLocalstorageManager.m; sourceTree = "<group>"; };
+		836C87EB1F09EA9500968D40 /* config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = config.json; path = Data/config.json; sourceTree = "<group>"; };
+		836C87ED1F0A46BB00968D40 /* GANAppConfigDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANAppConfigDataModel.h; path = Model/Utils/DataModel/GANAppConfigDataModel.h; sourceTree = "<group>"; };
+		836C87EE1F0A46BB00968D40 /* GANAppConfigDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANAppConfigDataModel.m; path = Model/Utils/DataModel/GANAppConfigDataModel.m; sourceTree = "<group>"; };
+		836C87F11F0AA1CF00968D40 /* AppUpdatesPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AppUpdatesPopup.xib; path = View/CustomView/AppUpdatesPopup/AppUpdatesPopup.xib; sourceTree = "<group>"; };
+		836C87F61F0AA23200968D40 /* GANAppUpdatesPopupVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANAppUpdatesPopupVC.h; path = View/CustomView/AppUpdatesPopup/GANAppUpdatesPopupVC.h; sourceTree = "<group>"; };
+		836C87F71F0AA23200968D40 /* GANAppUpdatesPopupVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANAppUpdatesPopupVC.m; path = View/CustomView/AppUpdatesPopup/GANAppUpdatesPopupVC.m; sourceTree = "<group>"; };
 		837E63DD1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WorkerBenefitItemCVC.xib; path = View/TableViewCell/WorkerBenefitItemCVC/WorkerBenefitItemCVC.xib; sourceTree = "<group>"; };
 		837E63DF1EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANWorkerBenefitItemCVC.h; path = View/TableViewCell/WorkerBenefitItemCVC/GANWorkerBenefitItemCVC.h; sourceTree = "<group>"; };
 		837E63E01EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANWorkerBenefitItemCVC.m; path = View/TableViewCell/WorkerBenefitItemCVC/GANWorkerBenefitItemCVC.m; sourceTree = "<group>"; };
@@ -405,6 +415,8 @@
 				834A87E41EE2027C00EB6E51 /* GANTransContentsDataModel.m */,
 				834A87E61EE2030D00EB6E51 /* GANBenefitDataModel.h */,
 				834A87E71EE2030D00EB6E51 /* GANBenefitDataModel.m */,
+				836C87ED1F0A46BB00968D40 /* GANAppConfigDataModel.h */,
+				836C87EE1F0A46BB00968D40 /* GANAppConfigDataModel.m */,
 			);
 			name = "Data Model";
 			sourceTree = "<group>";
@@ -474,6 +486,16 @@
 				834F01DD1E8340A300D58989 /* GANRecruitDataModel.m */,
 			);
 			name = "Data Model";
+			sourceTree = "<group>";
+		};
+		836C87F01F0AA1A000968D40 /* AppUpdatesPopup */ = {
+			isa = PBXGroup;
+			children = (
+				836C87F11F0AA1CF00968D40 /* AppUpdatesPopup.xib */,
+				836C87F61F0AA23200968D40 /* GANAppUpdatesPopupVC.h */,
+				836C87F71F0AA23200968D40 /* GANAppUpdatesPopupVC.m */,
+			);
+			name = AppUpdatesPopup;
 			sourceTree = "<group>";
 		};
 		837E63DC1EF3099E001EFBE1 /* WorkerBenefitItemCVC */ = {
@@ -603,6 +625,7 @@
 		838AAC361E578C99006CC33D /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				836C87EB1F09EA9500968D40 /* config.json */,
 				83AB0F681F0083FD00A09E1F /* privacy-policy.html */,
 				83AB0F691F0083FD00A09E1F /* style.css */,
 				83AB0F4F1EFBA5DA00A09E1F /* TermsAndPolicies.pdf */,
@@ -672,6 +695,7 @@
 		839DB51A1ED6756B00E2652A /* Custom View */ = {
 			isa = PBXGroup;
 			children = (
+				836C87F01F0AA1A000968D40 /* AppUpdatesPopup */,
 				834A87E91EE20BFB00EB6E51 /* BenefitInfoPopup */,
 				839DB51B1ED6758C00E2652A /* CompanyCodePopup */,
 			);
@@ -1052,9 +1076,11 @@
 				838AAC431E579AA1006CC33D /* SFUIDisplay-Black.otf in Resources */,
 				837E63DE1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib in Resources */,
 				838AAC2B1E578A9F006CC33D /* LaunchScreen.storyboard in Resources */,
+				836C87F21F0AA1CF00968D40 /* AppUpdatesPopup.xib in Resources */,
 				838AAC471E579AA1006CC33D /* SFUIDisplay-Medium.otf in Resources */,
 				83CA213B1E5CA3BF00C0D787 /* WorkingSiteItemTVC.xib in Resources */,
 				83081B061E5E38F6004E8E14 /* Worker.storyboard in Resources */,
+				836C87EC1F09EA9500968D40 /* config.json in Resources */,
 				838AAC281E578A9F006CC33D /* Assets.xcassets in Resources */,
 				838AAC491E579AA1006CC33D /* SFUIDisplay-Semibold.otf in Resources */,
 				838AAC441E579AA1006CC33D /* SFUIDisplay-Bold.otf in Resources */,
@@ -1140,6 +1166,7 @@
 				83CA21381E5BECAC00C0D787 /* GANJobsListVC.m in Sources */,
 				830A84381E88BC5600DECAA9 /* GANPushNotificationManager.m in Sources */,
 				830F9DD31EDB0AAE0073232B /* GANMyWorkerDataModel.m in Sources */,
+				836C87F81F0AA23200968D40 /* GANAppUpdatesPopupVC.m in Sources */,
 				83CB263F1E623FCB00C2D8C7 /* GANWorkerCompanyReviewItemTVC.m in Sources */,
 				83CB264A1E6308E900C2D8C7 /* GANWorkerSettingsVC.m in Sources */,
 				83081AEC1E5DA9E3004E8E14 /* GANWorkerItemTVC.m in Sources */,
@@ -1186,6 +1213,7 @@
 				834A87D31EE10CB900EB6E51 /* GANCompanyManageRoleVC.m in Sources */,
 				83CA21221E57F8EC00C0D787 /* GANSignupCompanyVC.m in Sources */,
 				83CA211C1E57F8CE00C0D787 /* GANSignupChooseVC.m in Sources */,
+				836C87EF1F0A46BB00968D40 /* GANAppConfigDataModel.m in Sources */,
 				838AAC511E57A291006CC33D /* GANLoginVC.m in Sources */,
 				83081AF21E5DC58D004E8E14 /* GANCompanyMessagesVC.m in Sources */,
 				83CA214A1E5CF41A00C0D787 /* GANLocationManager.m in Sources */,

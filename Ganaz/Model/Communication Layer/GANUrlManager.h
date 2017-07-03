@@ -10,6 +10,10 @@
 
 @interface GANUrlManager : NSObject
 
+#pragma mark - Endpoint for AppSettings
+
++ (NSString *) getEndpointForAppConfig;
+
 #pragma mark - Endpoint for Location
 
 + (NSString *) getEndpointForGooglemapsGeocode;

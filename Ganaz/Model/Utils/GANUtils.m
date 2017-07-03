@@ -154,6 +154,36 @@
     return @"free";
 }
 
+// App Config
+
++ (GANENUM_APPCONFIG_ENV) getAppConfigEnvFromString: (NSString *) szEnv{
+    if ([szEnv caseInsensitiveCompare:@"staging"] == NSOrderedSame) return GANENUM_APPCONFIG_ENV_STAGING;
+    if ([szEnv caseInsensitiveCompare:@"demo"] == NSOrderedSame) return GANENUM_APPCONFIG_ENV_DEMO;
+    if ([szEnv caseInsensitiveCompare:@"production"] == NSOrderedSame) return GANENUM_APPCONFIG_ENV_PRODUCTION;
+    return GANENUM_APPCONFIG_ENV_DEMO;
+}
+
++ (NSString *) getStringFromAppConfigEnv: (GANENUM_APPCONFIG_ENV) env{
+    if (env == GANENUM_APPCONFIG_ENV_STAGING) return @"staging";
+    if (env == GANENUM_APPCONFIG_ENV_DEMO) return @"demo";
+    if (env == GANENUM_APPCONFIG_ENV_PRODUCTION) return @"production";
+    return @"demo";
+}
+
++ (GANENUM_APPCONFIG_SERVERSTATUS) getAppConfigServerStatusFromString: (NSString *) szStatus{
+    if ([szStatus caseInsensitiveCompare:@"running"] == NSOrderedSame) return GANENUM_APPCONFIG_SERVERSTATUS_RUNNING;
+    if ([szStatus caseInsensitiveCompare:@"maintenance"] == NSOrderedSame) return GANENUM_APPCONFIG_SERVERSTATUS_MAINTENANCE;
+    if ([szStatus caseInsensitiveCompare:@"down"] == NSOrderedSame) return GANENUM_APPCONFIG_SERVERSTATUS_DOWN;
+    return GANENUM_APPCONFIG_SERVERSTATUS_RUNNING;
+}
+
++ (NSString *) getStringFromAppConfigServerStatus: (GANENUM_APPCONFIG_SERVERSTATUS) status{
+    if (status == GANENUM_APPCONFIG_SERVERSTATUS_RUNNING) return @"running";
+    if (status == GANENUM_APPCONFIG_SERVERSTATUS_MAINTENANCE) return @"maintenance";
+    if (status == GANENUM_APPCONFIG_SERVERSTATUS_DOWN) return @"down";
+    return @"running";
+}
+
 // Translate
 
 + (void) requestTranslate: (NSString *) text

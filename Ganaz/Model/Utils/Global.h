@@ -12,10 +12,12 @@
 #define GANLOG( s, ... ) NSLog( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
 #define GANACTIVITY_REPORT(s) [[GANAppManager sharedInstance] logActivity: (s) ] 
 
-#warning This should be removed before submission!
-#define GANENVIRONMENT_STAGING
+//#warning This should be removed before submission!
+//#define GANENVIRONMENT_STAGING
 
 // BASE URL
+
+#define GANURL_GATEWAY                              @"http://34.210.176.28"
 
 #ifdef GANENVIRONMENT_STAGING
 
@@ -27,17 +29,17 @@
 
 #define ONESIGNAL_APPID                             @"37c1d731-1cbd-40cf-9ba3-3936174602e1"
 #define GANURL_BASEURL                              @"http://34.210.63.91:8000/api/v1"
-#define MIXPANEL_APPID                              @"3f0f41f4cfc0c55f1762ef08f7692b86"
+#define MIXPANEL_PROJECTTOKEN                       @"3f0f41f4cfc0c55f1762ef08f7692b86"
 
 #else
 
 #define ONESIGNAL_APPID                             @"160b5387-8178-46e2-b194-ad193dc5efac"
 #define GANURL_BASEURL                              @"http://35.163.42.136:8000/api/v1"
-#define MIXPANEL_APPID                              @"50fffae37bad52c48cf0e691f36cd1a4"
+#define MIXPANEL_PROJECTTOKEN                       @"50fffae37bad52c48cf0e691f36cd1a4"
 
 #endif
 
-#define GANURL_APPSTORE                             @"https://itunes.apple.com/app/id1230180278"
+#define GANURL_APPSTORE                             @"itms://itunes.apple.com/us/app/apple-store/id1230180278?mt=8"
 
 // CONSTANTS
 

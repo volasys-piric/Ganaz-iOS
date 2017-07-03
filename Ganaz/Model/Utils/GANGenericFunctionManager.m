@@ -11,6 +11,16 @@
 
 @implementation GANGenericFunctionManager
 
++ (NSString *) getAppVersionString{
+    NSString *szVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    return szVersion;
+}
+
++ (NSString *) getAppBuildString{
+    NSString *szVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
+    return szVersion;
+}
+
 #pragma mark -String Manipulation
 
 + (NSString *) refineNSString: (NSString *)sz{
