@@ -164,6 +164,14 @@
             self.szLatestVersion = [GANGenericFunctionManager refineNSString:[dictIOS objectForKey:@"latest_version"]];
             self.szLatestBuild = [GANGenericFunctionManager refineNSString:[dictIOS objectForKey:@"latest_build"]];
 
+            // Test Code
+            /*
+            self.szLatestVersion = @"1.3";
+            self.szLatestBuild = @"1300";
+            self.config.szFrontendMinVersion = @"1.3";
+            self.config.szFrontendMinBuild = @"1300";
+            */
+            
             [self checkAppUpdates];
             
             [self initializeManagersAfterAppConfig];
