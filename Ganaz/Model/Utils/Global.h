@@ -12,20 +12,20 @@
 #define GANLOG( s, ... ) NSLog( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
 #define GANACTIVITY_REPORT(s) [[GANAppManager sharedInstance] logActivity: (s) ] 
 
-//#warning This should be removed before submission!
-//#define GANENVIRONMENT_STAGING
+#warning This should be removed before submission!
+#define GANENVIRONMENT_DEMO
 
 // BASE URL
 
 #define GANURL_GATEWAY                              @"http://34.210.176.28"
 
-#ifdef GANENVIRONMENT_STAGING
+#if     defined(GANENVIRONMENT_STAGING)
 
 #define ONESIGNAL_APPID                             @"ade7e4b5-b439-4d82-9bb2-c040372c1f14"
 #define GANURL_BASEURL                              @"http://35.166.132.188:8000/api/v1"
 #define MIXPANEL_PROJECTTOKEN                       @"d1bee23a670fbbe63a19373daba332b0"
 
-#elif GANENVIRONMENT_DEMO
+#elif   defined(GANENVIRONMENT_DEMO)
 
 #define ONESIGNAL_APPID                             @"37c1d731-1cbd-40cf-9ba3-3936174602e1"
 #define GANURL_BASEURL                              @"http://34.210.63.91:8000/api/v1"

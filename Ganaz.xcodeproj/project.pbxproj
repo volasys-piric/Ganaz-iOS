@@ -49,6 +49,7 @@
 		836C87EF1F0A46BB00968D40 /* GANAppConfigDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 836C87EE1F0A46BB00968D40 /* GANAppConfigDataModel.m */; };
 		836C87F21F0AA1CF00968D40 /* AppUpdatesPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836C87F11F0AA1CF00968D40 /* AppUpdatesPopup.xib */; };
 		836C87F81F0AA23200968D40 /* GANAppUpdatesPopupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 836C87F71F0AA23200968D40 /* GANAppUpdatesPopupVC.m */; };
+		837B86D21F0D589900FCF260 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 837B86D41F0D589900FCF260 /* Localizable.strings */; };
 		837E63DE1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837E63DD1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib */; };
 		837E63E11EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 837E63E01EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.m */; };
 		838735DE1E7A232C00CFFB15 /* GANMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 838735DD1E7A232C00CFFB15 /* GANMessageManager.m */; };
@@ -199,6 +200,8 @@
 		836C87F11F0AA1CF00968D40 /* AppUpdatesPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AppUpdatesPopup.xib; path = View/CustomView/AppUpdatesPopup/AppUpdatesPopup.xib; sourceTree = "<group>"; };
 		836C87F61F0AA23200968D40 /* GANAppUpdatesPopupVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANAppUpdatesPopupVC.h; path = View/CustomView/AppUpdatesPopup/GANAppUpdatesPopupVC.h; sourceTree = "<group>"; };
 		836C87F71F0AA23200968D40 /* GANAppUpdatesPopupVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANAppUpdatesPopupVC.m; path = View/CustomView/AppUpdatesPopup/GANAppUpdatesPopupVC.m; sourceTree = "<group>"; };
+		837B86D31F0D589900FCF260 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		837B86D61F0D594600FCF260 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		837E63DD1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WorkerBenefitItemCVC.xib; path = View/TableViewCell/WorkerBenefitItemCVC/WorkerBenefitItemCVC.xib; sourceTree = "<group>"; };
 		837E63DF1EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANWorkerBenefitItemCVC.h; path = View/TableViewCell/WorkerBenefitItemCVC/GANWorkerBenefitItemCVC.h; sourceTree = "<group>"; };
 		837E63E01EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANWorkerBenefitItemCVC.m; path = View/TableViewCell/WorkerBenefitItemCVC/GANWorkerBenefitItemCVC.m; sourceTree = "<group>"; };
@@ -618,6 +621,7 @@
 				838AAC371E578CF4006CC33D /* Login.storyboard */,
 				83CA21281E5BD3B900C0D787 /* Company.storyboard */,
 				83081B051E5E38F6004E8E14 /* Worker.storyboard */,
+				837B86D41F0D589900FCF260 /* Localizable.strings */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1045,6 +1049,7 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
 			);
 			mainGroup = 838AAC0F1E578A9E006CC33D;
 			productRefGroup = 838AAC191E578A9E006CC33D /* Products */;
@@ -1074,6 +1079,7 @@
 				838AAC481E579AA1006CC33D /* SFUIDisplay-Regular.otf in Resources */,
 				838AAC381E578CF4006CC33D /* Login.storyboard in Resources */,
 				838AAC431E579AA1006CC33D /* SFUIDisplay-Black.otf in Resources */,
+				837B86D21F0D589900FCF260 /* Localizable.strings in Resources */,
 				837E63DE1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib in Resources */,
 				838AAC2B1E578A9F006CC33D /* LaunchScreen.storyboard in Resources */,
 				836C87F21F0AA1CF00968D40 /* AppUpdatesPopup.xib in Resources */,
@@ -1235,6 +1241,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		837B86D41F0D589900FCF260 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				837B86D31F0D589900FCF260 /* Base */,
+				837B86D61F0D594600FCF260 /* es */,
+			);
+			name = Localizable.strings;
+			path = View;
+			sourceTree = "<group>";
+		};
 		838AAC241E578A9F006CC33D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1258,6 +1274,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -1305,6 +1322,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";

@@ -20,11 +20,15 @@
 
 @end
 
+#define GANUICOLOR_APPUPDATESVC_CONTAINERVIEW_BORDER            [UIColor colorWithRed:(210 / 255.0) green:(215 / 255.0) blue:(220 / 255.0) alpha:1]
+
 @implementation GANAppUpdatesPopupVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [self refreshViews];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -35,17 +39,29 @@
 - (void) refreshViews{
     self.viewContents.clipsToBounds = YES;
     self.viewContents.layer.cornerRadius = 3;
+    self.viewContents.layer.borderWidth = 1;
+    self.viewContents.layer.borderColor = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
+    
+    self.btnUpdate.clipsToBounds = YES;
+    self.btnUpdate.layer.cornerRadius = 3;
+    
+    self.btnCancel.clipsToBounds = YES;
+    self.btnCancel.layer.cornerRadius = 3;
+    self.btnCancel.layer.borderWidth = 1;
+    self.btnCancel.layer.borderColor = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
 }
 
 - (void) refreshFields{
     GANAppManager *managerApp = [GANAppManager sharedInstance];
     if (managerApp.enumAppUpdateType == GANENUM_APPCONFIG_APPUPDATETYPE_OPTIONAL){
-        [self.btnCancel setTitle:@"Later" forState:UIControlStateNormal];
-        self.lblDescription.text = [NSString stringWithFormat:@"New version v%@ is available in App Store now!\n\nYou may now download and install to enjoy new exciting features.", managerApp.szLatestVersion];
+        [self.btnUpdate setTitle:NSLocalizedString(@"Update", @"") forState:UIControlStateNormal];
+        [self.btnCancel setTitle:NSLocalizedString(@"Later", @"") forState:UIControlStateNormal];
+        self.lblDescription.text = NSLocalizedString(@"A new version of Ganaz is available!\r\rPlease press update.", @"");
     }
     else if (managerApp.enumAppUpdateType == GANENUM_APPCONFIG_APPUPDATETYPE_MANDATORY){
-        [self.btnCancel setTitle:@"Exit" forState:UIControlStateNormal];
-        self.lblDescription.text = [NSString stringWithFormat:@"New version v%@ is available in App Store now!\n\nPlease download and install to continue.", managerApp.szLatestVersion];
+        [self.btnUpdate setTitle:NSLocalizedString(@"Update", @"") forState:UIControlStateNormal];
+        [self.btnCancel setTitle:NSLocalizedString(@"Exit", @"") forState:UIControlStateNormal];
+        self.lblDescription.text = NSLocalizedString(@"A new version of Ganaz is available!\rPlease press update to continue using Ganaz", @"");
     }
 }
 

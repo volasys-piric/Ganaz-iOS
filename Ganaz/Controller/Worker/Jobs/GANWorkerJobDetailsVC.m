@@ -294,7 +294,7 @@
     }
     if (self.isRecruited == YES){
         // You are recruited for this job.
-        [GANGlobalVCManager showHudInfoWithMessage:@"You are recruited for this job." DismissAfter:-1 Callback:nil];
+        [GANGlobalVCManager showHudInfoWithMessage:@"Le empresa ha sido notificado sobre su interés." DismissAfter:-1 Callback:nil];
         return;
     }
     

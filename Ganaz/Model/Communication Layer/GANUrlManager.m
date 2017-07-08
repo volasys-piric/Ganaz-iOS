@@ -9,13 +9,14 @@
 #import "GANUrlManager.h"
 #import "Global.h"
 #import "GANAppManager.h"
+#import "GANGenericFunctionManager.h"
 
 @implementation GANUrlManager
 
 #pragma mark - Endpoint for AppSettings
 
 + (NSString *) getEndpointForAppConfig{
-    return [NSString stringWithFormat:@"%@/config.json", GANURL_GATEWAY];
+    return [NSString stringWithFormat:@"%@/config.json?token=%@", GANURL_GATEWAY, [GANGenericFunctionManager generateRandomString:8]];
 }
 
 + (NSString *) getBaseUrl{

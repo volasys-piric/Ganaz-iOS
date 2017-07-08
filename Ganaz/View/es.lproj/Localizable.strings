@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  Ganaz
+
+  Created by Piric Djordje on 7/6/17.
+  Copyright © 2017 Ganaz. All rights reserved.
+*/
+
+/************ App Updates Screen **************/
+
+"A new version of Ganaz is available!\r\rPlease press update." = "Nueva versión está disponible. Por favor, oprima Actualizar.";
+"A new version of Ganaz is available!\rPlease press update to continue using Ganaz" = "Nueva versión está disponible. Por favor, oprima Actualizar para poder continuar usarlo.";
+"Update" = "Actualizar";
+"Later" = "Luego";
+"Exit" = "Salir";

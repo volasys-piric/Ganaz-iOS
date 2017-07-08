@@ -53,9 +53,9 @@
 
 - (void) initializeAppConfig{
     self.config = [[GANAppConfigDataModel alloc] init];
-#ifdef GANENVIRONMENT_STAGING
+#if     defined(GANENVIRONMENT_STAGING)
     self.config.enumEnv = GANENUM_APPCONFIG_ENV_STAGING;
-#elif GANENVIRONMENT_DEMO
+#elif   defined(GANENVIRONMENT_DEMO)
     self.config.enumEnv = GANENUM_APPCONFIG_ENV_DEMO;
 #else
     self.config.enumEnv = GANENUM_APPCONFIG_ENV_PRODUCTION;
@@ -165,12 +165,10 @@
             self.szLatestBuild = [GANGenericFunctionManager refineNSString:[dictIOS objectForKey:@"latest_build"]];
 
             // Test Code
-            /*
-            self.szLatestVersion = @"1.3";
-            self.szLatestBuild = @"1300";
-            self.config.szFrontendMinVersion = @"1.3";
-            self.config.szFrontendMinBuild = @"1300";
-            */
+//            self.szLatestVersion = @"1.3";
+//            self.szLatestBuild = @"1300";
+//            self.config.szFrontendMinVersion = @"1.3";
+//            self.config.szFrontendMinBuild = @"1300";
             
             [self checkAppUpdates];
             
