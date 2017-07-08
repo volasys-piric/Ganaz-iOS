@@ -120,12 +120,13 @@
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager hideHudProgressWithCallback:^{
                 GANUserManager *managerUser = [GANUserManager sharedInstance];
-                if ([managerUser isCompany] == YES){
+                if ([managerUser isCompanyUser] == YES){
                     [self gotoCompanyMain];
                 }
                 else {
                     [self gotoWorkerMain];
                 }
+                GANACTIVITY_REPORT(@"User logged in");
             }];
         }
         else if (status == ERROR_USER_LOGINFAILED_USERNOTFOUND || status == ERROR_USER_LOGINFAILED_PASSWORDWRONG){
@@ -185,6 +186,9 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
+    if (textField == self.txtPassword){
+        [self doLogin];
+    }
     return YES;
 }
 

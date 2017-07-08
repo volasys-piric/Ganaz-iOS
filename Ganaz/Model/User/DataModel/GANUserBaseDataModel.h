@@ -22,10 +22,15 @@
 @property (strong, nonatomic) GANPhoneDataModel *modelPhone;
 @property (assign, atomic) GANENUM_USER_AUTHTYPE enumAuthType;
 @property (strong, nonatomic) NSString *szExternalId;
-@property (strong, nonatomic) NSString *szPlayerId;
+@property (strong, nonatomic) NSMutableArray *arrPlayerIds;
 
 - (instancetype) init;
 - (void) setWithDictionary: (NSDictionary *) dict;
 - (NSDictionary *) serializeToDictionary;
+
+- (int) getIndexForPlayerId: (NSString *) playerId;
+- (void) addPlayerIdIfNeeded: (NSString *) playerId;
+
+- (NSString *) getFullName;
 
 @end

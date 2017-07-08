@@ -21,6 +21,7 @@ PODS:
     - GoogleMaps/Base
   - HCSStarRatingView (1.5)
   - IQKeyboardManager (4.0.8)
+  - Mixpanel (3.1.5)
   - OneSignal (2.4.2)
   - SVProgressHUD (2.1.2)
   - SVPullToRefresh (0.4.1)
@@ -31,6 +32,7 @@ DEPENDENCIES:
   - GoogleMaps
   - HCSStarRatingView
   - IQKeyboardManager
+  - Mixpanel
   - OneSignal
   - SVProgressHUD
   - SVPullToRefresh
@@ -41,11 +43,12 @@ SPEC CHECKSUMS:
   GoogleMaps: a5b5bbe47734e2443bde781a6aa64e69fdb6d785
   HCSStarRatingView: 1d18f79654735514cd6f00e6d90e38cb6320dc31
   IQKeyboardManager: 1a8189fa153bf09044355ee0ad36826f6767e7f7
+  Mixpanel: 9b33e5de998cd42597767f67e2b8fcd1d158c71d
   OneSignal: a94d1ca53d05c29de4f4b150bad8ff9c4cc34f67
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
   UIView+Shake: a64f7d009222e33cf73d699b06c028cfab4cf2ad
 
-PODFILE CHECKSUM: 8488b8fdde6e7f523e09485fed06d7317a35f266
+PODFILE CHECKSUM: 4822b7858dc9f503455d5710a5c597f3ec69bc6c
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.1

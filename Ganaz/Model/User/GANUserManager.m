@@ -37,9 +37,10 @@
     if (type == GANENUM_USER_TYPE_WORKER){
         self.modelUser = [[GANUserWorkerDataModel alloc] init];
     }
-    else if (type == GANENUM_USER_TYPE_COMPANY){
+    else if (type == GANENUM_USER_TYPE_COMPANY_REGULAR || type == GANENUM_USER_TYPE_COMPANY_ADMIN){
         self.modelUser = [[GANUserCompanyDataModel alloc] init];
     }
+    self.modelUser.enumType = type;
 }
 
 + (GANUserWorkerDataModel *) getUserWorkerDataModel{
@@ -48,6 +49,10 @@
 
 + (GANUserCompanyDataModel *) getUserCompanyDataModel{
     return (GANUserCompanyDataModel *) [GANUserManager sharedInstance].modelUser;
+}
+
++ (GANCompanyDataModel *) getCompanyDataModel{
+    return [self getUserCompanyDataModel].modelCompany;
 }
 
 - (BOOL) isUserLoggedIn{
@@ -78,8 +83,9 @@
 
 #pragma mark - Utils
 
-- (BOOL) isCompany{
-    return (self.modelUser.enumType == GANENUM_USER_TYPE_COMPANY);
+- (BOOL) isCompanyUser{
+    return ((self.modelUser.enumType == GANENUM_USER_TYPE_COMPANY_REGULAR) ||
+            (self.modelUser.enumType == GANENUM_USER_TYPE_COMPANY_ADMIN));
 }
 
 - (BOOL) isWorker{
@@ -148,8 +154,8 @@
             [self saveToLocalstorage];
             
             GANPushNotificationManager *managerPush = [GANPushNotificationManager sharedInstance];
-            if (managerPush.szOneSignalPlayerId.length > 0 && [self.modelUser.szPlayerId isEqualToString:managerPush.szOneSignalPlayerId] == NO){
-                self.modelUser.szPlayerId = managerPush.szOneSignalPlayerId;
+            if (managerPush.szOneSignalPlayerId.length > 0 && [self.modelUser getIndexForPlayerId:managerPush.szOneSignalPlayerId] == -1){
+                [self.modelUser addPlayerIdIfNeeded:managerPush.szOneSignalPlayerId];
                 [self requestUpdateOneSignalPlayerIdWithCallback:nil];
             }
             
@@ -239,8 +245,7 @@
 
 - (void) requestUpdateOneSignalPlayerIdWithCallback: (void (^) (int status)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForUserUpdateProfile];
-    NSDictionary *params = @{@"account": @{@"player_id": [GANPushNotificationManager sharedInstance].szOneSignalPlayerId}};
-
+    NSDictionary *params = @{@"account": @{@"player_ids": self.modelUser.arrPlayerIds}};
     
     [[GANNetworkRequestManager sharedInstance] PATCH:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;

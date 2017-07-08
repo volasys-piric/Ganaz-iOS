@@ -10,6 +10,9 @@
 
 @interface GANGenericFunctionManager : NSObject
 
++ (NSString *) getAppVersionString;
++ (NSString *) getAppBuildString;
+
 #pragma mark -String Manipulation
 
 + (NSString *) refineNSString: (NSString *)sz;
@@ -21,6 +24,8 @@
 + (BOOL) isValidUsername: (NSString *) candidate;
 + (NSString *) getLongStringFromDate: (NSDate *) dt;
 + (NSString *) stripNonnumericsFromNSString :(NSString *) sz;
++ (NSString *) stripNonAlphanumericsFromNSString :(NSString *) sz;
+
 + (NSString *) beautifyPhoneNumber: (NSString *) localNumber CountryCode: (NSString *) countryCode;
 
 + (NSString *) generateRandomString :(int) length;

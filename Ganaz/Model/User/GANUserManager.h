@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "GANUserWorkerDataModel.h"
 #import "GANUserCompanyDataModel.h"
+#import "GANCompanyDataModel.h"
 
 @interface GANUserManager : NSObject
 
@@ -19,10 +20,11 @@
 
 + (GANUserWorkerDataModel *) getUserWorkerDataModel;
 + (GANUserCompanyDataModel *) getUserCompanyDataModel;
++ (GANCompanyDataModel *) getCompanyDataModel;
 
 #pragma mark - Utils
 
-- (BOOL) isCompany;
+- (BOOL) isCompanyUser;
 - (BOOL) isWorker;
 - (NSString *) getAuthorizationHeader;
 - (BOOL) isUserLoggedIn;

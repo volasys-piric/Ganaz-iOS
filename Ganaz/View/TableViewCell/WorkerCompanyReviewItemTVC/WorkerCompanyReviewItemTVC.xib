@@ -35,8 +35,8 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Job Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cFL-1K-re4" userLabel="Label - Title">
-                                <rect key="frame" x="46" y="0.0" width="57" height="44"/>
-                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                <rect key="frame" x="46" y="0.0" width="185" height="44"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="13"/>
                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -50,6 +50,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="emK-fo-FZ0" firstAttribute="leading" secondItem="cFL-1K-re4" secondAttribute="trailing" constant="12" id="7Pc-9E-mqT"/>
                             <constraint firstItem="cFL-1K-re4" firstAttribute="height" secondItem="For-1t-4Gx" secondAttribute="height" id="7l2-Om-Xfh"/>
                             <constraint firstItem="emK-fo-FZ0" firstAttribute="centerY" secondItem="For-1t-4Gx" secondAttribute="centerY" id="OcZ-Kn-ZYA"/>
                             <constraint firstAttribute="trailing" secondItem="emK-fo-FZ0" secondAttribute="trailing" constant="12" id="RdK-q1-ENF"/>

@@ -136,7 +136,7 @@
     modelWorker.szUserName = szWorkerId;
     modelWorker.modelPhone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:szPhone];
     modelWorker.szPassword = szPassword;
-    modelWorker.szPlayerId = [GANPushNotificationManager sharedInstance].szOneSignalPlayerId;
+    [modelWorker addPlayerIdIfNeeded:[GANPushNotificationManager sharedInstance].szOneSignalPlayerId];
     
 #warning Following attributes should be [optional] in API
     
@@ -150,6 +150,7 @@
             [GANGlobalVCManager hideHudProgressWithCallback:^{
                 [self gotoWorkerMain];
             }];
+            GANACTIVITY_REPORT(@"User signed up");
         }
         else if (status == ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT){
             [GANGlobalVCManager showHudErrorWithMessage:@"User name is already registered." DismissAfter:3 Callback:nil];
@@ -199,6 +200,12 @@
     [[GANGlobalVCManager sharedInstance] gotoLoginVC];
 }
 
+- (void) gotoToS{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_LOGIN_TOS"];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark - UITextField Delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
@@ -221,6 +228,11 @@
 - (IBAction)onBtnSignupClick:(id)sender {
     [self.view endEditing:YES];
     [self doSignup];
+}
+
+- (IBAction)onBtnToSClick:(id)sender {
+    [self.view endEditing:YES];
+    [self gotoToS];
 }
 
 @end

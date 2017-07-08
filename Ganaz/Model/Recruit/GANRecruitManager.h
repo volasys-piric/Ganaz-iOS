@@ -18,6 +18,6 @@
 
 #pragma mark - Request
 
-- (void) requestSubmitRecruit: (GANRecruitRequestDataModel *) recruitRequest Callback: (void (^) (int status, int count)) callback;
+- (void) requestSubmitRecruitWithJobIds: (NSArray *) arrJobIds Broadcast: (float) fBroadcast ReRecruitUserIds: (NSArray *) arrReRecruitUserIds Callback: (void (^) (int status, int count)) callback;
 
 @end

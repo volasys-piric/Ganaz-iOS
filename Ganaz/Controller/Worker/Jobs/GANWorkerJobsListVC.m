@@ -10,14 +10,16 @@
 #import "GANWorkerJobListItemTVC.h"
 #import "GANWorkerJobsListFilterVC.h"
 #import "GANWorkerCompanyDetailsVC.h"
+#import "GANWorkerJobDetailsVC.h"
 #import "GANGenericFunctionManager.h"
 #import "GANLocationManager.h"
 #import "GANJobManager.h"
 #import "GANJobDataModel.h"
-#import "GANMyCompaniesManager.h"
+#import "GANCacheManager.h"
 #import "GANUserManager.h"
 #import "GANGlobalVCManager.h"
 #import "Global.h"
+#import "GANAppManager.h"
 
 @interface GANWorkerJobsListVC () <UITableViewDataSource, UITableViewDelegate, GMSMapViewDelegate>
 
@@ -112,14 +114,15 @@
 }
 
 - (void) addMapMarker{
+    [self.mapView clear];
+    [self.arrMarkers removeAllObjects];
+
     NSArray *arrJobs = [GANJobManager sharedInstance].arrJobsSearchResult;
     if (arrJobs.count == 0) return;
     
     CLLocation *locationCurrent = [[GANUserManager sharedInstance] getCurrentLocation];
     UIImage *imgPin = [UIImage imageNamed:@"map-pin"];
     
-    [self.mapView clear];
-    [self.arrMarkers removeAllObjects];
     
     for (int i = 0; i < (int) [arrJobs count]; i++){
         GANJobDataModel *job = [arrJobs objectAtIndex:i];
@@ -127,7 +130,7 @@
         CLLocationCoordinate2D position = CLLocationCoordinate2DMake(site.fLatitude, site.fLongitude);
         
         GMSMarker *marker = [GMSMarker markerWithPosition:position];
-        marker.title = [NSString stringWithFormat:@"%@, %d positions", [job getTranslatedTitle], job.nPositions];
+        marker.title = [NSString stringWithFormat:@"%@, %d positions", [job getTitleES], job.nPositions];
         marker.infoWindowAnchor = CGPointMake(0.5, 0);
         marker.map = self.mapView;
         marker.appearAnimation = kGMSMarkerAnimationPop;
@@ -202,32 +205,72 @@
     GANJobDataModel *job = [[GANJobManager sharedInstance].arrJobsSearchResult objectAtIndex:index];
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
-    [[GANMyCompaniesManager sharedInstance] requestGetCompanyDetailsByCompanyUserId:job.szCompanyId Callback:^(int index) {
+    [[GANCacheManager sharedInstance] requestGetCompanyDetailsByCompanyId:job.szCompanyId Callback:^(int index) {
         [GANGlobalVCManager hideHudProgress];
         if (index != -1){
-            [self gotoCompanyDetailsAtMyCompanyIndex:index];
+            [self gotoCompanyDetailsAtCompanyIndex:index];
         }
     }];
 }
 
-- (void) gotoCompanyDetailsAtMyCompanyIndex: (int) indexMyCompany{
+- (void) prepareGotoJobDetailsAtIndex: (int) index{
+    GANJobDataModel *job = [[GANJobManager sharedInstance].arrJobsSearchResult objectAtIndex:index];
+    [self gotoJobDetailsVCWithJobId:job.szId CompanyId:job.szCompanyId];
+    
+    GANACTIVITY_REPORT(@"Worker - Go to job details from job search");
+}
+
+- (void) gotoCompanyDetailsAtCompanyIndex: (int) indexCompany{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
     GANWorkerCompanyDetailsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_COMPANYDETAILS"];
-    vc.indexMyCompany = indexMyCompany;
+    vc.indexCompany = indexCompany;
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+}
+
+- (void) gotoJobDetailsVCWithJobId: (NSString *) jobId CompanyId: (NSString *) companyId{
+    if ([GANJobManager isValidJobId:jobId] == NO) return;
+    if (companyId.length == 0) return;
+    
+    GANCacheManager *managerCache = [GANCacheManager sharedInstance];
+    // Please wait...
+    [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
+    [managerCache requestGetCompanyDetailsByCompanyId:companyId Callback:^(int indexCompany) {
+        if (indexCompany == -1) {
+            [GANGlobalVCManager hideHudProgress];
+            return;
+        }
+        
+        GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
+        [company requestJobsListWithJobId:jobId Callback:^(int status) {
+            [GANGlobalVCManager hideHudProgress];
+            if (status != SUCCESS_WITH_NO_ERROR){
+                return;
+            }
+            int indexJob = [company getIndexForJob:jobId];
+            if (indexJob == -1) return;
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
+            GANWorkerJobDetailsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_JOBDETAILS"];
+            vc.indexCompany = indexCompany;
+            vc.indexJob = indexJob;
+            
+            [self.navigationController pushViewController:vc animated:YES];
+            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        }];
+    }];
 }
 
 #pragma mark - UITableView Delegate
 
 - (void) configureCell: (GANWorkerJobListItemTVC *) cell AtIndex: (int) index{
     GANJobDataModel *job = [[GANJobManager sharedInstance].arrJobsSearchResult objectAtIndex:index];
-    cell.lblTitle.text = [job getTranslatedTitle];
+    cell.lblTitle.text = [job getTitleES];
     cell.lblCompany.text = @"";
-    [[GANMyCompaniesManager sharedInstance] getCompanyBusinessNameByCompanyUserId:job.szCompanyId Callback:^(NSString *businessName) {
-        cell.lblCompany.text = businessName;
+    [[GANCacheManager sharedInstance] getCompanyBusinessNameESByCompanyId:job.szCompanyId Callback:^(NSString *businessNameES) {
+        cell.lblCompany.text = businessNameES;
     }];
-    cell.lblDistance.text = [NSString stringWithFormat:@"%.2fmi", [job getNearestDistance]];
+    cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f / %@", job.fPayRate, ((job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"hr" : @"lb")];
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 }
@@ -253,7 +296,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     int index = (int) indexPath.row;
     
-    [self prepareGotoCompanyDetailsAtIndex:index];
+//    [self prepareGotoCompanyDetailsAtIndex:index];
+    [self prepareGotoJobDetailsAtIndex:index];
 }
 
 #pragma mark - UIButton
@@ -281,7 +325,8 @@
     for (int i = 0; i < (int) [self.arrMarkers count]; i++){
         GMSMarker *m = [self.arrMarkers objectAtIndex:i];
         if (m == marker){
-            [self prepareGotoCompanyDetailsAtIndex:i];
+//            [self prepareGotoCompanyDetailsAtIndex:i];
+            [self prepareGotoJobDetailsAtIndex:i];
             return;
         }
     }

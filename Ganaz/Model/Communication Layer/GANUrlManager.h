@@ -10,12 +10,22 @@
 
 @interface GANUrlManager : NSObject
 
+#pragma mark - Endpoint for AppSettings
+
++ (NSString *) getEndpointForAppConfig;
+
 #pragma mark - Endpoint for Location
 
 + (NSString *) getEndpointForGooglemapsGeocode;
 + (NSString *) getEndpointForGooglemapsPlaceAutoComplete;
 + (NSString *) getEndpointForGooglemapsPlaceDetails;
 + (NSString *) getEndpointForGooglemapsDirections;
+
+#pragma mark - Endpoint for Company
+
++ (NSString *) getEndpointForCreateCompany;
++ (NSString *) getEndpointForGetCompanyDetailsByCompanyId: (NSString *) companyId;
++ (NSString *) getEndpointForSearchCompany;
 
 #pragma mark - Endpoint for User
 
@@ -24,10 +34,10 @@
 + (NSString *) getEndpointForUserLogin;
 + (NSString *) getEndpointForUserUpdateProfile;
 + (NSString *) getEndpointForUserSearch;
++ (NSString *) getEndpointForUserUpdateTypeWithUserId: (NSString *) userId;
 
 #pragma mark - Endpoint for Job
 
-+ (NSString *) getEndpointForGetMyJobs;
 + (NSString *) getEndpointForSearchJobs;
 + (NSString *) getEndpointForGetJobDetailsWithJobId: (NSString *) jobId;
 + (NSString *) getEndpointForAddJob;
@@ -41,13 +51,14 @@
 
 #pragma mark - Endpoint for MyWorkers
 
-+ (NSString *) getEndpointForGetMyWorkers;
-+ (NSString *) getEndpointForAddMyWorkers;
++ (NSString *) getEndpointForGetMyWorkersWithCompanyId: (NSString *) companyId;
++ (NSString *) getEndpointForAddMyWorkersWithCompanyId: (NSString *) companyId;
 
 #pragma mark - Messages
 
 + (NSString *) getEndpointForGetMessages;
 + (NSString *) getEndpointForSendMessage;
++ (NSString *) getEndpointForMessageMarkAsRead;
 
 #pragma mark - Reviews
 
@@ -61,6 +72,10 @@
 #pragma mark - Invite
 
 + (NSString *) getEndpointForInvite;
+
+#pragma mark - Membership PLan
+
++ (NSString *) getEndpointForMembershipPlans;
 
 #pragma mark - Google Translate
 

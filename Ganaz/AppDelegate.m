@@ -34,6 +34,7 @@
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     [[UITabBar appearance] setTintColor:GANUICOLOR_THEMECOLOR_TABBAR_SELECTED];
     
+    [[GANAppManager sharedInstance] initializeAppConfig];
     [[GANAppManager sharedInstance] initializeManagersAfterLaunch];
     
     [OneSignal initWithLaunchOptions:launchOptions appId:ONESIGNAL_APPID handleNotificationReceived:^(OSNotification *notification) {

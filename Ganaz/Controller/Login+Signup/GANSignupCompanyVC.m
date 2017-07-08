@@ -9,6 +9,10 @@
 #import "GANSignupCompanyVC.h"
 
 #import "GANUserManager.h"
+#import "GANCompanyManager.h"
+#import "GANCacheManager.h"
+#import "GANMembershipPlanManager.h"
+
 #import "GANAppManager.h"
 
 #import "GANUIPhoneTextField.h"
@@ -19,11 +23,13 @@
 #import "GANSignupChooseVC.h"
 #import "GANSignupWorkerVC.h"
 #import "GANPushNotificationManager.h"
+#import "GANFadeTransitionDelegate.h"
+#import "GANCompanyCodePopupVC.h"
 
 #import "Global.h"
 #import <UIView+Shake/UIView+Shake.h>
 
-@interface GANSignupCompanyVC () <UITextFieldDelegate>
+@interface GANSignupCompanyVC () <UITextFieldDelegate, GANCompanyCodePopupDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewCompanyName;
 @property (weak, nonatomic) IBOutlet UIView *viewDescription;
@@ -37,12 +43,13 @@
 @property (weak, nonatomic) IBOutlet UIView *viewPhone;
 @property (weak, nonatomic) IBOutlet UIView *viewPassword;
 @property (weak, nonatomic) IBOutlet UIView *viewConfirmPassword;
-@property (weak, nonatomic) IBOutlet UIView *viewCompanyId;
+@property (weak, nonatomic) IBOutlet UIView *viewCompanyUserId;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *btnSignup;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogin;
 @property (weak, nonatomic) IBOutlet UIButton *btnAutoTranslate;
+@property (weak, nonatomic) IBOutlet UIButton *btnCompanyCode;
 
 @property (weak, nonatomic) IBOutlet UITextField *txtCompanyName;
 @property (weak, nonatomic) IBOutlet UITextView *textviewDescription;
@@ -56,9 +63,12 @@
 @property (weak, nonatomic) IBOutlet GANUIPhoneTextField *txtPhone;
 @property (weak, nonatomic) IBOutlet UITextField *txtPassword;
 @property (weak, nonatomic) IBOutlet UITextField *txtConfirmPassword;
-@property (weak, nonatomic) IBOutlet UITextField *txtCompanyId;
+@property (weak, nonatomic) IBOutlet UITextField *txtCompanyUserId;
 
 @property (assign, atomic) BOOL isAutoTranslate;
+@property (assign, atomic) int indexCompany;
+
+@property (strong, nonatomic) GANFadeTransitionDelegate *transController;
 
 @end
 
@@ -70,6 +80,10 @@
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.isAutoTranslate = NO;
+    self.indexCompany = -1;
+    
+    self.transController = [[GANFadeTransitionDelegate alloc] init];
+    
     [self refreshViews];
 }
 
@@ -95,10 +109,11 @@
     self.viewPhone.layer.cornerRadius = 3;
     self.viewPassword.layer.cornerRadius = 3;
     self.viewConfirmPassword.layer.cornerRadius = 3;
-    self.viewCompanyId.layer.cornerRadius = 3;
+    self.viewCompanyUserId.layer.cornerRadius = 3;
     
     self.btnSignup.layer.cornerRadius = 3;
     self.btnLogin.layer.cornerRadius = 3;
+    self.btnCompanyCode.layer.cornerRadius = 3;
     self.btnLogin.layer.borderWidth = 1;
     self.btnLogin.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
     
@@ -138,7 +153,51 @@
     [self.navigationController setNavigationBarHidden:NO animated:NO];
 }
 
+- (void) refreshCompanyFields{
+    if (self.indexCompany == -1){
+        self.txtCompanyName.text = @"";
+        self.textviewDescription.text = @"";
+        self.txtStreet1.text = @"";
+        self.txtStreet2.text = @"";
+        self.txtCity.text = @"";
+        self.txtState.text = @"";
+        self.isAutoTranslate = NO;
+        
+        [self refreshAutoTranslateView];
+        [self.textviewDescription setEditable:YES];
+    }
+    else {
+        GANCompanyDataModel *company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
+        self.txtCompanyName.text = [company getBusinessNameEN];
+        self.textviewDescription.text = [company getDescriptionEN];
+        self.txtStreet1.text = company.modelAddress.szAddress1;
+        self.txtStreet2.text = company.modelAddress.szAddress2;
+        self.txtCity.text = company.modelAddress.szCity;
+        self.txtState.text = company.modelAddress.szState;
+        
+        self.isAutoTranslate = company.isAutoTranslate;
+        [self refreshAutoTranslateView];
+        [self.textviewDescription setEditable:NO];
+    }
+}
+
+- (BOOL) isCompanyFieldEditable{
+    return (self.indexCompany == -1);
+}
+
 #pragma mark - Biz Logic
+
+- (void) showDlgForCompanyCodeVerify{
+    GANCompanyCodePopupVC *vc = [[GANCompanyCodePopupVC alloc] initWithNibName:@"CompanyCodePopup" bundle:nil];
+
+    vc.delegate = self;
+    vc.view.backgroundColor = [UIColor clearColor];
+    [vc refreshFields];
+    
+    [vc setTransitioningDelegate:self.transController];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:vc animated:YES completion:nil];
+}
 
 - (BOOL) checkMandatoryFields{
     NSString *szCompanyName = self.txtCompanyName.text;
@@ -150,7 +209,7 @@
     NSString *szLastName = self.txtLastName.text;
     NSString *szEmail = self.txtEmail.text;
     NSString *szPhone = self.txtPhone.text;
-    NSString *szCompanyId = self.txtCompanyId.text;
+    NSString *szCompanyUserId = self.txtCompanyUserId.text;
     NSString *szPassword = self.txtPassword.text;
     NSString *szConfirmPassword = self.txtConfirmPassword.text;
     
@@ -190,8 +249,8 @@
         [self shakeInvalidFields:self.viewPhone];
         return NO;
     }
-    if (szCompanyId.length == 0 || [GANGenericFunctionManager isValidUsername:szCompanyId] == NO){
-        [self shakeInvalidFields:self.viewCompanyId];
+    if (szCompanyUserId.length == 0 || [GANGenericFunctionManager isValidUsername:szCompanyUserId] == NO){
+        [self shakeInvalidFields:self.viewCompanyUserId];
         return NO;
     }
     if (szPassword.length == 0) {
@@ -216,9 +275,9 @@
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     __weak typeof(self) wSelf = self;
     
-    [GANUtils requestTranslate:szDescription Translate:shouldTranslate Callback:^(int status, NSString *translatedText) {
+    [GANUtils requestTranslate:szDescription Translate:shouldTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status, NSString *translatedText) {
         if (status == SUCCESS_WITH_NO_ERROR) szDescriptionTranslated = translatedText;
-        [GANUtils requestTranslate:szBusinessName Translate:shouldTranslate Callback:^(int status, NSString *translatedText) {
+        [GANUtils requestTranslate:szBusinessName Translate:shouldTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status, NSString *translatedText) {
             __strong typeof(self) sSelf = wSelf;
             if (status == SUCCESS_WITH_NO_ERROR) szBusinessNameTranslated = translatedText;
             [sSelf doSignupWithTranslatedBusinessName:szBusinessNameTranslated DescriptionTranslated:szDescriptionTranslated];
@@ -232,40 +291,94 @@
         return;
     }
     
+    if (self.indexCompany == -1){
+        [self doCreateCompany:businessNameTranslated DescriptionTranslated:descriptionTranslated Callback:^(int status, GANCompanyDataModel *companyNew) {
+            if (status == SUCCESS_WITH_NO_ERROR){
+                [self doCreateCompanyUserWithCompany:companyNew UserType:GANENUM_USER_TYPE_COMPANY_ADMIN];
+            }
+        }];
+    }
+    else {
+        GANCompanyDataModel *company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
+        [self doCreateCompanyUserWithCompany:company UserType:GANENUM_USER_TYPE_COMPANY_REGULAR];
+    }
+}
+
+- (void) doCreateCompany: (NSString *) nameTranslated DescriptionTranslated: (NSString *) descriptionTranslated Callback: (void (^) (int status, GANCompanyDataModel *companyNew)) callback{
+    
     NSString *szCompanyName = self.txtCompanyName.text;
     NSString *szDescription = self.textviewDescription.text;
     NSString *szStreet1 = self.txtStreet1.text;
     NSString *szStreet2 = self.txtStreet2.text;
     NSString *szCity = self.txtCity.text;
     NSString *szState = self.txtState.text;
+    
+    GANCompanyDataModel *company = [[GANCompanyDataModel alloc] init];
+    GANMembershipPlanDataModel *plan = [[GANMembershipPlanManager sharedInstance] getPlanByType:GANENUM_MEMBERSHIPPLAN_TYPE_FREE];
+    
+    company.modelName.szTextEN = szCompanyName;
+    company.modelName.szTextES = nameTranslated;
+    company.modelDescription.szTextEN = szDescription;
+    company.modelDescription.szTextES = descriptionTranslated;
+    company.isAutoTranslate = self.isAutoTranslate;
+    company.szCode = [GANCompanyManager generateCompanyCodeFromName:szCompanyName];
+    company.modelAddress.szAddress1 = szStreet1;
+    company.modelAddress.szAddress2 = szStreet2;
+    company.modelAddress.szCity = szCity;
+    company.modelAddress.szState = szState;
+    
+    company.modelPlan.type = plan.type;
+    company.modelPlan.szTitle = plan.szTitle;
+    company.modelPlan.fFee = plan.fFee;
+    company.modelPlan.nJobs = plan.nJobs;
+    company.modelPlan.nRecruits = plan.nRecruits;
+    company.modelPlan.nMessages = plan.nMessages;
+    company.modelPlan.dateStart = [NSDate date];
+    company.modelPlan.dateEnd = [NSDate date];
+    company.modelPlan.isAutoRenewal = NO;
+    
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    [managerCompany requestCreateCompany:company Callback:^(int status, GANCompanyDataModel *companyNew) {
+        if (status == SUCCESS_WITH_NO_ERROR){
+            [GANGlobalVCManager hideHudProgressWithCallback:^{
+                if (callback){
+                    callback(status, companyNew);
+                }
+            }];
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:3 Callback:^{
+                if (callback){
+                    callback(status, nil);
+                }
+            }];
+        }
+    }];
+}
+
+- (void) doCreateCompanyUserWithCompany: (GANCompanyDataModel *) company UserType: (GANENUM_USER_TYPE) type{
     NSString *szFirstName = self.txtFirstName.text;
     NSString *szLastName = self.txtLastName.text;
     NSString *szEmail = self.txtEmail.text;
     NSString *szPhone = self.txtPhone.text;
-    NSString *szCompanyId = self.txtCompanyId.text;
+    NSString *szCompanyUserId = self.txtCompanyUserId.text;
     NSString *szPassword = self.txtPassword.text;
     
     GANUserManager *managerUser = [GANUserManager sharedInstance];
-    [managerUser initializeManagerWithType:GANENUM_USER_TYPE_COMPANY];
+    [managerUser initializeManagerWithType:type];
     
-    GANUserCompanyDataModel *modelCompany = [GANUserManager getUserCompanyDataModel];
-    modelCompany.szBusinessName = szCompanyName;
-    modelCompany.szBusinessNameTranslated = businessNameTranslated;
-    modelCompany.szDescription = szDescription;
-    modelCompany.szDescriptionTranslated = descriptionTranslated;
-    modelCompany.isAutoTranslate = self.isAutoTranslate;
+    GANUserCompanyDataModel *modelCompanyUser = [GANUserManager getUserCompanyDataModel];
+    modelCompanyUser.modelCompany = company;
+    modelCompanyUser.szCompanyId = company.szId;
     
-    modelCompany.modelAddress.szAddress1 = szStreet1;
-    modelCompany.modelAddress.szAddress2 = szStreet2;
-    modelCompany.modelAddress.szCity = szCity;
-    modelCompany.modelAddress.szState = szState;
-    modelCompany.szFirstName = szFirstName;
-    modelCompany.szLastName = szLastName;
-    modelCompany.szEmail = szEmail;
-    modelCompany.modelPhone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:szPhone];
-    modelCompany.szUserName = szCompanyId;
-    modelCompany.szPassword = szPassword;
-    modelCompany.szPlayerId = [GANPushNotificationManager sharedInstance].szOneSignalPlayerId;
+    modelCompanyUser.szFirstName = szFirstName;
+    modelCompanyUser.szLastName = szLastName;
+    modelCompanyUser.szEmail = szEmail;
+    modelCompanyUser.modelPhone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:szPhone];
+    modelCompanyUser.szUserName = szCompanyUserId;
+    modelCompanyUser.szPassword = szPassword;
+    [modelCompanyUser addPlayerIdIfNeeded:[GANPushNotificationManager sharedInstance].szOneSignalPlayerId];
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [[GANUserManager sharedInstance] requestUserSignupWithCallback:^(int status) {
@@ -273,6 +386,7 @@
             [GANGlobalVCManager hideHudProgressWithCallback:^{
                 [self gotoCompanyMain];
             }];
+            GANACTIVITY_REPORT(@"User signed up");
         }
         else if (status == ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT){
             [GANGlobalVCManager showHudErrorWithMessage:@"User name is already registered." DismissAfter:3 Callback:nil];
@@ -297,8 +411,11 @@
     */
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-    UITabBarController *tbc = [storyboard instantiateInitialViewController];
-    [self.navigationController setViewControllers:@[tbc] animated:YES];
+    UIViewController *vc = [storyboard instantiateInitialViewController];
+    UINavigationController *nav = self.navigationController;
+    [self presentViewController:vc animated:YES completion:^{
+        [self.navigationController setViewControllers:@[[nav.viewControllers objectAtIndex:0]]];
+    }];
     
     [[GANAppManager sharedInstance] initializeManagersAfterLogin];
 }
@@ -307,7 +424,24 @@
     [[GANGlobalVCManager sharedInstance] gotoLoginVC];
 }
 
+- (void) gotoToS{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_LOGIN_TOS"];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark - UITextField Delegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    if (textField == self.txtCompanyName ||
+        textField == self.txtStreet1 ||
+        textField == self.txtStreet2 ||
+        textField == self.txtCity ||
+        textField == self.txtState){
+        return [self isCompanyFieldEditable];
+    }
+    return YES;
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
@@ -333,8 +467,27 @@
 
 - (IBAction)onBtnTranslateClick:(id)sender {
     [self.view endEditing:YES];
-    self.isAutoTranslate = !self.isAutoTranslate;
-    [self refreshAutoTranslateView];
+    if ([self isCompanyFieldEditable] == YES){
+        self.isAutoTranslate = !self.isAutoTranslate;
+        [self refreshAutoTranslateView];        
+    }
+}
+
+- (IBAction)onBtnCompanyCodeClick:(id)sender {
+    [self.view endEditing:YES];
+    [self showDlgForCompanyCodeVerify];
+}
+
+#pragma mark - GANCompanyCodePopupDelegate
+
+- (void)didCompanyCodeVerify:(int)indexCompany{
+    self.indexCompany = indexCompany;
+    [self refreshCompanyFields];
+}
+
+- (IBAction)onBtnToSClick:(id)sender {
+    [self.view endEditing:YES];
+    [self gotoToS];
 }
 
 @end

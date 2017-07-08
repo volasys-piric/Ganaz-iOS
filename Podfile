@@ -15,5 +15,6 @@ target 'Ganaz' do
   pod 'SVPullToRefresh'
   pod 'GoogleMaps'
   pod 'HCSStarRatingView'
+  pod 'Mixpanel'
   
 end
