@@ -17,6 +17,9 @@
 // User Auth Type
 
 + (GANENUM_USER_AUTHTYPE) getUserAuthTypeFromString: (NSString *) szType{
+    if ([szType caseInsensitiveCompare:@"phone"] == NSOrderedSame){
+        return GANENUM_USER_AUTHTYPE_PHONE;
+    }
     if ([szType caseInsensitiveCompare:@"email"] == NSOrderedSame){
         return GANENUM_USER_AUTHTYPE_EMAIL;
     }
@@ -33,11 +36,12 @@
 }
 
 + (NSString *) getStringFromUserAuthType: (GANENUM_USER_AUTHTYPE) type{
+    if (type == GANENUM_USER_AUTHTYPE_PHONE) return @"phone";
     if (type == GANENUM_USER_AUTHTYPE_EMAIL) return @"email";
     if (type == GANENUM_USER_AUTHTYPE_FACEBOOK) return @"facebook";
     if (type == GANENUM_USER_AUTHTYPE_TWITTER) return @"twitter";
     if (type == GANENUM_USER_AUTHTYPE_GOOGLE) return @"google";
-    return @"email";
+    return @"phone";
 }
 
 // User Type
@@ -52,14 +56,14 @@
     if ([szType caseInsensitiveCompare:@"company-admin"] == NSOrderedSame){
         return GANENUM_USER_TYPE_COMPANY_ADMIN;
     }
-    return GANENUM_USER_TYPE_WORKER;
+    return GANENUM_USER_TYPE_ANY;
 }
 
 + (NSString *) getStringFromUserType: (GANENUM_USER_TYPE) type{
     if (type == GANENUM_USER_TYPE_WORKER) return @"worker";
     if (type == GANENUM_USER_TYPE_COMPANY_REGULAR) return @"company-regular";
     if (type == GANENUM_USER_TYPE_COMPANY_ADMIN) return @"company-admin";
-    return @"worker";
+    return @"any";
 }
 
 // Pay Unit

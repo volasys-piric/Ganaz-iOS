@@ -68,7 +68,7 @@
 
 - (IBAction)onBtnSignoutClick:(id)sender {
 //    [self.tabBarController dismissViewControllerAnimated:YES completion:nil];
-    [GANGlobalVCManager logoutToLoginVC:self.tabBarController];
+    [GANGlobalVCManager logoutToWorkerLoginVC:self.tabBarController];
     [[GANAppManager sharedInstance] initializeManagersAfterLogout];
 }
 

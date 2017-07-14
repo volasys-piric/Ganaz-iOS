@@ -322,7 +322,13 @@
 
 - (void) requestGetMyApplicationsWithCallback: (void (^) (int status)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForGetApplications];
-    [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:YES parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
+    if ([[GANUserManager sharedInstance] isCompanyUser] == NO){
+        NSString *szWorkerUserId = [GANUserManager sharedInstance].modelUser.szId;
+        [param setObject:szWorkerUserId forKey:@"worker_user_id"];
+    }
+    
+    [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;
         BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
         if (success){

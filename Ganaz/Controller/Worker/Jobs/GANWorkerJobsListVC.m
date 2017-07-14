@@ -121,7 +121,7 @@
     if (arrJobs.count == 0) return;
     
     CLLocation *locationCurrent = [[GANUserManager sharedInstance] getCurrentLocation];
-    UIImage *imgPin = [UIImage imageNamed:@"map-pin"];
+    UIImage *imgPin = [UIImage imageNamed:@"map-pin2"];
     
     
     for (int i = 0; i < (int) [arrJobs count]; i++){
@@ -311,8 +311,8 @@
     [self.view endEditing:YES];
     
     if ([[GANUserManager sharedInstance] isUserLoggedIn] == NO){
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
-        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_LOGIN"];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_PHONE"];
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         return;

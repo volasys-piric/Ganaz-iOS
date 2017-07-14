@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSString *szLocalNumber;
 
 - (void) setWithDictionary:(NSDictionary *)dict;
+- (void) initializeWithPhone: (GANPhoneDataModel *) phone;
 - (NSDictionary *) serializeToDictionary;
 - (NSString *) getBeautifiedPhoneNumber;
 

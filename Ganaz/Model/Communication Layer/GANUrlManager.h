@@ -35,6 +35,7 @@
 + (NSString *) getEndpointForUserUpdateProfile;
 + (NSString *) getEndpointForUserSearch;
 + (NSString *) getEndpointForUserUpdateTypeWithUserId: (NSString *) userId;
++ (NSString *) getEndpointForUserUpdatePassword;
 
 #pragma mark - Endpoint for Job
 

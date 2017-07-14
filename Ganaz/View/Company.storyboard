@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AFm-hh-gqk">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AFm-hh-gqk">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -1018,16 +1018,16 @@ opt-out</string>
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S1t-Qa-mlJ" userLabel="View - Content View">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="289"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="287.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose which users have Admin rights" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="sYC-Uo-l9B" userLabel="Label - Title">
-                                                        <rect key="frame" x="20" y="30" width="335" height="20"/>
+                                                        <rect key="frame" x="20" y="30" width="335" height="19"/>
                                                         <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="16"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="HcO-d0-Ztn">
-                                                        <rect key="frame" x="20" y="70" width="335" height="128"/>
+                                                        <rect key="frame" x="20" y="69" width="335" height="128"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="128" id="78M-dB-U31"/>
@@ -1038,7 +1038,7 @@ opt-out</string>
                                                         </connections>
                                                     </tableView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invite others at your company to use Ganaz and tell them to use this code while signing up so you can work together: #####" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="KqU-uS-iO1" userLabel="Label - Notes">
-                                                        <rect key="frame" x="20" y="218" width="335" height="51"/>
+                                                        <rect key="frame" x="20" y="217" width="335" height="50.5"/>
                                                         <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="14"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -1120,7 +1120,7 @@ opt-out</string>
                     <tabBarItem key="tabBarItem" title="Jobs List" image="tab-list" id="LmR-s0-GYg"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="OhS-BJ-3Fl">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="OhS-BJ-3Fl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1154,7 +1154,7 @@ opt-out</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uj0-or-vPk" userLabel="View - Badge">
-                                        <rect key="frame" x="20" y="72" width="141" height="26"/>
+                                        <rect key="frame" x="20" y="72" width="140.5" height="26"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-medal" translatesAutoresizingMaskIntoConstraints="NO" id="n99-3a-T0Y" userLabel="Image - Badge Icon">
                                                 <rect key="frame" x="12" y="6" width="11" height="15"/>
@@ -1164,7 +1164,7 @@ opt-out</string>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GOLD EMPLOYER" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pVw-WU-hxC" userLabel="Label - Badge">
-                                                <rect key="frame" x="31" y="0.0" width="98" height="26"/>
+                                                <rect key="frame" x="31" y="0.0" width="97.5" height="26"/>
                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="12"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -1251,7 +1251,7 @@ opt-out</string>
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P3a-Uu-Asw" userLabel="View - Content View">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="1272"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="1271.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f8N-DM-4iX" userLabel="Label - Title">
                                                         <rect key="frame" x="20" y="25" width="335" height="20"/>
@@ -1294,7 +1294,7 @@ opt-out</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AXx-xk-8Fw" userLabel="View - Price Panel">
-                                                        <rect key="frame" x="20" y="161" width="141" height="44"/>
+                                                        <rect key="frame" x="20" y="161" width="140.5" height="44"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LQ1-jQ-0Hj" userLabel="Label - $">
                                                                 <rect key="frame" x="12" y="12" width="12" height="20"/>
@@ -1307,7 +1307,7 @@ opt-out</string>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ehb-u6-PPm" userLabel="Text Field - Price">
-                                                                <rect key="frame" x="24" y="0.0" width="97" height="44"/>
+                                                                <rect key="frame" x="24" y="0.0" width="96.5" height="44"/>
                                                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="decimalPad"/>
@@ -1328,7 +1328,7 @@ opt-out</string>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="per" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CjA-de-foL" userLabel="Label - Per">
-                                                        <rect key="frame" x="173" y="173" width="30" height="20"/>
+                                                        <rect key="frame" x="172.5" y="173" width="30" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="30" id="4RN-uC-dpT"/>
                                                             <constraint firstAttribute="height" constant="20" id="7gi-Tl-ORe"/>
@@ -1338,10 +1338,10 @@ opt-out</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ogr-wt-92M" userLabel="View - Unit Panel">
-                                                        <rect key="frame" x="215" y="161" width="140" height="44"/>
+                                                        <rect key="frame" x="214.5" y="161" width="140.5" height="44"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UYk-2B-wcX" userLabel="Button - Unit">
-                                                                <rect key="frame" x="-1" y="0.0" width="141" height="44"/>
+                                                                <rect key="frame" x="-0.5" y="0.0" width="140.5" height="44"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
                                                                 <state key="normal" title="Hour">
                                                                     <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
@@ -1361,7 +1361,7 @@ opt-out</string>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Szg-Gw-AvO" userLabel="Label - From">
-                                                        <rect key="frame" x="20" y="229" width="158" height="20"/>
+                                                        <rect key="frame" x="20" y="229" width="157.5" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20" id="m8m-HL-5e1"/>
                                                         </constraints>
@@ -1370,23 +1370,23 @@ opt-out</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h54-AE-h5W" userLabel="View - Date From Panel">
-                                                        <rect key="frame" x="20" y="263" width="158" height="44"/>
+                                                        <rect key="frame" x="20" y="263" width="157.5" height="44"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sZc-VW-mqB" userLabel="Label - From">
-                                                                <rect key="frame" x="12" y="0.0" width="108" height="44"/>
+                                                                <rect key="frame" x="12" y="0.0" width="107.5" height="44"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="12"/>
                                                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-calendar" translatesAutoresizingMaskIntoConstraints="NO" id="Xn0-9v-QWg" userLabel="Image - Calendar">
-                                                                <rect key="frame" x="132" y="14" width="14" height="16"/>
+                                                                <rect key="frame" x="131.5" y="14" width="14" height="16"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="14" id="Gnj-hi-kBj"/>
                                                                     <constraint firstAttribute="height" constant="16" id="MuB-tF-kXT"/>
                                                                 </constraints>
                                                             </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d9c-yi-G6U" userLabel="Button - From">
-                                                                <rect key="frame" x="0.0" y="0.0" width="157" height="44"/>
+                                                                <rect key="frame" x="-0.5" y="0.0" width="157.5" height="44"/>
                                                                 <connections>
                                                                     <action selector="onBtnDateFromClick:" destination="7v2-U8-cxc" eventType="touchUpInside" id="lGp-yT-x36"/>
                                                                 </connections>
@@ -1408,7 +1408,7 @@ opt-out</string>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z5S-Gr-0As" userLabel="Label - To">
-                                                        <rect key="frame" x="198" y="229" width="157" height="20"/>
+                                                        <rect key="frame" x="197.5" y="229" width="157.5" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20" id="9Ea-f6-h0y"/>
                                                         </constraints>
@@ -1417,23 +1417,23 @@ opt-out</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vKv-ji-8z4" userLabel="View - Date To Panel">
-                                                        <rect key="frame" x="198" y="263" width="157" height="44"/>
+                                                        <rect key="frame" x="197.5" y="263" width="157.5" height="44"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pS9-wn-nTc" userLabel="Label - To">
-                                                                <rect key="frame" x="12" y="0.0" width="107" height="44"/>
+                                                                <rect key="frame" x="12" y="0.0" width="107.5" height="44"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="13"/>
                                                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-calendar" translatesAutoresizingMaskIntoConstraints="NO" id="ddd-zK-5GE" userLabel="Image - Calendar">
-                                                                <rect key="frame" x="131" y="14" width="14" height="16"/>
+                                                                <rect key="frame" x="131.5" y="14" width="14" height="16"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="16" id="9cN-wj-Qae"/>
                                                                     <constraint firstAttribute="width" constant="14" id="WQP-N2-6uD"/>
                                                                 </constraints>
                                                             </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nPu-mn-tGa" userLabel="Button - To">
-                                                                <rect key="frame" x="-1" y="0.0" width="158" height="44"/>
+                                                                <rect key="frame" x="-0.5" y="0.0" width="157.5" height="44"/>
                                                                 <connections>
                                                                     <action selector="onBtnDateToClick:" destination="7v2-U8-cxc" eventType="touchUpInside" id="s5G-Lm-JGY"/>
                                                                 </connections>
@@ -1493,10 +1493,10 @@ opt-out</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="phn-yQ-KQj" userLabel="View - Benefits Training">
-                                                        <rect key="frame" x="20" y="467" width="160" height="44"/>
+                                                        <rect key="frame" x="20" y="467" width="159.5" height="44"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tCh-fH-hEh" userLabel="Button - Training">
-                                                                <rect key="frame" x="14" y="0.0" width="132" height="44"/>
+                                                                <rect key="frame" x="14" y="0.0" width="131.5" height="44"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
                                                                 <state key="normal" title="Training">
                                                                     <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
@@ -1506,7 +1506,7 @@ opt-out</string>
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="on2-DK-gW3" userLabel="Label - Training">
-                                                                <rect key="frame" x="142" y="19" width="6" height="6"/>
+                                                                <rect key="frame" x="141.5" y="19" width="6" height="6"/>
                                                                 <color key="backgroundColor" red="0.79607843137254897" green="0.79607843137254897" blue="0.79607843137254897" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="6" id="QUV-Hf-O57"/>
@@ -1529,10 +1529,10 @@ opt-out</string>
                                                         </constraints>
                                                     </view>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="irZ-Lu-1Jl" userLabel="View - Benefits Health">
-                                                        <rect key="frame" x="196" y="467" width="159" height="44"/>
+                                                        <rect key="frame" x="195.5" y="467" width="159.5" height="44"/>
                                                         <subviews>
                                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWv-wz-4Yn" userLabel="Button - Health">
-                                                                <rect key="frame" x="14" y="0.0" width="131" height="44"/>
+                                                                <rect key="frame" x="14" y="0.0" width="131.5" height="44"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
                                                                 <state key="normal" title="Health checks">
                                                                     <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
@@ -1542,7 +1542,7 @@ opt-out</string>
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MKz-7f-qKa" userLabel="Label - Health">
-                                                                <rect key="frame" x="141" y="19" width="6" height="6"/>
+                                                                <rect key="frame" x="141.5" y="19" width="6" height="6"/>
                                                                 <color key="backgroundColor" red="0.79607843140000001" green="0.79607843140000001" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" secondItem="MKz-7f-qKa" secondAttribute="height" multiplier="1:1" id="S4r-3k-45r"/>
@@ -1565,10 +1565,10 @@ opt-out</string>
                                                         </constraints>
                                                     </view>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fde-gd-WiM" userLabel="View - Benefits Housing">
-                                                        <rect key="frame" x="20" y="525" width="160" height="44"/>
+                                                        <rect key="frame" x="20" y="525" width="159.5" height="44"/>
                                                         <subviews>
                                                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KP5-ED-qMe" userLabel="Button - Housing">
-                                                                <rect key="frame" x="14" y="0.0" width="132" height="44"/>
+                                                                <rect key="frame" x="14" y="0.0" width="131.5" height="44"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
                                                                 <state key="normal" title="Housing">
                                                                     <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
@@ -1578,7 +1578,7 @@ opt-out</string>
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhd-Qx-UNw" userLabel="Label - Housing">
-                                                                <rect key="frame" x="142" y="19" width="6" height="6"/>
+                                                                <rect key="frame" x="141.5" y="19" width="6" height="6"/>
                                                                 <color key="backgroundColor" red="0.79607843140000001" green="0.79607843140000001" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="6" id="NiU-Ip-gof"/>
@@ -1601,10 +1601,10 @@ opt-out</string>
                                                         </constraints>
                                                     </view>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5f9-MR-e8n" userLabel="View - Benefits Transportation">
-                                                        <rect key="frame" x="196" y="525" width="159" height="44"/>
+                                                        <rect key="frame" x="195.5" y="525" width="159.5" height="44"/>
                                                         <subviews>
                                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gK4-5H-hUZ" userLabel="Button - Transportation">
-                                                                <rect key="frame" x="14" y="0.0" width="131" height="44"/>
+                                                                <rect key="frame" x="14" y="0.0" width="131.5" height="44"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
                                                                 <state key="normal" title="Transportation">
                                                                     <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
@@ -1614,7 +1614,7 @@ opt-out</string>
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XML-st-YPt" userLabel="Label - Transportation">
-                                                                <rect key="frame" x="141" y="19" width="6" height="6"/>
+                                                                <rect key="frame" x="141.5" y="19" width="6" height="6"/>
                                                                 <color key="backgroundColor" red="0.79607843140000001" green="0.79607843140000001" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="6" id="7G1-Kr-nup"/>
@@ -1637,10 +1637,10 @@ opt-out</string>
                                                         </constraints>
                                                     </view>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3YW-6L-pG5" userLabel="View - Benefits Bonus">
-                                                        <rect key="frame" x="20" y="583" width="160" height="44"/>
+                                                        <rect key="frame" x="20" y="583" width="159.5" height="44"/>
                                                         <subviews>
                                                             <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W2U-Q7-dZ4" userLabel="Button - Bonus">
-                                                                <rect key="frame" x="14" y="0.0" width="132" height="44"/>
+                                                                <rect key="frame" x="14" y="0.0" width="131.5" height="44"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
                                                                 <state key="normal" title="Bonus">
                                                                     <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
@@ -1650,7 +1650,7 @@ opt-out</string>
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O9x-Ia-Odz" userLabel="Label - Bonus">
-                                                                <rect key="frame" x="142" y="19" width="6" height="6"/>
+                                                                <rect key="frame" x="141.5" y="19" width="6" height="6"/>
                                                                 <color key="backgroundColor" red="0.79607843140000001" green="0.79607843140000001" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" secondItem="O9x-Ia-Odz" secondAttribute="height" multiplier="1:1" id="ZkP-3M-jMs"/>
@@ -1673,10 +1673,10 @@ opt-out</string>
                                                         </constraints>
                                                     </view>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UL5-BS-xIS" userLabel="View - Benefits Scholarships">
-                                                        <rect key="frame" x="196" y="583" width="159" height="44"/>
+                                                        <rect key="frame" x="195.5" y="583" width="159.5" height="44"/>
                                                         <subviews>
                                                             <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CiC-Rq-eJ5" userLabel="Button - Scholarships">
-                                                                <rect key="frame" x="14" y="0.0" width="131" height="44"/>
+                                                                <rect key="frame" x="14" y="0.0" width="131.5" height="44"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
                                                                 <state key="normal" title="Scholarships">
                                                                     <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
@@ -1686,7 +1686,7 @@ opt-out</string>
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8wv-17-lTz" userLabel="Label - Scholarships">
-                                                                <rect key="frame" x="141" y="19" width="6" height="6"/>
+                                                                <rect key="frame" x="141.5" y="19" width="6" height="6"/>
                                                                 <color key="backgroundColor" red="0.79607843140000001" green="0.79607843140000001" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" secondItem="8wv-17-lTz" secondAttribute="height" multiplier="1:1" id="0Lw-X0-o2Q"/>
@@ -1767,10 +1767,10 @@ opt-out</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UE9-QE-M5r" userLabel="View - Comments">
-                                                        <rect key="frame" x="20" y="944" width="335" height="112"/>
+                                                        <rect key="frame" x="20" y="944" width="335" height="111.5"/>
                                                         <subviews>
                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="YbJ-6t-Y2j" userLabel="Text View - Comments">
-                                                                <rect key="frame" x="12" y="8" width="311" height="96"/>
+                                                                <rect key="frame" x="12" y="8" width="311" height="95.5"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="13"/>
@@ -1787,7 +1787,7 @@ opt-out</string>
                                                         </constraints>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="juW-5U-lEG" userLabel="Button - Translate">
-                                                        <rect key="frame" x="20" y="1064" width="335" height="24"/>
+                                                        <rect key="frame" x="20" y="1063.5" width="335" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="K65-Rb-VsJ"/>
                                                         </constraints>
@@ -1801,7 +1801,7 @@ opt-out</string>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0uZ-yG-prs" userLabel="Button - Post">
-                                                        <rect key="frame" x="20" y="1118" width="335" height="60"/>
+                                                        <rect key="frame" x="20" y="1117.5" width="335" height="60"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="60" id="D7E-7r-m8G"/>
                                                         </constraints>
@@ -1814,7 +1814,7 @@ opt-out</string>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z8g-U9-sYW" userLabel="Button - Delete">
-                                                        <rect key="frame" x="20" y="1192" width="335" height="60"/>
+                                                        <rect key="frame" x="20" y="1191.5" width="335" height="60"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="60" id="z2q-ez-9t1"/>
                                                         </constraints>

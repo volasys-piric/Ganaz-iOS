@@ -32,6 +32,12 @@
     self.szLocalNumber = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"local_number"]];
 }
 
+- (void) initializeWithPhone: (GANPhoneDataModel *) phone{
+    self.szCountry = phone.szCountry;
+    self.szCountryCode = phone.szCountryCode;
+    self.szLocalNumber = phone.szLocalNumber;
+}
+
 - (NSDictionary *) serializeToDictionary{
     return @{@"country": self.szCountry,
              @"country_code": self.szCountryCode,

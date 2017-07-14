@@ -9,6 +9,7 @@
 #import "GANMainLoadingVC.h"
 #import "GANLocationManager.h"
 #import "GANUserManager.h"
+#import "GANWorkerLoginCodeVC.h"
 #import "Global.h"
 #import "GANAppManager.h"
 #import "GANAppUpdatesPopupVC.h"
@@ -90,22 +91,29 @@
     }
     
     self.didMainViewShow = YES;
-    if ([[GANUserManager sharedInstance] checkLocalstorageIfLastLoginSaved] == NO){
+    GANUserManager *managerUser = [GANUserManager sharedInstance];
+    
+    if ([managerUser loadFromLocalstorage] == YES && managerUser.modelUserMinInfo.enumAuthType == GANENUM_USER_AUTHTYPE_PHONE){
         dispatch_async(dispatch_get_main_queue(), ^{
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
-            UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_JOBS"];
-            UINavigationController *nc = [[UINavigationController alloc] init];
-            nc.viewControllers = @[vc];
-            [self presentViewController:nc animated:NO completion:nil];            
+            UIStoryboard *storyboardMain = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIStoryboard *storyboardLogin = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
+            UIViewController *vcChoose = [storyboardMain instantiateViewControllerWithIdentifier:@"STORYBOARD_MAIN_CHOOSE"];
+            UIViewController *vcLogin = [storyboardLogin instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_PHONE"];
+            GANWorkerLoginCodeVC *vcCode = [storyboardLogin instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_CODE"];
+            vcCode.szPhoneNumber = managerUser.modelUserMinInfo.modelPhone.szLocalNumber;
+            vcCode.isLogin = YES;
+            vcCode.isAutoLogin = YES;
+            
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+            [self.navigationController setViewControllers:@[vcChoose, vcLogin, vcCode] animated:YES];
+            vcLogin.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         });
     }
     else {
         dispatch_async(dispatch_get_main_queue(), ^{
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
-            UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_LOGIN"];
-            UINavigationController *nc = [[UINavigationController alloc] init];
-            nc.viewControllers = @[vc];
-            [self presentViewController:nc animated:NO completion:nil];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_MAIN_CHOOSE"];
+            [self.navigationController setViewControllers:@[vc] animated:YES];
         });
     }
 }
