@@ -240,7 +240,10 @@
 
 - (void) showActionSheetForMessageAtIndex: (int) index{
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
-    if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE){
+    if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
+        return;
+    }
+    else if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE){
         [self replyMessageAtIndex:index];
     }
     else if ((message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT) || (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION)){
@@ -373,6 +376,33 @@
                     if (indexJob != -1){
                         GANJobDataModel *job = [company.arrJobs objectAtIndex:indexJob];
                         cell.lblMessage.text = [NSString stringWithFormat:@"Solicitud de trabajo: %@", [job getTitleES]];       // Job application:
+                    }
+                    else {
+                        cell.lblMessage.text = @"No se encontró el trabajo";    // Job not found
+                    }
+                }];
+            }];
+        }
+        else if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
+            cell.lblTitle.text = @"Suggest Friend";                   // Job application
+            cell.lblMessage.text = @"Nueva solicitud de trabajo";           // New job inquiry
+            
+            [managerCache requestGetCompanyDetailsByCompanyId:message.szReceiverCompanyId Callback:^(int indexCompany) {
+                if (indexCompany == -1) {
+                    return;
+                }
+                
+                GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
+                cell.lblTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
+                
+                [company requestJobsListWithJobId:message.szJobId Callback:^(int status) {
+                    if (status != SUCCESS_WITH_NO_ERROR){
+                        return;
+                    }
+                    int indexJob = [company getIndexForJob:message.szJobId];
+                    if (indexJob != -1){
+                        GANJobDataModel *job = [company.arrJobs objectAtIndex:indexJob];
+                        cell.lblMessage.text = [NSString stringWithFormat:@"Suggest Friend %@ for %@",[message getPhoneNumberForSuggestFriend], [job getTitleES]];       // Job application:
                     }
                     else {
                         cell.lblMessage.text = @"No se encontró el trabajo";    // Job not found

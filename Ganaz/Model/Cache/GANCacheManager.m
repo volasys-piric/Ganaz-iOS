@@ -181,4 +181,28 @@
     }
 }
 
+- (GANCompanyDataModel *) getCompanyByJobId: (NSString *) jobId{
+    for (int i = 0; i < (int) [self.arrCompanies count]; i++){
+        GANCompanyDataModel *company = [self.arrCompanies objectAtIndex:i];
+        int indexJob = [company getIndexForJob:jobId];
+        if (indexJob != -1){
+            return company;
+        }
+    }
+    return nil;
+}
+
+#pragma mark - Job
+
+- (GANJobDataModel *) getJobByJobId: (NSString *) jobId{
+    for (int i = 0; i < (int) [self.arrCompanies count]; i++){
+        GANCompanyDataModel *company = [self.arrCompanies objectAtIndex:i];
+        int indexJob = [company getIndexForJob:jobId];
+        if (indexJob != -1){
+            return [company.arrJobs objectAtIndex:indexJob];
+        }
+    }
+    return nil;
+}
+
 @end

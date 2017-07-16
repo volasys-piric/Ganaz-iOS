@@ -49,6 +49,7 @@
 
 + (NSString *) getEndpointForGetApplications;
 + (NSString *) getEndpointForApplyForJob;
++ (NSString *) getEndpointForSuggestFriendForJob;
 
 #pragma mark - Endpoint for MyWorkers
 

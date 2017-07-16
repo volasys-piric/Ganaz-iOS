@@ -117,6 +117,10 @@
     return [NSString stringWithFormat:@"%@/application", [GANUrlManager getBaseUrl]];
 }
 
++ (NSString *) getEndpointForSuggestFriendForJob{
+    return [NSString stringWithFormat:@"%@/suggest", [GANUrlManager getBaseUrl]];
+}
+
 #pragma mark - Endpoint for MyWorkers
 
 + (NSString *) getEndpointForGetMyWorkersWithCompanyId: (NSString *) companyId{

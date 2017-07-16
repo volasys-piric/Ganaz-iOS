@@ -207,6 +207,21 @@
 
 #pragma mark - Biz Logic
 
+- (void) callSuggestedFriendAtIndex: (int) indexMessage{
+    GANMessageDataModel *message = [self.arrMessages objectAtIndex:indexMessage];
+    NSString *phoneNumber = [message getPhoneNumberForSuggestFriend];
+    [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:[NSString stringWithFormat:@"Do you want to make a call to %@?", phoneNumber] ButtonYes:@"Yes" ButtonNo:@"NO" CallbackYes:^{
+        NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",phoneNumber]];
+        
+        if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
+            [[UIApplication sharedApplication] openURL:phoneUrl];
+        }
+        else{
+            [GANGlobalVCManager showHudErrorWithMessage:@"Your device does not support phone call" DismissAfter:-1 Callback:nil];
+        }
+    } CallbackNo:nil];
+}
+
 - (void) replyMessageAtIndex: (int) index{
     self.indexMessageForReply = index;
     self.lblReplyTitle.text = @"Reply";
@@ -323,6 +338,26 @@
                 }
             }];
         }
+        else if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
+            GANJobManager *managerJob = [GANJobManager sharedInstance];
+            int indexJob = [managerJob getIndexForMyJobsByJobId:message.szJobId];
+            if (indexJob != -1){
+                GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:indexJob];
+                cell.lblTitle.text = [NSString stringWithFormat:@"Worker interested: %@", [job getTitleEN]];
+            }
+            else {
+                cell.lblTitle.text = @"New job inquiry";
+            }
+            
+            cell.lblMessage.text = @"";
+            
+            [[GANCacheManager sharedInstance] requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
+                if (index != -1){
+                    GANUserBaseDataModel *user = [[GANCacheManager sharedInstance].arrUsers objectAtIndex:index];
+                    cell.lblMessage.text = [NSString stringWithFormat:@"%@ suggested worker @%@", user.szUserName, [message getPhoneNumberForSuggestFriend]];
+                }
+            }];
+        }
     }
     BOOL didRead = !([message amIReceiver] && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -348,7 +383,14 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self replyMessageAtIndex:(int) indexPath.row];
+    int index = (int) indexPath.row;
+    GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
+    if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
+        [self callSuggestedFriendAtIndex:index];
+    }
+    else {
+        [self replyMessageAtIndex:(int) indexPath.row];
+    }
 }
 
 #pragma mark - UIButton Delegate

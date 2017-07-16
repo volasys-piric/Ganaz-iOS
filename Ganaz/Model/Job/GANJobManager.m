@@ -320,6 +320,34 @@
     
 }
 
+- (void) requestSuggestFriendForJob: (NSString *) jobId PhoneNumber: (NSString *) phoneNumber Callback: (void (^) (int status)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForSuggestFriendForJob];
+    NSDictionary *param = @{@"job_id": jobId,
+                            @"suggested_worker": @{@"phone_number": @{
+                                    @"country": @"US",
+                                    @"country_code": @"1",
+                                    @"local_number": phoneNumber
+                                    },
+                            },
+                            };
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+        }
+        
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+    }];
+    
+}
+
 - (void) requestGetMyApplicationsWithCallback: (void (^) (int status)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForGetApplications];
     NSMutableDictionary *param = [[NSMutableDictionary alloc] init];

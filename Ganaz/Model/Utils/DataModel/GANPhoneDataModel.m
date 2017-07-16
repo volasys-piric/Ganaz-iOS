@@ -45,6 +45,10 @@
              };
 }
 
+- (void) setLocalNumber: (NSString *) localNumber{
+    self.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:localNumber];
+}
+
 - (NSString *) getBeautifiedPhoneNumber{
     return [GANGenericFunctionManager beautifyPhoneNumber:self.szLocalNumber CountryCode:self.szCountryCode];
 }

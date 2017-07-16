@@ -103,12 +103,14 @@
 + (GANENUM_MESSAGE_TYPE) getMessageTypeFromString: (NSString *) szType{
     if ([szType caseInsensitiveCompare:@"message"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_MESSAGE;
     if ([szType caseInsensitiveCompare:@"application"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_APPLICATION;
+    if ([szType caseInsensitiveCompare:@"suggest"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SUGGEST;
     if ([szType caseInsensitiveCompare:@"recruit"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_RECRUIT;
     return GANENUM_MESSAGE_TYPE_MESSAGE;
 }
 
 + (NSString *) getStringFromMessageType: (GANENUM_MESSAGE_TYPE) type{
     if (type == GANENUM_MESSAGE_TYPE_MESSAGE) return @"message";
+    if (type == GANENUM_MESSAGE_TYPE_SUGGEST) return @"suggest";
     if (type == GANENUM_MESSAGE_TYPE_APPLICATION) return @"application";
     if (type == GANENUM_MESSAGE_TYPE_RECRUIT) return @"recruit";
     return @"message";
@@ -134,6 +136,7 @@
     if ([szType caseInsensitiveCompare:@"recruit"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_RECRUIT;
     if ([szType caseInsensitiveCompare:@"message"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE;
     if ([szType caseInsensitiveCompare:@"application"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_APPLICATION;
+    if ([szType caseInsensitiveCompare:@"suggest"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_SUGGEST;
     return GANENUM_PUSHNOTIFICATION_TYPE_NONE;
 }
 
@@ -141,6 +144,7 @@
     if (type == GANENUM_PUSHNOTIFICATION_TYPE_RECRUIT) return @"recruit";
     if (type == GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE) return @"message";
     if (type == GANENUM_PUSHNOTIFICATION_TYPE_APPLICATION) return @"application";
+    if (type == GANENUM_PUSHNOTIFICATION_TYPE_SUGGEST) return @"suggest";
     return @"";
 }
 

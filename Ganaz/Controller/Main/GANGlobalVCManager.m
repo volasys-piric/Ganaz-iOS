@@ -148,6 +148,17 @@
     [alertView show];
 }
 
++ (void)showAlertControllerWithVC: (UIViewController *) vc Title:(NSString *)title Message:(NSString *)message Callback: (void (^)()) callback {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *actionOk = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (callback) callback();
+    }];
+    [alertController addAction:actionOk];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [vc presentViewController:alertController animated:YES completion:nil];
+    });
+}
+
 + (void) promptWithVC: (UIViewController *) vc Title: (NSString *) title Message: (NSString *) message ButtonYes: (NSString *) buttonYes ButtonNo: (NSString *) buttonNo CallbackYes: (void (^)()) callbackYes CallbackNo: (void (^)()) callbackNo{
     UIAlertController *alertController = [UIAlertController
                                           alertControllerWithTitle:title

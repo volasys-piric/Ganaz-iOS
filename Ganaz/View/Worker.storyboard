@@ -693,7 +693,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hi7-gq-Vxv" userLabel="View - Badge">
-                                                        <rect key="frame" x="20" y="72" width="141" height="26"/>
+                                                        <rect key="frame" x="20" y="72" width="140.5" height="26"/>
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-medal" translatesAutoresizingMaskIntoConstraints="NO" id="ldg-wS-urp" userLabel="Image - Badge Icon">
                                                                 <rect key="frame" x="12" y="6" width="11" height="15"/>
@@ -703,7 +703,7 @@
                                                                 </constraints>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GOLD EMPLOYER" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Lg-zI-vRy" userLabel="Label - Badge">
-                                                                <rect key="frame" x="31" y="0.0" width="98" height="26"/>
+                                                                <rect key="frame" x="31" y="0.0" width="97.5" height="26"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="12"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>
@@ -976,11 +976,308 @@
                         <outlet property="lblUnit" destination="t7h-12-KJ8" id="zpm-k3-KOB"/>
                         <outlet property="viewBadge" destination="Hi7-gq-Vxv" id="BQm-WS-VIy"/>
                         <outlet property="viewMapContainer" destination="6zu-D6-nZz" id="O9v-oC-sBC"/>
+                        <segue destination="We3-0W-AXr" kind="show" id="GUQ-aC-JnW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tas-8O-iUf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2151" y="3006"/>
+        </scene>
+        <!--Empaque de fresas-->
+        <scene sceneID="lCo-qL-aph">
+            <objects>
+                <viewController storyboardIdentifier="STORYBOARD_WORKER_JOBDETAILS_APPLY" useStoryboardIdentifierAsRestorationIdentifier="YES" id="We3-0W-AXr" customClass="GANWorkerJobApplyVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2bp-Wi-ekI"/>
+                        <viewControllerLayoutGuide type="bottom" id="5PV-be-RC2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JzB-VZ-6sz">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Bf-i2-uf3" userLabel="View - Main Container">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vamos a avisar a la empresa de su interés" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lbj-KJ-Zeq">
+                                        <rect key="frame" x="56.5" y="144" width="262.5" height="53"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="22"/>
+                                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6VU-8r-ch7" userLabel="Button - Apply">
+                                        <rect key="frame" x="20" y="227" width="335" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="IW0-sY-hpX"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="OK" backgroundImage="button-background">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonApplyClick:" destination="We3-0W-AXr" eventType="touchUpInside" id="vN2-Fz-UvG"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b7A-i4-7Sx" userLabel="Button - Recommend Friend">
+                                        <rect key="frame" x="20" y="299" width="335" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="XTT-Y8-W8w"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="Mi amigo está interesado" backgroundImage="button-background">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonSuggestFriendClick:" destination="We3-0W-AXr" eventType="touchUpInside" id="OA7-H4-nUQ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="Lbj-KJ-Zeq" firstAttribute="width" secondItem="0Bf-i2-uf3" secondAttribute="width" multiplier="0.7" id="3N8-Kt-JEn"/>
+                                    <constraint firstItem="Lbj-KJ-Zeq" firstAttribute="centerX" secondItem="0Bf-i2-uf3" secondAttribute="centerX" id="8oX-Cg-yho"/>
+                                    <constraint firstItem="6VU-8r-ch7" firstAttribute="centerY" secondItem="0Bf-i2-uf3" secondAttribute="centerY" constant="-20" id="BZs-KN-lht"/>
+                                    <constraint firstItem="6VU-8r-ch7" firstAttribute="top" secondItem="Lbj-KJ-Zeq" secondAttribute="bottom" constant="30" id="Cpl-8e-OOA"/>
+                                    <constraint firstItem="6VU-8r-ch7" firstAttribute="leading" secondItem="0Bf-i2-uf3" secondAttribute="leading" constant="20" id="D9r-lX-2BC"/>
+                                    <constraint firstItem="b7A-i4-7Sx" firstAttribute="width" secondItem="6VU-8r-ch7" secondAttribute="width" id="Jnh-zI-e5y"/>
+                                    <constraint firstItem="b7A-i4-7Sx" firstAttribute="top" secondItem="6VU-8r-ch7" secondAttribute="bottom" constant="12" id="NWS-5u-vEQ"/>
+                                    <constraint firstItem="b7A-i4-7Sx" firstAttribute="centerX" secondItem="6VU-8r-ch7" secondAttribute="centerX" id="aTs-LK-beu"/>
+                                    <constraint firstAttribute="trailing" secondItem="6VU-8r-ch7" secondAttribute="trailing" constant="20" id="v1f-ZV-yPF"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="5PV-be-RC2" firstAttribute="top" secondItem="0Bf-i2-uf3" secondAttribute="bottom" id="WIs-Iz-Ayx"/>
+                            <constraint firstAttribute="trailing" secondItem="0Bf-i2-uf3" secondAttribute="trailing" id="aCA-bf-1eZ"/>
+                            <constraint firstItem="0Bf-i2-uf3" firstAttribute="top" secondItem="2bp-Wi-ekI" secondAttribute="bottom" id="gGm-Za-dB5"/>
+                            <constraint firstItem="0Bf-i2-uf3" firstAttribute="leading" secondItem="JzB-VZ-6sz" secondAttribute="leading" id="pTB-iB-Zvp"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Empaque de fresas" id="Tb2-ZT-pcc"/>
+                    <connections>
+                        <outlet property="buttonApply" destination="6VU-8r-ch7" id="auX-xs-ELE"/>
+                        <outlet property="buttonSuggestFriend" destination="b7A-i4-7Sx" id="9kQ-Cw-8Ry"/>
+                        <segue destination="Ob8-JB-GgC" kind="show" id="hlR-5u-esM"/>
+                        <segue destination="OVV-2b-e3e" kind="show" id="cRs-wG-hrP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wx8-iL-uex" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2151" y="3761"/>
+        </scene>
+        <!--Empaque de fresas-->
+        <scene sceneID="a0w-Kp-Frj">
+            <objects>
+                <viewController storyboardIdentifier="STORYBOARD_WORKER_JOBDETAILS_SUGGESTFRIEND" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OVV-2b-e3e" customClass="GANWorkerJobSuggestFriendVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Q3L-aq-hun"/>
+                        <viewControllerLayoutGuide type="bottom" id="mr1-MF-ii1"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="frq-gt-q19">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fnb-fu-OVi" userLabel="View - Main Container">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Quién está interesado en este trabajo?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAR-zI-feW" userLabel="Label - Title">
+                                        <rect key="frame" x="30" y="30" width="315" height="45.5"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="19"/>
+                                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hxv-Hg-CSa" userLabel="View - Search">
+                                        <rect key="frame" x="20" y="91.5" width="335" height="44"/>
+                                        <subviews>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Busca..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5gH-re-Xv8" userLabel="Text Field - Search">
+                                                <rect key="frame" x="12" y="0.0" width="311" height="44"/>
+                                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                                                <connections>
+                                                    <action selector="onTextFieldSearchChanged:" destination="OVV-2b-e3e" eventType="editingChanged" id="kkX-Zv-Vl3"/>
+                                                    <outlet property="delegate" destination="OVV-2b-e3e" id="Ha4-Cs-7eM"/>
+                                                </connections>
+                                            </textField>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.91764705879999997" green="0.91372549020000005" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="5gH-re-Xv8" firstAttribute="leading" secondItem="hxv-Hg-CSa" secondAttribute="leading" constant="12" id="8q8-9Z-vab"/>
+                                            <constraint firstAttribute="height" constant="44" id="Okc-v1-vDK"/>
+                                            <constraint firstItem="5gH-re-Xv8" firstAttribute="centerY" secondItem="hxv-Hg-CSa" secondAttribute="centerY" id="llu-5R-Ud6"/>
+                                            <constraint firstAttribute="trailing" secondItem="5gH-re-Xv8" secondAttribute="trailing" constant="12" id="mZm-65-NFH"/>
+                                            <constraint firstItem="5gH-re-Xv8" firstAttribute="height" secondItem="hxv-Hg-CSa" secondAttribute="height" id="zhR-Ep-yTa"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suggested:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HMm-Ql-FkA">
+                                        <rect key="frame" x="20" y="161" width="335" height="24"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="F2C-Sx-czU"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="16"/>
+                                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Bhw-OP-0XY">
+                                        <rect key="frame" x="20" y="193" width="335" height="269"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="OVV-2b-e3e" id="Qyc-1r-JXh"/>
+                                            <outlet property="delegate" destination="OVV-2b-e3e" id="EgN-Ld-Oel"/>
+                                        </connections>
+                                    </tableView>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ul6-r1-ROM" userLabel="Button - Submit">
+                                        <rect key="frame" x="20" y="474" width="335" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="2tJ-66-WkW"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="Continuar" backgroundImage="button-background">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonSubmitClick:" destination="OVV-2b-e3e" eventType="touchUpInside" id="BsM-Cc-hQP"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="Bhw-OP-0XY" firstAttribute="width" secondItem="hxv-Hg-CSa" secondAttribute="width" id="5hY-56-zRJ"/>
+                                    <constraint firstItem="HMm-Ql-FkA" firstAttribute="width" secondItem="hxv-Hg-CSa" secondAttribute="width" id="7NA-AP-Xel"/>
+                                    <constraint firstItem="Bhw-OP-0XY" firstAttribute="top" secondItem="HMm-Ql-FkA" secondAttribute="bottom" constant="8" id="CdY-G5-jce"/>
+                                    <constraint firstItem="VAR-zI-feW" firstAttribute="leading" secondItem="Fnb-fu-OVi" secondAttribute="leading" constant="30" id="Hny-jo-dRn"/>
+                                    <constraint firstAttribute="bottom" secondItem="Ul6-r1-ROM" secondAttribute="bottom" constant="20" id="KMa-8M-8B3"/>
+                                    <constraint firstItem="hxv-Hg-CSa" firstAttribute="top" secondItem="VAR-zI-feW" secondAttribute="bottom" constant="16" id="PKc-Jn-sNJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="VAR-zI-feW" secondAttribute="trailing" constant="30" id="R9P-mq-zwV"/>
+                                    <constraint firstItem="Ul6-r1-ROM" firstAttribute="width" secondItem="hxv-Hg-CSa" secondAttribute="width" id="XqB-pE-GPb"/>
+                                    <constraint firstItem="Ul6-r1-ROM" firstAttribute="centerX" secondItem="hxv-Hg-CSa" secondAttribute="centerX" id="Ygu-8O-jbC"/>
+                                    <constraint firstItem="hxv-Hg-CSa" firstAttribute="leading" secondItem="Fnb-fu-OVi" secondAttribute="leading" constant="20" id="ZyG-jE-owW"/>
+                                    <constraint firstItem="VAR-zI-feW" firstAttribute="top" secondItem="Fnb-fu-OVi" secondAttribute="top" constant="30" id="gSo-eG-hMb"/>
+                                    <constraint firstItem="HMm-Ql-FkA" firstAttribute="centerX" secondItem="hxv-Hg-CSa" secondAttribute="centerX" id="oDa-n4-eVN"/>
+                                    <constraint firstItem="Ul6-r1-ROM" firstAttribute="top" secondItem="Bhw-OP-0XY" secondAttribute="bottom" constant="12" id="tei-Rn-mwV"/>
+                                    <constraint firstAttribute="trailing" secondItem="hxv-Hg-CSa" secondAttribute="trailing" constant="20" id="tm3-qB-SZV"/>
+                                    <constraint firstItem="HMm-Ql-FkA" firstAttribute="top" secondItem="hxv-Hg-CSa" secondAttribute="bottom" constant="25.5" id="xTJ-GG-QT3"/>
+                                    <constraint firstItem="Bhw-OP-0XY" firstAttribute="centerX" secondItem="hxv-Hg-CSa" secondAttribute="centerX" id="ynx-bq-cGf"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Fnb-fu-OVi" firstAttribute="leading" secondItem="frq-gt-q19" secondAttribute="leading" id="A5U-ot-sNf"/>
+                            <constraint firstItem="mr1-MF-ii1" firstAttribute="top" secondItem="Fnb-fu-OVi" secondAttribute="bottom" id="Col-a7-Ibt"/>
+                            <constraint firstAttribute="trailing" secondItem="Fnb-fu-OVi" secondAttribute="trailing" id="Lwm-ic-QYA"/>
+                            <constraint firstItem="Fnb-fu-OVi" firstAttribute="top" secondItem="Q3L-aq-hun" secondAttribute="bottom" id="tA5-sH-ssf"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Empaque de fresas" id="YNo-aT-YII"/>
+                    <connections>
+                        <outlet property="buttonSubmit" destination="Ul6-r1-ROM" id="iHY-Mp-hsI"/>
+                        <outlet property="tableview" destination="Bhw-OP-0XY" id="x9O-wH-HTj"/>
+                        <outlet property="textfieldSearch" destination="5gH-re-Xv8" id="LwS-fy-0E2"/>
+                        <outlet property="viewSearch" destination="hxv-Hg-CSa" id="s8z-yq-3VJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CIG-gF-Pjn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1754.4000000000001" y="4545.8770614692658"/>
+        </scene>
+        <!--Empaque de fresas-->
+        <scene sceneID="CqV-Bp-9dF">
+            <objects>
+                <viewController storyboardIdentifier="STORYBOARD_WORKER_JOBDETAILS_APPLYCOMPLETED" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ob8-JB-GgC" customClass="GANWorkerJobApplyCompletedVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Zyn-ef-1eG"/>
+                        <viewControllerLayoutGuide type="bottom" id="lxB-DH-2Uv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4c7-fo-qbw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Llc-Nb-0S5" userLabel="View - Main Container">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bien hecho! Hemos avisado la empresa de su interés" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XKu-ft-psX" userLabel="Label - Message">
+                                        <rect key="frame" x="56.5" y="118" width="262.5" height="79"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="22"/>
+                                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wSp-nm-PYQ" userLabel="Button - Back">
+                                        <rect key="frame" x="20" y="227" width="335" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="6cU-9Z-nsk"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="OK" backgroundImage="button-background">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonBackClick:" destination="Ob8-JB-GgC" eventType="touchUpInside" id="4Uq-no-e0k"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jhr-9K-OUz" userLabel="Button - Search Other Jobs">
+                                        <rect key="frame" x="20" y="299" width="335" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="fRX-vS-z16"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="Busca otros trabajos" backgroundImage="button-background">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonSearchJobsClick:" destination="Ob8-JB-GgC" eventType="touchUpInside" id="N7r-BA-Lc5"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A8F-oh-Ox6" userLabel="Button - Share">
+                                        <rect key="frame" x="20" y="371" width="335" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="7LF-YO-KQ0"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="Compartir">
+                                            <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonShareClick:" destination="Ob8-JB-GgC" eventType="touchUpInside" id="sEJ-Ck-b3G"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="wSp-nm-PYQ" firstAttribute="top" secondItem="XKu-ft-psX" secondAttribute="bottom" constant="30" id="4tu-HE-baI"/>
+                                    <constraint firstItem="A8F-oh-Ox6" firstAttribute="width" secondItem="Jhr-9K-OUz" secondAttribute="width" id="5Sn-iN-jwz"/>
+                                    <constraint firstItem="wSp-nm-PYQ" firstAttribute="centerY" secondItem="Llc-Nb-0S5" secondAttribute="centerY" constant="-20" id="DrI-9J-5Ke"/>
+                                    <constraint firstItem="Jhr-9K-OUz" firstAttribute="width" secondItem="wSp-nm-PYQ" secondAttribute="width" id="EPa-z1-Na0"/>
+                                    <constraint firstItem="A8F-oh-Ox6" firstAttribute="centerX" secondItem="Jhr-9K-OUz" secondAttribute="centerX" id="G25-0Z-tnB"/>
+                                    <constraint firstItem="A8F-oh-Ox6" firstAttribute="top" secondItem="Jhr-9K-OUz" secondAttribute="bottom" constant="12" id="IFL-mI-Hi3"/>
+                                    <constraint firstItem="Jhr-9K-OUz" firstAttribute="top" secondItem="wSp-nm-PYQ" secondAttribute="bottom" constant="12" id="K7Q-0f-mlw"/>
+                                    <constraint firstItem="Jhr-9K-OUz" firstAttribute="centerX" secondItem="wSp-nm-PYQ" secondAttribute="centerX" id="PGR-0C-5RV"/>
+                                    <constraint firstItem="XKu-ft-psX" firstAttribute="centerX" secondItem="Llc-Nb-0S5" secondAttribute="centerX" id="Qc5-7d-vxt"/>
+                                    <constraint firstAttribute="trailing" secondItem="wSp-nm-PYQ" secondAttribute="trailing" constant="20" id="TIP-Rc-Ksq"/>
+                                    <constraint firstItem="wSp-nm-PYQ" firstAttribute="leading" secondItem="Llc-Nb-0S5" secondAttribute="leading" constant="20" id="WiT-Y9-ZEI"/>
+                                    <constraint firstItem="XKu-ft-psX" firstAttribute="width" secondItem="Llc-Nb-0S5" secondAttribute="width" multiplier="0.7" id="h6z-Pr-hno"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Llc-Nb-0S5" secondAttribute="trailing" id="D7K-wA-LrD"/>
+                            <constraint firstItem="Llc-Nb-0S5" firstAttribute="top" secondItem="Zyn-ef-1eG" secondAttribute="bottom" id="Xn7-U0-VP9"/>
+                            <constraint firstItem="Llc-Nb-0S5" firstAttribute="leading" secondItem="4c7-fo-qbw" secondAttribute="leading" id="ncV-tQ-cMa"/>
+                            <constraint firstItem="lxB-DH-2Uv" firstAttribute="top" secondItem="Llc-Nb-0S5" secondAttribute="bottom" id="rqd-aP-8X9"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Empaque de fresas" id="vNQ-cu-It7"/>
+                    <connections>
+                        <outlet property="buttonBack" destination="wSp-nm-PYQ" id="QPq-4D-Xuu"/>
+                        <outlet property="buttonSearchJobs" destination="Jhr-9K-OUz" id="bKU-kd-V63"/>
+                        <outlet property="buttonShare" destination="A8F-oh-Ox6" id="sWo-bn-eEd"/>
+                        <outlet property="labelMessage" destination="XKu-ft-psX" id="fTy-VX-twI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TOb-VS-E8U" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2586" y="4546"/>
         </scene>
         <!--Revisar comentarios-->
         <scene sceneID="LiD-fe-zfP">

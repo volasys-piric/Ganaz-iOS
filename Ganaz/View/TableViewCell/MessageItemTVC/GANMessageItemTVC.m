@@ -75,6 +75,18 @@
             self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_WHITE;
         }
     }
+    else if (type == GANENUM_MESSAGE_TYPE_SUGGEST) {
+        self.lblAvatar.text = @"SGG";
+        self.imgAvatar.hidden = YES;
+        if (didRead == YES){
+            self.lblAvatar.backgroundColor = UICOLOR_MESSAGEITEM_YELLOW;
+            self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_BLACK;
+        }
+        else {
+            self.lblAvatar.backgroundColor = UICOLOR_MESSAGEITEM_GREEN;
+            self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_WHITE;
+        }
+    }
 }
 
 @end

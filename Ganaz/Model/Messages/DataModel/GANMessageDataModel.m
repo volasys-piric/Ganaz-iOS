@@ -35,6 +35,7 @@
     self.modelContents = [[GANTransContentsDataModel alloc] init];
     self.isAutoTranslate = NO;
     self.dateSent = nil;
+    self.dictMetadata = nil;
 }
 
 - (void) setWithDictionary:(NSDictionary *)dict{
@@ -54,8 +55,8 @@
     [self.modelContents setWithDictionary:dictContents];
     
     self.isAutoTranslate = [GANGenericFunctionManager refineBool:[dict objectForKey:@"auto_translate"] DefaultValue:NO];
+    self.dictMetadata = [dict objectForKey:@"metadata"];
     self.dateSent = [GANGenericFunctionManager getDateTimeFromNormalizedString:[dict objectForKey:@"datetime"]];
-    
 }
 
 - (NSDictionary *) serializeToDictionary{
@@ -73,6 +74,9 @@
     
     [dict setObject:[self.modelContents serializeToDictionary] forKey:@"message"];
     [dict setObject:(self.isAutoTranslate == YES) ? @"true": @"false" forKey:@"auto_translate"];
+    if (self.dictMetadata != nil){
+        [dict setObject:self.dictMetadata forKey:@"metadata"];
+    }
     return dict;
 }
 
@@ -108,6 +112,15 @@
 
 - (NSString *) getContentsES{
     return [self.modelContents getTextES];
+}
+
+- (NSString *) getPhoneNumberForSuggestFriend{
+    if (self.dictMetadata == nil) return @"";
+    if (self.enumType != GANENUM_MESSAGE_TYPE_SUGGEST) return @"";
+    NSString *sz = [GANGenericFunctionManager refineNSString:[self.dictMetadata objectForKey:@"suggested_phone_number"]];
+    if (sz.length == 0) return @"";
+    sz = [GANGenericFunctionManager stripNonnumericsFromNSString:sz];
+    return [GANGenericFunctionManager beautifyPhoneNumber:sz CountryCode:@"1"];
 }
 
 @end

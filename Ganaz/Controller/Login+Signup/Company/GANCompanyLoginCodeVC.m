@@ -162,6 +162,7 @@
 
 - (IBAction)onButtonContinueClick:(id)sender {
     [self.view endEditing:YES];
+    [self doLogin];
 }
 
 - (IBAction)onButtonBackClick:(id)sender {
