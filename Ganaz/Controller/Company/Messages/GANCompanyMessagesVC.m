@@ -238,7 +238,7 @@
     }
     [managerCache requestGetIndexForUserByUserId:szUserId Callback:^(int index) {
         GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-        self.lblReplyTitle.text = [NSString stringWithFormat:@"Reply to %@", user.szUserName];
+        self.lblReplyTitle.text = [NSString stringWithFormat:@"Reply to %@", [user getValidUsername]];
     }];
     
     [self animateToShowPopup];
@@ -287,7 +287,7 @@
             cell.lblMessage.text = [message getContentsEN];
             [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Message To %@", user.szUserName];
+                cell.lblTitle.text = [NSString stringWithFormat:@"Message To %@", [user getValidUsername]];
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT){
@@ -305,7 +305,7 @@
             
             [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Recruited %@", user.szUserName];
+                cell.lblTitle.text = [NSString stringWithFormat:@"Recruited %@", [user getValidUsername]];
             }];
         }
     }
@@ -315,7 +315,7 @@
             cell.lblMessage.text = [message getContentsEN];
             [managerCache requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Message from %@", user.szUserName];
+                cell.lblTitle.text = [NSString stringWithFormat:@"Message from %@", [user getValidUsername]];
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION){
@@ -334,7 +334,7 @@
             [[GANCacheManager sharedInstance] requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 if (index != -1){
                     GANUserBaseDataModel *user = [[GANCacheManager sharedInstance].arrUsers objectAtIndex:index];
-                    cell.lblMessage.text = [NSString stringWithFormat:@"Call %@ @%@", user.szUserName, [user.modelPhone getBeautifiedPhoneNumber]];
+                    cell.lblMessage.text = [NSString stringWithFormat:@"Call %@ @%@", [user getValidUsername], [user.modelPhone getBeautifiedPhoneNumber]];
                 }
             }];
         }
@@ -354,7 +354,7 @@
             [[GANCacheManager sharedInstance] requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 if (index != -1){
                     GANUserBaseDataModel *user = [[GANCacheManager sharedInstance].arrUsers objectAtIndex:index];
-                    cell.lblMessage.text = [NSString stringWithFormat:@"%@ suggested worker @%@", user.szUserName, [message getPhoneNumberForSuggestFriend]];
+                    cell.lblMessage.text = [NSString stringWithFormat:@"%@ suggested worker @%@", [user getValidUsername], [message getPhoneNumberForSuggestFriend]];
                 }
             }];
         }

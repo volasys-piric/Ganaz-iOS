@@ -211,7 +211,7 @@ typedef enum _ENUM_FOUNDSTATUS{
 
 - (void) configureCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
     GANUserWorkerDataModel *worker = [self.arrWorkersFound objectAtIndex:index];
-    cell.lblWorkerId.text = worker.szUserName;
+    cell.lblWorkerId.text = [worker getValidUsername];
     
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

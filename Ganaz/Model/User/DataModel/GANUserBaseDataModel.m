@@ -74,4 +74,8 @@
     return [NSString stringWithFormat:@"%@ %@", self.szFirstName, self.szLastName];
 }
 
+- (NSString *) getValidUsername{
+    return [self.modelPhone getBeautifiedPhoneNumber];
+}
+
 @end
