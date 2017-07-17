@@ -211,7 +211,7 @@
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:indexMessage];
     NSString *phoneNumber = [message getPhoneNumberForSuggestFriend];
     [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:[NSString stringWithFormat:@"Do you want to make a call to %@?", phoneNumber] ButtonYes:@"Yes" ButtonNo:@"NO" CallbackYes:^{
-        NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",phoneNumber]];
+        NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",[GANGenericFunctionManager stripNonnumericsFromNSString:phoneNumber]]];
         
         if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
             [[UIApplication sharedApplication] openURL:phoneUrl];
@@ -334,7 +334,7 @@
             [[GANCacheManager sharedInstance] requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 if (index != -1){
                     GANUserBaseDataModel *user = [[GANCacheManager sharedInstance].arrUsers objectAtIndex:index];
-                    cell.lblMessage.text = [NSString stringWithFormat:@"Call %@ @%@", [user getValidUsername], [user.modelPhone getBeautifiedPhoneNumber]];
+                    cell.lblMessage.text = [NSString stringWithFormat:@"Reply to %@", [user getValidUsername]];
                 }
             }];
         }

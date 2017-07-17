@@ -323,6 +323,7 @@
 - (void) requestSuggestFriendForJob: (NSString *) jobId PhoneNumber: (NSString *) phoneNumber Callback: (void (^) (int status)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForSuggestFriendForJob];
     NSDictionary *param = @{@"job_id": jobId,
+                            @"worker_user_id": [GANUserManager sharedInstance].modelUser.szId,
                             @"suggested_worker": @{@"phone_number": @{
                                     @"country": @"US",
                                     @"country_code": @"1",
@@ -356,7 +357,7 @@
         [param setObject:szWorkerUserId forKey:@"worker_user_id"];
     }
     
-    [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;
         BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
         if (success){

@@ -146,6 +146,7 @@
         
         NSMutableArray *arrNewVCs = [[NSMutableArray alloc] initWithArray: self.navigationController.viewControllers];
         [arrNewVCs removeLastObject];
+        [arrNewVCs removeLastObject];
         
         UIViewController *lastVC = [arrNewVCs lastObject];
         [arrNewVCs addObject:vc];

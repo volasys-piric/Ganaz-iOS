@@ -287,18 +287,6 @@
         return;
     }
 
-    int indexMyApplication = [[GANJobManager sharedInstance] getIndexForMyApplicationsByJobId:self.job.szId];
-    if (indexMyApplication != -1){
-        // You already applied to this job.
-        [GANGlobalVCManager showHudInfoWithMessage:@"Ud ya aplicó." DismissAfter:-1 Callback:nil];
-        return;
-    }
-    if (self.isRecruited == YES){
-        // You are recruited for this job.
-        [GANGlobalVCManager showHudInfoWithMessage:@"Le empresa ha sido notificado sobre su interés." DismissAfter:-1 Callback:nil];
-        return;
-    }
-    
     /*
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];

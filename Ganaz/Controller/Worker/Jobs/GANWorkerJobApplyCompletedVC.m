@@ -105,7 +105,7 @@
 }
 
 - (IBAction)onButtonShareClick:(id)sender {
-    
+    [self doShare];
 }
 
 @end

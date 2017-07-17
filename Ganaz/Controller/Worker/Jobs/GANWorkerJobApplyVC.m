@@ -46,6 +46,19 @@
 #pragma mark - Biz Logic
 
 - (void) doApplyJob{
+    int indexMyApplication = [[GANJobManager sharedInstance] getIndexForMyApplicationsByJobId:self.szJobId];
+    if (indexMyApplication != -1){
+        // You already applied to this job.
+        [GANGlobalVCManager showHudInfoWithMessage:@"Ud ya aplicó." DismissAfter:-1 Callback:nil];
+        return;
+    }
+    /*
+    if (self.isRecruited == YES){
+        // You are recruited for this job.
+        [GANGlobalVCManager showHudInfoWithMessage:@"Le empresa ha sido notificado sobre su interés." DismissAfter:-1 Callback:nil];
+        return;
+    }
+     */
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     [[GANJobManager sharedInstance] requestApplyForJob:self.szJobId Callback:^(int status) {
