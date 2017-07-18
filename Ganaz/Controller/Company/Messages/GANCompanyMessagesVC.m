@@ -286,6 +286,7 @@
             cell.lblTitle.text = @"Message sent";
             cell.lblMessage.text = [message getContentsEN];
             [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
+                if (index == -1) return;
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
                 cell.lblTitle.text = [NSString stringWithFormat:@"Message To %@", [user getValidUsername]];
             }];
@@ -304,6 +305,7 @@
             }
             
             [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
+                if (index == -1) return;
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
                 cell.lblTitle.text = [NSString stringWithFormat:@"Recruited %@", [user getValidUsername]];
             }];
@@ -314,6 +316,7 @@
             cell.lblTitle.text = @"Message received";
             cell.lblMessage.text = [message getContentsEN];
             [managerCache requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
+                if (index == -1) return;
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
                 cell.lblTitle.text = [NSString stringWithFormat:@"Message from %@", [user getValidUsername]];
             }];
