@@ -29,10 +29,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *viewCompanyName;
 @property (weak, nonatomic) IBOutlet UIView *viewDescription;
-@property (weak, nonatomic) IBOutlet UIView *viewStreet1;
-@property (weak, nonatomic) IBOutlet UIView *viewStreet2;
-@property (weak, nonatomic) IBOutlet UIView *viewCity;
-@property (weak, nonatomic) IBOutlet UIView *viewState;
+@property (weak, nonatomic) IBOutlet UIView *viewZipcode;
 @property (weak, nonatomic) IBOutlet UIView *viewFirstName;
 @property (weak, nonatomic) IBOutlet UIView *viewLastName;
 @property (weak, nonatomic) IBOutlet UIView *viewEmail;
@@ -51,10 +48,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *txtCompanyName;
 @property (weak, nonatomic) IBOutlet UITextView *textviewDescription;
-@property (weak, nonatomic) IBOutlet UITextField *txtStreet1;
-@property (weak, nonatomic) IBOutlet UITextField *txtStreet2;
-@property (weak, nonatomic) IBOutlet UITextField *txtCity;
-@property (weak, nonatomic) IBOutlet UITextField *txtState;
+@property (weak, nonatomic) IBOutlet UITextField *txtZipcode;
 @property (weak, nonatomic) IBOutlet UITextField *txtFirstName;
 @property (weak, nonatomic) IBOutlet UITextField *txtLastName;
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
@@ -101,10 +95,7 @@
 - (void) refreshViews{
     self.viewCompanyName.layer.cornerRadius = 3;
     self.viewDescription.layer.cornerRadius = 3;
-    self.viewStreet1.layer.cornerRadius = 3;
-    self.viewStreet2.layer.cornerRadius = 3;
-    self.viewCity.layer.cornerRadius = 3;
-    self.viewState.layer.cornerRadius = 3;
+    self.viewZipcode.layer.cornerRadius = 3;
     self.viewFirstName.layer.cornerRadius = 3;
     self.viewLastName.layer.cornerRadius = 3;
     self.viewEmail.layer.cornerRadius = 3;
@@ -167,10 +158,7 @@
     if (self.indexCompany == -1){
         self.txtCompanyName.text = @"";
         self.textviewDescription.text = @"";
-        self.txtStreet1.text = @"";
-        self.txtStreet2.text = @"";
-        self.txtCity.text = @"";
-        self.txtState.text = @"";
+        self.txtZipcode.text = @"";
         self.isAutoTranslate = NO;
         
         [self refreshAutoTranslateView];
@@ -180,10 +168,7 @@
         GANCompanyDataModel *company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
         self.txtCompanyName.text = [company getBusinessNameEN];
         self.textviewDescription.text = [company getDescriptionEN];
-        self.txtStreet1.text = company.modelAddress.szAddress1;
-        self.txtStreet2.text = company.modelAddress.szAddress2;
-        self.txtCity.text = company.modelAddress.szCity;
-        self.txtState.text = company.modelAddress.szState;
+        self.txtZipcode.text = company.modelAddress.szZipcode;
         
         self.isAutoTranslate = company.isAutoTranslate;
         [self refreshAutoTranslateView];
@@ -229,9 +214,6 @@
 - (BOOL) checkMandatoryFields{
     NSString *szCompanyName = self.txtCompanyName.text;
     NSString *szDescription = self.textviewDescription.text;
-    NSString *szStreet1 = self.txtStreet1.text;
-    NSString *szCity = self.txtCity.text;
-    NSString *szState = self.txtState.text;
     NSString *szFirstName = self.txtFirstName.text;
     NSString *szLastName = self.txtLastName.text;
     NSString *szEmail = self.txtEmail.text;
@@ -244,18 +226,6 @@
     }
     if (szDescription.length == 0){
         [self shakeInvalidFields:self.viewDescription];
-        return NO;
-    }
-    if (szStreet1.length == 0){
-        [self shakeInvalidFields:self.viewStreet1];
-        return NO;
-    }
-    if (szCity.length == 0){
-        [self shakeInvalidFields:self.viewCity];
-        return NO;
-    }
-    if (szState.length == 0){
-        [self shakeInvalidFields:self.viewState];
         return NO;
     }
     if (szFirstName.length == 0){
@@ -325,11 +295,7 @@
     
     NSString *szCompanyName = self.txtCompanyName.text;
     NSString *szDescription = self.textviewDescription.text;
-    NSString *szStreet1 = self.txtStreet1.text;
-    NSString *szStreet2 = self.txtStreet2.text;
-    NSString *szCity = self.txtCity.text;
-    NSString *szState = self.txtState.text;
-    
+    NSString *szZipcode = self.txtZipcode.text;
     GANCompanyDataModel *company = [[GANCompanyDataModel alloc] init];
     GANMembershipPlanDataModel *plan = [[GANMembershipPlanManager sharedInstance] getPlanByType:GANENUM_MEMBERSHIPPLAN_TYPE_FREE];
     
@@ -339,10 +305,8 @@
     company.modelDescription.szTextES = descriptionTranslated;
     company.isAutoTranslate = self.isAutoTranslate;
     company.szCode = [GANCompanyManager generateCompanyCodeFromName:szCompanyName];
-    company.modelAddress.szAddress1 = szStreet1;
-    company.modelAddress.szAddress2 = szStreet2;
-    company.modelAddress.szCity = szCity;
-    company.modelAddress.szState = szState;
+    
+    company.modelAddress.szZipcode = szZipcode;
     
     company.modelPlan.type = plan.type;
     company.modelPlan.szTitle = plan.szTitle;
@@ -406,6 +370,9 @@
             }];
             GANACTIVITY_REPORT(@"User signed up");
         }
+        else if (status == ERROR_USER_SIGNUPFAILED_PHONENUMBERCONFLICT){
+            [GANGlobalVCManager showHudErrorWithMessage:@"Phone number already in use. Please choose a different one." DismissAfter:3 Callback:nil];
+        }
         else if (status == ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT){
             [GANGlobalVCManager showHudErrorWithMessage:@"User name is already registered." DismissAfter:3 Callback:nil];
         }
@@ -444,10 +411,8 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     if (textField == self.txtCompanyName ||
-        textField == self.txtStreet1 ||
-        textField == self.txtStreet2 ||
-        textField == self.txtCity ||
-        textField == self.txtState){
+        textField == self.txtZipcode
+        ){
         return [self isCompanyFieldEditable];
     }
     return YES;
