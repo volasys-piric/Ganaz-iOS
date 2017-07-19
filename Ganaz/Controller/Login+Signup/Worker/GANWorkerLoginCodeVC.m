@@ -78,6 +78,9 @@
             [self doLogin];
         });
     }
+    else {
+        [self.textfieldCode becomeFirstResponder];
+    }
 }
 
 #pragma mark - Biz Logic

@@ -52,7 +52,7 @@
             <objects>
                 <navigationController id="kDe-s0-Nxi" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Configuración" image="tab-settings" id="jO2-1g-ui9"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Zas-qj-eaI">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Zas-qj-eaI">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -107,9 +107,9 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="76h-Kd-7or"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
-                                        <state key="normal" title="Cerrar sesión" backgroundImage="button-background">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="Cerrar sesión">
+                                            <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="onBtnSignoutClick:" destination="iva-cl-UVn" eventType="touchUpInside" id="M6v-KZ-R62"/>
@@ -850,7 +850,7 @@
                                                         </constraints>
                                                         <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="  Estoy intersado" image="icon-thumbup-white" backgroundImage="button-background">
+                                                        <state key="normal" title="  intersado" image="icon-thumbup-white" backgroundImage="button-background">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -1587,7 +1587,7 @@
             <objects>
                 <navigationController id="Zqn-dQ-zLd" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Trabajos" image="tab-list" id="LEK-gv-QVU"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="UXF-sK-EP0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="UXF-sK-EP0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1604,7 +1604,7 @@
             <objects>
                 <navigationController id="zPw-5u-DlH" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Mensajes" image="tab-message" id="aFw-PP-fVl"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="s76-vc-a05">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="s76-vc-a05">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

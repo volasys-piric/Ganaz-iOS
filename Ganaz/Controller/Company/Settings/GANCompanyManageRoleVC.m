@@ -102,6 +102,11 @@
 }
 
 - (void) promptForChangeRoleAtIndex: (int) index{
+    if ([GANUserManager sharedInstance].modelUser.enumType != GANENUM_USER_TYPE_COMPANY_ADMIN){
+        [GANGlobalVCManager showAlertControllerWithVC:self Title:@"Permission Not Granted." Message:@"Sorry, you don't have Admin rights and can't change this user's role" Callback:nil];
+        return;
+    }
+    
     [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:@"Are you sure you want to change this user's role?" ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
         GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
         GANUserCompanyDataModel *user = [managerCompany.arrCompanyUsers objectAtIndex:(index - 1)];

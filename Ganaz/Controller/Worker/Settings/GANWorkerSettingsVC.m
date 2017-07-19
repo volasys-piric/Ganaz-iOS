@@ -39,6 +39,8 @@
 
 - (void) refreshViews{
     self.btnSignout.layer.cornerRadius = 3;
+    self.btnSignout.layer.borderWidth = 1;
+    self.btnSignout.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
     
     self.btnChangeLocation.layer.cornerRadius = 3;
     self.btnChangeLocation.layer.borderWidth = 1;

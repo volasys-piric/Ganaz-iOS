@@ -40,6 +40,8 @@
     // Do any additional setup after loading the view.
     [self refreshViews];
     [self refreshCodePanel];
+    
+    [self.textfieldCode becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {

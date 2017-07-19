@@ -345,7 +345,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="iJU-eR-HVA" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Recruit" image="tab-recruit" id="PZV-ec-WC1"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oC6-jv-mUH">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="oC6-jv-mUH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -902,7 +902,7 @@ opt-out</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uTe-3a-X90" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Messages" image="tab-message" id="HiR-VK-JAF"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZES-Oq-N2i">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="ZES-Oq-N2i">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -934,9 +934,9 @@ opt-out</string>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="ZeK-A0-F0U"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
-                                        <state key="normal" title="Sign out" backgroundImage="button-background">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="Sign out">
+                                            <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="onBtnSignoutClick:" destination="VCV-76-GPl" eventType="touchUpInside" id="HLY-iS-vtR"/>
@@ -1101,7 +1101,7 @@ opt-out</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KRB-R9-5dL" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Settings" image="tab-settings" id="1OE-FK-kTO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="973-Uq-eLR">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="973-Uq-eLR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1120,7 +1120,7 @@ opt-out</string>
                     <tabBarItem key="tabBarItem" title="Jobs List" image="tab-list" id="LmR-s0-GYg"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="OhS-BJ-3Fl">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="OhS-BJ-3Fl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1284,7 +1284,7 @@ opt-out</string>
                                                             <constraint firstItem="9N0-RY-4dU" firstAttribute="leading" secondItem="1bs-eB-CGl" secondAttribute="leading" constant="12" id="qEP-S0-hKJ"/>
                                                         </constraints>
                                                     </view>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pay" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y1N-S4-ZH1" userLabel="Label - Pay">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pay (Optional)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y1N-S4-ZH1" userLabel="Label - Pay">
                                                         <rect key="frame" x="20" y="127" width="335" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20" id="pBb-ZE-2bE"/>
@@ -1775,6 +1775,9 @@ opt-out</string>
                                                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="13"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no"/>
+                                                                <connections>
+                                                                    <outlet property="delegate" destination="7v2-U8-cxc" id="B0Z-UI-q3S"/>
+                                                                </connections>
                                                             </textView>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
