@@ -8,6 +8,7 @@
 
 #import "GANCompanyLoginPhoneVC.h"
 #import "GANCompanyLoginCodeVC.h"
+#import "GANLoginResetPasswordVC.h"
 #import "GANGenericFunctionManager.h"
 #import "GANGlobalVCManager.h"
 #import "GANUserManager.h"
@@ -40,6 +41,7 @@
     
     [self refreshViews];
     [self refreshPhonePanel];
+    [self.textfieldPhoneNumber becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -95,13 +97,26 @@
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [managerUser requestSearchUserByPhoneNumber:phoneNumber Type:GANENUM_USER_TYPE_ANY Callback:^(int status, NSArray *array) {
         if (status == SUCCESS_WITH_NO_ERROR && array != nil && [array count] > 0){
-            [GANGlobalVCManager hideHudProgressWithCallback:^{
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
-                GANCompanyLoginCodeVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_LOGIN_CODE"];
-                vc.szPhoneNumber = phoneNumber;
-                [self.navigationController pushViewController:vc animated:YES];
-                self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-            }];
+            GANUserBaseDataModel *user = [array objectAtIndex:0];
+            if (user.enumAuthType == GANENUM_USER_AUTHTYPE_EMAIL){
+                // Old user, migration needed
+                [GANGlobalVCManager hideHudProgressWithCallback:^{
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
+                    GANLoginResetPasswordVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_LOGIN_RESETPASSWORD"];
+                    vc.szUsername = user.szUserName;
+                    [self.navigationController pushViewController:vc animated:YES];
+                    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+                }];
+            }
+            else {
+                [GANGlobalVCManager hideHudProgressWithCallback:^{
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
+                    GANCompanyLoginCodeVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_LOGIN_CODE"];
+                    vc.szPhoneNumber = phoneNumber;
+                    [self.navigationController pushViewController:vc animated:YES];
+                    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+                }];
+            }
         }
         else if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager hideHudProgressWithCallback:^{

@@ -51,6 +51,8 @@
     
     [self refreshViews];
     [self refreshNewCodePanel];
+    
+    [self.textfieldOldPassword becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -82,6 +84,7 @@
         int x = (int) self.viewOldPasswordPanel.frame.size.width;
         CGPoint pt = CGPointMake(x, 0);
         [self.scrollView setContentOffset:pt animated:YES];
+        [self.textfieldNewCode becomeFirstResponder];
     });
 }
 

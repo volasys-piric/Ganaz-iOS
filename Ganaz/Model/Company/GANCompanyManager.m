@@ -187,9 +187,7 @@
         if (status == SUCCESS_WITH_NO_ERROR && array != nil){
             NSMutableArray *arr = [[NSMutableArray alloc] init];
             for (int i = 0; i < (int) [array count]; i++){
-                NSDictionary *dictUser = [array objectAtIndex:i];
-                GANUserWorkerDataModel *worker = [[GANUserWorkerDataModel alloc] init];
-                [worker setWithDictionary:dictUser];
+                GANUserWorkerDataModel *worker = [array objectAtIndex:i];
                 if ([self getIndexForMyWorkersWithUserId:worker.szId] == -1){
                     [arr addObject:worker];
                 }

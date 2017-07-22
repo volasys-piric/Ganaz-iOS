@@ -236,7 +236,25 @@
         BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
         if (success){
             NSArray *arrFound = [dict objectForKey:@"users"];
-            if (callback) callback(SUCCESS_WITH_NO_ERROR, arrFound);
+            NSMutableArray *arrAccounts = [[NSMutableArray alloc] init];
+            for (int i = 0; i < (int) [arrFound count]; i++){
+                NSDictionary *dictAccount = [arrFound objectAtIndex:i];
+                NSString *szUserType = [GANGenericFunctionManager refineNSString: [dictAccount objectForKey:@"type"]];
+                GANENUM_USER_TYPE enumUserType = [GANUtils getUserTypeFromString:szUserType];
+                
+                GANUserBaseDataModel *user;
+                
+                if (enumUserType == GANENUM_USER_TYPE_WORKER){
+                    user = [[GANUserWorkerDataModel alloc] init];
+                    [user setWithDictionary:dictAccount];
+                }
+                else {
+                    user = [[GANUserCompanyDataModel alloc] init];
+                    [user setWithDictionary:dictAccount];
+                }
+                [arrAccounts addObject:user];
+            }
+            if (callback) callback(SUCCESS_WITH_NO_ERROR, arrAccounts);
         }
         else {
             NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
