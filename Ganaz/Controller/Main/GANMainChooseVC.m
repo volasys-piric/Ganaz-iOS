@@ -7,6 +7,7 @@
 //
 
 #import "GANMainChooseVC.h"
+#import <Crashlytics/Crashlytics.h>
 
 @interface GANMainChooseVC ()
 

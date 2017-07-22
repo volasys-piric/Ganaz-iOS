@@ -8,6 +8,7 @@
 
 #import "GANPhonebookContactDataModel.h"
 #import "GANGenericFunctionManager.h"
+#import "Global.h"
 
 @implementation GANPhonebookContactDataModel
 
@@ -57,6 +58,7 @@
             break;
         }
     }
+    GANLOG(@"%@", self);
 }
 
 - (BOOL) isValidContact{

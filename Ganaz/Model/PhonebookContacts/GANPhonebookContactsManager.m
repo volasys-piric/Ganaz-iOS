@@ -66,6 +66,7 @@
     // Build contacts list one time only.
     if (self.isContactsListBuilt == YES) return;
     
+    GANLOG(@"Building contact list from phone book");
     ABAddressBookRef addressBook = ABAddressBookCreate();
     CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople(addressBook);
     CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);

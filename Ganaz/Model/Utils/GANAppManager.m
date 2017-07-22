@@ -112,6 +112,10 @@
     }
     [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
     [[GANReviewManager sharedInstance] requestGetReviewsListWithCallback:nil];
+    
+    [CrashlyticsKit setUserIdentifier:managerUser.modelUser.szId];
+    [CrashlyticsKit setUserEmail:managerUser.modelUser.szEmail];
+    [CrashlyticsKit setUserName:[managerUser.modelUser.modelPhone getBeautifiedPhoneNumber]];
 }
 
 - (void) initializeManagersAfterLogout{

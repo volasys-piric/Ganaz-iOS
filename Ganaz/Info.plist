@@ -19,7 +19,21 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.3</string>
 	<key>CFBundleVersion</key>
-	<string>1306</string>
+	<string>1307</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>91f762a4727e048f50996f4c32bf0c57abf7af18</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>

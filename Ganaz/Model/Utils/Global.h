@@ -9,7 +9,9 @@
 #ifndef Global_h
 #define Global_h
 
-#define GANLOG( s, ... ) NSLog( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
+#import <Crashlytics/Crashlytics.h>
+
+#define GANLOG( s, ... ) CLS_LOG( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
 #define GANACTIVITY_REPORT(s) [[GANAppManager sharedInstance] logActivity: (s) ] 
 
 #warning This should be removed before submission!
