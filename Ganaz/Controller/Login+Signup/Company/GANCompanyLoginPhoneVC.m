@@ -13,6 +13,7 @@
 #import "GANGlobalVCManager.h"
 #import "GANUserManager.h"
 #import "Global.h"
+#import "GANAppManager.h"
 
 @interface GANCompanyLoginPhoneVC () <UITextFieldDelegate>
 
@@ -107,6 +108,7 @@
                     [self.navigationController pushViewController:vc animated:YES];
                     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
                 }];
+                GANACTIVITY_REPORT(@"Company - Login phone number recognized (v1.2)");
             }
             else {
                 [GANGlobalVCManager hideHudProgressWithCallback:^{
@@ -116,6 +118,7 @@
                     [self.navigationController pushViewController:vc animated:YES];
                     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
                 }];
+                GANACTIVITY_REPORT(@"Company - Login phone number recognized");
             }
         }
         else if (status == SUCCESS_WITH_NO_ERROR){
@@ -136,6 +139,7 @@
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     });
+    GANACTIVITY_REPORT(@"Company - Login phone number not recognized. Go to signup");
 }
 
 #pragma mark - UIButton Event Listeners

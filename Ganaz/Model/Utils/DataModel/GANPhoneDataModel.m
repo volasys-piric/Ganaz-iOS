@@ -47,6 +47,9 @@
 
 - (void) setLocalNumber: (NSString *) localNumber{
     self.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:localNumber];
+    if (self.szLocalNumber.length > 10){
+        self.szLocalNumber = [self.szLocalNumber substringFromIndex:(self.szLocalNumber.length - 10)];
+    }
 }
 
 - (NSString *) getBeautifiedPhoneNumber{

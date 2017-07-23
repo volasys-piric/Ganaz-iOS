@@ -36,7 +36,7 @@
 #else
 
 #define ONESIGNAL_APPID                             @"160b5387-8178-46e2-b194-ad193dc5efac"
-#define GANURL_BASEURL                              @"http://35.163.42.136:8000/api/v1"
+#define GANURL_BASEURL                              @"http://35.165.121.74:8000/api/v1"
 #define MIXPANEL_PROJECTTOKEN                       @"50fffae37bad52c48cf0e691f36cd1a4"
 
 #endif

@@ -136,7 +136,7 @@
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager hideHudProgressWithCallback:^{
                 [self showUpdatePanel];
-                GANACTIVITY_REPORT(@"User logged in");
+                GANACTIVITY_REPORT(@"User logged in (v1.2)");
             }];
         }
         else if (status == ERROR_USER_LOGINFAILED_USERNOTFOUND || status == ERROR_USER_LOGINFAILED_PASSWORDWRONG){
@@ -166,7 +166,7 @@
                 else {
                     [self gotoWorkerMain];
                 }
-                GANACTIVITY_REPORT(@"User updated password");
+                GANACTIVITY_REPORT(@"User update password");
             }];
         }
         else if (status == ERROR_USER_LOGINFAILED_USERNOTFOUND || status == ERROR_USER_LOGINFAILED_PASSWORDWRONG){

@@ -108,6 +108,7 @@
                     [self.navigationController pushViewController:vc animated:YES];
                     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
                 }];
+                GANACTIVITY_REPORT(@"Worker - Login phone number recognized (v1.2)");
             }
             else {
                 [GANGlobalVCManager hideHudProgressWithCallback:^{
@@ -119,6 +120,7 @@
                     [self.navigationController pushViewController:vc animated:YES];
                     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
                 }];
+                GANACTIVITY_REPORT(@"Worker - Login phone number recognized");
             }
         }
         else if (status == SUCCESS_WITH_NO_ERROR){
@@ -131,6 +133,7 @@
                 [self.navigationController pushViewController:vc animated:YES];
                 self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
             }];
+            GANACTIVITY_REPORT(@"Worker - Login phone number not recognized. Go to signup");
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];

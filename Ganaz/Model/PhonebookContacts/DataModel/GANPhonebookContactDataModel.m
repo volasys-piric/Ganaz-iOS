@@ -58,11 +58,10 @@
             break;
         }
     }
-    GANLOG(@"%@", self);
 }
 
 - (BOOL) isValidContact{
-    if (self.szFirstName.length == 0 && self.szLastName == 0) return NO;
+    if ([self getFullName].length == 0) return NO;
     if (self.modelPhone.szLocalNumber.length == 0) return NO;
     return YES;
 }
@@ -82,6 +81,7 @@
 }
 
 - (NSString *) getInitialForIndexing{
+    if ([self getFullName].length == 0) return @"#";
     NSString *sz = [[self getFullName] substringToIndex:1];
     
     NSCharacterSet *alphabets = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"];

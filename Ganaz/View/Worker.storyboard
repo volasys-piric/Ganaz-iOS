@@ -850,7 +850,7 @@
                                                         </constraints>
                                                         <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="  intersado" image="icon-thumbup-white" backgroundImage="button-background">
+                                                        <state key="normal" title="  Interesado" image="icon-thumbup-white" backgroundImage="button-background">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -1587,7 +1587,7 @@
             <objects>
                 <navigationController id="Zqn-dQ-zLd" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Trabajos" image="tab-list" id="LEK-gv-QVU"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="UXF-sK-EP0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="UXF-sK-EP0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1604,7 +1604,7 @@
             <objects>
                 <navigationController id="zPw-5u-DlH" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Mensajes" image="tab-message" id="aFw-PP-fVl"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="s76-vc-a05">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="s76-vc-a05">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
