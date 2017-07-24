@@ -86,11 +86,15 @@
     return -1;
 }
 
++ (BOOL) isValidJobId: (NSString *) jobId{
+    return (([jobId caseInsensitiveCompare:@"NONE"] != NSOrderedSame) && (jobId.length > 0));
+}
+
 #pragma mark - Request for <Company> Users
 
 - (void) requestMyJobListWithCallback: (void (^) (int status)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForSearchJobs];
-    NSDictionary *params = @{@"company_id": [GANUserManager getUserCompanyDataModel].szId,
+    NSDictionary *params = @{@"company_id": [GANUserManager getCompanyDataModel].szId,
                             @"status": @"all"
                             };
     
@@ -316,9 +320,44 @@
     
 }
 
+- (void) requestSuggestFriendForJob: (NSString *) jobId PhoneNumber: (NSString *) phoneNumber Callback: (void (^) (int status)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForSuggestFriendForJob];
+    NSDictionary *param = @{@"job_id": jobId,
+                            @"worker_user_id": [GANUserManager sharedInstance].modelUser.szId,
+                            @"suggested_worker": @{@"phone_number": @{
+                                    @"country": @"US",
+                                    @"country_code": @"1",
+                                    @"local_number": phoneNumber
+                                    },
+                            },
+                            };
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+        }
+        
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+    }];
+    
+}
+
 - (void) requestGetMyApplicationsWithCallback: (void (^) (int status)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForGetApplications];
-    [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:YES parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
+    if ([[GANUserManager sharedInstance] isCompanyUser] == NO){
+        NSString *szWorkerUserId = [GANUserManager sharedInstance].modelUser.szId;
+        [param setObject:szWorkerUserId forKey:@"worker_user_id"];
+    }
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;
         BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
         if (success){

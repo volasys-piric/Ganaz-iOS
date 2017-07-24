@@ -15,5 +15,8 @@ target 'Ganaz' do
   pod 'SVPullToRefresh'
   pod 'GoogleMaps'
   pod 'HCSStarRatingView'
+  pod 'Mixpanel'
+  pod 'Fabric'
+  pod 'Crashlytics'
   
 end

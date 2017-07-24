@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>name</key>
+		<string>training</string>
+		<key>icon</key>
+		<string>icon-benefit-training</string>
+		<key>title</key>
+		<dict>
+			<key>en</key>
+			<string>Training</string>
+			<key>es</key>
+			<string>Capacitación</string>
+		</dict>
+		<key>description</key>
+		<dict>
+			<key>en</key>
+			<string>It won’t be a bigger problem to find one video game lover in your neighbor. Since the introduction of Virtual Game, it has been achieving great heights so far as its popularity and technological advancement are concerned. The history of video game is as interesting as a fairy tale.</string>
+			<key>es</key>
+			<string>It won’t be a bigger problem to find one video game lover in your neighbor. Since the introduction of Virtual Game, it has been achieving great heights so far as its popularity and technological advancement are concerned. The history of video game is as interesting as a fairy tale.</string>
+		</dict>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>health-check</string>
+		<key>icon</key>
+		<string>icon-benefit-health</string>
+		<key>title</key>
+		<dict>
+			<key>en</key>
+			<string>Health checks</string>
+			<key>es</key>
+			<string>Salud</string>
+		</dict>
+		<key>description</key>
+		<dict>
+			<key>en</key>
+			<string>It won’t be a bigger problem to find one video game lover in your neighbor. Since the introduction of Virtual Game, it has been achieving great heights so far as its popularity and technological advancement are concerned. The history of video game is as interesting as a fairy tale.</string>
+			<key>es</key>
+			<string>It won’t be a bigger problem to find one video game lover in your neighbor. Since the introduction of Virtual Game, it has been achieving great heights so far as its popularity and technological advancement are concerned. The history of video game is as interesting as a fairy tale.</string>
+		</dict>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>housing</string>
+		<key>icon</key>
+		<string>icon-benefit-housing</string>
+		<key>title</key>
+		<dict>
+			<key>en</key>
+			<string>Housing</string>
+			<key>es</key>
+			<string>Vivienda</string>
+		</dict>
+		<key>description</key>
+		<dict>
+			<key>en</key>
+			<string>It won’t be a bigger problem to find one video game lover in your neighbor. Since the introduction of Virtual Game, it has been achieving great heights so far as its popularity and technological advancement are concerned. The history of video game is as interesting as a fairy tale.</string>
+			<key>es</key>
+			<string>It won’t be a bigger problem to find one video game lover in your neighbor. Since the introduction of Virtual Game, it has been achieving great heights so far as its popularity and technological advancement are concerned. The history of video game is as interesting as a fairy tale.</string>
+		</dict>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>transportation</string>
+		<key>icon</key>
+		<string>icon-benefit-transportation</string>
+		<key>title</key>
+		<dict>
+			<key>en</key>
+			<string>Transportation</string>
+			<key>es</key>
+			<string>Transportación</string>
+		</dict>
+		<key>description</key>
+		<dict>
+			<key>en</key>
+			<string>It won’t be a bigger problem to find one video game lover in your neighbor. Since the introduction of Virtual Game, it has been achieving great heights so far as its popularity and technological advancement are concerned. The history of video game is as interesting as a fairy tale.</string>
+			<key>es</key>
+			<string>It won’t be a bigger problem to find one video game lover in your neighbor. Since the introduction of Virtual Game, it has been achieving great heights so far as its popularity and technological advancement are concerned. The history of video game is as interesting as a fairy tale.</string>
+		</dict>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>bonus</string>
+		<key>icon</key>
+		<string>icon-benefit-bonus</string>
+		<key>title</key>
+		<dict>
+			<key>en</key>
+			<string>Bonus</string>
+			<key>es</key>
+			<string>Bono</string>
+		</dict>
+		<key>description</key>
+		<dict>
+			<key>en</key>
+			<string>It won’t be a bigger problem to find one video game lover in your neighbor. Since the introduction of Virtual Game, it has been achieving great heights so far as its popularity and technological advancement are concerned. The history of video game is as interesting as a fairy tale.</string>
+			<key>es</key>
+			<string>It won’t be a bigger problem to find one video game lover in your neighbor. Since the introduction of Virtual Game, it has been achieving great heights so far as its popularity and technological advancement are concerned. The history of video game is as interesting as a fairy tale.</string>
+		</dict>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>scholarships</string>
+		<key>icon</key>
+		<string>icon-benefit-scholarships</string>
+		<key>title</key>
+		<dict>
+			<key>en</key>
+			<string>Scholarships</string>
+			<key>es</key>
+			<string>Becas</string>
+		</dict>
+		<key>description</key>
+		<dict>
+			<key>en</key>
+			<string>It won’t be a bigger problem to find one video game lover in your neighbor. Since the introduction of Virtual Game, it has been achieving great heights so far as its popularity and technological advancement are concerned. The history of video game is as interesting as a fairy tale.</string>
+			<key>es</key>
+			<string>It won’t be a bigger problem to find one video game lover in your neighbor. Since the introduction of Virtual Game, it has been achieving great heights so far as its popularity and technological advancement are concerned. The history of video game is as interesting as a fairy tale.</string>
+		</dict>
+	</dict>
+</array>
+</plist>

@@ -14,6 +14,8 @@
 
 #import "Global.h"
 #import <OneSignal/OneSignal.h>
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 
 @interface AppDelegate ()
 
@@ -34,8 +36,11 @@
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     [[UITabBar appearance] setTintColor:GANUICOLOR_THEMECOLOR_TABBAR_SELECTED];
     
+    [[GANAppManager sharedInstance] initializeAppConfig];
     [[GANAppManager sharedInstance] initializeManagersAfterLaunch];
     
+    [Fabric with:@[[Crashlytics class]]];
+
     [OneSignal initWithLaunchOptions:launchOptions appId:ONESIGNAL_APPID handleNotificationReceived:^(OSNotification *notification) {
         // This will be fired when the app is in focus.
         

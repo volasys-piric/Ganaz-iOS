@@ -11,6 +11,7 @@
 #import "GANErrorManager.h"
 #import "GANGenericFunctionManager.h"
 #import "Global.h"
+#import "GANAppManager.h"
 #import <AFNetworking.h>
 
 @implementation GANNetworkRequestManager
@@ -43,6 +44,13 @@
         [managerAFSession.requestSerializer setValue:[[GANUserManager sharedInstance] getAuthorizationHeader] forHTTPHeaderField:@"Authorization"];
     }
     
+    // Add Header
+    GANAppManager *managerApp = [GANAppManager sharedInstance];
+    [managerAFSession.requestSerializer setValue:@"ios" forHTTPHeaderField:@"platform"];
+    [managerAFSession.requestSerializer setValue:managerApp.szDeviceModel forHTTPHeaderField:@"client"];
+    [managerAFSession.requestSerializer setValue:managerApp.szCurrentVersion forHTTPHeaderField:@"version"];
+    [managerAFSession.requestSerializer setValue:managerApp.szCurrentBuild forHTTPHeaderField:@"build"];
+    
     NSString *token = [GANGenericFunctionManager generateRandomString:16];
     GANLOG(@"Network Request =>\nGET: %@\nParams: %@\nToken: %@", szUrl, params, token);
     [managerAFSession GET:szUrl parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -65,7 +73,14 @@
     if (requireAuth == YES){
         [managerAFSession.requestSerializer setValue:[[GANUserManager sharedInstance] getAuthorizationHeader] forHTTPHeaderField:@"Authorization"];
     }
-    
+
+    // Add Header
+    GANAppManager *managerApp = [GANAppManager sharedInstance];
+    [managerAFSession.requestSerializer setValue:@"ios" forHTTPHeaderField:@"platform"];
+    [managerAFSession.requestSerializer setValue:managerApp.szDeviceModel forHTTPHeaderField:@"client"];
+    [managerAFSession.requestSerializer setValue:managerApp.szCurrentVersion forHTTPHeaderField:@"version"];
+    [managerAFSession.requestSerializer setValue:managerApp.szCurrentBuild forHTTPHeaderField:@"build"];
+
     NSString *token = [GANGenericFunctionManager generateRandomString:16];
     GANLOG(@"Network Request =>\nPOST: %@\nParams: %@\nToken: %@", szUrl, params, token);
     [managerAFSession POST:szUrl parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -88,6 +103,13 @@
     if (requireAuth == YES){
         [managerAFSession.requestSerializer setValue:[[GANUserManager sharedInstance] getAuthorizationHeader] forHTTPHeaderField:@"Authorization"];
     }
+    
+    // Add Header
+    GANAppManager *managerApp = [GANAppManager sharedInstance];
+    [managerAFSession.requestSerializer setValue:@"ios" forHTTPHeaderField:@"platform"];
+    [managerAFSession.requestSerializer setValue:managerApp.szDeviceModel forHTTPHeaderField:@"client"];
+    [managerAFSession.requestSerializer setValue:managerApp.szCurrentVersion forHTTPHeaderField:@"version"];
+    [managerAFSession.requestSerializer setValue:managerApp.szCurrentBuild forHTTPHeaderField:@"build"];
     
     NSString *token = [GANGenericFunctionManager generateRandomString:16];
     GANLOG(@"Network Request =>\nPUT: %@\nParams: %@\nToken: %@", szUrl, params, token);
@@ -112,6 +134,13 @@
         [managerAFSession.requestSerializer setValue:[[GANUserManager sharedInstance] getAuthorizationHeader] forHTTPHeaderField:@"Authorization"];
     }
     
+    // Add Header
+    GANAppManager *managerApp = [GANAppManager sharedInstance];
+    [managerAFSession.requestSerializer setValue:@"ios" forHTTPHeaderField:@"platform"];
+    [managerAFSession.requestSerializer setValue:managerApp.szDeviceModel forHTTPHeaderField:@"client"];
+    [managerAFSession.requestSerializer setValue:managerApp.szCurrentVersion forHTTPHeaderField:@"version"];
+    [managerAFSession.requestSerializer setValue:managerApp.szCurrentBuild forHTTPHeaderField:@"build"];
+
     NSString *token = [GANGenericFunctionManager generateRandomString:16];
     GANLOG(@"Network Request =>\nPATCH: %@\nParams: %@\nToken: %@", szUrl, params, token);
     [managerAFSession PATCH:szUrl parameters:params success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -136,6 +165,13 @@
         [managerAFSession.requestSerializer setValue:[[GANUserManager sharedInstance] getAuthorizationHeader] forHTTPHeaderField:@"Authorization"];
     }
     
+    // Add Header
+    GANAppManager *managerApp = [GANAppManager sharedInstance];
+    [managerAFSession.requestSerializer setValue:@"ios" forHTTPHeaderField:@"platform"];
+    [managerAFSession.requestSerializer setValue:managerApp.szDeviceModel forHTTPHeaderField:@"client"];
+    [managerAFSession.requestSerializer setValue:managerApp.szCurrentVersion forHTTPHeaderField:@"version"];
+    [managerAFSession.requestSerializer setValue:managerApp.szCurrentBuild forHTTPHeaderField:@"build"];
+
     NSString *token = [GANGenericFunctionManager generateRandomString:16];
     GANLOG(@"Network Request =>\nDELETE: %@\nParams: %@\nToken: %@", szUrl, params, token);
     [managerAFSession DELETE:szUrl parameters:params success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

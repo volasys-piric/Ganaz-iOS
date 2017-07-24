@@ -18,7 +18,7 @@
 
 #pragma mark - Utils
 
-- (int) getIndexForReviewByCompanyUserId: (NSString *) companyUserId;
+- (int) getIndexForReviewByCompanyId: (NSString *) companyId;
 
 #pragma mark - Request
 

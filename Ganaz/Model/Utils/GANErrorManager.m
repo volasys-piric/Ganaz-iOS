@@ -69,6 +69,8 @@
 }
 
 - (int) analyzeErrorResponseWithMessage: (NSString *) message{
+    message = [message lowercaseString];
+    if ([message rangeOfString:@"already exists"].location != NSNotFound) return ERROR_USER_SIGNUPFAILED_PHONENUMBERCONFLICT;
     if ([message caseInsensitiveCompare:@"Username Duplicated"] == NSOrderedSame) return ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT;
     if ([message caseInsensitiveCompare:@"Email Address Duplicated"] == NSOrderedSame) return ERROR_USER_SIGNUPFAILED_EMAILCONFLICT;
     if ([message caseInsensitiveCompare:@"Authentication failed. User not found."] == NSOrderedSame) return ERROR_USER_LOGINFAILED_USERNOTFOUND;

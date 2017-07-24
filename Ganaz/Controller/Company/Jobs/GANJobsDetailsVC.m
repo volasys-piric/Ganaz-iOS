@@ -19,6 +19,7 @@
 #import "GANUtils.h"
 #import "Global.h"
 #import <UIView+Shake/UIView+Shake.h>
+#import "GANAppManager.h"
 
 typedef enum _ENUM_POPUPFOR{
     GANENUM_POPUPFOR_NONE,
@@ -32,7 +33,7 @@ typedef enum _ENUM_PAYUNIT{
     GANENUM_PAYUNIT_HOUR,
 }GANENUM_PAYUNIT;
 
-@interface GANJobsDetailsVC () <UITextFieldDelegate, GMSMapViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+@interface GANJobsDetailsVC () <UITextFieldDelegate, GMSMapViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
@@ -192,14 +193,21 @@ typedef enum _ENUM_PAYUNIT{
     [self refreshAutoTranslateView];
 }
 
+- (NSString *) getTextviewCommentsPlaceholderText{
+    return @"This is a good place to say more about any benefits, job requirements, shift hours and any other info about what makes your company a great place to work.";
+}
+
 - (void) refreshFields{
+    self.textviewComments.text = [self getTextviewCommentsPlaceholderText];
+    self.textviewComments.textColor = [UIColor lightGrayColor];
+    
     if (self.indexJob == -1) return;
     
     GANJobManager *managerJob = [GANJobManager sharedInstance];
     GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:self.indexJob];
     
-    self.txtTitle.text = job.szTitle;
-    self.txtPrice.text = [NSString stringWithFormat:@"%d", (int) job.fPayRate];
+    self.txtTitle.text = [job getTitleEN];
+    self.txtPrice.text = [NSString stringWithFormat:@"%.2f", job.fPayRate];
     if ([job isPayRateSpecified] == NO){
         self.txtPrice.text = @"";
     }
@@ -218,8 +226,16 @@ typedef enum _ENUM_PAYUNIT{
                             ];
     self.arrBenefit = [NSMutableArray arrayWithArray:arrBenefit];
     
-    self.textviewComments.text = job.szComments;
+    self.textviewComments.text = [job getCommentsEN];
     self.isAutoTranslate = job.isAutoTranslate;
+    
+    if (self.textviewComments.text.length == 0){
+        self.textviewComments.text = [self getTextviewCommentsPlaceholderText];
+        self.textviewComments.textColor = [UIColor lightGrayColor];
+    }
+    else {
+        self.textviewComments.textColor = [UIColor blackColor];
+    }
 }
 
 - (void) refreshBenefitsPanel{
@@ -320,7 +336,7 @@ typedef enum _ENUM_PAYUNIT{
 
 - (void) addMapMarker{
     NSArray *arrSite = [GANJobManager sharedInstance].modelOnboardingJob.arrSite;
-    if (arrSite.count == 0){
+    if ([arrSite count] == 0){
         self.viewMapMaskEmpty.hidden = NO;
         return;
     }
@@ -483,7 +499,15 @@ typedef enum _ENUM_PAYUNIT{
     
     if (positions == 0){
         [self shakeInvalidFields:self.viewPositions];
+        return NO;
     }
+    
+    NSArray *arrSite = [GANJobManager sharedInstance].modelOnboardingJob.arrSite;
+    if ([arrSite count] == 0){
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please add at least one working site!" DismissAfter:-1 Callback:nil];
+        return NO;
+    }
+    
     return YES;
 }
 
@@ -498,9 +522,9 @@ typedef enum _ENUM_PAYUNIT{
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     __weak typeof(self) wSelf = self;
     
-    [GANUtils requestTranslate:szComments Translate:shouldTranslate Callback:^(int status, NSString *translatedText) {
+    [GANUtils requestTranslate:szComments Translate:shouldTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status, NSString *translatedText) {
         if (status == SUCCESS_WITH_NO_ERROR) szCommentsTranslated = translatedText;
-        [GANUtils requestTranslate:szTitle Translate:shouldTranslate Callback:^(int status, NSString *translatedText) {
+        [GANUtils requestTranslate:szTitle Translate:shouldTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status, NSString *translatedText) {
             __strong typeof(self) sSelf = wSelf;
             if (status == SUCCESS_WITH_NO_ERROR) szTitleTranslated = translatedText;
             [sSelf doPostWithTranslatedTitle:szTitleTranslated TranslatedComments:szCommentsTranslated];
@@ -518,23 +542,27 @@ typedef enum _ENUM_PAYUNIT{
     int nPos = [self.txtPositions.text intValue];
     NSString *szComments = self.textviewComments.text;
     
-    job.szCompanyId = [GANUserManager getUserCompanyDataModel].szId;
-    job.szTitle = szTitle;
-    job.szTitleTranslated = titleTranslated;
+    job.szCompanyId = [GANUserManager getCompanyDataModel].szId;
+    job.szCompanyUserId = [GANUserManager getUserCompanyDataModel].szId;
+    job.modelTitle.szTextEN = szTitle;
+    job.modelTitle.szTextES = titleTranslated;
+    job.modelComments.szTextEN = szComments;
+    job.modelComments.szTextES = commentsTranslated;
+    job.isAutoTranslate = self.isAutoTranslate;
+
     job.fPayRate = fPrice;
     job.enumPayUnit = self.enumPayUnit;
     job.dateFrom = self.dateFrom;
     job.dateTo = self.dateTo;
     job.nPositions = nPos;
+    job.enumFieldCondition = GANENUM_FIELDCONDITION_TYPE_GOOD;
+    
     job.isBenefitTraining = [[self.arrBenefit objectAtIndex:0] boolValue];
     job.isBenefitHealth = [[self.arrBenefit objectAtIndex:1] boolValue];
     job.isBenefitHousing = [[self.arrBenefit objectAtIndex:2] boolValue];
     job.isBenefitTransportation = [[self.arrBenefit objectAtIndex:3] boolValue];
     job.isBenefitBonus = [[self.arrBenefit objectAtIndex:4] boolValue];
     job.isBenefitScholarships = [[self.arrBenefit objectAtIndex:5] boolValue];
-    job.szComments = szComments;
-    job.szCommentsTranslated = commentsTranslated;
-    job.isAutoTranslate = self.isAutoTranslate;
     // Working site is already set
     
     if (self.indexJob == -1){
@@ -548,6 +576,7 @@ typedef enum _ENUM_PAYUNIT{
                 [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:3 Callback:nil];
             }
         }];
+        GANACTIVITY_REPORT(@"Company - Post new job");
     }
     else {
         [managerJob requestUpdateJobAtIndex:self.indexJob Job:job Callback:^(int status) {
@@ -560,7 +589,7 @@ typedef enum _ENUM_PAYUNIT{
                 [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:3 Callback:nil];
             }
         }];
-
+        GANACTIVITY_REPORT(@"Company - Update job");
     }
 }
 
@@ -576,6 +605,7 @@ typedef enum _ENUM_PAYUNIT{
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:3 Callback:nil];
         }
     }];
+    GANACTIVITY_REPORT(@"Company - Delete job from job details");
 }
 
 - (void) promptForDelete{
@@ -630,6 +660,24 @@ typedef enum _ENUM_PAYUNIT{
         return @"Lb";
     }
     return @"Hour";
+}
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView{
+    if ([textView.text isEqualToString:[self getTextviewCommentsPlaceholderText]] == YES){
+        textView.text = @"";
+        textView.textColor = [UIColor blackColor];
+    }
+    [textView becomeFirstResponder];
+}
+
+- (void) textViewDidEndEditing:(UITextView *)textView{
+    if ([textView.text isEqualToString:@""] == YES){
+        textView.text = [self getTextviewCommentsPlaceholderText];
+        textView.textColor = [UIColor lightGrayColor];
+    }
+    [textView resignFirstResponder];
 }
 
 #pragma mark - UIButton Delegate

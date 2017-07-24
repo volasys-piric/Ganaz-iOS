@@ -11,7 +11,7 @@
 @interface GANReviewDataModel : NSObject
 
 @property (strong, nonatomic) NSString *szId;
-@property (strong, nonatomic) NSString *szCompanyUserId;
+@property (strong, nonatomic) NSString *szCompanyId;
 @property (strong, nonatomic) NSString *szWorkerUserId;
 @property (strong, nonatomic) NSString *szComments;
 @property (assign, atomic) int ratingPay;

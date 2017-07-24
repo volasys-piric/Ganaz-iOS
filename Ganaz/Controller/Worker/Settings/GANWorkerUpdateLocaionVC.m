@@ -13,6 +13,7 @@
 #import "GANUtils.h"
 #import "GANGlobalVCManager.h"
 #import "Global.h"
+#import "GANAppManager.h"
 
 @interface GANWorkerUpdateLocaionVC () <GMSMapViewDelegate, UIGestureRecognizerDelegate>
 
@@ -81,6 +82,8 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
         }
     }];
+    
+    GANACTIVITY_REPORT(@"Worker - Update Location");
 }
 
 #pragma mark - GoogleMaps
