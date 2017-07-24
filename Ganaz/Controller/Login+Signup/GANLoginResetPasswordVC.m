@@ -107,7 +107,7 @@
 }
 
 - (BOOL) checkMandatoryFieldsForLogin{
-    NSString *szOldPassword = [GANGenericFunctionManager stripNonnumericsFromNSString:self.textfieldOldPassword.text];
+    NSString *szOldPassword = [GANGenericFunctionManager refineNSString:self.textfieldOldPassword.text];
     if (szOldPassword.length == 0){
         [GANGlobalVCManager shakeView:self.viewOldPassword];
         return NO;
