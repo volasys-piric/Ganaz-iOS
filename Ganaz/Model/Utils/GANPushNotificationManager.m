@@ -77,6 +77,9 @@
         else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_APPLICATION){
             [GANGlobalVCManager showHudInfoWithMessage:@"New job inquiry is arrived." DismissAfter:-1 Callback:nil];
         }
+        else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_SUGGEST){
+            [GANGlobalVCManager showHudInfoWithMessage:@"New job inquiry is arrived." DismissAfter:-1 Callback:nil];
+        }
     }
     [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
 }

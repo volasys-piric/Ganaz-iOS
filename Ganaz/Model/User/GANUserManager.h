@@ -10,10 +10,12 @@
 #import "GANUserWorkerDataModel.h"
 #import "GANUserCompanyDataModel.h"
 #import "GANCompanyDataModel.h"
+#import "GANUserMinimumInfoDataModel.h"
 
 @interface GANUserManager : NSObject
 
 @property (strong, nonatomic) GANUserBaseDataModel *modelUser;
+@property (strong, nonatomic) GANUserMinimumInfoDataModel *modelUserMinInfo;
 
 + (instancetype) sharedInstance;
 - (void) initializeManagerWithType: (GANENUM_USER_TYPE) type;
@@ -35,12 +37,18 @@
 #pragma mark - Login & Signup
 
 - (void) requestUserSignupWithCallback: (void (^) (int status)) callback;
-- (void) requestUserLogin: (NSString *) username Password: (NSString *) password Callback: (void (^) (int status)) callback;
+- (void) requestUserLoginWithUsername: (NSString *) username Password: (NSString *) password Callback: (void (^) (int status)) callback;
+- (void) requestUserLoginWithPhoneNumber: (NSString *) phoneNumber Password: (NSString *) password Callback: (void (^) (int status)) callback;
 - (void) requestSearchUserByPhoneNumber: (NSString *) phoneNumber Type: (GANENUM_USER_TYPE) type Callback: (void (^) (int status, NSArray *array)) callback;
 - (void) requestUserDetailsByUserId: (NSString *) userId Callback: (void (^) (int status, GANUserBaseDataModel *user)) callback;
 
 - (void) requestUpdateMyLocationWithCallback: (void (^) (int status)) callback;
+- (BOOL) loadFromLocalstorage;
 - (BOOL) checkLocalstorageIfLastLoginSaved;
 - (void) requestUpdateOneSignalPlayerIdWithCallback: (void (^) (int status)) callback;
+
+// Reset Password
+
+- (void) requestUpdatePassword: (NSString *) password WithCallback: (void (^) (int status)) callback;
 
 @end

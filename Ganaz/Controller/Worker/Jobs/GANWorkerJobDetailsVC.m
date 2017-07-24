@@ -10,16 +10,17 @@
 #import "GANWorkerCompanyDetailsVC.h"
 #import "GANWorkerBenefitItemTVC.h"
 #import "GANWorkerBenefitItemCVC.h"
-#import "GANLocationManager.h"
+#import "GANWorkerJobApplyVC.h"
 
+#import "GANLocationManager.h"
 #import "GANCacheManager.h"
 #import "GANUserCompanyDataModel.h"
 #import "GANJobManager.h"
 #import "GANJobDataModel.h"
-
 #import "GANUserManager.h"
-#import "GANGlobalVCManager.h"
 #import "GANDataManager.h"
+
+#import "GANGlobalVCManager.h"
 #import "GANFadeTransitionDelegate.h"
 #import "GANBenefitInfoPopupVC.h"
 
@@ -279,25 +280,14 @@
 
 - (void) doApply{
     if ([[GANUserManager sharedInstance] isUserLoggedIn] == NO){
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
-        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_LOGIN"];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_PHONE"];
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         return;
     }
 
-    int indexMyApplication = [[GANJobManager sharedInstance] getIndexForMyApplicationsByJobId:self.job.szId];
-    if (indexMyApplication != -1){
-        // You already applied to this job.
-        [GANGlobalVCManager showHudInfoWithMessage:@"Ud ya aplicó." DismissAfter:-1 Callback:nil];
-        return;
-    }
-    if (self.isRecruited == YES){
-        // You are recruited for this job.
-        [GANGlobalVCManager showHudInfoWithMessage:@"Le empresa ha sido notificado sobre su interés." DismissAfter:-1 Callback:nil];
-        return;
-    }
-    
+    /*
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     [[GANJobManager sharedInstance] requestApplyForJob:self.job.szId Callback:^(int status) {
@@ -312,6 +302,8 @@
     }];
     
     GANACTIVITY_REPORT(@"Worker - Apply for job");
+     */
+    [self gotoJobApplyVC];
 }
 
 - (void) doShare{
@@ -361,6 +353,19 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     GANACTIVITY_REPORT(@"Worker - Go to company details from job details");
+}
+
+- (void) gotoJobApplyVC{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
+        GANWorkerJobApplyVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_JOBDETAILS_APPLY"];
+        vc.szJobId = self.job.szId;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        
+        GANACTIVITY_REPORT(@"Worker - Go to apply view from job details");        
+    });
 }
 
 /*
@@ -438,8 +443,8 @@
     [self.view endEditing:YES];
     
     if ([[GANUserManager sharedInstance] isUserLoggedIn] == NO){
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
-        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_LOGIN"];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_PHONE"];
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         return;

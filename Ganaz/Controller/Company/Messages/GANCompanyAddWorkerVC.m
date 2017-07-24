@@ -81,6 +81,7 @@ typedef enum _ENUM_FOUNDSTATUS{
 
 - (void) refreshViews{
     if (self.enumStatus == GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE){
+        self.tableview.hidden = YES;
         self.lblTitle.text = @"Enter phone number";
         self.lblNote.text = @"If you have a large number of workers to add, you can send Ganaz a list of those workers at info@ganazapp.com and we’ll happily add them for you.";
         self.btnInvite.hidden = YES;
@@ -88,6 +89,7 @@ typedef enum _ENUM_FOUNDSTATUS{
         [self.btnAdd setTitle:@"Search" forState:UIControlStateNormal];
     }
     else if (self.enumStatus == GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_FOUND){
+        self.tableview.hidden = NO;
         self.lblTitle.text = @"Worker(s) found";
         self.lblNote.text = @"";
         self.btnInvite.hidden = YES;
@@ -95,6 +97,7 @@ typedef enum _ENUM_FOUNDSTATUS{
         [self.btnAdd setTitle:@"Add worker" forState:UIControlStateNormal];
     }
     else if (self.enumStatus == GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND){
+        self.tableview.hidden = YES;
         self.lblTitle.text = @"Worker not found";
         self.lblNote.text = @"Note: any worker you invite to Ganaz will receive recruiting messages exclusively from you for 12 months unless they otherwise opt-out";
         self.btnInvite.hidden = YES;
@@ -211,7 +214,7 @@ typedef enum _ENUM_FOUNDSTATUS{
 
 - (void) configureCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
     GANUserWorkerDataModel *worker = [self.arrWorkersFound objectAtIndex:index];
-    cell.lblWorkerId.text = worker.szUserName;
+    cell.lblWorkerId.text = [worker getValidUsername];
     
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

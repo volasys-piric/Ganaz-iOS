@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSString *szCity;
 @property (strong, nonatomic) NSString *szState;
 @property (strong, nonatomic) NSString *szCountry;
+@property (strong, nonatomic) NSString *szZipcode;
 
 - (void) setWithDictionary:(NSDictionary *)dict;
 - (NSDictionary *) serializeToDictionary;

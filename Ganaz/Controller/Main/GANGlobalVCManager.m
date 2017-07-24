@@ -7,10 +7,14 @@
 //
 
 #import "GANGlobalVCManager.h"
-#import "GANLoginVC.h"
+#import "GANMainChooseVC.h"
+#import "GANWorkerLoginPhoneVC.h"
+#import "GANWorkerLoginCodeVC.h"
+
 #import "GANUserManager.h"
 #import "GANMessageManager.h"
 #import <SVProgressHUD.h>
+#import <UIView+Shake.h>
 
 #define SVPROGRESSHUD_DISMISSAFTER_DEFAULT                      3
 
@@ -37,45 +41,21 @@
 
 #pragma mark - Redirect to certain VC
 
-- (void) gotoLoginVC{
-    UIViewController *vcCurrent = [GANGlobalVCManager getTopMostViewController];
-    UINavigationController *nav = vcCurrent.navigationController;
-    NSArray *arrOldVCs = nav.viewControllers;
-    NSMutableArray *arrNewVCs = [[NSMutableArray alloc] init];
-    BOOL found = NO;
-
-    if ([vcCurrent isKindOfClass:[GANLoginVC class]] == YES) return;
++ (void) logoutToWorkerLoginVC: (UIViewController *) vcCurrent{
+    [vcCurrent dismissViewControllerAnimated:YES completion:nil];
+    /*
+    UIStoryboard *storyboardMain = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIStoryboard *storyboardLogin = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
     
-    for (int i = 0; i < (int) [arrOldVCs count]; i++){
-        UIViewController *vc = [arrOldVCs objectAtIndex:i];
-        [arrNewVCs addObject:vc];
-        if ([vc isKindOfClass:[GANLoginVC class]] == YES){
-            found = YES;
-            break;
-        }
-    }
+    UIViewController *vcChoose = [storyboardMain instantiateViewControllerWithIdentifier:@"STORYBOARD_MAIN_CHOOSE"];
+    UIViewController *vcLoginPhone = [storyboardLogin instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_PHONE"];
+    UIViewController *vcLoginCode = [storyboardLogin instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_CODE"];
     
-    if (found == NO){
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
-        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_LOGIN"];
-        arrNewVCs = [[NSMutableArray alloc] initWithObjects:vc, nil];
-    }
-    
-    [arrNewVCs addObject:vcCurrent];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        nav.viewControllers = arrNewVCs;
-        [nav popViewControllerAnimated:YES];
-    });
-}
-
-+ (void) logoutToLoginVC: (UIViewController *) vcCurrent{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
-    UIViewController *vcLogin = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_LOGIN"];
-    vcCurrent.navigationController.viewControllers = @[vcLogin, vcCurrent];
+    vcCurrent.navigationController.viewControllers = @[vcChoose, vcLoginPhone, vcLoginCode, vcCurrent];
     dispatch_async(dispatch_get_main_queue(), ^{
         [vcCurrent.navigationController popViewControllerAnimated:YES];
     });
+     */
 }
 
 #pragma mark - Utils
@@ -125,6 +105,37 @@
     return [GANGlobalVCManager findBestViewControllerFromViewController:viewController];
 }
 
+#pragma mark - Animations
+
++ (void) shakeView: (UIView *) view{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [view shake:6 withDelta:8 speed:0.07];
+    });
+}
+
++ (void) shakeView: (UIView *) view InScrollView: (UIScrollView *) scrollView{
+    BOOL isVisible = CGRectIntersectsRect(scrollView.bounds, view.frame);
+    if (isVisible == NO){
+        CGRect rc = view.frame;
+        CGPoint pt = rc.origin;
+        pt.x = 0;
+        pt.y -= 60;
+        pt.y = MAX(0, pt.y);
+        float maxOffsetY = scrollView.contentSize.height - scrollView.frame.size.height;
+        pt.y = MIN(pt.y, maxOffsetY);
+        
+        [scrollView setContentOffset:pt animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [view shake:6 withDelta:8 speed:0.07];
+        });
+    }
+    else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [view shake:6 withDelta:8 speed:0.07];
+        });
+    }
+}
+
 #pragma mark -UI
 
 + (void) showAlertWithMessage: (NSString *) szMessage{
@@ -135,6 +146,17 @@
 + (void) showAlertWithTitle: (NSString *) szTitle Message: (NSString *) szMessage{
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:szTitle message:szMessage delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alertView show];
+}
+
++ (void)showAlertControllerWithVC: (UIViewController *) vc Title:(NSString *)title Message:(NSString *)message Callback: (void (^)()) callback {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *actionOk = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (callback) callback();
+    }];
+    [alertController addAction:actionOk];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [vc presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 + (void) promptWithVC: (UIViewController *) vc Title: (NSString *) title Message: (NSString *) message ButtonYes: (NSString *) buttonYes ButtonNo: (NSString *) buttonNo CallbackYes: (void (^)()) callbackYes CallbackNo: (void (^)()) callbackNo{

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "GANUserManager.h"
+#import "GANJobDataModel.h"
+#import "GANCompanyDataModel.h"
 
 @interface GANCacheManager : NSObject
 
@@ -31,5 +33,10 @@
 - (void) getCompanyBusinessNameESByCompanyId: (NSString *) companyId Callback: (void (^) (NSString *businessNameES)) callback;
 - (void) requestGetCompanyDetailsByCompanyId: (NSString *) companyId Callback: (void (^) (int indexCompany)) callback;
 - (void) requestGetCompanyDetailsByCompanyCode: (NSString *) companyCode Callback: (void (^) (int indexCompany)) callback;
+- (GANCompanyDataModel *) getCompanyByJobId: (NSString *) jobId;
+
+#pragma mark - Job
+
+- (GANJobDataModel *) getJobByJobId: (NSString *) jobId;
 
 @end

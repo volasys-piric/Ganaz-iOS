@@ -134,7 +134,7 @@
     if (szFormattedNumber.length > nMaxLength){
         szFormattedNumber = [szFormattedNumber substringToIndex:nMaxLength];
     }
-    szFormattedNumber = [NSString stringWithFormat:@"+1 %@", szFormattedNumber];
+//    szFormattedNumber = [NSString stringWithFormat:@"+1 %@", szFormattedNumber];
     return szFormattedNumber;
 }
 

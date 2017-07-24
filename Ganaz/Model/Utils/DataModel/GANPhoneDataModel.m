@@ -32,11 +32,24 @@
     self.szLocalNumber = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"local_number"]];
 }
 
+- (void) initializeWithPhone: (GANPhoneDataModel *) phone{
+    self.szCountry = phone.szCountry;
+    self.szCountryCode = phone.szCountryCode;
+    self.szLocalNumber = phone.szLocalNumber;
+}
+
 - (NSDictionary *) serializeToDictionary{
     return @{@"country": self.szCountry,
              @"country_code": self.szCountryCode,
              @"local_number": self.szLocalNumber,
              };
+}
+
+- (void) setLocalNumber: (NSString *) localNumber{
+    self.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:localNumber];
+    if (self.szLocalNumber.length > 10){
+        self.szLocalNumber = [self.szLocalNumber substringFromIndex:(self.szLocalNumber.length - 10)];
+    }
 }
 
 - (NSString *) getBeautifiedPhoneNumber{

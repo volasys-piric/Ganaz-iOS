@@ -25,6 +25,7 @@
 @property (strong, nonatomic) GANTransContentsDataModel *modelContents;
 @property (assign, atomic) BOOL isAutoTranslate;
 
+@property (strong, nonatomic) NSDictionary *dictMetadata;
 @property (strong, nonatomic) NSDate *dateSent;
 
 - (instancetype) init;
@@ -35,5 +36,6 @@
 
 - (NSString *) getContentsEN;
 - (NSString *) getContentsES;
+- (NSString *) getPhoneNumberForSuggestFriend;
 
 @end

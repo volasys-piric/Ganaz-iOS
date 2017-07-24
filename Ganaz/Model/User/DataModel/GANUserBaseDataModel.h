@@ -32,5 +32,6 @@
 - (void) addPlayerIdIfNeeded: (NSString *) playerId;
 
 - (NSString *) getFullName;
+- (NSString *) getValidUsername;
 
 @end

@@ -81,6 +81,10 @@
     return [NSString stringWithFormat:@"%@/user/%@/type", [GANUrlManager getBaseUrl], userId];
 }
 
++ (NSString *) getEndpointForUserUpdatePassword{
+    return [NSString stringWithFormat:@"%@/user/password_recovery/reset", [GANUrlManager getBaseUrl]];
+}
+
 #pragma mark - Endpoint for Job
 
 + (NSString *) getEndpointForAddJob{
@@ -106,11 +110,15 @@
 #pragma mark - Endpoint for Application
 
 + (NSString *) getEndpointForGetApplications{
-    return [NSString stringWithFormat:@"%@/application", [GANUrlManager getBaseUrl]];
+    return [NSString stringWithFormat:@"%@/application/search", [GANUrlManager getBaseUrl]];
 }
 
 + (NSString *) getEndpointForApplyForJob{
     return [NSString stringWithFormat:@"%@/application", [GANUrlManager getBaseUrl]];
+}
+
++ (NSString *) getEndpointForSuggestFriendForJob{
+    return [NSString stringWithFormat:@"%@/suggest", [GANUrlManager getBaseUrl]];
 }
 
 #pragma mark - Endpoint for MyWorkers

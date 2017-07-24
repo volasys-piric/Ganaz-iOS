@@ -14,6 +14,9 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
+  - Crashlytics (3.8.4):
+    - Fabric (~> 1.6.3)
+  - Fabric (1.6.11)
   - GoogleMaps (2.1.1):
     - GoogleMaps/Maps (= 2.1.1)
   - GoogleMaps/Base (2.1.1)
@@ -29,6 +32,8 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking
+  - Crashlytics
+  - Fabric
   - GoogleMaps
   - HCSStarRatingView
   - IQKeyboardManager
@@ -40,6 +45,8 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
+  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   GoogleMaps: a5b5bbe47734e2443bde781a6aa64e69fdb6d785
   HCSStarRatingView: 1d18f79654735514cd6f00e6d90e38cb6320dc31
   IQKeyboardManager: 1a8189fa153bf09044355ee0ad36826f6767e7f7
@@ -49,6 +56,6 @@ SPEC CHECKSUMS:
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
   UIView+Shake: a64f7d009222e33cf73d699b06c028cfab4cf2ad
 
-PODFILE CHECKSUM: 4822b7858dc9f503455d5710a5c597f3ec69bc6c
+PODFILE CHECKSUM: c2fc99bbfc6cb277487f1097effe2a3dbbc33f87
 
 COCOAPODS: 1.2.1

@@ -207,6 +207,21 @@
 
 #pragma mark - Biz Logic
 
+- (void) callSuggestedFriendAtIndex: (int) indexMessage{
+    GANMessageDataModel *message = [self.arrMessages objectAtIndex:indexMessage];
+    NSString *phoneNumber = [message getPhoneNumberForSuggestFriend];
+    [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:[NSString stringWithFormat:@"Do you want to make a call to %@?", phoneNumber] ButtonYes:@"Yes" ButtonNo:@"NO" CallbackYes:^{
+        NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",[GANGenericFunctionManager stripNonnumericsFromNSString:phoneNumber]]];
+        
+        if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
+            [[UIApplication sharedApplication] openURL:phoneUrl];
+        }
+        else{
+            [GANGlobalVCManager showHudErrorWithMessage:@"Your device does not support phone call" DismissAfter:-1 Callback:nil];
+        }
+    } CallbackNo:nil];
+}
+
 - (void) replyMessageAtIndex: (int) index{
     self.indexMessageForReply = index;
     self.lblReplyTitle.text = @"Reply";
@@ -223,7 +238,7 @@
     }
     [managerCache requestGetIndexForUserByUserId:szUserId Callback:^(int index) {
         GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-        self.lblReplyTitle.text = [NSString stringWithFormat:@"Reply to %@", user.szUserName];
+        self.lblReplyTitle.text = [NSString stringWithFormat:@"Reply to %@", [user getValidUsername]];
     }];
     
     [self animateToShowPopup];
@@ -271,8 +286,9 @@
             cell.lblTitle.text = @"Message sent";
             cell.lblMessage.text = [message getContentsEN];
             [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
+                if (index == -1) return;
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Message To %@", user.szUserName];
+                cell.lblTitle.text = [NSString stringWithFormat:@"Message To %@", [user getValidUsername]];
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT){
@@ -289,8 +305,9 @@
             }
             
             [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
+                if (index == -1) return;
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Recruited %@", user.szUserName];
+                cell.lblTitle.text = [NSString stringWithFormat:@"Recruited %@", [user getValidUsername]];
             }];
         }
     }
@@ -299,8 +316,9 @@
             cell.lblTitle.text = @"Message received";
             cell.lblMessage.text = [message getContentsEN];
             [managerCache requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
+                if (index == -1) return;
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Message from %@", user.szUserName];
+                cell.lblTitle.text = [NSString stringWithFormat:@"Message from %@", [user getValidUsername]];
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION){
@@ -319,7 +337,27 @@
             [[GANCacheManager sharedInstance] requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 if (index != -1){
                     GANUserBaseDataModel *user = [[GANCacheManager sharedInstance].arrUsers objectAtIndex:index];
-                    cell.lblMessage.text = [NSString stringWithFormat:@"Call %@ @%@", user.szUserName, [user.modelPhone getBeautifiedPhoneNumber]];
+                    cell.lblMessage.text = [NSString stringWithFormat:@"Reply to %@", [user getValidUsername]];
+                }
+            }];
+        }
+        else if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
+            GANJobManager *managerJob = [GANJobManager sharedInstance];
+            int indexJob = [managerJob getIndexForMyJobsByJobId:message.szJobId];
+            if (indexJob != -1){
+                GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:indexJob];
+                cell.lblTitle.text = [NSString stringWithFormat:@"Worker interested: %@", [job getTitleEN]];
+            }
+            else {
+                cell.lblTitle.text = @"New job inquiry";
+            }
+            
+            cell.lblMessage.text = @"";
+            
+            [[GANCacheManager sharedInstance] requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
+                if (index != -1){
+                    GANUserBaseDataModel *user = [[GANCacheManager sharedInstance].arrUsers objectAtIndex:index];
+                    cell.lblMessage.text = [NSString stringWithFormat:@"%@ suggested worker @%@", [user getValidUsername], [message getPhoneNumberForSuggestFriend]];
                 }
             }];
         }
@@ -348,7 +386,14 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self replyMessageAtIndex:(int) indexPath.row];
+    int index = (int) indexPath.row;
+    GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
+    if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
+        [self callSuggestedFriendAtIndex:index];
+    }
+    else {
+        [self replyMessageAtIndex:(int) indexPath.row];
+    }
 }
 
 #pragma mark - UIButton Delegate

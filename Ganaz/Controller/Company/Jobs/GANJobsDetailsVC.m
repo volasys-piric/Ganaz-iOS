@@ -33,7 +33,7 @@ typedef enum _ENUM_PAYUNIT{
     GANENUM_PAYUNIT_HOUR,
 }GANENUM_PAYUNIT;
 
-@interface GANJobsDetailsVC () <UITextFieldDelegate, GMSMapViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+@interface GANJobsDetailsVC () <UITextFieldDelegate, GMSMapViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
@@ -193,7 +193,14 @@ typedef enum _ENUM_PAYUNIT{
     [self refreshAutoTranslateView];
 }
 
+- (NSString *) getTextviewCommentsPlaceholderText{
+    return @"This is a good place to say more about any benefits, job requirements, shift hours and any other info about what makes your company a great place to work.";
+}
+
 - (void) refreshFields{
+    self.textviewComments.text = [self getTextviewCommentsPlaceholderText];
+    self.textviewComments.textColor = [UIColor lightGrayColor];
+    
     if (self.indexJob == -1) return;
     
     GANJobManager *managerJob = [GANJobManager sharedInstance];
@@ -221,6 +228,14 @@ typedef enum _ENUM_PAYUNIT{
     
     self.textviewComments.text = [job getCommentsEN];
     self.isAutoTranslate = job.isAutoTranslate;
+    
+    if (self.textviewComments.text.length == 0){
+        self.textviewComments.text = [self getTextviewCommentsPlaceholderText];
+        self.textviewComments.textColor = [UIColor lightGrayColor];
+    }
+    else {
+        self.textviewComments.textColor = [UIColor blackColor];
+    }
 }
 
 - (void) refreshBenefitsPanel{
@@ -645,6 +660,24 @@ typedef enum _ENUM_PAYUNIT{
         return @"Lb";
     }
     return @"Hour";
+}
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView{
+    if ([textView.text isEqualToString:[self getTextviewCommentsPlaceholderText]] == YES){
+        textView.text = @"";
+        textView.textColor = [UIColor blackColor];
+    }
+    [textView becomeFirstResponder];
+}
+
+- (void) textViewDidEndEditing:(UITextView *)textView{
+    if ([textView.text isEqualToString:@""] == YES){
+        textView.text = [self getTextviewCommentsPlaceholderText];
+        textView.textColor = [UIColor lightGrayColor];
+    }
+    [textView resignFirstResponder];
 }
 
 #pragma mark - UIButton Delegate

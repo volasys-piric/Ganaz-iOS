@@ -50,6 +50,7 @@
 #pragma mark - Worker > Application
 
 - (void) requestApplyForJob: (NSString *) jobId Callback: (void (^) (int status)) callback;
+- (void) requestSuggestFriendForJob: (NSString *) jobId PhoneNumber: (NSString *) phoneNumber Callback: (void (^) (int status)) callback;
 - (void) requestGetMyApplicationsWithCallback: (void (^) (int status)) callback;
 
 @end

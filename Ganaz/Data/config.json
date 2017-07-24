@@ -1,9 +1,9 @@
 {
     "success": 1,
-    "config": {
+	"config": {
         "production": {
             "status": "running",
-            "base_url": "http://34.210.63.91:8000",
+            "base_url": "http://35.165.121.74:8000",
             "backend_version": "1.1",
             "backend_build": "1100",
             "frontend_min_version": "1.1",

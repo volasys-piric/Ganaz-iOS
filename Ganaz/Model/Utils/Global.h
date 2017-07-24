@@ -9,11 +9,13 @@
 #ifndef Global_h
 #define Global_h
 
-#define GANLOG( s, ... ) NSLog( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
+#import <Crashlytics/Crashlytics.h>
+
+#define GANLOG( s, ... ) CLS_LOG( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
 #define GANACTIVITY_REPORT(s) [[GANAppManager sharedInstance] logActivity: (s) ] 
 
 #warning This should be removed before submission!
-#define GANENVIRONMENT_DEMO
+#define GANENVIRONMENT_STAGING
 
 // BASE URL
 
@@ -34,7 +36,7 @@
 #else
 
 #define ONESIGNAL_APPID                             @"160b5387-8178-46e2-b194-ad193dc5efac"
-#define GANURL_BASEURL                              @"http://35.163.42.136:8000/api/v1"
+#define GANURL_BASEURL                              @"http://35.165.121.74:8000/api/v1"
 #define MIXPANEL_PROJECTTOKEN                       @"50fffae37bad52c48cf0e691f36cd1a4"
 
 #endif
@@ -82,8 +84,9 @@
 
 #define ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT    1001
 #define ERROR_USER_SIGNUPFAILED_EMAILCONFLICT       1002
-#define ERROR_USER_LOGINFAILED_USERNOTFOUND         1003
-#define ERROR_USER_LOGINFAILED_PASSWORDWRONG        1004
+#define ERROR_USER_SIGNUPFAILED_PHONENUMBERCONFLICT 1003
+#define ERROR_USER_LOGINFAILED_USERNOTFOUND         1004
+#define ERROR_USER_LOGINFAILED_PASSWORDWRONG        1005
 
 #define GANLOCALNOTIFICATION_USER_SILENTLOGIN_SUCCEEDED                 @"GANLOCALNOTIFICATION_USER_SILENTLOGIN_SUCCEEDED"
 #define GANLOCALNOTIFICATION_USER_SILENTLOGIN_FAILED                    @"GANLOCALNOTIFICATION_USER_SILENTLOGIN_FAILED"

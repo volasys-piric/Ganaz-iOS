@@ -49,6 +49,15 @@
 		836C87EF1F0A46BB00968D40 /* GANAppConfigDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 836C87EE1F0A46BB00968D40 /* GANAppConfigDataModel.m */; };
 		836C87F21F0AA1CF00968D40 /* AppUpdatesPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836C87F11F0AA1CF00968D40 /* AppUpdatesPopup.xib */; };
 		836C87F81F0AA23200968D40 /* GANAppUpdatesPopupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 836C87F71F0AA23200968D40 /* GANAppUpdatesPopupVC.m */; };
+		836DBC2B1F184E3500CCD6AA /* GANLoginResetPasswordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 836DBC2A1F184E3500CCD6AA /* GANLoginResetPasswordVC.m */; };
+		836DBC2E1F1866FD00CCD6AA /* GANUserMinimumInfoDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 836DBC2D1F1866FD00CCD6AA /* GANUserMinimumInfoDataModel.m */; };
+		836DBC311F1ACC9700CCD6AA /* WorkerSuggestFriendItemTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836DBC301F1ACC9700CCD6AA /* WorkerSuggestFriendItemTVC.xib */; };
+		836DBC341F1ACCB500CCD6AA /* GANWorkerSuggestFriendItemTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 836DBC331F1ACCB500CCD6AA /* GANWorkerSuggestFriendItemTVC.m */; };
+		836DBC371F1AD17500CCD6AA /* GANWorkerJobApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 836DBC361F1AD17500CCD6AA /* GANWorkerJobApplyVC.m */; };
+		836DBC3A1F1AD1C100CCD6AA /* GANWorkerJobApplyCompletedVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 836DBC391F1AD1C100CCD6AA /* GANWorkerJobApplyCompletedVC.m */; };
+		836DBC3D1F1AD1D900CCD6AA /* GANWorkerJobSuggestFriendVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 836DBC3C1F1AD1D900CCD6AA /* GANWorkerJobSuggestFriendVC.m */; };
+		836DBC421F1BF71700CCD6AA /* GANPhonebookContactDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 836DBC411F1BF71700CCD6AA /* GANPhonebookContactDataModel.m */; };
+		836DBC451F1BF73300CCD6AA /* GANPhonebookContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 836DBC441F1BF73300CCD6AA /* GANPhonebookContactsManager.m */; };
 		837B86D21F0D589900FCF260 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 837B86D41F0D589900FCF260 /* Localizable.strings */; };
 		837E63DE1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837E63DD1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib */; };
 		837E63E11EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 837E63E01EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.m */; };
@@ -59,7 +68,7 @@
 		838AAC261E578A9F006CC33D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 838AAC241E578A9F006CC33D /* Main.storyboard */; };
 		838AAC281E578A9F006CC33D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 838AAC271E578A9F006CC33D /* Assets.xcassets */; };
 		838AAC2B1E578A9F006CC33D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 838AAC291E578A9F006CC33D /* LaunchScreen.storyboard */; };
-		838AAC381E578CF4006CC33D /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 838AAC371E578CF4006CC33D /* Login.storyboard */; };
+		838AAC381E578CF4006CC33D /* Login-Old.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 838AAC371E578CF4006CC33D /* Login-Old.storyboard */; };
 		838AAC431E579AA1006CC33D /* SFUIDisplay-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 838AAC3A1E5799E3006CC33D /* SFUIDisplay-Black.otf */; };
 		838AAC441E579AA1006CC33D /* SFUIDisplay-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 838AAC3B1E5799E3006CC33D /* SFUIDisplay-Bold.otf */; };
 		838AAC451E579AA1006CC33D /* SFUIDisplay-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 838AAC3C1E5799E3006CC33D /* SFUIDisplay-Heavy.otf */; };
@@ -69,7 +78,10 @@
 		838AAC491E579AA1006CC33D /* SFUIDisplay-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 838AAC401E5799E3006CC33D /* SFUIDisplay-Semibold.otf */; };
 		838AAC4A1E579AA1006CC33D /* SFUIDisplay-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 838AAC411E5799E3006CC33D /* SFUIDisplay-Thin.otf */; };
 		838AAC4B1E579AA1006CC33D /* SFUIDisplay-Ultralight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 838AAC421E5799E3006CC33D /* SFUIDisplay-Ultralight.otf */; };
-		838AAC511E57A291006CC33D /* GANLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 838AAC501E57A291006CC33D /* GANLoginVC.m */; };
+		838D9E2D1F13162A00551FF2 /* GANMainChooseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 838D9E2C1F13162A00551FF2 /* GANMainChooseVC.m */; };
+		838D9E311F13FA7500551FF2 /* GANCompanyLoginPhoneVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 838D9E301F13FA7500551FF2 /* GANCompanyLoginPhoneVC.m */; };
+		838D9E341F1400C800551FF2 /* GANCompanyLoginCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 838D9E331F1400C800551FF2 /* GANCompanyLoginCodeVC.m */; };
+		838D9E371F14087300551FF2 /* GANCompanySignupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 838D9E361F14087300551FF2 /* GANCompanySignupVC.m */; };
 		839DB51D1ED675C000E2652A /* CompanyCodePopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839DB51C1ED675C000E2652A /* CompanyCodePopup.xib */; };
 		839DB5201ED675D500E2652A /* GANCompanyCodePopupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 839DB51F1ED675D500E2652A /* GANCompanyCodePopupVC.m */; };
 		839DB5241ED679D100E2652A /* GANAnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 839DB5231ED679D100E2652A /* GANAnimatedTransitioning.m */; };
@@ -90,9 +102,6 @@
 		83CA210F1E57F04E00C0D787 /* GANGenericFunctionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CA210E1E57F04E00C0D787 /* GANGenericFunctionManager.m */; };
 		83CA21121E57F05800C0D787 /* GANErrorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CA21111E57F05800C0D787 /* GANErrorManager.m */; };
 		83CA21161E57F1B000C0D787 /* GANGlobalVCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CA21151E57F1B000C0D787 /* GANGlobalVCManager.m */; };
-		83CA211C1E57F8CE00C0D787 /* GANSignupChooseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CA211B1E57F8CE00C0D787 /* GANSignupChooseVC.m */; };
-		83CA211F1E57F8DC00C0D787 /* GANSignupWorkerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CA211E1E57F8DC00C0D787 /* GANSignupWorkerVC.m */; };
-		83CA21221E57F8EC00C0D787 /* GANSignupCompanyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CA21211E57F8EC00C0D787 /* GANSignupCompanyVC.m */; };
 		83CA21271E587D9200C0D787 /* GANUIPhoneTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CA21261E587D9200C0D787 /* GANUIPhoneTextField.m */; };
 		83CA21291E5BD3B900C0D787 /* Company.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83CA21281E5BD3B900C0D787 /* Company.storyboard */; };
 		83CA212C1E5BE46700C0D787 /* JobItemTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83CA212B1E5BE46700C0D787 /* JobItemTVC.xib */; };
@@ -118,6 +127,9 @@
 		83CB26461E63052300C2D8C7 /* GANWorkerMessagesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CB26451E63052300C2D8C7 /* GANWorkerMessagesVC.m */; };
 		83CB264A1E6308E900C2D8C7 /* GANWorkerSettingsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CB26491E6308E900C2D8C7 /* GANWorkerSettingsVC.m */; };
 		83CB264D1E6309CF00C2D8C7 /* GANCompanySettingsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CB264C1E6309CF00C2D8C7 /* GANCompanySettingsVC.m */; };
+		83E322911F11F8A5002DA8CB /* Login+Signup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83E322901F11F8A5002DA8CB /* Login+Signup.storyboard */; };
+		83E322981F120872002DA8CB /* GANWorkerLoginCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E322971F120872002DA8CB /* GANWorkerLoginCodeVC.m */; };
+		83E3229B1F12089A002DA8CB /* GANWorkerLoginPhoneVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E3229A1F12089A002DA8CB /* GANWorkerLoginPhoneVC.m */; };
 		85D856B9D301E048DF3E85AE /* libPods-Ganaz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7680D2DDBE95C3053040625 /* libPods-Ganaz.a */; };
 /* End PBXBuildFile section */
 
@@ -200,6 +212,23 @@
 		836C87F11F0AA1CF00968D40 /* AppUpdatesPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AppUpdatesPopup.xib; path = View/CustomView/AppUpdatesPopup/AppUpdatesPopup.xib; sourceTree = "<group>"; };
 		836C87F61F0AA23200968D40 /* GANAppUpdatesPopupVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANAppUpdatesPopupVC.h; path = View/CustomView/AppUpdatesPopup/GANAppUpdatesPopupVC.h; sourceTree = "<group>"; };
 		836C87F71F0AA23200968D40 /* GANAppUpdatesPopupVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANAppUpdatesPopupVC.m; path = View/CustomView/AppUpdatesPopup/GANAppUpdatesPopupVC.m; sourceTree = "<group>"; };
+		836DBC291F184E3500CCD6AA /* GANLoginResetPasswordVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANLoginResetPasswordVC.h; path = "Controller/Login+Signup/GANLoginResetPasswordVC.h"; sourceTree = "<group>"; };
+		836DBC2A1F184E3500CCD6AA /* GANLoginResetPasswordVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANLoginResetPasswordVC.m; path = "Controller/Login+Signup/GANLoginResetPasswordVC.m"; sourceTree = "<group>"; };
+		836DBC2C1F1866FD00CCD6AA /* GANUserMinimumInfoDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANUserMinimumInfoDataModel.h; path = Model/User/DataModel/GANUserMinimumInfoDataModel.h; sourceTree = "<group>"; };
+		836DBC2D1F1866FD00CCD6AA /* GANUserMinimumInfoDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANUserMinimumInfoDataModel.m; path = Model/User/DataModel/GANUserMinimumInfoDataModel.m; sourceTree = "<group>"; };
+		836DBC301F1ACC9700CCD6AA /* WorkerSuggestFriendItemTVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WorkerSuggestFriendItemTVC.xib; path = View/TableViewCell/WorkerSuggestFriendItemTVC/WorkerSuggestFriendItemTVC.xib; sourceTree = "<group>"; };
+		836DBC321F1ACCB500CCD6AA /* GANWorkerSuggestFriendItemTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANWorkerSuggestFriendItemTVC.h; path = View/TableViewCell/WorkerSuggestFriendItemTVC/GANWorkerSuggestFriendItemTVC.h; sourceTree = "<group>"; };
+		836DBC331F1ACCB500CCD6AA /* GANWorkerSuggestFriendItemTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANWorkerSuggestFriendItemTVC.m; path = View/TableViewCell/WorkerSuggestFriendItemTVC/GANWorkerSuggestFriendItemTVC.m; sourceTree = "<group>"; };
+		836DBC351F1AD17500CCD6AA /* GANWorkerJobApplyVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANWorkerJobApplyVC.h; path = Controller/Worker/Jobs/GANWorkerJobApplyVC.h; sourceTree = "<group>"; };
+		836DBC361F1AD17500CCD6AA /* GANWorkerJobApplyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANWorkerJobApplyVC.m; path = Controller/Worker/Jobs/GANWorkerJobApplyVC.m; sourceTree = "<group>"; };
+		836DBC381F1AD1C100CCD6AA /* GANWorkerJobApplyCompletedVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANWorkerJobApplyCompletedVC.h; path = Controller/Worker/Jobs/GANWorkerJobApplyCompletedVC.h; sourceTree = "<group>"; };
+		836DBC391F1AD1C100CCD6AA /* GANWorkerJobApplyCompletedVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANWorkerJobApplyCompletedVC.m; path = Controller/Worker/Jobs/GANWorkerJobApplyCompletedVC.m; sourceTree = "<group>"; };
+		836DBC3B1F1AD1D900CCD6AA /* GANWorkerJobSuggestFriendVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANWorkerJobSuggestFriendVC.h; path = Controller/Worker/Jobs/GANWorkerJobSuggestFriendVC.h; sourceTree = "<group>"; };
+		836DBC3C1F1AD1D900CCD6AA /* GANWorkerJobSuggestFriendVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANWorkerJobSuggestFriendVC.m; path = Controller/Worker/Jobs/GANWorkerJobSuggestFriendVC.m; sourceTree = "<group>"; };
+		836DBC401F1BF71700CCD6AA /* GANPhonebookContactDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANPhonebookContactDataModel.h; path = Model/PhonebookContacts/DataModel/GANPhonebookContactDataModel.h; sourceTree = "<group>"; };
+		836DBC411F1BF71700CCD6AA /* GANPhonebookContactDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANPhonebookContactDataModel.m; path = Model/PhonebookContacts/DataModel/GANPhonebookContactDataModel.m; sourceTree = "<group>"; };
+		836DBC431F1BF73300CCD6AA /* GANPhonebookContactsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANPhonebookContactsManager.h; path = Model/PhonebookContacts/GANPhonebookContactsManager.h; sourceTree = "<group>"; };
+		836DBC441F1BF73300CCD6AA /* GANPhonebookContactsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANPhonebookContactsManager.m; path = Model/PhonebookContacts/GANPhonebookContactsManager.m; sourceTree = "<group>"; };
 		837B86D31F0D589900FCF260 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		837B86D61F0D594600FCF260 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		837E63DD1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WorkerBenefitItemCVC.xib; path = View/TableViewCell/WorkerBenefitItemCVC/WorkerBenefitItemCVC.xib; sourceTree = "<group>"; };
@@ -217,7 +246,7 @@
 		838AAC271E578A9F006CC33D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		838AAC2A1E578A9F006CC33D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		838AAC2C1E578A9F006CC33D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		838AAC371E578CF4006CC33D /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Login.storyboard; path = View/Login.storyboard; sourceTree = "<group>"; };
+		838AAC371E578CF4006CC33D /* Login-Old.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Login-Old.storyboard"; path = "View/Login-Old.storyboard"; sourceTree = "<group>"; };
 		838AAC3A1E5799E3006CC33D /* SFUIDisplay-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFUIDisplay-Black.otf"; path = "View/Fonts/SFUIDisplay-Black.otf"; sourceTree = "<group>"; };
 		838AAC3B1E5799E3006CC33D /* SFUIDisplay-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFUIDisplay-Bold.otf"; path = "View/Fonts/SFUIDisplay-Bold.otf"; sourceTree = "<group>"; };
 		838AAC3C1E5799E3006CC33D /* SFUIDisplay-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFUIDisplay-Heavy.otf"; path = "View/Fonts/SFUIDisplay-Heavy.otf"; sourceTree = "<group>"; };
@@ -228,8 +257,14 @@
 		838AAC411E5799E3006CC33D /* SFUIDisplay-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFUIDisplay-Thin.otf"; path = "View/Fonts/SFUIDisplay-Thin.otf"; sourceTree = "<group>"; };
 		838AAC421E5799E3006CC33D /* SFUIDisplay-Ultralight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFUIDisplay-Ultralight.otf"; path = "View/Fonts/SFUIDisplay-Ultralight.otf"; sourceTree = "<group>"; };
 		838AAC4D1E57A16C006CC33D /* Global.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Global.h; path = Model/Utils/Global.h; sourceTree = "<group>"; };
-		838AAC4F1E57A291006CC33D /* GANLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANLoginVC.h; path = "Controller/Login+Signup/GANLoginVC.h"; sourceTree = "<group>"; };
-		838AAC501E57A291006CC33D /* GANLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANLoginVC.m; path = "Controller/Login+Signup/GANLoginVC.m"; sourceTree = "<group>"; };
+		838D9E2B1F13162A00551FF2 /* GANMainChooseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANMainChooseVC.h; path = Controller/Main/GANMainChooseVC.h; sourceTree = "<group>"; };
+		838D9E2C1F13162A00551FF2 /* GANMainChooseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANMainChooseVC.m; path = Controller/Main/GANMainChooseVC.m; sourceTree = "<group>"; };
+		838D9E2F1F13FA7500551FF2 /* GANCompanyLoginPhoneVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANCompanyLoginPhoneVC.h; path = "Controller/Login+Signup/Company/GANCompanyLoginPhoneVC.h"; sourceTree = "<group>"; };
+		838D9E301F13FA7500551FF2 /* GANCompanyLoginPhoneVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANCompanyLoginPhoneVC.m; path = "Controller/Login+Signup/Company/GANCompanyLoginPhoneVC.m"; sourceTree = "<group>"; };
+		838D9E321F1400C800551FF2 /* GANCompanyLoginCodeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANCompanyLoginCodeVC.h; path = "Controller/Login+Signup/Company/GANCompanyLoginCodeVC.h"; sourceTree = "<group>"; };
+		838D9E331F1400C800551FF2 /* GANCompanyLoginCodeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANCompanyLoginCodeVC.m; path = "Controller/Login+Signup/Company/GANCompanyLoginCodeVC.m"; sourceTree = "<group>"; };
+		838D9E351F14087300551FF2 /* GANCompanySignupVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANCompanySignupVC.h; path = "Controller/Login+Signup/Company/GANCompanySignupVC.h"; sourceTree = "<group>"; };
+		838D9E361F14087300551FF2 /* GANCompanySignupVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANCompanySignupVC.m; path = "Controller/Login+Signup/Company/GANCompanySignupVC.m"; sourceTree = "<group>"; };
 		839DB51C1ED675C000E2652A /* CompanyCodePopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CompanyCodePopup.xib; path = View/CustomView/CompanyCodePopup/CompanyCodePopup.xib; sourceTree = "<group>"; };
 		839DB51E1ED675D500E2652A /* GANCompanyCodePopupVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANCompanyCodePopupVC.h; path = View/CustomView/CompanyCodePopup/GANCompanyCodePopupVC.h; sourceTree = "<group>"; };
 		839DB51F1ED675D500E2652A /* GANCompanyCodePopupVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANCompanyCodePopupVC.m; path = View/CustomView/CompanyCodePopup/GANCompanyCodePopupVC.m; sourceTree = "<group>"; };
@@ -266,12 +301,6 @@
 		83CA21111E57F05800C0D787 /* GANErrorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANErrorManager.m; path = Model/Utils/GANErrorManager.m; sourceTree = "<group>"; };
 		83CA21141E57F1B000C0D787 /* GANGlobalVCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANGlobalVCManager.h; path = Controller/Main/GANGlobalVCManager.h; sourceTree = "<group>"; };
 		83CA21151E57F1B000C0D787 /* GANGlobalVCManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANGlobalVCManager.m; path = Controller/Main/GANGlobalVCManager.m; sourceTree = "<group>"; };
-		83CA211A1E57F8CE00C0D787 /* GANSignupChooseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANSignupChooseVC.h; path = "Controller/Login+Signup/GANSignupChooseVC.h"; sourceTree = "<group>"; };
-		83CA211B1E57F8CE00C0D787 /* GANSignupChooseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANSignupChooseVC.m; path = "Controller/Login+Signup/GANSignupChooseVC.m"; sourceTree = "<group>"; };
-		83CA211D1E57F8DC00C0D787 /* GANSignupWorkerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANSignupWorkerVC.h; path = "Controller/Login+Signup/GANSignupWorkerVC.h"; sourceTree = "<group>"; };
-		83CA211E1E57F8DC00C0D787 /* GANSignupWorkerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANSignupWorkerVC.m; path = "Controller/Login+Signup/GANSignupWorkerVC.m"; sourceTree = "<group>"; };
-		83CA21201E57F8EC00C0D787 /* GANSignupCompanyVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANSignupCompanyVC.h; path = "Controller/Login+Signup/GANSignupCompanyVC.h"; sourceTree = "<group>"; };
-		83CA21211E57F8EC00C0D787 /* GANSignupCompanyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANSignupCompanyVC.m; path = "Controller/Login+Signup/GANSignupCompanyVC.m"; sourceTree = "<group>"; };
 		83CA21251E587D9200C0D787 /* GANUIPhoneTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANUIPhoneTextField.h; path = Library/GANUIPhoneTextField/GANUIPhoneTextField.h; sourceTree = "<group>"; };
 		83CA21261E587D9200C0D787 /* GANUIPhoneTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANUIPhoneTextField.m; path = Library/GANUIPhoneTextField/GANUIPhoneTextField.m; sourceTree = "<group>"; };
 		83CA21281E5BD3B900C0D787 /* Company.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Company.storyboard; path = View/Company.storyboard; sourceTree = "<group>"; };
@@ -317,6 +346,11 @@
 		83CB26491E6308E900C2D8C7 /* GANWorkerSettingsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANWorkerSettingsVC.m; path = Controller/Worker/Settings/GANWorkerSettingsVC.m; sourceTree = "<group>"; };
 		83CB264B1E6309CF00C2D8C7 /* GANCompanySettingsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANCompanySettingsVC.h; path = Controller/Company/Settings/GANCompanySettingsVC.h; sourceTree = "<group>"; };
 		83CB264C1E6309CF00C2D8C7 /* GANCompanySettingsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANCompanySettingsVC.m; path = Controller/Company/Settings/GANCompanySettingsVC.m; sourceTree = "<group>"; };
+		83E322901F11F8A5002DA8CB /* Login+Signup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Login+Signup.storyboard"; path = "View/Login+Signup.storyboard"; sourceTree = "<group>"; };
+		83E322961F120872002DA8CB /* GANWorkerLoginCodeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANWorkerLoginCodeVC.h; path = "Controller/Login+Signup/Worker/GANWorkerLoginCodeVC.h"; sourceTree = "<group>"; };
+		83E322971F120872002DA8CB /* GANWorkerLoginCodeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANWorkerLoginCodeVC.m; path = "Controller/Login+Signup/Worker/GANWorkerLoginCodeVC.m"; sourceTree = "<group>"; };
+		83E322991F12089A002DA8CB /* GANWorkerLoginPhoneVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANWorkerLoginPhoneVC.h; path = "Controller/Login+Signup/Worker/GANWorkerLoginPhoneVC.h"; sourceTree = "<group>"; };
+		83E3229A1F12089A002DA8CB /* GANWorkerLoginPhoneVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANWorkerLoginPhoneVC.m; path = "Controller/Login+Signup/Worker/GANWorkerLoginPhoneVC.m"; sourceTree = "<group>"; };
 		B7680D2DDBE95C3053040625 /* libPods-Ganaz.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Ganaz.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -372,6 +406,12 @@
 				83CB26251E5F452300C2D8C7 /* GANWorkerJobsListFilterVC.m */,
 				83CB26371E6129EB00C2D8C7 /* GANWorkerJobDetailsVC.h */,
 				83CB26381E6129EB00C2D8C7 /* GANWorkerJobDetailsVC.m */,
+				836DBC351F1AD17500CCD6AA /* GANWorkerJobApplyVC.h */,
+				836DBC361F1AD17500CCD6AA /* GANWorkerJobApplyVC.m */,
+				836DBC381F1AD1C100CCD6AA /* GANWorkerJobApplyCompletedVC.h */,
+				836DBC391F1AD1C100CCD6AA /* GANWorkerJobApplyCompletedVC.m */,
+				836DBC3B1F1AD1D900CCD6AA /* GANWorkerJobSuggestFriendVC.h */,
+				836DBC3C1F1AD1D900CCD6AA /* GANWorkerJobSuggestFriendVC.m */,
 			);
 			name = Jobs;
 			sourceTree = "<group>";
@@ -501,6 +541,35 @@
 			name = AppUpdatesPopup;
 			sourceTree = "<group>";
 		};
+		836DBC2F1F1ACC6000CCD6AA /* WorkerSuggestFriendItemTVC */ = {
+			isa = PBXGroup;
+			children = (
+				836DBC301F1ACC9700CCD6AA /* WorkerSuggestFriendItemTVC.xib */,
+				836DBC321F1ACCB500CCD6AA /* GANWorkerSuggestFriendItemTVC.h */,
+				836DBC331F1ACCB500CCD6AA /* GANWorkerSuggestFriendItemTVC.m */,
+			);
+			name = WorkerSuggestFriendItemTVC;
+			sourceTree = "<group>";
+		};
+		836DBC3E1F1BF6E600CCD6AA /* PhonebookContacts */ = {
+			isa = PBXGroup;
+			children = (
+				836DBC3F1F1BF6EE00CCD6AA /* Data Model */,
+				836DBC431F1BF73300CCD6AA /* GANPhonebookContactsManager.h */,
+				836DBC441F1BF73300CCD6AA /* GANPhonebookContactsManager.m */,
+			);
+			name = PhonebookContacts;
+			sourceTree = "<group>";
+		};
+		836DBC3F1F1BF6EE00CCD6AA /* Data Model */ = {
+			isa = PBXGroup;
+			children = (
+				836DBC401F1BF71700CCD6AA /* GANPhonebookContactDataModel.h */,
+				836DBC411F1BF71700CCD6AA /* GANPhonebookContactDataModel.m */,
+			);
+			name = "Data Model";
+			sourceTree = "<group>";
+		};
 		837E63DC1EF3099E001EFBE1 /* WorkerBenefitItemCVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -595,6 +664,7 @@
 		838AAC341E578C12006CC33D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				836DBC3E1F1BF6E600CCD6AA /* PhonebookContacts */,
 				830F9DCD1EDAFE770073232B /* Cache */,
 				83A9B4EB1ED452C300BFA49D /* Company */,
 				834B17F21ED3CDD500732769 /* Membership Plan */,
@@ -618,7 +688,8 @@
 				838AAC241E578A9F006CC33D /* Main.storyboard */,
 				838AAC271E578A9F006CC33D /* Assets.xcassets */,
 				838AAC291E578A9F006CC33D /* LaunchScreen.storyboard */,
-				838AAC371E578CF4006CC33D /* Login.storyboard */,
+				83E322901F11F8A5002DA8CB /* Login+Signup.storyboard */,
+				838AAC371E578CF4006CC33D /* Login-Old.storyboard */,
 				83CA21281E5BD3B900C0D787 /* Company.storyboard */,
 				83081B051E5E38F6004E8E14 /* Worker.storyboard */,
 				837B86D41F0D589900FCF260 /* Localizable.strings */,
@@ -682,18 +753,27 @@
 		838AAC4E1E57A274006CC33D /* Login+Signup */ = {
 			isa = PBXGroup;
 			children = (
-				838AAC4F1E57A291006CC33D /* GANLoginVC.h */,
-				838AAC501E57A291006CC33D /* GANLoginVC.m */,
-				83CA211A1E57F8CE00C0D787 /* GANSignupChooseVC.h */,
-				83CA211B1E57F8CE00C0D787 /* GANSignupChooseVC.m */,
-				83CA211D1E57F8DC00C0D787 /* GANSignupWorkerVC.h */,
-				83CA211E1E57F8DC00C0D787 /* GANSignupWorkerVC.m */,
-				83CA21201E57F8EC00C0D787 /* GANSignupCompanyVC.h */,
-				83CA21211E57F8EC00C0D787 /* GANSignupCompanyVC.m */,
+				838D9E2E1F13F1F400551FF2 /* Company */,
+				83E322921F1207FC002DA8CB /* Worker */,
 				83422BC41EE01AF400A8F140 /* GANLoginTosVC.h */,
 				83422BC51EE01AF400A8F140 /* GANLoginTosVC.m */,
+				836DBC291F184E3500CCD6AA /* GANLoginResetPasswordVC.h */,
+				836DBC2A1F184E3500CCD6AA /* GANLoginResetPasswordVC.m */,
 			);
 			name = "Login+Signup";
+			sourceTree = "<group>";
+		};
+		838D9E2E1F13F1F400551FF2 /* Company */ = {
+			isa = PBXGroup;
+			children = (
+				838D9E2F1F13FA7500551FF2 /* GANCompanyLoginPhoneVC.h */,
+				838D9E301F13FA7500551FF2 /* GANCompanyLoginPhoneVC.m */,
+				838D9E321F1400C800551FF2 /* GANCompanyLoginCodeVC.h */,
+				838D9E331F1400C800551FF2 /* GANCompanyLoginCodeVC.m */,
+				838D9E351F14087300551FF2 /* GANCompanySignupVC.h */,
+				838D9E361F14087300551FF2 /* GANCompanySignupVC.m */,
+			);
+			name = Company;
 			sourceTree = "<group>";
 		};
 		839DB51A1ED6756B00E2652A /* Custom View */ = {
@@ -767,6 +847,8 @@
 				83AC854A1E70ACD9005B9422 /* GANUserWorkerDataModel.m */,
 				83AC854F1E70B707005B9422 /* GANUserCompanyDataModel.h */,
 				83AC85501E70B707005B9422 /* GANUserCompanyDataModel.m */,
+				836DBC2C1F1866FD00CCD6AA /* GANUserMinimumInfoDataModel.h */,
+				836DBC2D1F1866FD00CCD6AA /* GANUserMinimumInfoDataModel.m */,
 			);
 			name = "Data Model";
 			sourceTree = "<group>";
@@ -799,6 +881,8 @@
 				83CA21151E57F1B000C0D787 /* GANGlobalVCManager.m */,
 				834F01E21E83C90B00D58989 /* GANMainLoadingVC.h */,
 				834F01E31E83C90B00D58989 /* GANMainLoadingVC.m */,
+				838D9E2B1F13162A00551FF2 /* GANMainChooseVC.h */,
+				838D9E2C1F13162A00551FF2 /* GANMainChooseVC.m */,
 				83422BC71EE02C1600A8F140 /* GANMainToSVC.h */,
 				83422BC81EE02C1600A8F140 /* GANMainToSVC.m */,
 			);
@@ -826,6 +910,7 @@
 		83CA212A1E5BE42900C0D787 /* TableViewCell */ = {
 			isa = PBXGroup;
 			children = (
+				836DBC2F1F1ACC6000CCD6AA /* WorkerSuggestFriendItemTVC */,
 				837E63DC1EF3099E001EFBE1 /* WorkerBenefitItemCVC */,
 				834A87C81EE108EC00EB6E51 /* CompanyUserItemTVC */,
 				83CB263A1E623F8E00C2D8C7 /* WorkerCompanyReviewItemTVC */,
@@ -980,6 +1065,17 @@
 			name = Settings;
 			sourceTree = "<group>";
 		};
+		83E322921F1207FC002DA8CB /* Worker */ = {
+			isa = PBXGroup;
+			children = (
+				83E322991F12089A002DA8CB /* GANWorkerLoginPhoneVC.h */,
+				83E3229A1F12089A002DA8CB /* GANWorkerLoginPhoneVC.m */,
+				83E322961F120872002DA8CB /* GANWorkerLoginCodeVC.h */,
+				83E322971F120872002DA8CB /* GANWorkerLoginCodeVC.m */,
+			);
+			name = Worker;
+			sourceTree = "<group>";
+		};
 		B9D3D046854AEDB2836956D3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1010,6 +1106,7 @@
 				838AAC161E578A9E006CC33D /* Resources */,
 				85D0510D8F1575ABE8C55BA4 /* [CP] Embed Pods Frameworks */,
 				EA2E879C48CD5B12D3E370C3 /* [CP] Copy Pods Resources */,
+				83722DAF1F237DD9004819EF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1068,16 +1165,18 @@
 			files = (
 				83CA212C1E5BE46700C0D787 /* JobItemTVC.xib in Resources */,
 				834A87CA1EE1091F00EB6E51 /* CompanyUserItemTVC.xib in Resources */,
+				836DBC311F1ACC9700CCD6AA /* WorkerSuggestFriendItemTVC.xib in Resources */,
 				83CA21291E5BD3B900C0D787 /* Company.storyboard in Resources */,
 				83AB0F501EFBA5DA00A09E1F /* TermsAndPolicies.pdf in Resources */,
 				838AAC4B1E579AA1006CC33D /* SFUIDisplay-Ultralight.otf in Resources */,
 				83081AF51E5DC656004E8E14 /* MessageItemTVC.xib in Resources */,
 				838AAC4A1E579AA1006CC33D /* SFUIDisplay-Thin.otf in Resources */,
 				83AB0F6B1F0083FD00A09E1F /* style.css in Resources */,
+				83E322911F11F8A5002DA8CB /* Login+Signup.storyboard in Resources */,
 				83081B0E1E5F1186004E8E14 /* WorkerJobListItemTVC.xib in Resources */,
 				834A87F31EE2109E00EB6E51 /* BenefitInfoPopup.xib in Resources */,
 				838AAC481E579AA1006CC33D /* SFUIDisplay-Regular.otf in Resources */,
-				838AAC381E578CF4006CC33D /* Login.storyboard in Resources */,
+				838AAC381E578CF4006CC33D /* Login-Old.storyboard in Resources */,
 				838AAC431E579AA1006CC33D /* SFUIDisplay-Black.otf in Resources */,
 				837B86D21F0D589900FCF260 /* Localizable.strings in Resources */,
 				837E63DE1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib in Resources */,
@@ -1120,6 +1219,19 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		83722DAF1F237DD9004819EF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 91f762a4727e048f50996f4c32bf0c57abf7af18 c23862ab79387826f7d2bffa16064c785fecef45e83416b4ba7785436cd8a91b";
+		};
 		85D0510D8F1575ABE8C55BA4 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1158,6 +1270,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				834F01E11E83BECD00D58989 /* GANWorkerUpdateLocaionVC.m in Sources */,
+				836DBC2B1F184E3500CCD6AA /* GANLoginResetPasswordVC.m in Sources */,
+				836DBC3D1F1AD1D900CCD6AA /* GANWorkerJobSuggestFriendVC.m in Sources */,
 				83CA213E1E5CA3D300C0D787 /* GANWorkingSiteItemTVC.m in Sources */,
 				839DB5271ED679E400E2652A /* GANFadeTransitionDelegate.m in Sources */,
 				83CA210C1E57EF7800C0D787 /* GANAppManager.m in Sources */,
@@ -1180,14 +1294,19 @@
 				834F01D31E82AA8C00D58989 /* GANReviewDataModel.m in Sources */,
 				834A87D81EE2013A00EB6E51 /* GANDataManager.m in Sources */,
 				83AC85511E70B707005B9422 /* GANUserCompanyDataModel.m in Sources */,
+				836DBC421F1BF71700CCD6AA /* GANPhonebookContactDataModel.m in Sources */,
 				83CA21121E57F05800C0D787 /* GANErrorManager.m in Sources */,
 				83CA21411E5CA60F00C0D787 /* GANJobsDetailsVC.m in Sources */,
 				83081B041E5E31A8004E8E14 /* GANCompanyAddWorkerVC.m in Sources */,
+				836DBC451F1BF73300CCD6AA /* GANPhonebookContactsManager.m in Sources */,
 				83CA21161E57F1B000C0D787 /* GANGlobalVCManager.m in Sources */,
+				838D9E371F14087300551FF2 /* GANCompanySignupVC.m in Sources */,
 				83AC854E1E70AF0F005B9422 /* GANUtils.m in Sources */,
 				83AC85481E709955005B9422 /* GANUserBaseDataModel.m in Sources */,
 				83CB26461E63052300C2D8C7 /* GANWorkerMessagesVC.m in Sources */,
+				83E3229B1F12089A002DA8CB /* GANWorkerLoginPhoneVC.m in Sources */,
 				83CA21301E5BE48600C0D787 /* GANJobItemTVC.m in Sources */,
+				836DBC371F1AD17500CCD6AA /* GANWorkerJobApplyVC.m in Sources */,
 				834F01E41E83C90B00D58989 /* GANMainLoadingVC.m in Sources */,
 				83AC854B1E70ACD9005B9422 /* GANUserWorkerDataModel.m in Sources */,
 				834A87E81EE2030D00EB6E51 /* GANBenefitDataModel.m in Sources */,
@@ -1198,16 +1317,20 @@
 				83CA21271E587D9200C0D787 /* GANUIPhoneTextField.m in Sources */,
 				839DB5241ED679D100E2652A /* GANAnimatedTransitioning.m in Sources */,
 				834B17F51ED3CE1D00732769 /* GANMembershipPlanManager.m in Sources */,
+				836DBC3A1F1AD1C100CCD6AA /* GANWorkerJobApplyCompletedVC.m in Sources */,
 				834A87E21EE2023100EB6E51 /* GANAddressDataModel.m in Sources */,
 				834F01DB1E83403400D58989 /* GANRecruitManager.m in Sources */,
 				83AC855C1E71D447005B9422 /* GANJobManager.m in Sources */,
 				834A87DF1EE201B600EB6E51 /* GANLocationDataModel.m in Sources */,
+				838D9E341F1400C800551FF2 /* GANCompanyLoginCodeVC.m in Sources */,
 				837E63E11EF309F9001EFBE1 /* GANWorkerBenefitItemCVC.m in Sources */,
+				83E322981F120872002DA8CB /* GANWorkerLoginCodeVC.m in Sources */,
 				83081AFE1E5DCDB0004E8E14 /* GANCompanyMessageChooseWorkersVC.m in Sources */,
 				83CB26301E611CED00C2D8C7 /* GANWorkerCompanyDetailsVC.m in Sources */,
 				83CA21441E5CA62C00C0D787 /* GANJobsWorkingsitesVC.m in Sources */,
 				83422BC91EE02C1600A8F140 /* GANMainToSVC.m in Sources */,
 				83CA21471E5CA64100C0D787 /* GANJobsWorkingsitesDetailsVC.m in Sources */,
+				836DBC341F1ACCB500CCD6AA /* GANWorkerSuggestFriendItemTVC.m in Sources */,
 				838AAC201E578A9E006CC33D /* AppDelegate.m in Sources */,
 				834F01DE1E8340A300D58989 /* GANRecruitDataModel.m in Sources */,
 				830F9DD01EDAFE960073232B /* GANCacheManager.m in Sources */,
@@ -1215,12 +1338,11 @@
 				83081AFB1E5DC9A5004E8E14 /* GANMessageItemTVC.m in Sources */,
 				838735DE1E7A232C00CFFB15 /* GANMessageManager.m in Sources */,
 				83CA214E1E5CF59400C0D787 /* GANNetworkRequestManager.m in Sources */,
-				83CA211F1E57F8DC00C0D787 /* GANSignupWorkerVC.m in Sources */,
 				834A87D31EE10CB900EB6E51 /* GANCompanyManageRoleVC.m in Sources */,
-				83CA21221E57F8EC00C0D787 /* GANSignupCompanyVC.m in Sources */,
-				83CA211C1E57F8CE00C0D787 /* GANSignupChooseVC.m in Sources */,
+				836DBC2E1F1866FD00CCD6AA /* GANUserMinimumInfoDataModel.m in Sources */,
+				838D9E311F13FA7500551FF2 /* GANCompanyLoginPhoneVC.m in Sources */,
+				838D9E2D1F13162A00551FF2 /* GANMainChooseVC.m in Sources */,
 				836C87EF1F0A46BB00968D40 /* GANAppConfigDataModel.m in Sources */,
-				838AAC511E57A291006CC33D /* GANLoginVC.m in Sources */,
 				83081AF21E5DC58D004E8E14 /* GANCompanyMessagesVC.m in Sources */,
 				83CA214A1E5CF41A00C0D787 /* GANLocationManager.m in Sources */,
 				83CB264D1E6309CF00C2D8C7 /* GANCompanySettingsVC.m in Sources */,

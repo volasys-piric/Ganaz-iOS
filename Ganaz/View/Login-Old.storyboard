@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="YOU-Fo-t0T">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="YOU-Fo-t0T">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -65,10 +65,10 @@
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZMo-GU-Qov" userLabel="View - Bottom Panel">
-                                        <rect key="frame" x="-1" y="601" width="376" height="66"/>
+                                        <rect key="frame" x="-0.5" y="601" width="375" height="66"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EAj-gc-l3w" userLabel="Label - Separator">
-                                                <rect key="frame" x="0.0" y="0.0" width="376" height="2"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="2"/>
                                                 <color key="backgroundColor" white="1" alpha="0.050000000000000003" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="2" id="4t2-gy-baY"/>
@@ -78,7 +78,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5xB-Jy-QIq" userLabel="View - Text Container">
-                                                <rect key="frame" x="98" y="24" width="181" height="18"/>
+                                                <rect key="frame" x="97.5" y="24" width="181" height="18"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Crear una cuenta / Signup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b6J-or-D7i" userLabel="Label - Signup 1">
                                                         <rect key="frame" x="0.0" y="0.0" width="181" height="18"/>
@@ -105,7 +105,7 @@
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dW5-wB-zXv" userLabel="Button - Sign Up">
-                                                <rect key="frame" x="0.0" y="0.0" width="376" height="66"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="66"/>
                                                 <connections>
                                                     <action selector="onBtnSignupClick:" destination="bdt-tQ-tp6" eventType="touchUpInside" id="NQu-y4-8UI"/>
                                                 </connections>
@@ -126,10 +126,10 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HRH-ST-GYI" userLabel="View - Middle Panel">
-                                        <rect key="frame" x="-1" y="187" width="376" height="414"/>
+                                        <rect key="frame" x="-0.5" y="187" width="375" height="414"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gTL-o2-1vL" userLabel="View - Input Panel">
-                                                <rect key="frame" x="0.0" y="57" width="375" height="260"/>
+                                                <rect key="frame" x="-0.5" y="57" width="375" height="260"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aN1-b8-akv" userLabel="View - Username Panel">
                                                         <rect key="frame" x="28" y="0.0" width="319" height="50"/>
@@ -530,7 +530,7 @@
         <!--Login TosVC-->
         <scene sceneID="3YQ-re-yAv">
             <objects>
-                <viewController storyboardIdentifier="STORYBOARD_LOGIN_TOS" useStoryboardIdentifierAsRestorationIdentifier="YES" id="NIu-H9-lmB" customClass="GANLoginTosVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="STORYBOARD_LOGIN_TOSOLD" useStoryboardIdentifierAsRestorationIdentifier="YES" id="NIu-H9-lmB" customClass="GANLoginTosVC" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="93f-qU-iKM"/>
                         <viewControllerLayoutGuide type="bottom" id="Umy-BS-eQm"/>
@@ -659,7 +659,7 @@
                                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1YX-WQ-GWo" userLabel="View - Container View">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="895"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="894"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Vd-gg-cDM" userLabel="Label - Text 1">
                                                         <rect key="frame" x="20" y="40" width="335" height="168"/>
@@ -781,16 +781,16 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sxX-j9-r1U" userLabel="View - ToS">
-                                                        <rect key="frame" x="20" y="668" width="335" height="43"/>
+                                                        <rect key="frame" x="20" y="668" width="335" height="42"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By tapping “Crear Nueva Cuenta” you are agreeing to our Terms and Policies" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="KIx-gI-oTW">
-                                                                <rect key="frame" x="33" y="5" width="268" height="34"/>
+                                                                <rect key="frame" x="33" y="5" width="268" height="33"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="14"/>
                                                                 <color key="textColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CR6-1r-gyj" userLabel="Button - ToS">
-                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="43"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="42"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                                 <state key="normal">
                                                                     <color key="titleColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
@@ -813,7 +813,7 @@
                                                         </constraints>
                                                     </view>
                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jbh-tD-JbT" userLabel="Button - Sign Up">
-                                                        <rect key="frame" x="20" y="741" width="335" height="60"/>
+                                                        <rect key="frame" x="20" y="740" width="335" height="60"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="60" id="b9f-QO-zwx"/>
                                                         </constraints>
@@ -826,7 +826,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4L6-Q4-E3y" userLabel="Button - Login">
-                                                        <rect key="frame" x="20" y="815" width="335" height="60"/>
+                                                        <rect key="frame" x="20" y="814" width="335" height="60"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="60" id="Amn-dh-yfT"/>
                                                         </constraints>

@@ -25,6 +25,7 @@
     self.szCity = @"";
     self.szState = @"";
     self.szCountry = @"United States";
+    self.szZipcode = @"";
 }
 
 - (void) setWithDictionary:(NSDictionary *)dict{
@@ -34,6 +35,7 @@
     self.szCity = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"city"]];
     self.szState = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"state"]];
     self.szCountry = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"country"]];
+    self.szZipcode = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"zipcode"]];
 }
 
 - (NSDictionary *) serializeToDictionary{
@@ -42,6 +44,7 @@
              @"city": self.szCity,
              @"state": self.szState,
              @"country": self.szCountry,
+             @"zipcode": self.szZipcode,
              };
 }
 

@@ -16,5 +16,7 @@ target 'Ganaz' do
   pod 'GoogleMaps'
   pod 'HCSStarRatingView'
   pod 'Mixpanel'
+  pod 'Fabric'
+  pod 'Crashlytics'
   
 end
