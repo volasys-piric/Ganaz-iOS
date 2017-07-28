@@ -17,12 +17,17 @@
 + (UIViewController *)getTopMostViewController;
 + (void) showAlertWithMessage: (NSString *) szMessage;
 + (void) showAlertWithTitle: (NSString *) szTitle Message: (NSString *) szMessage;
++ (void) showAlertControllerWithVC: (UIViewController *) vc Title:(NSString *)title Message:(NSString *)message Callback: (void (^)()) callback;
 + (void) promptWithVC: (UIViewController *) vc Title: (NSString *) title Message: (NSString *) message ButtonYes: (NSString *) buttonYes ButtonNo: (NSString *) buttonNo CallbackYes: (void (^)()) callbackYes CallbackNo: (void (^)()) callbackNo;
+
+#pragma mark - Animations
+
++ (void) shakeView: (UIView *) view;
++ (void) shakeView: (UIView *) view InScrollView: (UIScrollView *) scrollView;
 
 #pragma mark - Redirect to certain VC
 
-- (void) gotoLoginVC;
-+ (void) logoutToLoginVC: (UIViewController *) vcCurrent;
++ (void) logoutToWorkerLoginVC: (UIViewController *) vcCurrent;
 
 #pragma mark - Badge
 

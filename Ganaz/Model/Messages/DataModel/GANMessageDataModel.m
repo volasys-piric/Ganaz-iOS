@@ -24,86 +24,103 @@
 - (void) initialize{
     self.szId = @"";
     self.szJobId = @"";
-    self.szSenderUserId = @"";
-    self.szMessage = @"";
-    self.szMessageTranslated = @"";
-    self.arrReceiverUserIds = [[NSMutableArray alloc] init];
     self.enumType = GANENUM_MESSAGE_TYPE_MESSAGE;
+    self.enumStatus = GANENUM_MESSAGE_STATUS_READ;
+    
+    self.szSenderUserId = @"";
+    self.szSenderCompanyId = @"";
+    self.szReceiverUserId = @"";
+    self.szReceiverCompanyId = @"";
+    
+    self.modelContents = [[GANTransContentsDataModel alloc] init];
     self.isAutoTranslate = NO;
     self.dateSent = nil;
+    self.dictMetadata = nil;
 }
 
 - (void) setWithDictionary:(NSDictionary *)dict{
     self.szId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"_id"]];
     self.szJobId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"job_id"]];
-    self.szSenderUserId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"sender_user_id"]];
-    self.szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"message"]];
-    self.szMessageTranslated = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"message_translated"]];
-    if (self.szMessageTranslated.length == 0) self.szMessageTranslated = self.szMessage;
-    
     self.enumType = [GANUtils getMessageTypeFromString:[GANGenericFunctionManager refineNSString:[dict objectForKey:@"type"]]];
-    self.isAutoTranslate = [GANGenericFunctionManager refineBool:[dict objectForKey:@"auto_translate"] DefaultValue:NO];
-    self.dateSent = [GANGenericFunctionManager getDateTimeFromNormalizedString:[dict objectForKey:@"datetime"]];
+    self.enumStatus = [GANUtils getMessageStatusFromString:[GANGenericFunctionManager refineNSString:[dict objectForKey:@"status"]]];
     
-    [self.arrReceiverUserIds removeAllObjects];
-    NSArray *arrReceivers = [dict objectForKey:@"receivers"];
-    for (int i = 0; i < (int) [arrReceivers count]; i++){
-        [self.arrReceiverUserIds addObject:[GANGenericFunctionManager refineNSString:[arrReceivers objectAtIndex:i]]];
-    }
+    NSDictionary *dictSender = [dict objectForKey:@"sender"];
+    NSDictionary *dictReceiver = [dict objectForKey:@"receiver"];
+    self.szSenderUserId = [GANGenericFunctionManager refineNSString:[dictSender objectForKey:@"user_id"]];
+    self.szSenderCompanyId = [GANGenericFunctionManager refineNSString:[dictSender objectForKey:@"company_id"]];
+    self.szReceiverUserId = [GANGenericFunctionManager refineNSString:[dictReceiver objectForKey:@"user_id"]];
+    self.szReceiverCompanyId = [GANGenericFunctionManager refineNSString:[dictReceiver objectForKey:@"company_id"]];
+    
+    NSDictionary *dictContents = [dict objectForKey:@"message"];
+    [self.modelContents setWithDictionary:dictContents];
+    
+    self.isAutoTranslate = [GANGenericFunctionManager refineBool:[dict objectForKey:@"auto_translate"] DefaultValue:NO];
+    self.dictMetadata = [dict objectForKey:@"metadata"];
+    self.dateSent = [GANGenericFunctionManager getDateTimeFromNormalizedString:[dict objectForKey:@"datetime"]];
 }
 
 - (NSDictionary *) serializeToDictionary{
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:self.szJobId forKey:@"job_id"];
     [dict setObject:[GANUtils getStringFromMessageType:self.enumType] forKey:@"type"];
-    [dict setObject:self.szMessage forKey:@"message"];
-    [dict setObject:self.szMessageTranslated forKey:@"message_translated"];
+    [dict setObject:[GANUtils getStringFromMessageStatus:self.enumStatus] forKey:@"status"];
+    
+    [dict setObject:@{@"user_id": self.szSenderUserId,
+                      @"company_id": self.szSenderCompanyId}
+             forKey:@"sender"];
+    [dict setObject:@{@"user_id": self.szReceiverUserId,
+                      @"company_id": self.szReceiverCompanyId}
+             forKey:@"receiver"];
+    
+    [dict setObject:[self.modelContents serializeToDictionary] forKey:@"message"];
     [dict setObject:(self.isAutoTranslate == YES) ? @"true": @"false" forKey:@"auto_translate"];
-    [dict setObject:self.arrReceiverUserIds forKey:@"receivers"];    
+    if (self.dictMetadata != nil){
+        [dict setObject:self.dictMetadata forKey:@"metadata"];
+    }
     return dict;
 }
 
 - (BOOL) amISender{
     NSString *szUserId = [GANUserManager sharedInstance].modelUser.szId;
-    return ([self.szSenderUserId isEqualToString:szUserId] == YES);
-}
-
-- (BOOL) amIReceiver{
-    NSString *szUserId = [GANUserManager sharedInstance].modelUser.szId;
-    for (int i = 0; i < (int) [self.arrReceiverUserIds count]; i++){
-        NSString *sz = [self.arrReceiverUserIds objectAtIndex:i];
-        if ([szUserId isEqualToString:sz] == YES) return YES;
+    NSString *szCompanyId = @"";
+    if ([[GANUserManager sharedInstance] isCompanyUser]){
+        szCompanyId = [GANUserManager getCompanyDataModel].szId;
+        return ([self.szSenderCompanyId isEqualToString:szCompanyId] == YES);
+    }
+    else{
+        return ([self.szSenderUserId isEqualToString:szUserId] == YES);
     }
     return NO;
 }
 
-- (NSString *) getTranslatedMessage{
-    if (self.isAutoTranslate == NO) return self.szMessage;
-    if (self.szMessageTranslated.length == 0) return self.szMessage;
-    return self.szMessageTranslated;
-    /*
-    if (self.enumTranslateStatus == GANENUM_CONTENTS_TRANSLATE_REQUEST_STATUS_FINISHED) return self.szMessageTranslated;
-    if (self.enumTranslateStatus == GANENUM_CONTENTS_TRANSLATE_REQUEST_STATUS_REQUESTED) return self.szMessage;
-    
-    self.enumTranslateStatus = GANENUM_CONTENTS_TRANSLATE_REQUEST_STATUS_REQUESTED;
-    
-    __weak typeof(self) wSelf = self;
-    [GANUtils requestTranslate:self.szMessage Callback:^(int status, NSString *translatedText) {
-        __strong typeof(wSelf) sSelf = wSelf;
-        if (status == SUCCESS_WITH_NO_ERROR){
-            sSelf.enumTranslateStatus = GANENUM_CONTENTS_TRANSLATE_REQUEST_STATUS_FINISHED;
-            sSelf.szMessageTranslated = translatedText;
-            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_CONTENTS_TRANSLATED object:nil];
-        }
-        else {
-            if (sSelf.enumTranslateStatus != GANENUM_CONTENTS_TRANSLATE_REQUEST_STATUS_FINISHED){
-                sSelf.enumTranslateStatus = GANENUM_CONTENTS_TRANSLATE_REQUEST_STATUS_NONE;
-            }
-        }
-    }];
-    
-    return self.szMessage;
-     */
+- (BOOL) amIReceiver{
+    NSString *szUserId = [GANUserManager sharedInstance].modelUser.szId;
+    NSString *szCompanyId = @"";
+    if ([[GANUserManager sharedInstance] isCompanyUser]){
+        szCompanyId = [GANUserManager getCompanyDataModel].szId;
+        return ([self.szReceiverCompanyId isEqualToString:szCompanyId] == YES);
+    }
+    else{
+        return ([self.szReceiverUserId isEqualToString:szUserId] == YES);
+    }
+    return NO;
+}
+
+- (NSString *) getContentsEN{
+    return [self.modelContents getTextEN];
+}
+
+- (NSString *) getContentsES{
+    return [self.modelContents getTextES];
+}
+
+- (NSString *) getPhoneNumberForSuggestFriend{
+    if (self.dictMetadata == nil) return @"";
+    if (self.enumType != GANENUM_MESSAGE_TYPE_SUGGEST) return @"";
+    NSString *sz = [GANGenericFunctionManager refineNSString:[self.dictMetadata objectForKey:@"suggested_phone_number"]];
+    if (sz.length == 0) return @"";
+    sz = [GANGenericFunctionManager stripNonnumericsFromNSString:sz];
+    return [GANGenericFunctionManager beautifyPhoneNumber:sz CountryCode:@"1"];
 }
 
 @end

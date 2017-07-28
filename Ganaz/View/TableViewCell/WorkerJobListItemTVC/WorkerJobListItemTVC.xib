@@ -13,6 +13,9 @@
         <array key="SFUIDisplay-Medium.otf">
             <string>SFUIDisplay-Medium</string>
         </array>
+        <array key="SFUIDisplay-Semibold.otf">
+            <string>SFUIDisplay-Semibold</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -27,6 +30,10 @@
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rf2-Xq-FfN" userLabel="View - Container View">
                         <rect key="frame" x="0.0" y="3" width="375" height="70"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0gt-EL-WS7">
+                                <rect key="frame" x="282" y="0.0" width="93" height="70"/>
+                                <color key="backgroundColor" red="0.40000000000000002" green="0.70588235290000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PQP-hs-orV" userLabel="Label - Separator">
                                 <rect key="frame" x="281" y="0.0" width="1" height="70"/>
                                 <color key="backgroundColor" red="0.87450980389999999" green="0.87450980389999999" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -38,7 +45,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Job Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6sj-qO-u8q" userLabel="Label - Title">
-                                <rect key="frame" x="15" y="15" width="252" height="21"/>
+                                <rect key="frame" x="15" y="14" width="252" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="VFX-Ze-SfX"/>
                                 </constraints>
@@ -47,7 +54,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Company Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tIp-Bk-Zqd" userLabel="Label - Company">
-                                <rect key="frame" x="15" y="39" width="252" height="16"/>
+                                <rect key="frame" x="15" y="40" width="252" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="RwP-QQ-Gt7"/>
                                 </constraints>
@@ -55,30 +62,43 @@
                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.5mi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="a0n-Qc-9my" userLabel="Label - Distance">
-                                <rect key="frame" x="293" y="23" width="74" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$12.05 / hr" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="a0n-Qc-9my" userLabel="Label - Price">
+                                <rect key="frame" x="290" y="12.5" width="77" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="w99-ry-IZq"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="16"/>
-                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ver más" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="pxb-64-iv2">
+                                <rect key="frame" x="290" y="39.5" width="77" height="18"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Semibold" family="SF UI Display" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="pxb-64-iv2" firstAttribute="centerY" secondItem="tIp-Bk-Zqd" secondAttribute="centerY" id="4Zc-3y-gnx"/>
                             <constraint firstAttribute="trailing" secondItem="a0n-Qc-9my" secondAttribute="trailing" constant="8" id="6eN-P1-z8J"/>
+                            <constraint firstItem="0gt-EL-WS7" firstAttribute="height" secondItem="Rf2-Xq-FfN" secondAttribute="height" id="ExJ-Hq-DAb"/>
+                            <constraint firstAttribute="trailing" secondItem="0gt-EL-WS7" secondAttribute="trailing" id="GLF-nE-qfJ"/>
                             <constraint firstItem="PQP-hs-orV" firstAttribute="centerX" secondItem="Rf2-Xq-FfN" secondAttribute="centerX" multiplier="1.5" id="HVj-h1-QgF"/>
                             <constraint firstItem="PQP-hs-orV" firstAttribute="centerY" secondItem="Rf2-Xq-FfN" secondAttribute="centerY" id="Q4A-xr-4Om"/>
                             <constraint firstItem="PQP-hs-orV" firstAttribute="height" secondItem="Rf2-Xq-FfN" secondAttribute="height" id="VBG-Gv-Gkp"/>
                             <constraint firstItem="6sj-qO-u8q" firstAttribute="leading" secondItem="Rf2-Xq-FfN" secondAttribute="leading" constant="15" id="WlS-oh-wOJ"/>
+                            <constraint firstItem="a0n-Qc-9my" firstAttribute="centerY" secondItem="6sj-qO-u8q" secondAttribute="centerY" id="XcD-aK-e1H"/>
                             <constraint firstItem="tIp-Bk-Zqd" firstAttribute="width" secondItem="6sj-qO-u8q" secondAttribute="width" id="YR9-yx-HTZ"/>
-                            <constraint firstItem="6sj-qO-u8q" firstAttribute="top" secondItem="Rf2-Xq-FfN" secondAttribute="top" constant="15" id="ZEf-NS-eNq"/>
+                            <constraint firstItem="6sj-qO-u8q" firstAttribute="top" secondItem="Rf2-Xq-FfN" secondAttribute="top" constant="14" id="ZEf-NS-eNq"/>
                             <constraint firstItem="tIp-Bk-Zqd" firstAttribute="centerX" secondItem="6sj-qO-u8q" secondAttribute="centerX" id="baa-4M-JZM"/>
                             <constraint firstItem="6sj-qO-u8q" firstAttribute="trailing" secondItem="PQP-hs-orV" secondAttribute="trailing" constant="-15" id="c8i-y9-oVw"/>
-                            <constraint firstItem="a0n-Qc-9my" firstAttribute="centerY" secondItem="Rf2-Xq-FfN" secondAttribute="centerY" id="kyX-Rm-b2I"/>
-                            <constraint firstItem="tIp-Bk-Zqd" firstAttribute="top" secondItem="6sj-qO-u8q" secondAttribute="bottom" constant="3" id="mSB-gW-V7F"/>
-                            <constraint firstItem="a0n-Qc-9my" firstAttribute="leading" secondItem="PQP-hs-orV" secondAttribute="trailing" constant="11" id="vf9-Aq-6AF"/>
+                            <constraint firstItem="tIp-Bk-Zqd" firstAttribute="top" secondItem="6sj-qO-u8q" secondAttribute="bottom" constant="5" id="mSB-gW-V7F"/>
+                            <constraint firstItem="0gt-EL-WS7" firstAttribute="leading" secondItem="PQP-hs-orV" secondAttribute="trailing" id="pN5-2j-jeh"/>
+                            <constraint firstItem="0gt-EL-WS7" firstAttribute="centerY" secondItem="Rf2-Xq-FfN" secondAttribute="centerY" id="sBu-E8-chZ"/>
+                            <constraint firstItem="pxb-64-iv2" firstAttribute="centerX" secondItem="a0n-Qc-9my" secondAttribute="centerX" id="t4U-0Q-OBx"/>
+                            <constraint firstItem="a0n-Qc-9my" firstAttribute="leading" secondItem="PQP-hs-orV" secondAttribute="trailing" constant="8" id="vf9-Aq-6AF"/>
+                            <constraint firstItem="pxb-64-iv2" firstAttribute="width" secondItem="a0n-Qc-9my" secondAttribute="width" id="ySx-01-igD"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -91,7 +111,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="lblCompany" destination="tIp-Bk-Zqd" id="Ord-a7-N4W"/>
-                <outlet property="lblDistance" destination="a0n-Qc-9my" id="BQk-Lp-Kjn"/>
+                <outlet property="lblPrice" destination="a0n-Qc-9my" id="EQo-YK-OVU"/>
                 <outlet property="lblTitle" destination="6sj-qO-u8q" id="Dwy-xu-1fC"/>
                 <outlet property="viewContainer" destination="Rf2-Xq-FfN" id="ya8-5b-tr0"/>
             </connections>

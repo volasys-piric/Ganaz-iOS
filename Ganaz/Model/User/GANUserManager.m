@@ -29,6 +29,7 @@
 
 - (id) init{
     if (self = [super init]){
+        self.modelUserMinInfo = [[GANUserMinimumInfoDataModel alloc] init];
     }
     return self;
 }
@@ -37,9 +38,10 @@
     if (type == GANENUM_USER_TYPE_WORKER){
         self.modelUser = [[GANUserWorkerDataModel alloc] init];
     }
-    else if (type == GANENUM_USER_TYPE_COMPANY){
+    else if (type == GANENUM_USER_TYPE_COMPANY_REGULAR || type == GANENUM_USER_TYPE_COMPANY_ADMIN){
         self.modelUser = [[GANUserCompanyDataModel alloc] init];
     }
+    self.modelUser.enumType = type;
 }
 
 + (GANUserWorkerDataModel *) getUserWorkerDataModel{
@@ -48,6 +50,10 @@
 
 + (GANUserCompanyDataModel *) getUserCompanyDataModel{
     return (GANUserCompanyDataModel *) [GANUserManager sharedInstance].modelUser;
+}
+
++ (GANCompanyDataModel *) getCompanyDataModel{
+    return [self getUserCompanyDataModel].modelCompany;
 }
 
 - (BOOL) isUserLoggedIn{
@@ -60,26 +66,42 @@
 }
 
 - (void) saveToLocalstorage{
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    [dict setObject:self.modelUser.szUserName forKey:@"username"];
-    [dict setObject:self.modelUser.szPassword forKey:@"password"];
-    [GANLocalstorageManager saveGlobalObject:dict Key:LOCALSTORAGE_USER_LOGIN];
+    self.modelUserMinInfo.szUserName = self.modelUser.szUserName;
+    self.modelUserMinInfo.szPassword = self.modelUser.szPassword;
+    [self.modelUserMinInfo.modelPhone  initializeWithPhone:self.modelUser.modelPhone];
+    self.modelUserMinInfo.enumAuthType = self.modelUser.enumAuthType;
+    [GANLocalstorageManager saveGlobalObject:[self.modelUserMinInfo serializeToDictionary] Key:LOCALSTORAGE_USER_LOGIN];
 }
 
-- (void) loadFromLocalstorage{
+- (BOOL) loadFromLocalstorage{
+    if ([self checkLocalstorageIfLastLoginSaved] == NO) return NO;
     NSDictionary *dict = [GANLocalstorageManager loadGlobalObjectWithKey:LOCALSTORAGE_USER_LOGIN];
-    self.modelUser.szUserName = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"username"]];
-    self.modelUser.szPassword = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"password"]];
+    [self.modelUserMinInfo setWithDictionary:dict];
+    return YES;
 }
 
 - (void) removeFromLocalstorage{
     [GANLocalstorageManager saveGlobalObject:nil Key:LOCALSTORAGE_USER_LOGIN];
 }
 
+- (BOOL) checkLocalstorageIfLastLoginSaved{
+    NSDictionary *dict = [GANLocalstorageManager loadGlobalObjectWithKey:LOCALSTORAGE_USER_LOGIN];
+    if (dict == nil || ([dict isKindOfClass: [NSNull class]] == YES)) return NO;
+    
+    NSString *szAuthType = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"auth_type"]];
+    NSString *szUserName = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"username"]];
+    NSString *szPassword = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"password"]];
+    if (szAuthType.length > 0 && szUserName.length > 0 && szPassword.length > 0){
+        return YES;
+    }
+    return NO;
+}
+
 #pragma mark - Utils
 
-- (BOOL) isCompany{
-    return (self.modelUser.enumType == GANENUM_USER_TYPE_COMPANY);
+- (BOOL) isCompanyUser{
+    return ((self.modelUser.enumType == GANENUM_USER_TYPE_COMPANY_REGULAR) ||
+            (self.modelUser.enumType == GANENUM_USER_TYPE_COMPANY_ADMIN));
 }
 
 - (BOOL) isWorker{
@@ -127,7 +149,7 @@
     }];
 }
 
-- (void) requestUserLogin: (NSString *) username Password: (NSString *) password Callback: (void (^) (int status)) callback{
+- (void) requestUserLoginWithUsername: (NSString *) username Password: (NSString *) password Callback: (void (^) (int status)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForUserLogin];
     NSDictionary *params = @{@"username": username,
                             @"password": password,
@@ -148,8 +170,45 @@
             [self saveToLocalstorage];
             
             GANPushNotificationManager *managerPush = [GANPushNotificationManager sharedInstance];
-            if (managerPush.szOneSignalPlayerId.length > 0 && [self.modelUser.szPlayerId isEqualToString:managerPush.szOneSignalPlayerId] == NO){
-                self.modelUser.szPlayerId = managerPush.szOneSignalPlayerId;
+            if (managerPush.szOneSignalPlayerId.length > 0 && [self.modelUser getIndexForPlayerId:managerPush.szOneSignalPlayerId] == -1){
+                [self.modelUser addPlayerIdIfNeeded:managerPush.szOneSignalPlayerId];
+                [self requestUpdateOneSignalPlayerIdWithCallback:nil];
+            }
+            
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+    }];
+}
+
+- (void) requestUserLoginWithPhoneNumber: (NSString *) phoneNumber Password: (NSString *) password Callback: (void (^) (int status)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForUserLogin];
+    NSDictionary *params = @{@"phone_number": phoneNumber,
+                             @"password": password,
+                             @"auth_type": @"phone",
+                             };
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:NO parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        GANLOG(@"User Login Response ===> %@", responseObject);
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            NSDictionary *dictAccount = [dict objectForKey:@"account"];
+            NSString *szUserType = [GANGenericFunctionManager refineNSString: [dictAccount objectForKey:@"type"]];
+            GANENUM_USER_TYPE enumUserType = [GANUtils getUserTypeFromString:szUserType];
+            [self initializeManagerWithType:enumUserType];
+            [self.modelUser setWithDictionary:dictAccount];
+            self.modelUser.szPassword = password;
+            [self saveToLocalstorage];
+            
+            GANPushNotificationManager *managerPush = [GANPushNotificationManager sharedInstance];
+            if (managerPush.szOneSignalPlayerId.length > 0 && [self.modelUser getIndexForPlayerId:managerPush.szOneSignalPlayerId] == -1){
+                [self.modelUser addPlayerIdIfNeeded:managerPush.szOneSignalPlayerId];
                 [self requestUpdateOneSignalPlayerIdWithCallback:nil];
             }
             
@@ -166,15 +225,36 @@
 
 - (void) requestSearchUserByPhoneNumber: (NSString *) phoneNumber Type: (GANENUM_USER_TYPE) type Callback: (void (^) (int status, NSArray *array)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForUserSearch];
-    NSDictionary *params = @{@"type": [GANUtils getStringFromUserType:type],
-                            @"phone_number": phoneNumber
-                            };
-    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    if (type != GANENUM_USER_TYPE_ANY){
+        [params setObject:[GANUtils getStringFromUserType:type] forKey:@"type"];
+    }
+    [params setObject:phoneNumber forKey:@"phone_number"];
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:NO parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;
         BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
         if (success){
             NSArray *arrFound = [dict objectForKey:@"users"];
-            if (callback) callback(SUCCESS_WITH_NO_ERROR, arrFound);
+            NSMutableArray *arrAccounts = [[NSMutableArray alloc] init];
+            for (int i = 0; i < (int) [arrFound count]; i++){
+                NSDictionary *dictAccount = [arrFound objectAtIndex:i];
+                NSString *szUserType = [GANGenericFunctionManager refineNSString: [dictAccount objectForKey:@"type"]];
+                GANENUM_USER_TYPE enumUserType = [GANUtils getUserTypeFromString:szUserType];
+                
+                GANUserBaseDataModel *user;
+                
+                if (enumUserType == GANENUM_USER_TYPE_WORKER){
+                    user = [[GANUserWorkerDataModel alloc] init];
+                    [user setWithDictionary:dictAccount];
+                }
+                else {
+                    user = [[GANUserCompanyDataModel alloc] init];
+                    [user setWithDictionary:dictAccount];
+                }
+                [arrAccounts addObject:user];
+            }
+            if (callback) callback(SUCCESS_WITH_NO_ERROR, arrAccounts);
         }
         else {
             NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
@@ -239,8 +319,7 @@
 
 - (void) requestUpdateOneSignalPlayerIdWithCallback: (void (^) (int status)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForUserUpdateProfile];
-    NSDictionary *params = @{@"account": @{@"player_id": [GANPushNotificationManager sharedInstance].szOneSignalPlayerId}};
-
+    NSDictionary *params = @{@"account": @{@"player_ids": self.modelUser.arrPlayerIds}};
     
     [[GANNetworkRequestManager sharedInstance] PATCH:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;
@@ -263,7 +342,7 @@
     NSString *szPassword = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"password"]];
     
     if (szUserName.length > 0 && szPassword.length > 0){
-        [self requestUserLogin:szUserName Password:szPassword Callback:^(int status) {
+        [self requestUserLoginWithUsername:szUserName Password:szPassword Callback:^(int status) {
             if (status == SUCCESS_WITH_NO_ERROR){
                 [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_USER_SILENTLOGIN_SUCCEEDED object:nil];
             }
@@ -278,14 +357,30 @@
     }
 }
 
-- (BOOL) checkLocalstorageIfLastLoginSaved{
-    NSDictionary *dict = [GANLocalstorageManager loadGlobalObjectWithKey:LOCALSTORAGE_USER_LOGIN];
-    if (dict == nil || ([dict isKindOfClass: [NSNull class]] == YES)) return NO;
+// Reset Password
+
+- (void) requestUpdatePassword: (NSString *) password WithCallback: (void (^) (int status)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForUserUpdatePassword];
     
-    NSString *szUserName = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"username"]];
-    NSString *szPassword = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"password"]];
-    if (szUserName.length > 0 && szPassword.length > 0) return YES;
-    return NO;
+    NSDictionary *params = @{@"password": password};
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            self.modelUser.szPassword = password;
+            self.modelUser.enumAuthType = GANENUM_USER_AUTHTYPE_PHONE;
+            [self saveToLocalstorage];
+            
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+    }];
 }
 
 @end

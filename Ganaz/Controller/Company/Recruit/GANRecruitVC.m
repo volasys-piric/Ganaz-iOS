@@ -13,12 +13,13 @@
 
 #import "GANJobManager.h"
 #import "GANUserManager.h"
-#import "GANMyWorkersManager.h"
-#import "GANMyWorkerDataModel.h"
+#import "GANCacheManager.h"
+#import "GANCompanyManager.h"
 #import "GANRecruitManager.h"
 
 #import "GANGenericFunctionManager.h"
 #import "Global.h"
+#import "GANAppManager.h"
 
 @interface GANRecruitVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
@@ -34,6 +35,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *btnContinue;
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
+@property (weak, nonatomic) IBOutlet UIButton *btnAddWorker;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintPopupPanelTopSpacing;
 
@@ -97,6 +99,7 @@
     self.viewBroadcastPanel.layer.cornerRadius = 3;
     self.btnSubmit.layer.cornerRadius = 3;
     self.btnContinue.layer.cornerRadius = 3;
+    self.btnAddWorker.layer.cornerRadius = 3;
 }
 
 - (void) refreshPopupView{
@@ -117,7 +120,7 @@
 
 - (void) buildWorkerList{
     [self.arrWorkerSelected removeAllObjects];
-    int count = (int) [[GANMyWorkersManager sharedInstance].arrMyWorkers count];
+    int count = (int) [[GANCompanyManager sharedInstance].arrMyWorkers count];
     
     for (int i = 0; i < count; i++){
         [self.arrWorkerSelected addObject:@(NO)];
@@ -194,37 +197,40 @@
 - (void) doSubmitRecruit{
     GANJobManager *managerJob = [GANJobManager sharedInstance];
     GANRecruitManager *managerRecruit = [GANRecruitManager sharedInstance];
-    GANRecruitRequestDataModel *recruitRequest = [[GANRecruitRequestDataModel alloc] init];
+    NSMutableArray *arrJobIds = [[NSMutableArray alloc] init];
+    NSMutableArray *arrReRecruitUserIds = [[NSMutableArray alloc] init];
+    float fBroadcast = 0;
     
     for (int i = 0; i < (int) [self.arrJobSelected count]; i++){
         BOOL isSelected = [[self.arrJobSelected objectAtIndex:i] boolValue];
         if (isSelected == YES){
             GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:i];
-            [recruitRequest.arrJobIds addObject:job.szId];
+            [arrJobIds addObject:job.szId];
         }
     }
     
     for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
         BOOL isSelected = [[self.arrWorkerSelected objectAtIndex:i] boolValue];
         if (isSelected == YES){
-            GANMyWorkerDataModel *myWorker = [[GANMyWorkersManager sharedInstance].arrMyWorkers objectAtIndex:i];
-            [recruitRequest.arrReRecruitUserIds addObject:myWorker.szWorkerUserId];
+            GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:i];
+            [arrReRecruitUserIds addObject:myWorker.szWorkerUserId];
         }
     }
     
     NSString *sz = self.txtMiles.text;
     if (sz.length > 0){
-        recruitRequest.fBroadcast = [GANGenericFunctionManager refineFloat:sz DefaultValue:-1];
+        fBroadcast = [GANGenericFunctionManager refineFloat:sz DefaultValue:-1];
     }
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [managerRecruit requestSubmitRecruit:recruitRequest Callback:^(int status, int count) {
+    [managerRecruit requestSubmitRecruitWithJobIds:arrJobIds Broadcast:fBroadcast ReRecruitUserIds:arrReRecruitUserIds Callback:^(int status, int count) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            [GANGlobalVCManager showHudSuccessWithMessage:[NSString stringWithFormat:@"%d worker(s) received your recruitment request.", count] DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudSuccessWithMessage:[NSString stringWithFormat:@"Worker(s) are recruited."] DismissAfter:-1 Callback:nil];
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
         }
+        GANACTIVITY_REPORT(@"Company - Recruit");
     }];
 }
 
@@ -233,13 +239,14 @@
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to add-worker from Recruit");
 }
 
 #pragma mark - UITableView Delegate
 
 - (void) configureJobItemCell: (GANJobItemTVC *) cell AtIndex: (int) index{
     GANJobDataModel *job = [[GANJobManager sharedInstance].arrMyJobs objectAtIndex:index];
-    cell.lblTitle.text = job.szTitle;
+    cell.lblTitle.text = [job getTitleEN];
     cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f", job.fPayRate];
     cell.lblUnit.text = (job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"per hour" : @"per lb";
     cell.lblDate.text = [NSString stringWithFormat:@"%@ - %@", [GANGenericFunctionManager getBeautifiedDate:job.dateFrom], [GANGenericFunctionManager getBeautifiedDate:job.dateTo]];
@@ -253,8 +260,8 @@
 }
 
 - (void) configureWorkerItemCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
-    GANMyWorkerDataModel *myWorker = [[GANMyWorkersManager sharedInstance].arrMyWorkers objectAtIndex:index];
-    cell.lblWorkerId.text = myWorker.szUserName;
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:index];
+    cell.lblWorkerId.text = [myWorker.modelWorker getValidUsername];
     
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -271,7 +278,7 @@
     if (tableView == self.tableviewJobs){
         return [[GANJobManager sharedInstance].arrMyJobs count];
     }
-    return [[GANMyWorkersManager sharedInstance].arrMyWorkers count];
+    return [[GANCompanyManager sharedInstance].arrMyWorkers count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

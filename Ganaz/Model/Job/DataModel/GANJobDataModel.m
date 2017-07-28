@@ -30,22 +30,22 @@
 - (void) initialize{
     self.szId = @"";
     self.szCompanyId = @"";
-    self.szTitle = @"";
-    self.szTitleTranslated = @"";
+    self.szCompanyUserId = @"";
+    self.modelTitle = [[GANTransContentsDataModel alloc] init];
+    self.modelComments = [[GANTransContentsDataModel alloc] init];
+    self.isAutoTranslate = NO;
     self.fPayRate = 0;
     self.enumPayUnit = GANENUM_PAY_UNIT_HOUR;
     self.dateFrom = nil;
     self.dateTo = nil;
     self.nPositions = 0;
+    self.enumFieldCondition = GANENUM_FIELDCONDITION_TYPE_GOOD;
     self.isBenefitTraining = NO;
     self.isBenefitHealth = NO;
     self.isBenefitHousing = NO;
     self.isBenefitTransportation = NO;
     self.isBenefitBonus = NO;
     self.isBenefitScholarships = NO;
-    self.szComments = @"";
-    self.szCommentsTranslated = @"";
-    self.isAutoTranslate = NO;
     
     self.arrSite = [[NSMutableArray alloc] init];
 }
@@ -53,21 +53,22 @@
 - (void) initializeWithJob: (GANJobDataModel *) job{
     self.szId = job.szId;
     self.szCompanyId = job.szCompanyId;
-    self.szTitle = job.szTitle;
-    self.szTitleTranslated = job.szTitleTranslated;
+    self.szCompanyUserId = job.szCompanyUserId;
+    [self.modelTitle setWithContents:job.modelTitle];
+    [self.modelComments setWithContents:job.modelComments];
     self.fPayRate = job.fPayRate;
     self.enumPayUnit = job.enumPayUnit;
     self.dateFrom = job.dateFrom;
     self.dateTo = job.dateTo;
     self.nPositions = job.nPositions;
+    self.enumFieldCondition = job.enumFieldCondition;
+    
     self.isBenefitTraining = job.isBenefitTraining;
     self.isBenefitHealth = job.isBenefitHealth;
     self.isBenefitHousing = job.isBenefitHousing;
     self.isBenefitTransportation = job.isBenefitTransportation;
     self.isBenefitBonus = job.isBenefitBonus;
     self.isBenefitScholarships = job.isBenefitScholarships;
-    self.szComments = job.szComments;
-    self.szCommentsTranslated = job.szCommentsTranslated;
     self.isAutoTranslate = job.isAutoTranslate;
     
     for (int i = 0; i < (int) [job.arrSite count]; i++){
@@ -81,14 +82,14 @@
 - (void) setWithDictionary:(NSDictionary *)dict{
     self.szId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"_id"]];
     self.szCompanyId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"company_id"]];
-    self.szTitle = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"title"]];
-    self.szTitleTranslated = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"title_translated"]];
-    if (self.szTitleTranslated.length == 0) self.szTitleTranslated = self.szTitle;
+    self.szCompanyUserId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"company_user_id"]];
     
-    self.szComments = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"comments"]];
-    self.szCommentsTranslated = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"comments_translated"]];
-    if (self.szCommentsTranslated.length == 0) self.szCommentsTranslated = self.szComments;
-    
+    NSDictionary *dictTitle = [dict objectForKey:@"title"];
+    NSDictionary *dictComments = [dict objectForKey:@"comments"];
+    [self.modelTitle setWithDictionary:dictTitle];
+    [self.modelComments setWithDictionary:dictComments];
+    self.isAutoTranslate = [GANGenericFunctionManager refineBool:[dict objectForKey:@"auto_translate"] DefaultValue:NO];
+
     NSDictionary *dictPay = [dict objectForKey:@"pay"];
     self.fPayRate = [GANGenericFunctionManager refineFloat:[dictPay objectForKey:@"rate"] DefaultValue:0];
     self.enumPayUnit = [GANUtils getPayUnitFromString:[GANGenericFunctionManager refineNSString:[dictPay objectForKey:@"unit"]]];
@@ -98,6 +99,7 @@
     self.dateTo = [GANGenericFunctionManager getDateTimeFromNormalizedString:[dictDate objectForKey:@"to"]];
     
     self.nPositions = [GANGenericFunctionManager refineInt:[dict objectForKey:@"positions_available"] DefaultValue:0];
+    self.enumFieldCondition = [GANUtils getFieldConditionTypeFromString:[GANGenericFunctionManager refineNSString:[dict objectForKey:@"field_condition"]]];
     
     NSDictionary *dictBenefits = [dict objectForKey:@"benefits"];
     self.isBenefitTraining = [GANGenericFunctionManager refineBool:[dictBenefits objectForKey:@"training"] DefaultValue:NO];
@@ -107,7 +109,6 @@
     self.isBenefitBonus = [GANGenericFunctionManager refineBool:[dictBenefits objectForKey:@"bonus"] DefaultValue:NO];
     self.isBenefitScholarships = [GANGenericFunctionManager refineBool:[dictBenefits objectForKey:@"scholarships"] DefaultValue:NO];
     
-    self.isAutoTranslate = [GANGenericFunctionManager refineBool:[dict objectForKey:@"auto_translate"] DefaultValue:NO];
     [self.arrSite removeAllObjects];
     
     NSArray *arrLocation = [dict objectForKey:@"locations"];
@@ -127,9 +128,13 @@
         [arrSite addObject:[site serializeToDictionary]];
     }
     
-    [dict setObject:self.szTitle forKey:@"title"];
-    [dict setObject:self.szTitleTranslated forKey:@"title_translated"];
-    [dict setObject:@{@"rate": @((int) self.fPayRate),
+    [dict setObject:self.szCompanyId forKey:@"company_id"];
+    [dict setObject:self.szCompanyUserId forKey:@"company_user_id"];
+    [dict setObject:[self.modelTitle serializeToDictionary] forKey:@"title"];
+    [dict setObject:[self.modelComments serializeToDictionary] forKey:@"comments"];
+    [dict setObject:(self.isAutoTranslate == YES) ? @"true": @"false" forKey:@"auto_translate"];
+
+    [dict setObject:@{@"rate": [NSString stringWithFormat:@"%.2f", self.fPayRate],
                       @"unit": ((self.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"hr" : @"lb")
                       }
              forKey:@"pay"];
@@ -138,6 +143,7 @@
                       }
              forKey:@"dates"];
     [dict setObject:@(self.nPositions) forKey:@"positions_available"];
+    [dict setObject:[GANUtils getStringFromFieldConditionType:self.enumFieldCondition] forKey:@"field_condition"];
     [dict setObject:@{@"training": (self.isBenefitTraining == YES) ? @"true": @"false",
                       @"health_checks": (self.isBenefitHealth == YES) ? @"true": @"false",
                       @"housing": (self.isBenefitHousing == YES) ? @"true": @"false",
@@ -147,9 +153,6 @@
                       }
              forKey:@"benefits"];
     [dict setObject:arrSite forKey:@"locations"];
-    [dict setObject:self.szComments forKey:@"comments"];
-    [dict setObject:self.szCommentsTranslated forKey:@"comments_translated"];
-    [dict setObject:(self.isAutoTranslate == YES) ? @"true": @"false" forKey:@"auto_translate"];
     return dict;
 }
 
@@ -191,39 +194,21 @@
     return (self.fPayRate > 0.01);
 }
 
-- (NSString *) getTranslatedTitle{
-    if (self.isAutoTranslate == NO) return self.szTitle;
-    if (self.szTitleTranslated.length == 0) return self.szTitle;
-    return self.szTitleTranslated;
+- (NSString *) getTitleEN{
+    return [self.modelTitle getTextEN];
 }
 
-- (NSString *) getTranslatedComments{
-    if (self.isAutoTranslate == NO) return self.szComments;
-    if (self.szCommentsTranslated.length == 0) return self.szComments;
-    return self.szCommentsTranslated;
-    /*
-    if (self.enumTranslateStatus == GANENUM_CONTENTS_TRANSLATE_REQUEST_STATUS_FINISHED) return self.szCommentsTranslated;
-    if (self.enumTranslateStatus == GANENUM_CONTENTS_TRANSLATE_REQUEST_STATUS_REQUESTED) return self.szComments;
-    
-    self.enumTranslateStatus = GANENUM_CONTENTS_TRANSLATE_REQUEST_STATUS_REQUESTED;
-    
-    __weak typeof(self) wSelf = self;
-    [GANUtils requestTranslate:self.szComments Callback:^(int status, NSString *translatedText) {
-        __strong typeof(wSelf) sSelf = wSelf;
-        if (status == SUCCESS_WITH_NO_ERROR){
-            sSelf.enumTranslateStatus = GANENUM_CONTENTS_TRANSLATE_REQUEST_STATUS_FINISHED;
-            sSelf.szCommentsTranslated = translatedText;
-            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_CONTENTS_TRANSLATED object:nil];
-        }
-        else {
-            if (sSelf.enumTranslateStatus != GANENUM_CONTENTS_TRANSLATE_REQUEST_STATUS_FINISHED){
-                sSelf.enumTranslateStatus = GANENUM_CONTENTS_TRANSLATE_REQUEST_STATUS_NONE;
-            }
-        }
-    }];
-    
-    return self.szComments;
-     */
+- (NSString *) getTitleES{
+    return [self.modelTitle getTextES];
 }
+
+- (NSString *) getCommentsEN{
+    return [self.modelComments getTextEN];
+}
+
+- (NSString *) getCommentsES{
+    return [self.modelComments getTextES];
+}
+
 
 @end
