@@ -15,7 +15,7 @@
 #define GANACTIVITY_REPORT(s) [[GANAppManager sharedInstance] logActivity: (s) ] 
 
 #warning This should be removed before submission!
-#define GANENVIRONMENT_STAGING
+#define GANENVIRONMENT_DEMO
 
 // BASE URL
 
