@@ -48,19 +48,34 @@
 
 #pragma mark - Request
 
-- (void) requestSubmitRecruit: (GANRecruitRequestDataModel *) recruitRequest Callback: (void (^) (int status, int count)) callback{
+- (void) requestSubmitRecruitWithJobIds: (NSArray *) arrJobIds Broadcast: (float) fBroadcast ReRecruitUserIds: (NSArray *) arrReRecruitUserIds Callback: (void (^) (int status, int count)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForSubmitRecruit];
-    NSDictionary *params = [recruitRequest serializeToDictionary];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    
+    [params setObject:arrJobIds forKey:@"job_ids"];
+    if (fBroadcast > 0){
+        [params setObject:[NSString stringWithFormat:@"%.02f", fBroadcast] forKey:@"broadcast_radius"];
+    }
+    if ([arrReRecruitUserIds count] > 0){
+        [params setObject:arrReRecruitUserIds forKey:@"re_recruit_worker_user_ids"];
+    }
     
     [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;
         BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
         if (success){
-            NSDictionary *dictRecruit = [dict objectForKey:@"recruit"];
-            GANRecruitDataModel *recruitNew = [[GANRecruitDataModel alloc] init];
-            [recruitNew setWithDictionary:dictRecruit];
-            [self addRecruitIfNeeded:recruitNew];
-            if (callback) callback(SUCCESS_WITH_NO_ERROR, (int) [recruitNew.arrReceivedUserIds count]);
+            NSArray *arrRecruits = [dict objectForKey:@"recruits"];
+            int totalRecruits = 0;
+            if ([arrRecruits isKindOfClass:[NSArray class]] == YES){
+                for (int i = 0; i < (int) [arrRecruits count]; i++){
+                    NSDictionary *dictRecruit = [arrRecruits objectAtIndex:i];
+                    GANRecruitDataModel *recruitNew = [[GANRecruitDataModel alloc] init];
+                    [recruitNew setWithDictionary:dictRecruit];
+                    [self addRecruitIfNeeded:recruitNew];
+                    totalRecruits = totalRecruits + [recruitNew getNumberOfRecruitedUsers];
+                }
+            }
+            if (callback) callback(SUCCESS_WITH_NO_ERROR, totalRecruits);
         }
         else {
             NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];

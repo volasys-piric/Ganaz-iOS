@@ -12,7 +12,8 @@
 #define UICOLOR_JOBITEM_TITLE_NOTSELECTED                       [UIColor colorWithRed:(51 / 255.0) green:(51 / 255.0) blue:(51 / 255.0) alpha:1]
 #define UICOLOR_JOBITEM_DATE_NOTSELECTED                        [UIColor colorWithRed:(51 / 255.0) green:(51 / 255.0) blue:(51 / 255.0) alpha:0.6]
 
-#define UICOLOR_JOBITEM_BACKGROUND_SELECTED                     [UIColor colorWithRed:(100 / 255.0) green:(179 / 255.0) blue:(31 / 255.0) alpha:1]
+//#define UICOLOR_JOBITEM_BACKGROUND_SELECTED                     [UIColor colorWithRed:(100 / 255.0) green:(179 / 255.0) blue:(31 / 255.0) alpha:1]
+#define UICOLOR_JOBITEM_BACKGROUND_SELECTED                     [UIColor colorWithRed:(102 / 255.0) green:(180 / 255.0) blue:(32 / 255.0) alpha:1]
 #define UICOLOR_JOBITEM_TITLE_SELECTED                          [UIColor colorWithRed:(255 / 255.0) green:(255 / 255.0) blue:(255 / 255.0) alpha:1]
 #define UICOLOR_JOBITEM_DATE_SELECTED                           [UIColor colorWithRed:(255 / 255.0) green:(255 / 255.0) blue:(255 / 255.0) alpha:0.6]
 
@@ -38,6 +39,7 @@
 - (void) setItemSelected: (BOOL) selected{
     if (selected == YES){
         self.viewContainer.layer.backgroundColor = UICOLOR_JOBITEM_BACKGROUND_SELECTED.CGColor;
+        self.viewRightBackground.layer.backgroundColor = UICOLOR_JOBITEM_BACKGROUND_SELECTED.CGColor;
         self.lblTitle.textColor = UICOLOR_JOBITEM_TITLE_SELECTED;
         self.lblPrice.textColor = UICOLOR_JOBITEM_TITLE_SELECTED;
         self.lblDate.textColor = UICOLOR_JOBITEM_DATE_SELECTED;
@@ -46,11 +48,17 @@
     }
     else {
         self.viewContainer.layer.backgroundColor = UICOLOR_JOBITEM_BACKGROUND_NOTSELECTED.CGColor;
+        self.viewRightBackground.layer.backgroundColor = UICOLOR_JOBITEM_BACKGROUND_SELECTED.CGColor;
         self.lblTitle.textColor = UICOLOR_JOBITEM_TITLE_NOTSELECTED;
-        self.lblPrice.textColor = UICOLOR_JOBITEM_TITLE_NOTSELECTED;
         self.lblDate.textColor = UICOLOR_JOBITEM_DATE_NOTSELECTED;
+        self.lblPrice.textColor = UICOLOR_JOBITEM_TITLE_SELECTED;
+        self.lblUnit.textColor = UICOLOR_JOBITEM_DATE_SELECTED;
+        self.lblPriceNA.textColor = UICOLOR_JOBITEM_DATE_SELECTED;
+        /*
+        self.lblPrice.textColor = UICOLOR_JOBITEM_TITLE_NOTSELECTED;
         self.lblUnit.textColor = UICOLOR_JOBITEM_DATE_NOTSELECTED;
         self.lblPriceNA.textColor = UICOLOR_JOBITEM_DATE_NOTSELECTED;
+         */
     }
 }
 

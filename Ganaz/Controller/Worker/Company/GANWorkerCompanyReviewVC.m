@@ -9,11 +9,12 @@
 #import "GANWorkerCompanyReviewVC.h"
 #import "GANWorkerCompanyReviewItemTVC.h"
 #import "GANGenericFunctionManager.h"
-#import "GANMyCompaniesManager.h"
+#import "GANCacheManager.h"
 #import "GANUserManager.h"
 #import "GANReviewManager.h"
 #import "GANGlobalVCManager.h"
 #import "Global.h"
+#import "GANAppManager.h"
 
 @interface GANWorkerCompanyReviewVC () <UITableViewDelegate, UITableViewDataSource, GANWorkerCompanyReviewItemCellDelegate>
 
@@ -26,7 +27,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTableviewHeight;
 
 @property (strong, nonatomic) NSArray *arrItem;
-@property (strong, nonatomic) GANUserCompanyDataModel *company;
+@property (strong, nonatomic) GANCompanyDataModel *company;
 @property (strong, nonatomic) GANReviewDataModel *review;
 @property (assign, atomic) int indexReview;
 
@@ -65,8 +66,8 @@
 }
 
 - (void) refreshFields{
-    self.company = [[GANMyCompaniesManager sharedInstance].arrCompaniesFound objectAtIndex:self.indexMyCompany];
-    self.indexReview = [[GANReviewManager sharedInstance] getIndexForReviewByCompanyUserId:self.company.szId];
+    self.company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
+    self.indexReview = [[GANReviewManager sharedInstance] getIndexForReviewByCompanyId:self.company.szId];
     if (self.indexReview == -1){
         self.review = [[GANReviewDataModel alloc] init];
     }
@@ -76,10 +77,10 @@
     }
     
     self.arrItem = @[@{@"icon": @"icon-review-pay", @"title": @"Pago"},
-                     @{@"icon": @"icon-review-benefit", @"title": @"Prestaciones"},
+                     @{@"icon": @"icon-review-benefit", @"title": @"Beneficios"},
                      @{@"icon": @"icon-review-supervision", @"title": @"Supervisores"},
                      @{@"icon": @"icon-review-security", @"title": @"Salud y Seguridad"},
-                     @{@"icon": @"icon-review-comfort", @"title": @"Confiable"},
+                     @{@"icon": @"icon-review-handshake", @"title": @"Honestidad"},
                      ];
 }
 
@@ -107,7 +108,7 @@
     }
     if ([self checkMandatoryFields] == NO) return;
     
-    self.review.szCompanyUserId = self.company.szId;
+    self.review.szCompanyId = self.company.szId;
     self.review.szWorkerUserId = [GANUserManager getUserWorkerDataModel].szId;
     self.review.szComments = self.textviewComments.text;
     
@@ -125,6 +126,7 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
         }
     }];
+    GANACTIVITY_REPORT(@"Worker - Leave review");
 }
 
 #pragma mark - UITableView Delegate

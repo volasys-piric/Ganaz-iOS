@@ -58,16 +58,30 @@
     
     NSString *type = [GANGenericFunctionManager refineNSString:[additionalData objectForKey:@"type"]];
     GANENUM_PUSHNOTIFICATION_TYPE enumType = [GANUtils getPushNotificationTypeFromString:type];
-    if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_RECRUIT ||
-        enumType == GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE){
-        if ([[GANUserManager sharedInstance] isUserLoggedIn] == YES &&
-            [[GANUserManager sharedInstance] isWorker] == YES){
-            [[GANMessageManager sharedInstance] increaseUnreadMessageCount];
-            [GANGlobalVCManager showHudInfoWithMessage:@"New message is arrived" DismissAfter:-1 Callback:nil];
-            [GANGlobalVCManager updateMessageBadge];
-//            [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
+    if ([[GANUserManager sharedInstance] isUserLoggedIn] == NO) return;
+    
+    if ([[GANUserManager sharedInstance] isWorker] == YES){
+        if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE){
+            // New message is arrived.
+            [GANGlobalVCManager showHudInfoWithMessage:@"Nuevo mensaje llegó." DismissAfter:-1 Callback:nil];
+        }
+        else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_RECRUIT){
+            // Good news! There is a new job for you.
+            [GANGlobalVCManager showHudInfoWithMessage:@"Buenas noticias! Nuevo trabajo para ud." DismissAfter:-1 Callback:nil];
         }
     }
+    else {
+        if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE){
+            [GANGlobalVCManager showHudInfoWithMessage:@"New message is arrived." DismissAfter:-1 Callback:nil];
+        }
+        else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_APPLICATION){
+            [GANGlobalVCManager showHudInfoWithMessage:@"New job inquiry is arrived." DismissAfter:-1 Callback:nil];
+        }
+        else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_SUGGEST){
+            [GANGlobalVCManager showHudInfoWithMessage:@"New job inquiry is arrived." DismissAfter:-1 Callback:nil];
+        }
+    }
+    [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
 }
 
 - (void) didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
@@ -86,8 +100,8 @@
         if ([self.szOneSignalPlayerId isEqualToString:playerId] == NO){
             self.szOneSignalPlayerId = playerId;
             GANUserManager *managerUser = [GANUserManager sharedInstance];
-            if ([managerUser isUserLoggedIn] == YES && ([managerUser.modelUser.szPlayerId isEqualToString:self.szOneSignalPlayerId] == NO)){
-                managerUser.modelUser.szPlayerId = self.szOneSignalPlayerId;
+            if ([managerUser isUserLoggedIn] == YES && ([managerUser.modelUser getIndexForPlayerId:self.szOneSignalPlayerId] == -1)){
+                [managerUser.modelUser addPlayerIdIfNeeded:self.szOneSignalPlayerId];
                 [managerUser requestUpdateOneSignalPlayerIdWithCallback:nil];
             }
         }

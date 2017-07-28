@@ -10,6 +10,8 @@
 #import "GANJobItemTVC.h"
 #import "GANJobsDetailsVC.h"
 
+#import "GANCompanyDataModel.h"
+
 #import "GANUserManager.h"
 #import "GANJobManager.h"
 #import "GANJobDataModel.h"
@@ -17,6 +19,7 @@
 #import "GANGenericFunctionManager.h"
 #import "GANGlobalVCManager.h"
 #import "Global.h"
+#import "GANAppManager.h"
 
 @interface GANJobsListVC () <UITableViewDelegate, UITableViewDataSource>
 
@@ -65,10 +68,12 @@
 }
 
 - (void) refreshViews{
-    self.viewBadge.layer.cornerRadius = 2;
-    self.lblTitle.text = [GANUserManager getUserCompanyDataModel].szBusinessName;
+    GANCompanyDataModel *company = [GANUserManager getCompanyDataModel];
     
-    GANENUM_COMPANY_BADGE_TYPE enumType = [[GANUserManager getUserCompanyDataModel] getBadgeType];
+    self.viewBadge.layer.cornerRadius = 2;
+    self.lblTitle.text = [company getBusinessNameEN];
+    
+    GANENUM_COMPANY_BADGE_TYPE enumType = [company getBadgeType];
     if (enumType == GANENUM_COMPANY_BADGE_TYPE_NONE){
         self.viewBadge.hidden = YES;
         self.constraintTableviewTopSpacing.constant = 14;
@@ -94,6 +99,7 @@
     vc.indexJob = index;
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to job details from job list");
 }
 
 - (void) deleteJobAtIndex: (int) index{
@@ -108,6 +114,7 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:3 Callback:nil];
         }
     }];
+    GANACTIVITY_REPORT(@"Company - Delete job from job list");
 }
 
 - (void) promptForDeleteAtIndex: (int) index{
@@ -123,7 +130,7 @@
 
 - (void) configureCell: (GANJobItemTVC *) cell AtIndex: (int) index{
     GANJobDataModel *job = [[GANJobManager sharedInstance].arrMyJobs objectAtIndex:index];
-    cell.lblTitle.text = job.szTitle;
+    cell.lblTitle.text = [job getTitleEN];
     cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f", job.fPayRate];
     cell.lblUnit.text = (job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"per hour" : @"per lb";
     cell.lblDate.text = [NSString stringWithFormat:@"%@ - %@", [GANGenericFunctionManager getBeautifiedDate:job.dateFrom], [GANGenericFunctionManager getBeautifiedDate:job.dateTo]];

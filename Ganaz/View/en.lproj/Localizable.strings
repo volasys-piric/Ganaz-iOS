@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  Ganaz
+
+  Created by Chris Lin on 7/6/17.
+  Copyright © 2017 Ganaz. All rights reserved.
+*/
+
+/************ App Updates Screen **************/
+
+"A new version of Ganaz is available!\r\rPlease press update." = "A new version of Ganaz is available!\r\rPlease press update.";
+"A new version of Ganaz is available!\rPlease press update to continue using Ganaz" = "A new version of Ganaz is available!\rPlease press update to continue using Ganaz";

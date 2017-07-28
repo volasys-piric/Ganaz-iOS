@@ -11,6 +11,16 @@
 
 @implementation GANGenericFunctionManager
 
++ (NSString *) getAppVersionString{
+    NSString *szVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    return szVersion;
+}
+
++ (NSString *) getAppBuildString{
+    NSString *szVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
+    return szVersion;
+}
+
 #pragma mark -String Manipulation
 
 + (NSString *) refineNSString: (NSString *)sz{
@@ -76,6 +86,13 @@
     return szResult;
 }
 
++ (NSString *) stripNonAlphanumericsFromNSString :(NSString *) sz{
+    NSString *szResult = sz;
+    
+    szResult = [[szResult componentsSeparatedByCharactersInSet: [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789-"] invertedSet]] componentsJoinedByString:@""];
+    return szResult;
+}
+
 + (NSString *) getLongStringFromDate: (NSDate *) dt{
     if (dt == nil) return @"";
     NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
@@ -117,7 +134,7 @@
     if (szFormattedNumber.length > nMaxLength){
         szFormattedNumber = [szFormattedNumber substringToIndex:nMaxLength];
     }
-    szFormattedNumber = [NSString stringWithFormat:@"+1 %@", szFormattedNumber];
+//    szFormattedNumber = [NSString stringWithFormat:@"+1 %@", szFormattedNumber];
     return szFormattedNumber;
 }
 
@@ -376,6 +393,7 @@
 
 + (NSString *) getNormalizedStringFromDateTime:(NSDate *)dt{
     // yyyy-MM-dd HH:mm:ss zzz
+    if (dt == nil) return @"";
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss zzz"];
@@ -388,6 +406,8 @@
     // yyyy-MM-dd HH:mm:ss zzz
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
+    
     NSDate *dateFromString = [[NSDate alloc] init];
     dateFromString = [dateFormatter dateFromString:sz];
     return dateFromString;
@@ -395,6 +415,7 @@
 
 + (NSString *) getNormalizedStringFromDate:(NSDate *)dt{
     // yyyy-MM-dd
+    if (dt == nil) return @"";
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd"];
