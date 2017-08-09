@@ -8,6 +8,7 @@
 
 #import "GANCompanyMessageChooseWorkersVC.h"
 #import "GANWorkerItemTVC.h"
+#import "GANCompanyAddWorkerVC.h"
 
 #import "GANCompanyManager.h"
 #import "GANCacheManager.h"
@@ -101,7 +102,8 @@
 
 - (void) gotoAddWorkerVC{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
+    GANCompanyAddWorkerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
+    vc.fromCustomVC = ENUM_COMPANY_ADDWORKERS_FROM_MESSAGE;
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     

@@ -7,19 +7,26 @@
 //
 
 #import "GANJobsDetailsVC.h"
+#import "GANCompanySignupVC.h"
+#import "GANJobPostSuccessPopupVC.h"
+#import "GANSharePostingWithContactsVC.h"
+#import "GANJobsWorkingsitesVC.h"
+
 #import "GANUserManager.h"
 #import "GANJobManager.h"
 #import "GANJobDataModel.h"
+#import "GANCompanyManager.h"
 
 #import "GANGenericFunctionManager.h"
 #import "GANLocationManager.h"
-#import "GANJobsWorkingsitesVC.h"
-#import "GANGlobalVCManager.h"
 
+#import "GANGlobalVCManager.h"
 #import "GANUtils.h"
 #import "Global.h"
 #import <UIView+Shake/UIView+Shake.h>
 #import "GANAppManager.h"
+
+
 
 typedef enum _ENUM_POPUPFOR{
     GANENUM_POPUPFOR_NONE,
@@ -33,7 +40,7 @@ typedef enum _ENUM_PAYUNIT{
     GANENUM_PAYUNIT_HOUR,
 }GANENUM_PAYUNIT;
 
-@interface GANJobsDetailsVC () <UITextFieldDelegate, GMSMapViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate>
+@interface GANJobsDetailsVC () <UITextFieldDelegate, GMSMapViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate, GANJobPostSuccessPopupDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
@@ -74,6 +81,7 @@ typedef enum _ENUM_PAYUNIT{
 @property (weak, nonatomic) IBOutlet UIButton *btnPost;
 @property (weak, nonatomic) IBOutlet UIButton *btnDelete;
 @property (weak, nonatomic) IBOutlet UIButton *btnPopupWrapper;
+@property (weak, nonatomic) IBOutlet UIButton *btnPostwithBroadcast;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblDateFrom;
 @property (weak, nonatomic) IBOutlet UILabel *lblDateTo;
@@ -139,11 +147,19 @@ typedef enum _ENUM_PAYUNIT{
     else {
         self.navigationItem.title = @"Job Details";
     }
+    
 }
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    if(self.bAddedAllFields == YES) {
+        [self CompletedUserSignup];
+        return;
+    }
+    
     [self addMapMarker];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -172,19 +188,24 @@ typedef enum _ENUM_PAYUNIT{
     self.viewComments.layer.cornerRadius = 3;
     
     self.btnPost.layer.cornerRadius = 3;
+    self.btnPostwithBroadcast.layer.cornerRadius = 3;
+    self.btnPostwithBroadcast.titleLabel.numberOfLines   = 2;
+    self.btnPostwithBroadcast.titleLabel.textAlignment   = NSTextAlignmentCenter;
     self.btnDelete.layer.cornerRadius = 3;
     self.btnDelete.layer.borderWidth = 1;
     self.btnDelete.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
     
     if (self.indexJob == -1){
         [self.btnPost setTitle:@"Post Job" forState:UIControlStateNormal];
-        self.constraintBtnSaveBottomSpace.constant = 20;
+        self.constraintBtnSaveBottomSpace.constant = 94;
         self.btnDelete.hidden = YES;
+        self.btnPostwithBroadcast.hidden = NO;
     }
     else {
         [self.btnPost setTitle:@"Update Job" forState:UIControlStateNormal];
         self.constraintBtnSaveBottomSpace.constant = 94;
         self.btnDelete.hidden = NO;
+        self.btnPostwithBroadcast.hidden = YES;
     }
     [self refreshDateFields];
     [self refreshBenefitsPanel];
@@ -569,7 +590,7 @@ typedef enum _ENUM_PAYUNIT{
         [managerJob requestAddJob:job Callback:^(int status) {
             if (status == SUCCESS_WITH_NO_ERROR){
                 [GANGlobalVCManager showHudSuccessWithMessage:@"Job is created successfully." DismissAfter:3 Callback:^{
-                    [self gotoJobListVC];
+                    [self showPopupDialog];
                 }];
             }
             else {
@@ -612,6 +633,38 @@ typedef enum _ENUM_PAYUNIT{
     [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:@"Are you sure you want to delete?" ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
         [self doDelete];
     } CallbackNo:nil];
+}
+
+-(void) showPopupDialog {
+    
+    if([[GANCompanyManager sharedInstance].arrMyWorkers count] == 0) {
+        GANJobPostSuccessPopupVC *vc = [[GANJobPostSuccessPopupVC alloc] initWithNibName:@"GANJobPostSuccessPopupVC" bundle:nil];
+        
+        vc.delegate = self;
+        vc.view.backgroundColor = [UIColor clearColor];
+        [vc refreshFields:38];
+        
+        vc.modalPresentationStyle = UIModalPresentationCustom;
+        [self presentViewController:vc animated:YES completion:nil];
+    } else {
+        [self.tabBarController setSelectedIndex:1];
+        [self.navigationController popToRootViewControllerAnimated:NO];
+    }
+    
+}
+
+#pragma mark - GANJobPostSuccessPopupDelegate Method
+- (void) didOK {
+    [self gotoSharePostWithContacts];
+}
+
+- (void)gotoSharePostWithContacts {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+    
+    GANSharePostingWithContactsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_JOBS_SHAREWITHWORKERS"];
+    vc.fromVC = ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_JOBPOST;
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (void) gotoJobListVC{
@@ -710,14 +763,42 @@ typedef enum _ENUM_PAYUNIT{
     [self refreshAutoTranslateView];
 }
 
+- (void) CompletedUserSignup {
+    [self preparePost];
+}
+
 - (IBAction)onBtnPostClick:(id)sender {
+    
     [self.view endEditing:YES];
+    
+    if ([[GANUserManager sharedInstance] isUserLoggedIn] == NO){
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
+        GANCompanySignupVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SIGNUP"];
+        vc.fromCustomVC = JOBPOST_SIGNUP;
+        [self.navigationController pushViewController:vc animated:YES];
+        return;
+    }
+    
     [self preparePost];
 }
 
 - (IBAction)onBtnDeleteClick:(id)sender {
     [self.view endEditing:YES];
     [self promptForDelete];
+}
+
+- (IBAction)onbtnPostwithBroadcase:(id)sender {
+    [self.view endEditing:YES];
+    
+    if ([[GANUserManager sharedInstance] isUserLoggedIn] == NO){
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
+        GANCompanySignupVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SIGNUP"];
+        vc.fromCustomVC = JOBPOST_SIGNUP;
+        [self.navigationController pushViewController:vc animated:YES];
+        return;
+    }
+    
+    [self preparePost];
 }
 
 - (IBAction)onBtnPopupWrapperClick:(id)sender {

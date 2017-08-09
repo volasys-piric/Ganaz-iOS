@@ -59,12 +59,14 @@
 }
 
 - (void) gotoCompanyLoginPhoneVC{
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
-        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_LOGIN_PHONE"];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_JOBS_HOME"];
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     });
+
 }
 
 #pragma mark - UIButton Event Listeners

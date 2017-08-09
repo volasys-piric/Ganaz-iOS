@@ -9,10 +9,11 @@
 #import "GANCompanyLoginPhoneVC.h"
 #import "GANCompanyLoginCodeVC.h"
 #import "GANLoginResetPasswordVC.h"
+#import "GANCompanySignupVC.h"
+
 #import "GANGenericFunctionManager.h"
 #import "GANGlobalVCManager.h"
 #import "GANUserManager.h"
-#import "Global.h"
 #import "GANAppManager.h"
 
 @interface GANCompanyLoginPhoneVC () <UITextFieldDelegate>
@@ -115,6 +116,7 @@
                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
                     GANCompanyLoginCodeVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_LOGIN_CODE"];
                     vc.szPhoneNumber = phoneNumber;
+                    vc.fromCustomVC = self.fromCustomVC;
                     [self.navigationController pushViewController:vc animated:YES];
                     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
                 }];
@@ -134,8 +136,19 @@
 
 - (void) gotoSignupVC{
     dispatch_async(dispatch_get_main_queue(), ^{
+        
+        NSArray *arrVCs = self.navigationController.viewControllers;
+        for (int i = 0; i < (int)([arrVCs count]); i++){
+            UIViewController *vc = [arrVCs objectAtIndex:i];
+            if ([vc isKindOfClass:[GANCompanySignupVC class]] == YES){
+                [self.navigationController popToViewController:vc animated:YES];
+                return;
+            }
+        }
+        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
-        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SIGNUP"];
+        GANCompanySignupVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SIGNUP"];
+        vc.fromCustomVC = self.fromCustomVC;
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     });

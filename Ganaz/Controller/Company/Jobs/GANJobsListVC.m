@@ -9,6 +9,8 @@
 #import "GANJobsListVC.h"
 #import "GANJobItemTVC.h"
 #import "GANJobsDetailsVC.h"
+#import "GANJobRecruitPopupVC.h"
+#import "GANRecruitVC.h"
 
 #import "GANCompanyDataModel.h"
 
@@ -21,8 +23,10 @@
 #import "Global.h"
 #import "GANAppManager.h"
 
-@interface GANJobsListVC () <UITableViewDelegate, UITableViewDataSource>
-
+@interface GANJobsListVC () <UITableViewDelegate, UITableViewDataSource, GANJobRecruitPopupVCDelegate>
+{
+    int nSelectedIndex;
+}
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (weak, nonatomic) IBOutlet UIView *viewBadge;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
@@ -92,6 +96,16 @@
     }
 }
 
+- (void) showPopupDialog {
+    GANJobRecruitPopupVC *vc = [[GANJobRecruitPopupVC alloc] initWithNibName:@"GANJobRecruitPopupVC" bundle:nil];
+    
+    vc.delegate = self;
+    vc.view.backgroundColor = [UIColor clearColor];
+    
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
 - (void) gotoDetailsVCAtIndex: (int) index{
     [[GANJobManager sharedInstance] initializeOnboardingJobAtIndex:index];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
@@ -124,6 +138,18 @@
         } CallbackNo:nil];
         [self.tableview setEditing:NO animated:YES];
     });
+}
+
+#pragma mark - GANJobRecruitPopupVCDelegate
+
+- (void) didRecruit {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+    GANRecruitVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_RECRUIT"];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void) didEdit {
+    [self gotoDetailsVCAtIndex:nSelectedIndex];
 }
 
 #pragma mark - UITableView Delegate
@@ -174,8 +200,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    int index = (int) indexPath.row;
-    [self gotoDetailsVCAtIndex:index];
+    nSelectedIndex = (int) indexPath.row;
+    [self showPopupDialog];
 }
 
 #pragma mark - UIButton Delegate

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ynG-QH-K8k">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ynG-QH-K8k">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -1145,7 +1145,7 @@
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KBO-iJ-8cL" userLabel="Button - Company Code">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="KBO-iJ-8cL" userLabel="Button - Company Code">
                                                         <rect key="frame" x="235" y="110" width="120" height="40"/>
                                                         <color key="backgroundColor" red="0.40000000000000002" green="0.70588235290000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <constraints>
@@ -1154,7 +1154,7 @@
                                                         </constraints>
                                                         <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
                                                         <color key="tintColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <state key="normal" title="Company Code">
+                                                        <state key="normal" title="Enter Company Code">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -1678,7 +1678,13 @@
                             <constraint firstItem="bYH-eC-3v3" firstAttribute="top" secondItem="rJL-ny-QNP" secondAttribute="bottom" id="gcn-3D-sVn"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Signup" id="aDo-dt-WI9"/>
+                    <navigationItem key="navigationItem" title="Signup" id="aDo-dt-WI9">
+                        <barButtonItem key="rightBarButtonItem" image="icon-account" id="o0p-Mu-tDU">
+                            <connections>
+                                <action selector="onBtnLoginClick:" destination="ZhC-4w-1oh" id="qFh-bo-9fh"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="btnAutoTranslate" destination="1l7-WH-lIs" id="kRJ-vE-qiC"/>
@@ -2512,6 +2518,7 @@
     </scenes>
     <resources>
         <image name="button-background" width="512" height="10"/>
+        <image name="icon-account" width="30" height="30"/>
         <image name="icon-unchecked" width="20" height="20"/>
     </resources>
 </document>

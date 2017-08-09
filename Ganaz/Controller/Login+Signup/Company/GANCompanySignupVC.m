@@ -7,7 +7,6 @@
 //
 
 #import "GANCompanySignupVC.h"
-#import "GANUserManager.h"
 #import "GANCompanyManager.h"
 #import "GANCacheManager.h"
 #import "GANMembershipPlanManager.h"
@@ -20,10 +19,16 @@
 
 #import "GANPushNotificationManager.h"
 #import "GANFadeTransitionDelegate.h"
-#import "GANCompanyCodePopupVC.h"
 
-#import "Global.h"
 #import <UIView+Shake/UIView+Shake.h>
+
+#import "GANJobsDetailsVC.h"
+#import "GANJobHomeVC.h"
+#import "GANCompanyLoginPhoneVC.h"
+#import "GANCompanyCodePopupVC.h"
+#import "GANMainChooseVC.h"
+#import "GANCompanyLoginCodeVC.h"
+#import "GANCompanyLoginPhoneVC.h"
 
 @interface GANCompanySignupVC () <UITextFieldDelegate, GANCompanyCodePopupDelegate>
 
@@ -104,6 +109,9 @@
     self.btnSignup.layer.cornerRadius = 3;
     self.btnLogin.layer.cornerRadius = 3;
     self.btnCompanyCode.layer.cornerRadius = 3;
+    self.btnCompanyCode.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.btnCompanyCode.titleLabel.textAlignment    = NSTextAlignmentCenter;
+    self.btnCompanyCode.titleLabel.numberOfLines = 2;
     self.btnLogin.layer.borderWidth = 1;
     self.btnLogin.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
     
@@ -366,7 +374,7 @@
     [[GANUserManager sharedInstance] requestUserSignupWithCallback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager hideHudProgressWithCallback:^{
-                [self gotoCompanyMain];
+                [self gotoCompanyHome];
             }];
             GANACTIVITY_REPORT(@"User signed up");
         }
@@ -385,19 +393,88 @@
     }];
 }
 
-- (void) gotoCompanyMain{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-    UIViewController *vc = [storyboard instantiateInitialViewController];
-    UINavigationController *nav = self.navigationController;
-    [self presentViewController:vc animated:YES completion:^{
-        [self.navigationController setViewControllers:@[[nav.viewControllers objectAtIndex:0]]];
-    }];
+- (void) gotoCompanyHome{
     
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+    
+    NSMutableArray *arrNewVCs = [[NSMutableArray alloc] init];
+    NSArray *arrVCs = self.navigationController.viewControllers;
+    
+    for (int i = 0; i < (int)([arrVCs count]); i++){
+        UIViewController *vc = [arrVCs objectAtIndex:i];
+        if (([vc isKindOfClass:[GANMainChooseVC class]] == NO) &&
+            ([vc isKindOfClass:[GANCompanyLoginPhoneVC class]] == NO) &&
+            ([vc isKindOfClass:[GANCompanyLoginCodeVC class]] == NO) &&
+            ([vc isKindOfClass:[GANCompanySignupVC class]] == NO)){
+            [arrNewVCs addObject:vc];
+        }
+    }
+    
+    if(self.fromCustomVC == DEFAULT_SIGNUP) {
+        UIViewController *vc = [storyboard instantiateInitialViewController];
+        UINavigationController *nav = self.navigationController;
+        [self presentViewController:vc animated:YES completion:^{
+            [self.navigationController setViewControllers:@[[nav.viewControllers objectAtIndex:0]]];
+        }];
+    } else if(self.fromCustomVC == JOBPOST_SIGNUP) {
+        
+        for (int i = 0; i < (int)([arrNewVCs count]); i++){
+            UIViewController *vc = [arrNewVCs objectAtIndex:i];
+            if ([vc isKindOfClass:[GANJobsDetailsVC class]] == YES){
+                ((GANJobsDetailsVC *)vc).bAddedAllFields = YES;
+            }
+        }
+        
+    } else if(self.fromCustomVC == COMMUNICATE_SIGNUP) {
+        for (int i = 0; i < (int)([arrNewVCs count]); i++){
+            UIViewController *vc = [arrNewVCs objectAtIndex:i];
+            if ([vc isKindOfClass:[GANJobHomeVC class]] == YES){
+                ((GANJobHomeVC *)vc).fromSignup = COMMUNICATE_SIGNUP;
+            }
+        }
+    } else if(self.fromCustomVC == RETAIN_SIGNUP) {
+        
+        for (int i = 0; i < (int)([arrNewVCs count]); i++){
+            UIViewController *vc = [arrNewVCs objectAtIndex:i];
+            if ([vc isKindOfClass:[GANJobHomeVC class]] == YES){
+                ((GANJobHomeVC *)vc).fromSignup = RETAIN_SIGNUP;
+            }
+        }
+
+    }
+    
+    UITabBarController *tbc = [storyboard instantiateInitialViewController];
+    if ([arrNewVCs count] > 0){
+        UINavigationController *nav = [tbc.viewControllers objectAtIndex:0];
+        nav.viewControllers = arrNewVCs;
+    }
+    
+    [self.navigationController presentViewController:tbc animated:YES completion:^{
+        
+        [self.navigationController setViewControllers:@[[self.navigationController.viewControllers objectAtIndex:0]]];
+    }];
+
     [[GANAppManager sharedInstance] initializeManagersAfterLogin];
 }
 
 - (void) gotoLogin{
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    NSArray *arrVCs = self.navigationController.viewControllers;
+    
+    for (int i = 0; i < (int)([arrVCs count]); i++){
+        UIViewController *vc = [arrVCs objectAtIndex:i];
+        if ([vc isKindOfClass:[GANCompanyLoginPhoneVC class]] == YES){
+            GANCompanyLoginPhoneVC *viewController = (GANCompanyLoginPhoneVC*)vc;
+            viewController.fromCustomVC = self.fromCustomVC;
+            [self.navigationController popToViewController:viewController animated:YES];
+            return;
+        }
+    }
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
+    GANCompanyLoginPhoneVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_LOGIN_PHONE"];
+    vc.fromCustomVC = self.fromCustomVC;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void) gotoToS{

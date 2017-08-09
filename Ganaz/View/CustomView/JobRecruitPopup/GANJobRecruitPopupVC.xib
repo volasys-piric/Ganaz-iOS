@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFUIDisplay-Regular.otf">
+            <string>SFUIDisplay-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GANJobRecruitPopupVC">
+            <connections>
+                <outlet property="btnEdit" destination="UbM-uH-hbA" id="Soa-G6-uUi"/>
+                <outlet property="btnRecruit" destination="KX7-WT-sSK" id="JY6-hu-TF3"/>
+                <outlet property="lblDescription" destination="tQS-kA-AUS" id="fmf-jD-pt5"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="viewContents" destination="DsP-AC-HTI" id="J6a-uz-7Bc"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EYG-1m-QRX">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R2U-Pq-O7U">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <state key="normal" title="Button"/>
+                            <connections>
+                                <action selector="onBtnWrapperClick:" destination="-1" eventType="touchUpInside" id="Jv5-FM-EUH"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DsP-AC-HTI" userLabel="View - Content View">
+                            <rect key="frame" x="36.5" y="196.5" width="303" height="273"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dBj-hQ-Y7d" userLabel="View - Content View">
+                                    <rect key="frame" x="0.0" y="-0.5" width="303" height="136"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tQS-kA-AUS" userLabel="Label - Description">
+                                            <rect key="frame" x="30" y="30" width="243" height="67"/>
+                                            <string key="text">What would you like
+to do?</string>
+                                            <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="28"/>
+                                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="tQS-kA-AUS" firstAttribute="leading" secondItem="dBj-hQ-Y7d" secondAttribute="leading" constant="30" id="AQ2-Ua-3ij"/>
+                                        <constraint firstAttribute="trailing" secondItem="tQS-kA-AUS" secondAttribute="trailing" constant="30" id="Rpt-XY-cHV"/>
+                                        <constraint firstItem="tQS-kA-AUS" firstAttribute="top" secondItem="dBj-hQ-Y7d" secondAttribute="top" constant="30" id="r2N-tG-pAM"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gK0-gE-fbv" userLabel="View - Action Panel">
+                                    <rect key="frame" x="0.0" y="135" width="303" height="138"/>
+                                    <subviews>
+                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UbM-uH-hbA" userLabel="Button - Edit">
+                                            <rect key="frame" x="51" y="69" width="200" height="45"/>
+                                            <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="18"/>
+                                            <state key="normal" title="Edit this job">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onEdit:" destination="-1" eventType="touchUpInside" id="1hl-K6-oVN"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KX7-WT-sSK" userLabel="Button - Recruit">
+                                            <rect key="frame" x="51" y="8" width="200" height="45"/>
+                                            <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="KX7-WT-sSK" secondAttribute="height" multiplier="40:9" id="D5j-tB-7re"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="18"/>
+                                            <state key="normal" title="Recruit for this job">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onRecruit:" destination="-1" eventType="touchUpInside" id="ucI-Xt-ddB"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="UbM-uH-hbA" firstAttribute="height" secondItem="KX7-WT-sSK" secondAttribute="height" id="0SR-ux-ZV3"/>
+                                        <constraint firstItem="KX7-WT-sSK" firstAttribute="width" secondItem="gK0-gE-fbv" secondAttribute="width" multiplier="0.66" id="0mw-eg-fj6"/>
+                                        <constraint firstItem="KX7-WT-sSK" firstAttribute="top" secondItem="gK0-gE-fbv" secondAttribute="top" constant="8" id="4P5-ns-MDH"/>
+                                        <constraint firstItem="UbM-uH-hbA" firstAttribute="width" secondItem="KX7-WT-sSK" secondAttribute="width" id="D97-bC-bMH"/>
+                                        <constraint firstAttribute="height" constant="138" id="U4Q-2Q-7eG"/>
+                                        <constraint firstItem="KX7-WT-sSK" firstAttribute="centerX" secondItem="gK0-gE-fbv" secondAttribute="centerX" id="aUW-CO-8pM"/>
+                                        <constraint firstAttribute="bottom" secondItem="UbM-uH-hbA" secondAttribute="bottom" constant="24" id="fEL-9n-GOI"/>
+                                        <constraint firstItem="UbM-uH-hbA" firstAttribute="centerX" secondItem="gK0-gE-fbv" secondAttribute="centerX" id="jul-8o-Qf8"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="gK0-gE-fbv" secondAttribute="trailing" id="0Lq-N0-kjR"/>
+                                <constraint firstItem="gK0-gE-fbv" firstAttribute="leading" secondItem="DsP-AC-HTI" secondAttribute="leading" id="2Le-3T-Z8f"/>
+                                <constraint firstItem="dBj-hQ-Y7d" firstAttribute="width" secondItem="DsP-AC-HTI" secondAttribute="width" id="6W4-3V-ijV"/>
+                                <constraint firstAttribute="bottom" secondItem="gK0-gE-fbv" secondAttribute="bottom" id="JLq-vx-ncy"/>
+                                <constraint firstItem="dBj-hQ-Y7d" firstAttribute="top" secondItem="DsP-AC-HTI" secondAttribute="top" id="O6f-4a-OK2"/>
+                                <constraint firstAttribute="height" constant="273" id="edR-E7-IHc"/>
+                                <constraint firstItem="dBj-hQ-Y7d" firstAttribute="centerX" secondItem="DsP-AC-HTI" secondAttribute="centerX" id="jC3-F0-Gi9"/>
+                                <constraint firstItem="gK0-gE-fbv" firstAttribute="top" secondItem="dBj-hQ-Y7d" secondAttribute="bottom" id="mff-as-HOO"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="DsP-AC-HTI" firstAttribute="centerX" secondItem="EYG-1m-QRX" secondAttribute="centerX" id="E6V-2S-WxZ"/>
+                        <constraint firstItem="DsP-AC-HTI" firstAttribute="centerY" secondItem="EYG-1m-QRX" secondAttribute="centerY" id="RS8-qg-0En"/>
+                        <constraint firstItem="R2U-Pq-O7U" firstAttribute="centerY" secondItem="EYG-1m-QRX" secondAttribute="centerY" id="Wsm-cg-fLD"/>
+                        <constraint firstItem="R2U-Pq-O7U" firstAttribute="width" secondItem="EYG-1m-QRX" secondAttribute="width" id="Wsz-7N-YfT"/>
+                        <constraint firstItem="R2U-Pq-O7U" firstAttribute="height" secondItem="EYG-1m-QRX" secondAttribute="height" id="vug-AM-8Ut"/>
+                        <constraint firstItem="R2U-Pq-O7U" firstAttribute="centerX" secondItem="EYG-1m-QRX" secondAttribute="centerX" id="yPJ-YS-VyO"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="EYG-1m-QRX" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="1fD-4N-l5e"/>
+                <constraint firstItem="EYG-1m-QRX" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="2Ed-62-xiS"/>
+                <constraint firstItem="EYG-1m-QRX" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" id="eC4-ip-M3i"/>
+                <constraint firstItem="EYG-1m-QRX" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="t7x-6o-pgk"/>
+            </constraints>
+            <point key="canvasLocation" x="26.5" y="51.5"/>
+        </view>
+    </objects>
+</document>

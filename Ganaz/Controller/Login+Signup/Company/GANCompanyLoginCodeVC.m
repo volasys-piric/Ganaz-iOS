@@ -10,8 +10,11 @@
 #import "GANUserManager.h"
 #import "GANMainChooseVC.h"
 #import "GANCompanyLoginPhoneVC.h"
+#import "GANJobHomeVC.h"
+#import "GANJobsDetailsVC.h"
+#import "GANCompanySignupVC.h"
+
 #import "GANGenericFunctionManager.h"
-#import "Global.h"
 #import "GANGlobalVCManager.h"
 #import "GANAppManager.h"
 
@@ -122,10 +125,62 @@
 
 - (void) gotoCompanyMain{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-    UIViewController *vc = [storyboard instantiateInitialViewController];
-    UINavigationController *nav = self.navigationController;
-    [self presentViewController:vc animated:YES completion:^{
-        [self.navigationController setViewControllers:@[[nav.viewControllers objectAtIndex:0]]];
+    
+    NSMutableArray *arrNewVCs = [[NSMutableArray alloc] init];
+    NSArray *arrVCs = self.navigationController.viewControllers;
+    
+    for (int i = 0; i < (int)([arrVCs count]); i++){
+        UIViewController *vc = [arrVCs objectAtIndex:i];
+        if (([vc isKindOfClass:[GANMainChooseVC class]] == NO) &&
+            ([vc isKindOfClass:[GANCompanyLoginPhoneVC class]] == NO) &&
+            ([vc isKindOfClass:[GANCompanyLoginCodeVC class]] == NO) &&
+            ([vc isKindOfClass:[GANCompanySignupVC class]] == NO)){
+            [arrNewVCs addObject:vc];
+        }
+    }
+    
+    if(self.fromCustomVC == DEFAULT_SIGNUP) {
+        UIViewController *vc = [storyboard instantiateInitialViewController];
+        UINavigationController *nav = self.navigationController;
+        [self presentViewController:vc animated:YES completion:^{
+            [self.navigationController setViewControllers:@[[nav.viewControllers objectAtIndex:0]]];
+        }];
+    } else if(self.fromCustomVC == JOBPOST_SIGNUP) {
+        
+        for (int i = 0; i < (int)([arrNewVCs count]); i++){
+            UIViewController *vc = [arrNewVCs objectAtIndex:i];
+            if ([vc isKindOfClass:[GANJobsDetailsVC class]] == YES){
+                ((GANJobsDetailsVC *)vc).bAddedAllFields = YES;
+            }
+        }
+        
+    } else if(self.fromCustomVC == COMMUNICATE_SIGNUP) {
+        for (int i = 0; i < (int)([arrNewVCs count]); i++){
+            UIViewController *vc = [arrNewVCs objectAtIndex:i];
+            if ([vc isKindOfClass:[GANJobHomeVC class]] == YES){
+                ((GANJobHomeVC *)vc).fromSignup = COMMUNICATE_SIGNUP;
+            }
+        }
+    } else if(self.fromCustomVC == RETAIN_SIGNUP) {
+        
+        for (int i = 0; i < (int)([arrNewVCs count]); i++){
+            UIViewController *vc = [arrNewVCs objectAtIndex:i];
+            if ([vc isKindOfClass:[GANJobHomeVC class]] == YES){
+                ((GANJobHomeVC *)vc).fromSignup = RETAIN_SIGNUP;
+            }
+        }
+        
+    }
+    
+    UITabBarController *tbc = [storyboard instantiateInitialViewController];
+    if ([arrNewVCs count] > 0){
+        UINavigationController *nav = [tbc.viewControllers objectAtIndex:0];
+        nav.viewControllers = arrNewVCs;
+    }
+    
+    [self.navigationController presentViewController:tbc animated:YES completion:^{
+        
+        [self.navigationController setViewControllers:@[[self.navigationController.viewControllers objectAtIndex:0]]];
     }];
     
     [[GANAppManager sharedInstance] initializeManagersAfterLogin];

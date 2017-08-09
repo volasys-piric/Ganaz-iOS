@@ -15,7 +15,7 @@
 #define GANACTIVITY_REPORT(s) [[GANAppManager sharedInstance] logActivity: (s) ] 
 
 #warning This should be removed before submission!
-#define GANENVIRONMENT_DEMO
+#define GANENVIRONMENT_STAGING
 
 // BASE URL
 
@@ -111,4 +111,23 @@
 #define LOCALSTORAGE_PREFIX                                             @"GANAZLOCALSTORAGE_"
 #define LOCALSTORAGE_USER_LOGIN                                         @"USER_LOGIN"
 
+typedef enum company_signup_from_vc
+{
+    DEFAULT_SIGNUP = 0,
+    JOBPOST_SIGNUP,
+    COMMUNICATE_SIGNUP,
+    RETAIN_SIGNUP
+} ENUM_COMPANY_SIGNUP_FROM_CUSTOMVC;
+
+typedef enum company_addworkers_from_vc {
+    ENUM_COMPANY_ADDWORKERS_FROM_HOME = 0,
+    ENUM_COMPANY_ADDWORKERS_FROM_MESSAGE,
+    ENUM_COMPANY_ADDWORKERS_FROM_RECRUITJOB,
+    ENUM_COMPANY_ADDWORKERS_FROM_RETAINMYWORKERS
+} ENUM_COMPANY_ADDWORKERS_FROM_CUSTOMVC;
+
+typedef enum company_sharePostingWithContactFrom_vc {
+    ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_HOME = 0,
+    ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_JOBPOST
+} ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_CUSTOMVC;
 #endif /* Global_h */
