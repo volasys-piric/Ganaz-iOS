@@ -116,10 +116,10 @@
 
 typedef enum company_signup_from_vc
 {
-    DEFAULT_SIGNUP = 0,
-    JOBPOST_SIGNUP,
-    COMMUNICATE_SIGNUP,
-    RETAIN_SIGNUP
+    ENUM_DEFAULT_SIGNUP = 0,
+    ENUM_JOBPOST_SIGNUP,
+    ENUM_COMMUNICATE_SIGNUP,
+    ENUM_RETAIN_SIGNUP
 } ENUM_COMPANY_SIGNUP_FROM_CUSTOMVC;
 
 typedef enum company_addworkers_from_vc {

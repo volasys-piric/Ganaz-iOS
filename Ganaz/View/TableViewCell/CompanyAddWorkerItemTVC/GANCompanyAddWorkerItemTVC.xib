@@ -64,7 +64,7 @@
                                     <constraint firstAttribute="width" constant="74" id="RDV-74-fea"/>
                                     <constraint firstAttribute="height" constant="40" id="r9P-lz-kLr"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="12"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="14"/>
                                 <state key="normal" title="Add">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>

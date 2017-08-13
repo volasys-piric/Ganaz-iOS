@@ -65,12 +65,17 @@
 
 - (IBAction)onRecruit:(id)sender {
     [self closeDialog];
-    [self.delegate didRecruit];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(didRecruit)]) {
+        [self.delegate didRecruit];
+    }
 }
 
 - (IBAction)onEdit:(id)sender {
     [self closeDialog];
-    [self.delegate didEdit];
+    
+    if(self.delegate && [self.delegate respondsToSelector:@selector(didRecruit)]) {
+        [self.delegate didEdit];
+    }
 }
 
 @end

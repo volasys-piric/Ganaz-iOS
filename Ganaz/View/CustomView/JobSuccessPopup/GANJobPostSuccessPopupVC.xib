@@ -45,32 +45,6 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ma4-G7-nC5" userLabel="View - Content View">
                             <rect key="frame" x="37" y="213" width="300" height="240"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mHZ-62-FqF" userLabel="View - Action Panel">
-                                    <rect key="frame" x="12" y="178" width="276" height="50"/>
-                                    <subviews>
-                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vp0-d9-LNS" userLabel="Button - OK">
-                                            <rect key="frame" x="65" y="3" width="147" height="45"/>
-                                            <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="vp0-d9-LNS" secondAttribute="height" multiplier="49:15" id="l07-SX-FCq"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
-                                            <state key="normal" title="OK">
-                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="onOk:" destination="-1" eventType="touchUpInside" id="Jgd-OU-J9V"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="50" id="3QA-UU-fAI"/>
-                                        <constraint firstItem="vp0-d9-LNS" firstAttribute="centerX" secondItem="mHZ-62-FqF" secondAttribute="centerX" id="NH8-Nc-stY"/>
-                                        <constraint firstItem="vp0-d9-LNS" firstAttribute="centerY" secondItem="mHZ-62-FqF" secondAttribute="centerY" id="Pi3-Zc-IXJ"/>
-                                        <constraint firstItem="vp0-d9-LNS" firstAttribute="height" secondItem="mHZ-62-FqF" secondAttribute="height" multiplier="0.9" id="UW1-jS-nOI"/>
-                                    </constraints>
-                                </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AAv-ba-uks" userLabel="View - Content View">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="178"/>
                                     <subviews>
@@ -90,6 +64,32 @@ to 38 workers</string>
                                         <constraint firstAttribute="trailing" secondItem="8fp-hl-cRJ" secondAttribute="trailing" constant="30" id="KAQ-hf-GSD"/>
                                         <constraint firstItem="8fp-hl-cRJ" firstAttribute="top" secondItem="AAv-ba-uks" secondAttribute="top" constant="30" id="VO1-3j-G1K"/>
                                         <constraint firstItem="8fp-hl-cRJ" firstAttribute="leading" secondItem="AAv-ba-uks" secondAttribute="leading" constant="30" id="W0B-2d-eNA"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mHZ-62-FqF" userLabel="View - Action Panel">
+                                    <rect key="frame" x="12" y="178" width="276" height="50"/>
+                                    <subviews>
+                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vp0-d9-LNS" userLabel="Button - OK">
+                                            <rect key="frame" x="65" y="3" width="147" height="45"/>
+                                            <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="vp0-d9-LNS" secondAttribute="height" multiplier="49:15" id="l07-SX-FCq"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                            <state key="normal" title="OK">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onOk:" destination="-1" eventType="touchUpInside" id="Jgd-OU-J9V"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="50" id="3QA-UU-fAI"/>
+                                        <constraint firstItem="vp0-d9-LNS" firstAttribute="centerX" secondItem="mHZ-62-FqF" secondAttribute="centerX" id="NH8-Nc-stY"/>
+                                        <constraint firstItem="vp0-d9-LNS" firstAttribute="centerY" secondItem="mHZ-62-FqF" secondAttribute="centerY" id="Pi3-Zc-IXJ"/>
+                                        <constraint firstItem="vp0-d9-LNS" firstAttribute="height" secondItem="mHZ-62-FqF" secondAttribute="height" multiplier="0.9" id="UW1-jS-nOI"/>
                                     </constraints>
                                 </view>
                             </subviews>

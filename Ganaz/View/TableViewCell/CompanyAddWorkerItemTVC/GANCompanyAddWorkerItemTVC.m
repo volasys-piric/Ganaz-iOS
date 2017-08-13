@@ -25,7 +25,9 @@
 }
 
 - (IBAction)onAdd:(id)sender {
-    [self.delegate onAddWorker:self.nIndex];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(onAddWorker:)]) {
+        [self.delegate onAddWorker:self.nIndex];
+    }
 }
 
 @end

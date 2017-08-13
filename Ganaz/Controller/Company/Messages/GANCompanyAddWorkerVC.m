@@ -15,7 +15,7 @@
 #import "GANUserWorkerDataModel.h"
 #import "GANCompanyManager.h"
 #import "GANUserManager.h"
-
+#import "GANFadeTransitionDelegate.h"
 #import "GANUtils.h"
 #import "GANGenericFunctionManager.h"
 #import "Global.h"
@@ -50,6 +50,8 @@ typedef enum _ENUM_FOUNDSTATUS{
 
 @property (assign, atomic) GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS enumStatus;
 
+@property (strong, nonatomic) GANFadeTransitionDelegate *transController;
+
 @end
 
 @implementation GANCompanyAddWorkerVC
@@ -67,6 +69,8 @@ typedef enum _ENUM_FOUNDSTATUS{
     self.btnAdd.clipsToBounds = YES;
     self.btnInvite.layer.cornerRadius = 3;
     self.btnInvite.clipsToBounds = YES;
+    
+    self.transController = [[GANFadeTransitionDelegate alloc] init];
     
     self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE;
     self.arrWorkersFound = [[NSMutableArray alloc] init];
@@ -390,6 +394,8 @@ typedef enum _ENUM_FOUNDSTATUS{
     
     NSString *strDescription = [NSString stringWithFormat:@"%@ is not\n using Ganaz yet", szWorkerName];
     [vc setDescriptionTitle:strDescription];
+    
+    [vc setTransitioningDelegate:self.transController];
     vc.modalPresentationStyle = UIModalPresentationCustom;
     [self presentViewController:vc animated:YES completion:nil];
 }

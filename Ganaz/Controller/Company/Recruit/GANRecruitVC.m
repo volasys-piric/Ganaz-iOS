@@ -18,7 +18,7 @@
 #import "GANCacheManager.h"
 #import "GANCompanyManager.h"
 #import "GANRecruitManager.h"
-
+#import "GANFadeTransitionDelegate.h"
 #import "GANGenericFunctionManager.h"
 #import "Global.h"
 #import "GANAppManager.h"
@@ -33,6 +33,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtMiles;
 @property (weak, nonatomic) IBOutlet UIButton *btnShareJob;
 @property (weak, nonatomic) IBOutlet UIButton *btnAddWorker;
+
+@property (strong, nonatomic) GANFadeTransitionDelegate *transController;
 
 @property (strong, nonatomic) NSMutableArray *arrWorkerSelected;
 
@@ -49,6 +51,7 @@
     self.tableviewWorkers.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableviewWorkers.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
+    self.transController = [[GANFadeTransitionDelegate alloc] init];
     self.arrWorkerSelected = [[NSMutableArray alloc] init];
 
     [self buildWorkerList];
@@ -149,7 +152,7 @@
     NSString *strDescription = [NSString stringWithFormat:@"Your job has been\nshared with %d\n workers.", nCount];
     
     [vc refreshFields:strDescription];
-    
+    [vc setTransitioningDelegate:self.transController];
     vc.modalPresentationStyle = UIModalPresentationCustom;
     [self presentViewController:vc animated:YES completion:nil];
 }
@@ -217,21 +220,7 @@
 #pragma mark - UIButton Delegate
 
 - (IBAction)onBtnShareJobClick:(id)sender {
-    /*
-    BOOL isSelectedWorkers = NO;
-    for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
-        BOOL isSelected = [[self.arrWorkerSelected objectAtIndex:i] boolValue];
-        if (isSelected == YES){
-            isSelectedWorkers = YES;
-            break;
-        }
-    }
-    
-    if(isSelectedWorkers == NO) {
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please select Workers!" DismissAfter:-1 Callback:nil];
-        return;
-    }*/
-    
+    [self.view endEditing:YES];
     [self doSubmitRecruit];
 }
 

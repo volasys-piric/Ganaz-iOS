@@ -25,7 +25,9 @@
 }
 
 - (IBAction)onShare:(id)sender {
-    [self.delegate onWorkersShare:self.nIndex];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(onWorkersShare:)]) {
+        [self.delegate onWorkersShare:self.nIndex];
+    }
 }
 
 @end

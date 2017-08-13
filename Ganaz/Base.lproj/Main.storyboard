@@ -21,7 +21,7 @@
             <objects>
                 <navigationController navigationBarHidden="YES" id="Laz-hH-wpK" sceneMemberID="viewController">
                     <nil key="simulatedTopBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="abs-ky-yJy">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="abs-ky-yJy">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

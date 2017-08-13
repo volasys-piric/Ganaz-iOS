@@ -13,7 +13,7 @@
 #import "GANRecruitVC.h"
 
 #import "GANCompanyDataModel.h"
-
+#import "GANFadeTransitionDelegate.h"
 #import "GANUserManager.h"
 #import "GANJobManager.h"
 #import "GANJobDataModel.h"
@@ -33,6 +33,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblBadge;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTableviewTopSpacing;
 
+@property (strong, nonatomic) GANFadeTransitionDelegate *transController;
+
 @end
 
 @implementation GANJobsListVC
@@ -45,6 +47,7 @@
     self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
+    self.transController = [[GANFadeTransitionDelegate alloc] init];
     [self registerTableViewCellFromNib];
     [self refreshViews];
     
@@ -101,7 +104,7 @@
     
     vc.delegate = self;
     vc.view.backgroundColor = [UIColor clearColor];
-    
+    [vc setTransitioningDelegate:self.transController];
     vc.modalPresentationStyle = UIModalPresentationCustom;
     [self presentViewController:vc animated:YES completion:nil];
 }

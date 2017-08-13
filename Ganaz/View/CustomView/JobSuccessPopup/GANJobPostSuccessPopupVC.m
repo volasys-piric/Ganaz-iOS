@@ -62,7 +62,10 @@
 - (IBAction)onOk:(id)sender {
     [self.view endEditing:YES];
     [self closeDialog];
-    [self.delegate didOK];
+    
+    if(self.delegate && [self.delegate respondsToSelector:@selector(didOK)]) {
+        [self.delegate didOK];
+    }
 }
 
 @end

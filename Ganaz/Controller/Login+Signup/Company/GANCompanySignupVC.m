@@ -410,13 +410,13 @@
         }
     }
     
-    if(self.fromCustomVC == DEFAULT_SIGNUP) {
+    if(self.fromCustomVC == ENUM_DEFAULT_SIGNUP) {
         UIViewController *vc = [storyboard instantiateInitialViewController];
         UINavigationController *nav = self.navigationController;
         [self presentViewController:vc animated:YES completion:^{
             [self.navigationController setViewControllers:@[[nav.viewControllers objectAtIndex:0]]];
         }];
-    } else if(self.fromCustomVC == JOBPOST_SIGNUP) {
+    } else if(self.fromCustomVC == ENUM_JOBPOST_SIGNUP) {
         
         for (int i = 0; i < (int)([arrNewVCs count]); i++){
             UIViewController *vc = [arrNewVCs objectAtIndex:i];
@@ -425,19 +425,19 @@
             }
         }
         
-    } else if(self.fromCustomVC == COMMUNICATE_SIGNUP) {
+    } else if(self.fromCustomVC == ENUM_COMMUNICATE_SIGNUP) {
         for (int i = 0; i < (int)([arrNewVCs count]); i++){
             UIViewController *vc = [arrNewVCs objectAtIndex:i];
             if ([vc isKindOfClass:[GANJobHomeVC class]] == YES){
-                ((GANJobHomeVC *)vc).fromSignup = COMMUNICATE_SIGNUP;
+                ((GANJobHomeVC *)vc).fromSignup = ENUM_COMMUNICATE_SIGNUP;
             }
         }
-    } else if(self.fromCustomVC == RETAIN_SIGNUP) {
+    } else if(self.fromCustomVC == ENUM_RETAIN_SIGNUP) {
         
         for (int i = 0; i < (int)([arrNewVCs count]); i++){
             UIViewController *vc = [arrNewVCs objectAtIndex:i];
             if ([vc isKindOfClass:[GANJobHomeVC class]] == YES){
-                ((GANJobHomeVC *)vc).fromSignup = RETAIN_SIGNUP;
+                ((GANJobHomeVC *)vc).fromSignup = ENUM_RETAIN_SIGNUP;
             }
         }
 

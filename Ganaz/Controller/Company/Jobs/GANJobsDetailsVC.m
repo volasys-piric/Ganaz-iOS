@@ -17,7 +17,7 @@
 #import "GANJobDataModel.h"
 #import "GANCompanyManager.h"
 #import "GANRecruitManager.h"
-
+#import "GANFadeTransitionDelegate.h"
 #import "GANGenericFunctionManager.h"
 #import "GANLocationManager.h"
 
@@ -48,6 +48,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
 
 @interface GANJobsDetailsVC () <UITextFieldDelegate, GMSMapViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate, GANJobPostSuccessPopupDelegate>
 {
+    ENUM_COMPANY_SIGNUP_FROM_CUSTOMVC fromCustomVC;
     GANENUM_JOBPOSTTYPE postType;
 }
 
@@ -118,6 +119,8 @@ typedef enum _ENUM_JOBPOSTTYPE{
 @property (strong, nonatomic) NSDate *dateTo;
 @property (assign, atomic) BOOL isAutoTranslate;
 
+@property (strong, nonatomic) GANFadeTransitionDelegate *transController;
+
 @end
 
 #define UICOLOR_BUTTON_NOTSELECTED                              [UIColor colorWithRed:(51 / 255.0) green:(51 / 255.0) blue:(51 / 255.0) alpha:0.6]
@@ -147,7 +150,9 @@ typedef enum _ENUM_JOBPOSTTYPE{
     self.datePicker.minimumDate = [NSDate date];
     self.isAutoTranslate = NO;
     self.locationCenter = nil;
+    
     postType = GANENUM_JOBPOSTONLY;
+    fromCustomVC = ENUM_DEFAULT_SIGNUP;
     
     [self refreshFields];
     [self refreshViews];
@@ -165,7 +170,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    if(self.bAddedAllFields == YES) {
+    if(self.bAddedAllFields == YES && fromCustomVC == ENUM_JOBPOST_SIGNUP) {
         [self CompletedUserSignup];
         return;
     }
@@ -700,7 +705,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
         vc.delegate = self;
         vc.view.backgroundColor = [UIColor clearColor];
         [vc refreshFields:[[GANUserManager sharedInstance] getNearbyWorkerCount]];
-        
+        [vc setTransitioningDelegate:self.transController];
         vc.modalPresentationStyle = UIModalPresentationCustom;
         [self presentViewController:vc animated:YES completion:nil];
     } else {
@@ -831,7 +836,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
     if ([[GANUserManager sharedInstance] isUserLoggedIn] == NO){
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
         GANCompanySignupVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SIGNUP"];
-        vc.fromCustomVC = JOBPOST_SIGNUP;
+        vc.fromCustomVC = ENUM_JOBPOST_SIGNUP;
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         return;
@@ -851,7 +856,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
     if ([[GANUserManager sharedInstance] isUserLoggedIn] == NO){
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
         GANCompanySignupVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SIGNUP"];
-        vc.fromCustomVC = JOBPOST_SIGNUP;
+        vc.fromCustomVC = ENUM_JOBPOST_SIGNUP;
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         return;

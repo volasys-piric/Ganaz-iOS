@@ -45,32 +45,6 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b53-Qw-T6k" userLabel="View - Content View">
                             <rect key="frame" x="37" y="213" width="300" height="240"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q3O-uM-E64" userLabel="View - Action Panel">
-                                    <rect key="frame" x="12" y="178" width="276" height="50"/>
-                                    <subviews>
-                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2u3-lb-Eaj" userLabel="Button - OK">
-                                            <rect key="frame" x="65" y="3" width="147" height="45"/>
-                                            <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="2u3-lb-Eaj" secondAttribute="height" multiplier="49:15" id="69s-Py-d2W"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
-                                            <state key="normal" title="OK">
-                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="onOk:" destination="-1" eventType="touchUpInside" id="QBc-z2-fRe"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstItem="2u3-lb-Eaj" firstAttribute="height" secondItem="Q3O-uM-E64" secondAttribute="height" multiplier="0.9" id="3aE-0N-3jb"/>
-                                        <constraint firstItem="2u3-lb-Eaj" firstAttribute="centerX" secondItem="Q3O-uM-E64" secondAttribute="centerX" id="k7B-8O-Wa3"/>
-                                        <constraint firstItem="2u3-lb-Eaj" firstAttribute="centerY" secondItem="Q3O-uM-E64" secondAttribute="centerY" id="or4-al-v3b"/>
-                                        <constraint firstAttribute="height" constant="50" id="sOf-Zm-oEn"/>
-                                    </constraints>
-                                </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g2J-QH-wqc" userLabel="View - Content View">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="178"/>
                                     <subviews>
@@ -89,6 +63,32 @@ Juan Jimenez</string>
                                         <constraint firstItem="xk7-AJ-YFQ" firstAttribute="leading" secondItem="g2J-QH-wqc" secondAttribute="leading" constant="30" id="4WR-s1-VVG"/>
                                         <constraint firstItem="xk7-AJ-YFQ" firstAttribute="top" secondItem="g2J-QH-wqc" secondAttribute="top" constant="30" id="6mV-27-BlN"/>
                                         <constraint firstAttribute="trailing" secondItem="xk7-AJ-YFQ" secondAttribute="trailing" constant="30" id="9QF-br-NxP"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q3O-uM-E64" userLabel="View - Action Panel">
+                                    <rect key="frame" x="12" y="178" width="276" height="50"/>
+                                    <subviews>
+                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2u3-lb-Eaj" userLabel="Button - OK">
+                                            <rect key="frame" x="65" y="3" width="147" height="45"/>
+                                            <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="2u3-lb-Eaj" secondAttribute="height" multiplier="49:15" id="69s-Py-d2W"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                            <state key="normal" title="OK">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onOk:" destination="-1" eventType="touchUpInside" id="QBc-z2-fRe"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="2u3-lb-Eaj" firstAttribute="height" secondItem="Q3O-uM-E64" secondAttribute="height" multiplier="0.9" id="3aE-0N-3jb"/>
+                                        <constraint firstItem="2u3-lb-Eaj" firstAttribute="centerX" secondItem="Q3O-uM-E64" secondAttribute="centerX" id="k7B-8O-Wa3"/>
+                                        <constraint firstItem="2u3-lb-Eaj" firstAttribute="centerY" secondItem="Q3O-uM-E64" secondAttribute="centerY" id="or4-al-v3b"/>
+                                        <constraint firstAttribute="height" constant="50" id="sOf-Zm-oEn"/>
                                     </constraints>
                                 </view>
                             </subviews>

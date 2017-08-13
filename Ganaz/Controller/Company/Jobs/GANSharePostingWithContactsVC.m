@@ -10,7 +10,7 @@
 #import "GANCompanySuggestWorkersItemTVC.h"
 #import "GANJobPostingSharedPopupVC.h"
 #import "GANMainChooseVC.h"
-
+#import "GANFadeTransitionDelegate.h"
 #import "GANPhonebookContactsManager.h"
 #import "GANJobManager.h"
 #import "GANGlobalVCManager.h"
@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *buttonDone;
 
+@property (strong, nonatomic) GANFadeTransitionDelegate *transController;
 @property (strong, nonatomic) NSMutableArray *arrFilteredContacts;
 @property (assign, atomic) int indexSelected;
 
@@ -43,6 +44,9 @@
     self.tableView.delegate = self;
     
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    self.transController = [[GANFadeTransitionDelegate alloc] init];
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
@@ -154,10 +158,12 @@
 }
 
 - (IBAction)onShare:(id)sender {
+    [self.view endEditing:YES];
     [self dorecruitWorkers];
 }
 
 - (IBAction)onDone:(id)sender {
+    [self.view endEditing:YES];
     [self gotoJobListVC];
 }
 
@@ -183,6 +189,7 @@
     }
     
     [vc refreshFields:strDescription];
+    [vc setTransitioningDelegate:self.transController];
     
     vc.modalPresentationStyle = UIModalPresentationCustom;
     [self presentViewController:vc animated:YES completion:nil];
@@ -200,6 +207,7 @@
 }
 
 - (IBAction)onSeachTextFieldChanged:(id)sender {
+    [self.view endEditing:YES];
     [self buildFilteredArray];
 }
 

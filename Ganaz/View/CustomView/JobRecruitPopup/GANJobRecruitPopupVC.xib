@@ -41,16 +41,16 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DsP-AC-HTI" userLabel="View - Content View">
-                            <rect key="frame" x="36.5" y="196.5" width="303" height="273"/>
+                            <rect key="frame" x="37.5" y="196.5" width="300" height="273"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dBj-hQ-Y7d" userLabel="View - Content View">
-                                    <rect key="frame" x="0.0" y="-0.5" width="303" height="136"/>
+                                    <rect key="frame" x="0.0" y="-0.5" width="300" height="136"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tQS-kA-AUS" userLabel="Label - Description">
-                                            <rect key="frame" x="30" y="30" width="243" height="67"/>
+                                            <rect key="frame" x="30" y="39.5" width="240" height="57.5"/>
                                             <string key="text">What would you like
 to do?</string>
-                                            <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="28"/>
+                                            <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="24"/>
                                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -58,17 +58,17 @@ to do?</string>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="tQS-kA-AUS" firstAttribute="leading" secondItem="dBj-hQ-Y7d" secondAttribute="leading" constant="30" id="AQ2-Ua-3ij"/>
+                                        <constraint firstItem="tQS-kA-AUS" firstAttribute="centerY" secondItem="dBj-hQ-Y7d" secondAttribute="centerY" id="Qek-l9-Dr6"/>
                                         <constraint firstAttribute="trailing" secondItem="tQS-kA-AUS" secondAttribute="trailing" constant="30" id="Rpt-XY-cHV"/>
-                                        <constraint firstItem="tQS-kA-AUS" firstAttribute="top" secondItem="dBj-hQ-Y7d" secondAttribute="top" constant="30" id="r2N-tG-pAM"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gK0-gE-fbv" userLabel="View - Action Panel">
-                                    <rect key="frame" x="0.0" y="135" width="303" height="138"/>
+                                    <rect key="frame" x="0.0" y="135" width="300" height="138"/>
                                     <subviews>
                                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UbM-uH-hbA" userLabel="Button - Edit">
-                                            <rect key="frame" x="51" y="69" width="200" height="45"/>
+                                            <rect key="frame" x="51" y="69.5" width="198.5" height="44.5"/>
                                             <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
-                                            <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="18"/>
+                                            <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                             <state key="normal" title="Edit this job">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
@@ -77,12 +77,12 @@ to do?</string>
                                             </connections>
                                         </button>
                                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KX7-WT-sSK" userLabel="Button - Recruit">
-                                            <rect key="frame" x="51" y="8" width="200" height="45"/>
+                                            <rect key="frame" x="51" y="8" width="198.5" height="44.5"/>
                                             <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="KX7-WT-sSK" secondAttribute="height" multiplier="40:9" id="D5j-tB-7re"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="18"/>
+                                            <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                             <state key="normal" title="Recruit for this job">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
@@ -119,6 +119,7 @@ to do?</string>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
+                        <constraint firstItem="DsP-AC-HTI" firstAttribute="width" secondItem="EYG-1m-QRX" secondAttribute="width" multiplier="0.8" id="07w-1o-SHC"/>
                         <constraint firstItem="DsP-AC-HTI" firstAttribute="centerX" secondItem="EYG-1m-QRX" secondAttribute="centerX" id="E6V-2S-WxZ"/>
                         <constraint firstItem="DsP-AC-HTI" firstAttribute="centerY" secondItem="EYG-1m-QRX" secondAttribute="centerY" id="RS8-qg-0En"/>
                         <constraint firstItem="R2U-Pq-O7U" firstAttribute="centerY" secondItem="EYG-1m-QRX" secondAttribute="centerY" id="Wsm-cg-fLD"/>
