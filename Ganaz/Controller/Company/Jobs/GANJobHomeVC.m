@@ -16,6 +16,10 @@
 #import "GANJobManager.h"
 #import "GANUserManager.h"
 #import "GANCompanyManager.h"
+#import "GANAppManager.h"
+#import "GANGlobalVCManager.h"
+
+#import "Global.h"
 
 
 @interface GANJobHomeVC ()
@@ -50,6 +54,7 @@
     self.btnRetainMyWorkers.clipsToBounds               = YES;
     self.btnRetainMyWorkers.layer.cornerRadius          = 3.f;
     
+    [self getNearbyWorkerCount];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -66,6 +71,20 @@
     }
 }
 
+- (void) getNearbyWorkerCount {
+    
+    [GANGlobalVCManager showHudProgress];
+    [[GANUserManager sharedInstance] requestUserBulkSearch:GANNEARBY_DEFAULT_RADIUS WithCallback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR){
+            [GANGlobalVCManager hideHudProgress];
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
+        }
+        GANACTIVITY_REPORT(@"Company - Recruit");
+    }];
+}
+
 - (void) gotoMessage {
     self.fromSignup = DEFAULT_SIGNUP;
     [self.tabBarController setSelectedIndex:2];
@@ -74,6 +93,7 @@
     GANSharePostingWithContactsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_JOBS_SHAREWITHWORKERS"];
     vc.fromVC = ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_HOME;
     [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (void) gotoRetain {
@@ -81,6 +101,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
     GANRetainMyWorkersVC *viewcontroller = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_JOBS_RETAINMYWORKERS"];
     [self.navigationController pushViewController:viewcontroller animated:NO];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (IBAction)onGetWorkers:(id)sender {
@@ -89,6 +110,7 @@
     GANJobsDetailsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_JOBS_DETAILS"];
     vc.indexJob = -1;
     [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (IBAction)onCommunicationWithMyWorkers:(id)sender {
@@ -97,6 +119,7 @@
         GANCompanySignupVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SIGNUP"];
         vc.fromCustomVC = COMMUNICATE_SIGNUP;
         [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         return;
     }
     
@@ -105,6 +128,7 @@
         GANCompanyAddWorkerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
         vc.fromCustomVC = ENUM_COMPANY_ADDWORKERS_FROM_HOME;
         [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     } else {
         [self.tabBarController setSelectedIndex:2];
     }
@@ -116,6 +140,7 @@
         GANCompanySignupVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SIGNUP"];
         vc.fromCustomVC = RETAIN_SIGNUP;
         [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         return;
     }
     
@@ -123,6 +148,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
     GANRetainMyWorkersVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_JOBS_RETAINMYWORKERS"];
     [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (IBAction)gotoProfile:(id)sender {
@@ -130,6 +156,7 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
         UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_LOGIN_PHONE"];
         [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         return;
     }
 }

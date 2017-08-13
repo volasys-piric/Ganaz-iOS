@@ -16,6 +16,7 @@
 #import "GANJobManager.h"
 #import "GANJobDataModel.h"
 #import "GANCompanyManager.h"
+#import "GANRecruitManager.h"
 
 #import "GANGenericFunctionManager.h"
 #import "GANLocationManager.h"
@@ -40,7 +41,15 @@ typedef enum _ENUM_PAYUNIT{
     GANENUM_PAYUNIT_HOUR,
 }GANENUM_PAYUNIT;
 
+typedef enum _ENUM_JOBPOSTTYPE{
+    GANENUM_JOBPOSTONLY,
+    GANENUM_JOBPOSTANDBROADCAST
+}GANENUM_JOBPOSTTYPE;
+
 @interface GANJobsDetailsVC () <UITextFieldDelegate, GMSMapViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate, GANJobPostSuccessPopupDelegate>
+{
+    GANENUM_JOBPOSTTYPE postType;
+}
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
@@ -83,6 +92,7 @@ typedef enum _ENUM_PAYUNIT{
 @property (weak, nonatomic) IBOutlet UIButton *btnPopupWrapper;
 @property (weak, nonatomic) IBOutlet UIButton *btnPostwithBroadcast;
 
+@property (weak, nonatomic) IBOutlet UILabel *lblWorkerCount;
 @property (weak, nonatomic) IBOutlet UILabel *lblDateFrom;
 @property (weak, nonatomic) IBOutlet UILabel *lblDateTo;
 @property (weak, nonatomic) IBOutlet UILabel *lblBenefitsDotTraining;
@@ -96,6 +106,7 @@ typedef enum _ENUM_PAYUNIT{
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintPopupBottomSpace;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintBtnSaveBottomSpace;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintlblWorkerCount;
 
 @property (strong, nonatomic) NSMutableArray *arrBenefit;
 @property (strong, nonatomic) GMSMapView *mapView;
@@ -136,6 +147,7 @@ typedef enum _ENUM_PAYUNIT{
     self.datePicker.minimumDate = [NSDate date];
     self.isAutoTranslate = NO;
     self.locationCenter = nil;
+    postType = GANENUM_JOBPOSTONLY;
     
     [self refreshFields];
     [self refreshViews];
@@ -207,6 +219,15 @@ typedef enum _ENUM_PAYUNIT{
         self.btnDelete.hidden = NO;
         self.btnPostwithBroadcast.hidden = YES;
     }
+    
+    if([[GANUserManager sharedInstance] getNearbyWorkerCount] <= 5) {
+        self.constraintlblWorkerCount.constant = -58;
+        [self.lblWorkerCount setHidden:YES];
+    } else {
+        self.lblWorkerCount.text = [NSString stringWithFormat:@"Super! There are %ld workers near you. Tell us about your job.", (long)[[GANUserManager sharedInstance] getNearbyWorkerCount]];
+        [self.lblWorkerCount setHidden:NO];
+    }
+    
     [self refreshDateFields];
     [self refreshBenefitsPanel];
     [self refreshPopupPanel];
@@ -589,9 +610,20 @@ typedef enum _ENUM_PAYUNIT{
     if (self.indexJob == -1){
         [managerJob requestAddJob:job Callback:^(int status) {
             if (status == SUCCESS_WITH_NO_ERROR){
-                [GANGlobalVCManager showHudSuccessWithMessage:@"Job is created successfully." DismissAfter:3 Callback:^{
-                    [self showPopupDialog];
-                }];
+                if(postType == GANENUM_JOBPOSTANDBROADCAST) {
+                    [self recruitWorkersToCurrentJob];
+                } else {
+                    [GANGlobalVCManager showHudSuccessWithMessage:@"Job is created successfully." DismissAfter:3 Callback:^{
+                        if([[GANCompanyManager sharedInstance].arrMyWorkers count] == 0) {
+                            [self gotoSharePostWithContacts];
+                        } else {
+                            [self.tabBarController setSelectedIndex:1];
+                            [self.navigationController popToRootViewControllerAnimated:NO];
+                        }
+                        
+                    }];
+                }
+                
             }
             else {
                 [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:3 Callback:nil];
@@ -612,6 +644,31 @@ typedef enum _ENUM_PAYUNIT{
         }];
         GANACTIVITY_REPORT(@"Company - Update job");
     }
+}
+
+- (void) recruitWorkersToCurrentJob {
+    
+    GANJobManager *managerJob = [GANJobManager sharedInstance];
+    GANRecruitManager *managerRecruit = [GANRecruitManager sharedInstance];
+    NSMutableArray *arrReRecruitUserIds = [[NSMutableArray alloc] init];
+    
+    float fBroadcast = GANNEARBY_DEFAULT_RADIUS;
+    NSMutableArray *arrJobIds = [[NSMutableArray alloc] init];
+    GANJobDataModel *job = [managerJob.arrMyJobs lastObject];
+    [arrJobIds addObject:job.szId];
+    
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    
+    [managerRecruit requestSubmitRecruitWithJobIds:arrJobIds Broadcast:fBroadcast ReRecruitUserIds:arrReRecruitUserIds PhoneNumbers:nil Callback:^(int status, int count) {
+        if (status == SUCCESS_WITH_NO_ERROR){
+            [GANGlobalVCManager hideHudProgress];
+            [self showPopupDialog];
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
+        }
+        GANACTIVITY_REPORT(@"Company - Recruit");
+    }];
 }
 
 - (void) doDelete{
@@ -642,7 +699,7 @@ typedef enum _ENUM_PAYUNIT{
         
         vc.delegate = self;
         vc.view.backgroundColor = [UIColor clearColor];
-        [vc refreshFields:38];
+        [vc refreshFields:[[GANUserManager sharedInstance] getNearbyWorkerCount]];
         
         vc.modalPresentationStyle = UIModalPresentationCustom;
         [self presentViewController:vc animated:YES completion:nil];
@@ -776,9 +833,10 @@ typedef enum _ENUM_PAYUNIT{
         GANCompanySignupVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SIGNUP"];
         vc.fromCustomVC = JOBPOST_SIGNUP;
         [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         return;
     }
-    
+    postType = GANENUM_JOBPOSTONLY;
     [self preparePost];
 }
 
@@ -795,9 +853,11 @@ typedef enum _ENUM_PAYUNIT{
         GANCompanySignupVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SIGNUP"];
         vc.fromCustomVC = JOBPOST_SIGNUP;
         [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         return;
     }
     
+    postType = GANENUM_JOBPOSTANDBROADCAST;
     [self preparePost];
 }
 

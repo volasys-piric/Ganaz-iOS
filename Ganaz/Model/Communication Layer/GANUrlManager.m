@@ -85,6 +85,10 @@
     return [NSString stringWithFormat:@"%@/user/password_recovery/reset", [GANUrlManager getBaseUrl]];
 }
 
++ (NSString *) getEndPointForUserBulkSearch{
+    return [NSString stringWithFormat:@"%@/user/bulksearch", [GANUrlManager getBaseUrl]];
+}
+
 #pragma mark - Endpoint for Job
 
 + (NSString *) getEndpointForAddJob{

@@ -16,6 +16,7 @@
 #import "GANGlobalVCManager.h"
 #import "Global.h"
 #import "GANAppManager.h"
+#import "GANRecruitManager.h"
 
 @interface GANSharePostingWithContactsVC ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, GANCompanySuggestWorkersItemTVCDelegate, GANJobPostingSharedPopupVCDelegate>
 
@@ -25,7 +26,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonDone;
 
 @property (strong, nonatomic) NSMutableArray *arrFilteredContacts;
-@property (strong, nonatomic) NSMutableArray *arrSharedContacts;
 @property (assign, atomic) int indexSelected;
 
 @end
@@ -48,7 +48,6 @@
     
     self.indexSelected = -1;
     self.arrFilteredContacts = [[NSMutableArray alloc] init];
-    self.arrSharedContacts = [[NSMutableArray alloc] init];
     
     [self registerTableViewCellFromNib];
     [self askPermissionForPhoneBook];
@@ -118,33 +117,35 @@
     });
 }
 
-- (void) doSuggestWorkers{
+- (void) dorecruitWorkers{
 
     if (self.indexSelected == -1 && [self.txtSearch.text isEqualToString:@""]){
         [GANGlobalVCManager showHudErrorWithMessage:@"Please select contact." DismissAfter:-1 Callback:nil];
         return;
     }
     
-    [self showPopupDialog];
-/*
     GANJobManager *managerJob = [GANJobManager sharedInstance];
-    GANPhonebookContactDataModel *contact = [self.arrFilteredContacts objectAtIndex:self.indexSelected];
+    GANRecruitManager *managerRecruit = [GANRecruitManager sharedInstance];
+    NSMutableArray *arrPhoneNumbers = [[NSMutableArray alloc] init];
     
-    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    GANPhonebookContactDataModel *worker = [self.arrFilteredContacts objectAtIndex:self.indexSelected];
+    [arrPhoneNumbers addObject:worker.modelPhone.szLocalNumber];
     
-    [managerJob requestSuggestFriendForJob:self.szJobId PhoneNumber:contact.modelPhone.szLocalNumber Callback:^(int status) {
-        if (status == SUCCESS_WITH_NO_ERROR){
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Your request has sent." DismissAfter:-1 Callback:^{
+    NSMutableArray *arrJobIds = [[NSMutableArray alloc] init];
+    GANJobDataModel *job = [managerJob.arrMyJobs lastObject];
+    [arrJobIds addObject:job.szId];
 
-            }];
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [managerRecruit requestSubmitRecruitWithJobIds:arrJobIds Broadcast:0 ReRecruitUserIds:nil PhoneNumbers:arrPhoneNumbers Callback:^(int status, int count) {
+        if (status == SUCCESS_WITH_NO_ERROR){
+            [GANGlobalVCManager hideHudProgress];
+            [self showPopupDialog];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, your request has been failed." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
         }
+        GANACTIVITY_REPORT(@"Company - Recruit");
     }];
-    GANACTIVITY_REPORT(@"Company - Suggest workers for Job");
-*/
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -153,7 +154,7 @@
 }
 
 - (IBAction)onShare:(id)sender {
-    [self doSuggestWorkers];
+    [self dorecruitWorkers];
 }
 
 - (IBAction)onDone:(id)sender {
@@ -240,7 +241,7 @@
 #pragma mark - GANCompanySuggestWorkersItemTVCDelegate
 -(void) onWorkersShare:(NSInteger) nIndex {
     self.indexSelected = (int)nIndex;
-    [self doSuggestWorkers];
+    [self dorecruitWorkers];
 }
 
 @end

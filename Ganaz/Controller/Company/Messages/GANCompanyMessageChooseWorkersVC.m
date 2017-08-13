@@ -106,7 +106,6 @@
     vc.fromCustomVC = ENUM_COMPANY_ADDWORKERS_FROM_MESSAGE;
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    
     GANACTIVITY_REPORT(@"Company - Go to add-worker from Message");
 }
 

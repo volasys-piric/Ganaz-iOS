@@ -120,6 +120,10 @@
     return location;
 }
 
+- (NSInteger) getNearbyWorkerCount {
+    return self.nNearbyWorkerCount;
+}
+
 #pragma mark - Login & Signup
 
 - (void) requestUserSignupWithCallback: (void (^) (int status)) callback{
@@ -383,4 +387,28 @@
     }];
 }
 
+- (void) requestUserBulkSearch:(float)radius WithCallback:(void (^) (int status)) callback {
+    CLLocation *location = [self getCurrentLocation];
+    NSString *broadcast = [NSString stringWithFormat:@"%.02f", radius];
+    NSDictionary *params = @{@"type": @"worker",
+                             @"area": @{@"loc" : @[@(location.coordinate.longitude), @(location.coordinate.latitude)],
+                                        @"radius" : broadcast}};
+    
+    NSString *szUrl = [GANUrlManager getEndPointForUserBulkSearch];
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:NO parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            
+            self.nNearbyWorkerCount = [[dict objectForKey:@"counts"] integerValue];
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+    }];
+}
 @end

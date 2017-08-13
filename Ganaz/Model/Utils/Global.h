@@ -49,6 +49,9 @@
 
 #define GANLOCATION_DEFAULT_LATITUDE                        40.7128
 #define GANLOCATION_DEFAULT_LONGITUDE                       -74.0059
+
+#define GANNEARBY_DEFAULT_RADIUS                            20
+
 #define GOOGLEMAPS_API_KEY                                  @"AIzaSyCrYm3QN8cfIN5rbGcFHBEGSAye8G4lUho"
 #define GOOGLE_TRANSLATE_API_KEY                            @"AIzaSyCVm0nvaYBqtNOOepzALr7iCKNW1_96J6o"
 

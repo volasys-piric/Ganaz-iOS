@@ -108,6 +108,7 @@
     GANJobManager *managerJob = [GANJobManager sharedInstance];
     GANRecruitManager *managerRecruit = [GANRecruitManager sharedInstance];
     NSMutableArray *arrReRecruitUserIds = [[NSMutableArray alloc] init];
+    
     float fBroadcast = 0;
     NSMutableArray *arrJobIds = [[NSMutableArray alloc] init];
     GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:self.nJobIndex];
@@ -127,7 +128,7 @@
     }
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [managerRecruit requestSubmitRecruitWithJobIds:arrJobIds Broadcast:fBroadcast ReRecruitUserIds:arrReRecruitUserIds Callback:^(int status, int count) {
+    [managerRecruit requestSubmitRecruitWithJobIds:arrJobIds Broadcast:fBroadcast ReRecruitUserIds:arrReRecruitUserIds PhoneNumbers:nil Callback:^(int status, int count) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager hideHudProgress];
             [self showPopupDialog:count];
@@ -158,6 +159,7 @@
     GANCompanyAddWorkerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
     vc.fromCustomVC = ENUM_COMPANY_ADDWORKERS_FROM_RECRUITJOB;
     [self.navigationController pushViewController:vc animated:YES];
+
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     GANACTIVITY_REPORT(@"Company - Go to add-worker from Recruit");
 }
