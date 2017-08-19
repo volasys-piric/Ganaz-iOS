@@ -266,4 +266,18 @@
     });
 }
 
++ (void)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(NSInteger) nIndex
+{
+    UIView * fromView = tabBarController.selectedViewController.view;
+    UIView * toView = [[tabBarController.viewControllers objectAtIndex:nIndex] view];
+    
+    [UIView transitionFromView:fromView
+                        toView:toView
+                      duration:0.3
+                       options: UIViewAnimationOptionTransitionNone
+                    completion:^(BOOL finished) {
+                        tabBarController.selectedIndex = nIndex;
+    }];
+}
+
 @end

@@ -130,6 +130,10 @@
 		83E322981F120872002DA8CB /* GANWorkerLoginCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E322971F120872002DA8CB /* GANWorkerLoginCodeVC.m */; };
 		83E3229B1F12089A002DA8CB /* GANWorkerLoginPhoneVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E3229A1F12089A002DA8CB /* GANWorkerLoginPhoneVC.m */; };
 		85D856B9D301E048DF3E85AE /* libPods-Ganaz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7680D2DDBE95C3053040625 /* libPods-Ganaz.a */; };
+		9F724D481F47C5BD00EED0F7 /* GANCommunicateWithMyWorkersOnboardingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F724D471F47C5BD00EED0F7 /* GANCommunicateWithMyWorkersOnboardingVC.m */; };
+		9F724D4B1F47C60600EED0F7 /* GANComposeMessageOnboardingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F724D4A1F47C60600EED0F7 /* GANComposeMessageOnboardingVC.m */; };
+		9FA560941F47419400D9E65B /* GANMyWorkerNickNameEditPopupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA560921F47419300D9E65B /* GANMyWorkerNickNameEditPopupVC.m */; };
+		9FA560951F47419400D9E65B /* GANMyWorkerNickNameEditPopupVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FA560931F47419300D9E65B /* GANMyWorkerNickNameEditPopupVC.xib */; };
 		9FE57D6F1F2ECD30002BCAFE /* GANJobHomeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE57D6E1F2ECD30002BCAFE /* GANJobHomeVC.m */; };
 		9FE57D741F2F5BCA002BCAFE /* GANJobPostSuccessPopupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE57D721F2F5BCA002BCAFE /* GANJobPostSuccessPopupVC.m */; };
 		9FE57D751F2F5BCA002BCAFE /* GANJobPostSuccessPopupVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FE57D731F2F5BCA002BCAFE /* GANJobPostSuccessPopupVC.xib */; };
@@ -362,6 +366,13 @@
 		83E322971F120872002DA8CB /* GANWorkerLoginCodeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANWorkerLoginCodeVC.m; path = "Controller/Login+Signup/Worker/GANWorkerLoginCodeVC.m"; sourceTree = "<group>"; };
 		83E322991F12089A002DA8CB /* GANWorkerLoginPhoneVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANWorkerLoginPhoneVC.h; path = "Controller/Login+Signup/Worker/GANWorkerLoginPhoneVC.h"; sourceTree = "<group>"; };
 		83E3229A1F12089A002DA8CB /* GANWorkerLoginPhoneVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANWorkerLoginPhoneVC.m; path = "Controller/Login+Signup/Worker/GANWorkerLoginPhoneVC.m"; sourceTree = "<group>"; };
+		9F724D461F47C5BD00EED0F7 /* GANCommunicateWithMyWorkersOnboardingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANCommunicateWithMyWorkersOnboardingVC.h; path = Controller/Company/Messages/GANCommunicateWithMyWorkersOnboardingVC.h; sourceTree = "<group>"; };
+		9F724D471F47C5BD00EED0F7 /* GANCommunicateWithMyWorkersOnboardingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANCommunicateWithMyWorkersOnboardingVC.m; path = Controller/Company/Messages/GANCommunicateWithMyWorkersOnboardingVC.m; sourceTree = "<group>"; };
+		9F724D491F47C60600EED0F7 /* GANComposeMessageOnboardingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANComposeMessageOnboardingVC.h; path = Controller/Company/Messages/GANComposeMessageOnboardingVC.h; sourceTree = "<group>"; };
+		9F724D4A1F47C60600EED0F7 /* GANComposeMessageOnboardingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANComposeMessageOnboardingVC.m; path = Controller/Company/Messages/GANComposeMessageOnboardingVC.m; sourceTree = "<group>"; };
+		9FA560911F47419300D9E65B /* GANMyWorkerNickNameEditPopupVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANMyWorkerNickNameEditPopupVC.h; path = View/CustomView/MyWorkerNickNameEditPopup/GANMyWorkerNickNameEditPopupVC.h; sourceTree = "<group>"; };
+		9FA560921F47419300D9E65B /* GANMyWorkerNickNameEditPopupVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANMyWorkerNickNameEditPopupVC.m; path = View/CustomView/MyWorkerNickNameEditPopup/GANMyWorkerNickNameEditPopupVC.m; sourceTree = "<group>"; };
+		9FA560931F47419300D9E65B /* GANMyWorkerNickNameEditPopupVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GANMyWorkerNickNameEditPopupVC.xib; path = View/CustomView/MyWorkerNickNameEditPopup/GANMyWorkerNickNameEditPopupVC.xib; sourceTree = "<group>"; };
 		9FE57D6D1F2ECD30002BCAFE /* GANJobHomeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANJobHomeVC.h; path = Controller/Company/Jobs/GANJobHomeVC.h; sourceTree = "<group>"; };
 		9FE57D6E1F2ECD30002BCAFE /* GANJobHomeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANJobHomeVC.m; path = Controller/Company/Jobs/GANJobHomeVC.m; sourceTree = "<group>"; };
 		9FE57D711F2F5BCA002BCAFE /* GANJobPostSuccessPopupVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANJobPostSuccessPopupVC.h; path = View/CustomView/JobSuccessPopup/GANJobPostSuccessPopupVC.h; sourceTree = "<group>"; };
@@ -810,6 +821,7 @@
 		839DB51A1ED6756B00E2652A /* Custom View */ = {
 			isa = PBXGroup;
 			children = (
+				9FA560901F47412700D9E65B /* MyWorkerNickNameEditPopup */,
 				9FE57D8B1F327565002BCAFE /* JobRecruitPopup */,
 				9FE57D7F1F3027CF002BCAFE /* JobPostingSharedPopup */,
 				9FE57D701F2F4F13002BCAFE /* JobPostSuccessPopup */,
@@ -1011,6 +1023,10 @@
 				83081AFD1E5DCDB0004E8E14 /* GANCompanyMessageChooseWorkersVC.m */,
 				83081B021E5E31A8004E8E14 /* GANCompanyAddWorkerVC.h */,
 				83081B031E5E31A8004E8E14 /* GANCompanyAddWorkerVC.m */,
+				9F724D461F47C5BD00EED0F7 /* GANCommunicateWithMyWorkersOnboardingVC.h */,
+				9F724D471F47C5BD00EED0F7 /* GANCommunicateWithMyWorkersOnboardingVC.m */,
+				9F724D491F47C60600EED0F7 /* GANComposeMessageOnboardingVC.h */,
+				9F724D4A1F47C60600EED0F7 /* GANComposeMessageOnboardingVC.m */,
 			);
 			name = Messages;
 			sourceTree = "<group>";
@@ -1107,6 +1123,16 @@
 				83E322971F120872002DA8CB /* GANWorkerLoginCodeVC.m */,
 			);
 			name = Worker;
+			sourceTree = "<group>";
+		};
+		9FA560901F47412700D9E65B /* MyWorkerNickNameEditPopup */ = {
+			isa = PBXGroup;
+			children = (
+				9FA560911F47419300D9E65B /* GANMyWorkerNickNameEditPopupVC.h */,
+				9FA560921F47419300D9E65B /* GANMyWorkerNickNameEditPopupVC.m */,
+				9FA560931F47419300D9E65B /* GANMyWorkerNickNameEditPopupVC.xib */,
+			);
+			name = MyWorkerNickNameEditPopup;
 			sourceTree = "<group>";
 		};
 		9FE57D701F2F4F13002BCAFE /* JobPostSuccessPopup */ = {
@@ -1281,6 +1307,7 @@
 				9FE57D971F37F199002BCAFE /* GANCompanyAddWorkerItemTVC.xib in Resources */,
 				9FE57D901F3275B0002BCAFE /* GANJobRecruitPopupVC.xib in Resources */,
 				838AAC281E578A9F006CC33D /* Assets.xcassets in Resources */,
+				9FA560951F47419400D9E65B /* GANMyWorkerNickNameEditPopupVC.xib in Resources */,
 				838AAC491E579AA1006CC33D /* SFUIDisplay-Semibold.otf in Resources */,
 				838AAC441E579AA1006CC33D /* SFUIDisplay-Bold.otf in Resources */,
 				83CB263C1E623FB200C2D8C7 /* WorkerCompanyReviewItemTVC.xib in Resources */,
@@ -1371,6 +1398,7 @@
 				83CA213E1E5CA3D300C0D787 /* GANWorkingSiteItemTVC.m in Sources */,
 				839DB5271ED679E400E2652A /* GANFadeTransitionDelegate.m in Sources */,
 				83CA210C1E57EF7800C0D787 /* GANAppManager.m in Sources */,
+				9FA560941F47419400D9E65B /* GANMyWorkerNickNameEditPopupVC.m in Sources */,
 				83A9B4F21ED4B64000BFA49D /* GANCompanyManager.m in Sources */,
 				83CB26261E5F452300C2D8C7 /* GANWorkerJobsListFilterVC.m in Sources */,
 				834F01CE1E82964E00D58989 /* GANJobApplicationDataModel.m in Sources */,
@@ -1382,6 +1410,7 @@
 				83CA21381E5BECAC00C0D787 /* GANJobsListVC.m in Sources */,
 				830A84381E88BC5600DECAA9 /* GANPushNotificationManager.m in Sources */,
 				9FE57D741F2F5BCA002BCAFE /* GANJobPostSuccessPopupVC.m in Sources */,
+				9F724D4B1F47C60600EED0F7 /* GANComposeMessageOnboardingVC.m in Sources */,
 				830F9DD31EDB0AAE0073232B /* GANMyWorkerDataModel.m in Sources */,
 				836C87F81F0AA23200968D40 /* GANAppUpdatesPopupVC.m in Sources */,
 				83CB263F1E623FCB00C2D8C7 /* GANWorkerCompanyReviewItemTVC.m in Sources */,
@@ -1452,6 +1481,7 @@
 				839DB5201ED675D500E2652A /* GANCompanyCodePopupVC.m in Sources */,
 				83081B111E5F11AF004E8E14 /* GANWorkerJobListItemTVC.m in Sources */,
 				83CB26391E6129EB00C2D8C7 /* GANWorkerJobDetailsVC.m in Sources */,
+				9F724D481F47C5BD00EED0F7 /* GANCommunicateWithMyWorkersOnboardingVC.m in Sources */,
 				834A87DC1EE2016900EB6E51 /* GANPhoneDataModel.m in Sources */,
 				83CA210F1E57F04E00C0D787 /* GANGenericFunctionManager.m in Sources */,
 				834A87F11EE2100500EB6E51 /* GANBenefitInfoPopupVC.m in Sources */,

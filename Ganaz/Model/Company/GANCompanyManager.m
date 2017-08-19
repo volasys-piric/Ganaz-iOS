@@ -88,6 +88,27 @@
     return (int) [self.arrCompanyUsers count] - 1;
 }
 
+- (void) getBestUserDisplayNameWithUserId: (NSString *) userId Callback: (void (^) (NSString *displayName)) callback{
+    int indexMyWorker = [self getIndexForMyWorkersWithUserId:userId];
+    if (indexMyWorker == -1){
+        GANCacheManager *managerCache = [GANCacheManager sharedInstance];
+        [managerCache requestGetIndexForUserByUserId:userId Callback:^(int index) {
+            if (index != -1) {
+                GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
+                if (callback) callback([user getValidUsername]);
+            }
+            else {
+                if (callback) callback(@"");
+            }
+        }];
+        return;
+    }
+    
+    // If added in my-workers list... return nickname if possible.
+    GANMyWorkerDataModel *myWorker = [self.arrMyWorkers objectAtIndex:indexMyWorker];
+    if (callback) callback([myWorker getDisplayName]);
+}
+
 #pragma mark - Request
 
 - (void) requestCreateCompany: (GANCompanyDataModel *) company Callback: (void (^) (int status, GANCompanyDataModel *companyNew)) callback{
@@ -112,6 +133,8 @@
         if (callback) callback(status, nil);
     }];
 }
+
+#pragma mark - My Workers
 
 - (void) requestGetMyWorkersListWithCallback: (void (^) (int status)) callback{
     NSString *companyId = [GANUserManager getCompanyDataModel].szId;
@@ -168,6 +191,30 @@
                 [self addMyWorkerIfNeeded:myWorkerNew];
                 [[GANCacheManager sharedInstance] addUserIfNeeded:myWorkerNew.modelWorker];
             }
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATED object:nil];
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATEFAILED object:nil];
+    }];
+}
+
+- (void) requestUpdateMyWorkerNicknameWithMyWorkerId: (NSString *) myWorkerId Nickname: (NSString *) nickname Callback: (void (^) (int status)) callback{
+    NSString *companyId = [GANUserManager getCompanyDataModel].szId;
+    NSString *szUrl = [GANUrlManager getEndpointForUpdateMyWorkersNicknameWithCompanyId:companyId MyWorkerId:myWorkerId];
+    
+    NSDictionary *params = @{@"nickname": nickname,
+                             };
+    [[GANNetworkRequestManager sharedInstance] PATCH:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
             if (callback) callback(SUCCESS_WITH_NO_ERROR);
             [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATED object:nil];
         }

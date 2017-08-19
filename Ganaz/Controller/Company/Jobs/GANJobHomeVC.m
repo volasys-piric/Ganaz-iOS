@@ -12,6 +12,7 @@
 #import "GANRetainMyWorkersVC.h"
 #import "GANCompanyAddWorkerVC.h"
 #import "GANSharePostingWithContactsVC.h"
+#import "GANCommunicateWithMyWorkersOnboardingVC.h"
 
 #import "GANJobManager.h"
 #import "GANUserManager.h"
@@ -54,7 +55,8 @@
     self.btnRetainMyWorkers.clipsToBounds               = YES;
     self.btnRetainMyWorkers.layer.cornerRadius          = 3.f;
     
-    [self getNearbyWorkerCount];
+    if([[GANUserManager sharedInstance] getNearbyWorkerCount] <= 0)
+        [self getNearbyWorkerCount];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -62,12 +64,6 @@
     
     if ([[GANUserManager sharedInstance] isUserLoggedIn] == YES){
         self.navigationItem.rightBarButtonItem = nil;
-    }
-    
-    if(self.fromSignup == ENUM_COMMUNICATE_SIGNUP) {
-        [self gotoMessage];
-    } else if(self.fromSignup == ENUM_RETAIN_SIGNUP) {
-        [self gotoRetain];
     }
 }
 
@@ -85,25 +81,6 @@
     }];
 }
 
-- (void) gotoMessage {
-    self.fromSignup = ENUM_DEFAULT_SIGNUP;
-    [self.tabBarController setSelectedIndex:2];
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-    GANSharePostingWithContactsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_JOBS_SHAREWITHWORKERS"];
-    vc.fromVC = ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_HOME;
-    [self.navigationController pushViewController:vc animated:YES];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-}
-
-- (void) gotoRetain {
-    self.fromSignup = ENUM_DEFAULT_SIGNUP;
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-    GANRetainMyWorkersVC *viewcontroller = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_JOBS_RETAINMYWORKERS"];
-    [self.navigationController pushViewController:viewcontroller animated:NO];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-}
-
 - (IBAction)onGetWorkers:(id)sender {
     [[GANJobManager sharedInstance] initializeOnboardingJobAtIndex:-1];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
@@ -115,11 +92,11 @@
 
 - (IBAction)onCommunicationWithMyWorkers:(id)sender {
     if ([[GANUserManager sharedInstance] isUserLoggedIn] == NO){
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
-        GANCompanySignupVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SIGNUP"];
-        vc.fromCustomVC = ENUM_COMMUNICATE_SIGNUP;
+        UIStoryboard *storboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+        GANCommunicateWithMyWorkersOnboardingVC *vc = [storboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_COMMUNICATEWITHMYWORKERS_ONBOARDING"];
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        
         return;
     }
     
@@ -127,22 +104,15 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
         GANCompanyAddWorkerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
         vc.fromCustomVC = ENUM_COMPANY_ADDWORKERS_FROM_HOME;
+        vc.szDescription = @"Who do you want to message?";
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     } else {
-        [self.tabBarController setSelectedIndex:2];
+        [GANGlobalVCManager tabBarController:self.tabBarController shouldSelectViewController:2];
     }
 }
 
 - (IBAction)onRetainMyWorkers:(id)sender {
-    if ([[GANUserManager sharedInstance] isUserLoggedIn] == NO){
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
-        GANCompanySignupVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SIGNUP"];
-        vc.fromCustomVC = ENUM_RETAIN_SIGNUP;
-        [self.navigationController pushViewController:vc animated:YES];
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-        return;
-    }
     
     self.fromSignup = ENUM_DEFAULT_SIGNUP;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];

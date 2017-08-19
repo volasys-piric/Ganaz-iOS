@@ -12,6 +12,7 @@
 #import "GANGlobalVCManager.h"
 #import "GANJobPostingSharedPopupVC.h"
 #import "GANCompanyAddWorkerVC.h"
+#import "GANMyWorkerNickNameEditPopupVC.h"
 
 #import "GANJobManager.h"
 #import "GANUserManager.h"
@@ -23,7 +24,7 @@
 #import "Global.h"
 #import "GANAppManager.h"
 
-@interface GANRecruitVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, GANJobPostingSharedPopupVCDelegate>
+@interface GANRecruitVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, GANJobPostingSharedPopupVCDelegate, GANMyWorkerNickNameEditPopupVCDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *lblJobTitle;
 @property (weak, nonatomic) IBOutlet UITableView *tableviewWorkers;
@@ -161,6 +162,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
     GANCompanyAddWorkerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
     vc.fromCustomVC = ENUM_COMPANY_ADDWORKERS_FROM_RECRUITJOB;
+    vc.szDescription = @"Who would you like to add?";
     [self.navigationController pushViewController:vc animated:YES];
 
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -176,7 +178,7 @@
 
 - (void) configureWorkerItemCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
     GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:index];
-    cell.lblWorkerId.text = [myWorker.modelWorker getValidUsername];
+    cell.lblWorkerId.text = [myWorker getDisplayName];
     
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -210,6 +212,52 @@
     [self.tableviewWorkers reloadData];
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+-(NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewRowAction *editAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Edit" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+        [self changeMyWorkerNickName:(int) indexPath.row];
+    }];
+    editAction.backgroundColor = GANUICOLOR_THEMECOLOR_GREEN;
+    
+    return @[editAction];
+}
+
+- (void) changeMyWorkerNickName: (int) index{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        GANMyWorkerNickNameEditPopupVC *vc = [[GANMyWorkerNickNameEditPopupVC alloc] initWithNibName:@"GANMyWorkerNickNameEditPopupVC" bundle:nil];
+        vc.delegate = self;
+        vc.nIndex = index;
+        vc.view.backgroundColor = [UIColor clearColor];
+        [vc setTransitioningDelegate:self.transController];
+        vc.modalPresentationStyle = UIModalPresentationCustom;
+        [self presentViewController:vc animated:YES completion:nil];
+    });
+}
+
+#pragma mark - GANMyWorkerNickNameEditPopupVCDelegate
+- (void) setMyWorkerNickName:(NSString*)szNickName index:(NSInteger) nIndex {
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
+    myWorker.szNickname = szNickName;
+    
+    //Add NickName
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:szNickName Callback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR) {
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Nickname is updated successfully." DismissAfter:-1 Callback:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableviewWorkers reloadData];
+            });
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
+        }
+    }];
+}
 #pragma mark - UITextField Delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{

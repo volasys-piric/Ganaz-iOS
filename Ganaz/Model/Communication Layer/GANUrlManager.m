@@ -135,6 +135,10 @@
     return [NSString stringWithFormat:@"%@/company/%@/my-workers", [GANUrlManager getBaseUrl], companyId];
 }
 
++ (NSString *) getEndpointForUpdateMyWorkersNicknameWithCompanyId: (NSString *) companyId MyWorkerId: (NSString *) myWorkerId{
+    return [NSString stringWithFormat:@"%@/company/%@/my-workers/%@", [GANUrlManager getBaseUrl], companyId, myWorkerId];
+}
+
 #pragma mark - Messages
 
 + (NSString *) getEndpointForGetMessages{

@@ -23,7 +23,7 @@
 #import <UIView+Shake/UIView+Shake.h>
 
 #import "GANJobsDetailsVC.h"
-#import "GANJobHomeVC.h"
+#import "GANComposeMessageOnboardingVC.h"
 #import "GANCompanyLoginPhoneVC.h"
 #import "GANCompanyCodePopupVC.h"
 #import "GANMainChooseVC.h"
@@ -416,43 +416,63 @@
         [self presentViewController:vc animated:YES completion:^{
             [self.navigationController setViewControllers:@[[nav.viewControllers objectAtIndex:0]]];
         }];
-    } else if(self.fromCustomVC == ENUM_JOBPOST_SIGNUP) {
-        
-        for (int i = 0; i < (int)([arrNewVCs count]); i++){
-            UIViewController *vc = [arrNewVCs objectAtIndex:i];
-            if ([vc isKindOfClass:[GANJobsDetailsVC class]] == YES){
-                ((GANJobsDetailsVC *)vc).bAddedAllFields = YES;
+    } else {
+        if(self.fromCustomVC == ENUM_JOBPOST_SIGNUP) {
+            
+            for (int i = 0; i < (int)([arrNewVCs count]); i++){
+                UIViewController *vc = [arrNewVCs objectAtIndex:i];
+                if ([vc isKindOfClass:[GANJobsDetailsVC class]] == YES){
+                    ((GANJobsDetailsVC *)vc).bPostedNewJob = YES;
+                }
             }
-        }
-        
-    } else if(self.fromCustomVC == ENUM_COMMUNICATE_SIGNUP) {
-        for (int i = 0; i < (int)([arrNewVCs count]); i++){
-            UIViewController *vc = [arrNewVCs objectAtIndex:i];
-            if ([vc isKindOfClass:[GANJobHomeVC class]] == YES){
-                ((GANJobHomeVC *)vc).fromSignup = ENUM_COMMUNICATE_SIGNUP;
+            UITabBarController *tbc = [storyboard instantiateInitialViewController];
+            if ([arrNewVCs count] > 0){
+                UINavigationController *nav = [tbc.viewControllers objectAtIndex:0];
+                nav.viewControllers = arrNewVCs;
             }
-        }
-    } else if(self.fromCustomVC == ENUM_RETAIN_SIGNUP) {
-        
-        for (int i = 0; i < (int)([arrNewVCs count]); i++){
-            UIViewController *vc = [arrNewVCs objectAtIndex:i];
-            if ([vc isKindOfClass:[GANJobHomeVC class]] == YES){
-                ((GANJobHomeVC *)vc).fromSignup = ENUM_RETAIN_SIGNUP;
+            
+            [self.navigationController presentViewController:tbc animated:YES completion:^{
+                [self.navigationController setViewControllers:@[[self.navigationController.viewControllers objectAtIndex:0]]];
+            }];
+            
+        } else if(self.fromCustomVC == ENUM_COMMUNICATE_SIGNUP) {
+            for (int i = 0; i < (int)([arrNewVCs count]); i++){
+                UIViewController *vc = [arrNewVCs objectAtIndex:i];
+                if ([vc isKindOfClass:[GANComposeMessageOnboardingVC class]] == YES){
+                    ((GANComposeMessageOnboardingVC *)vc).isFromSignup = ENUM_COMMUNICATE_SIGNUP;
+                }
             }
+            
+            UITabBarController *tbc = [storyboard instantiateInitialViewController];
+            if ([arrNewVCs count] > 0){
+                UINavigationController *nav = [tbc.viewControllers objectAtIndex:2];
+                nav.viewControllers = arrNewVCs;
+            }
+            
+            [self.navigationController presentViewController:tbc animated:YES completion:^{
+                [self.navigationController setViewControllers:@[[self.navigationController.viewControllers objectAtIndex:0]]];
+            }];
+            
+        } else if(self.fromCustomVC == ENUM_RETAIN_SIGNUP) {
+            
+            for (int i = 0; i < (int)([arrNewVCs count]); i++){
+                UIViewController *vc = [arrNewVCs objectAtIndex:i];
+                if ([vc isKindOfClass:[GANComposeMessageOnboardingVC class]] == YES){
+                    ((GANComposeMessageOnboardingVC *)vc).isFromSignup = ENUM_RETAIN_SIGNUP;
+                }
+            }
+            
+            UITabBarController *tbc = [storyboard instantiateInitialViewController];
+            if ([arrNewVCs count] > 0){
+                UINavigationController *nav = [tbc.viewControllers objectAtIndex:2];
+                nav.viewControllers = arrNewVCs;
+            }
+            
+            [self.navigationController presentViewController:tbc animated:YES completion:^{
+                [self.navigationController setViewControllers:@[[self.navigationController.viewControllers objectAtIndex:0]]];
+            }];
         }
-
     }
-    
-    UITabBarController *tbc = [storyboard instantiateInitialViewController];
-    if ([arrNewVCs count] > 0){
-        UINavigationController *nav = [tbc.viewControllers objectAtIndex:0];
-        nav.viewControllers = arrNewVCs;
-    }
-    
-    [self.navigationController presentViewController:tbc animated:YES completion:^{
-        
-        [self.navigationController setViewControllers:@[[self.navigationController.viewControllers objectAtIndex:0]]];
-    }];
 
     [[GANAppManager sharedInstance] initializeManagersAfterLogin];
 }

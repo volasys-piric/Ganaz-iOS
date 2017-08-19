@@ -73,7 +73,7 @@
 - (IBAction)onEdit:(id)sender {
     [self closeDialog];
     
-    if(self.delegate && [self.delegate respondsToSelector:@selector(didRecruit)]) {
+    if(self.delegate && [self.delegate respondsToSelector:@selector(didEdit)]) {
         [self.delegate didEdit];
     }
 }

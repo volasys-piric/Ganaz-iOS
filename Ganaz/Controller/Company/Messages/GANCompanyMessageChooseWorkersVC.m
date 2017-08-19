@@ -9,18 +9,19 @@
 #import "GANCompanyMessageChooseWorkersVC.h"
 #import "GANWorkerItemTVC.h"
 #import "GANCompanyAddWorkerVC.h"
+#import "GANMyWorkerNickNameEditPopupVC.h"
 
 #import "GANCompanyManager.h"
 #import "GANCacheManager.h"
 #import "GANMyWorkerDataModel.h"
-
+#import "GANFadeTransitionDelegate.h"
 #import "GANMessageManager.h"
 
 #import "Global.h"
 #import "GANGlobalVCManager.h"
 #import "GANAppManager.h"
 
-@interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource>
+@interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource, GANMyWorkerNickNameEditPopupVCDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 
@@ -38,6 +39,8 @@
 @property (assign, atomic) BOOL isPopupShowing;
 @property (assign, atomic) BOOL isAutoTranslate;
 
+@property (strong, nonatomic) GANFadeTransitionDelegate *transController;
+
 @end
 
 @implementation GANCompanyMessageChooseWorkersVC
@@ -51,6 +54,7 @@
     self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.isPopupShowing = NO;
     self.isAutoTranslate = NO;
+    self.transController = [[GANFadeTransitionDelegate alloc] init];
     
     [self buildWorkerList];
     [self registerTableViewCellFromNib];
@@ -104,6 +108,8 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
     GANCompanyAddWorkerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
     vc.fromCustomVC = ENUM_COMPANY_ADDWORKERS_FROM_MESSAGE;
+    vc.szDescription = @"Who do you want to message?";
+    
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     GANACTIVITY_REPORT(@"Company - Go to add-worker from Message");
@@ -189,7 +195,7 @@
         }
     }
 
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers Message:szMessage AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
+    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"Message is sent!" DismissAfter:-1 Callback:^{
                 [self.navigationController popViewControllerAnimated:YES];
@@ -206,7 +212,7 @@
 
 - (void) configureCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
     GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:index];
-    cell.lblWorkerId.text = [myWorker.modelWorker getValidUsername];
+    cell.lblWorkerId.text = [myWorker getDisplayName];
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -237,6 +243,53 @@
     BOOL isSelected = [[self.arrWorkerSelected objectAtIndex:index] boolValue];
     [self.arrWorkerSelected replaceObjectAtIndex:index withObject:@(!isSelected)];
     [self.tableview reloadData];
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+-(NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewRowAction *editAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Edit" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+        [self changeMyWorkerNickName:(int) indexPath.row];
+    }];
+    editAction.backgroundColor = GANUICOLOR_THEMECOLOR_GREEN;
+    
+    return @[editAction];
+}
+
+- (void) changeMyWorkerNickName: (int) index{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        GANMyWorkerNickNameEditPopupVC *vc = [[GANMyWorkerNickNameEditPopupVC alloc] initWithNibName:@"GANMyWorkerNickNameEditPopupVC" bundle:nil];
+        vc.delegate = self;
+        vc.nIndex = index;
+        vc.view.backgroundColor = [UIColor clearColor];
+        [vc setTransitioningDelegate:self.transController];
+        vc.modalPresentationStyle = UIModalPresentationCustom;
+        [self presentViewController:vc animated:YES completion:nil];
+    });
+}
+
+#pragma mark - GANMyWorkerNickNameEditPopupVCDelegate
+- (void) setMyWorkerNickName:(NSString*)szNickName index:(NSInteger) nIndex {
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
+    myWorker.szNickname = szNickName;
+    
+    //Add NickName
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:szNickName Callback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR) {
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Nickname is updated successfully." DismissAfter:-1 Callback:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableview reloadData];
+            });
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
+        }
+    }];
 }
 
 #pragma mark - UIButton Delegate

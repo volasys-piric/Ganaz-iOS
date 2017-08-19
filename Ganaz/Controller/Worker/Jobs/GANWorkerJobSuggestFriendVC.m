@@ -15,6 +15,7 @@
 #import "GANGlobalVCManager.h"
 #import "Global.h"
 #import "GANAppManager.h"
+#import "GANUtils.h"
 
 @interface GANWorkerJobSuggestFriendVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
@@ -115,16 +116,28 @@
 }
 
 - (void) doSuggestFrield{
-    if (self.indexSelected == -1){
+    if (self.indexSelected == -1 && [self.textfieldSearch.text isEqualToString:@""]){
         [GANGlobalVCManager showHudErrorWithMessage:@"Please select contact." DismissAfter:-1 Callback:nil];
         return;
     }
+    NSString *szPhoneFriendNumber;
+    if(self.indexSelected == -1) {
+        szPhoneFriendNumber = self.textfieldSearch.text;
+        if([GANUtils validatePhoneNumber:szPhoneFriendNumber] == NO) {
+            [GANGlobalVCManager showAlertWithMessage:@"Please input valid Phone Number."];
+            [self.textfieldSearch becomeFirstResponder];
+            return;
+        }
+    } else {
+        GANPhonebookContactDataModel *contact = [self.arrFilteredContacts objectAtIndex:self.indexSelected];
+        szPhoneFriendNumber = contact.modelPhone.szLocalNumber;
+    }
+    
     GANJobManager *managerJob = [GANJobManager sharedInstance];
-    GANPhonebookContactDataModel *contact = [self.arrFilteredContacts objectAtIndex:self.indexSelected];
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
-    [managerJob requestSuggestFriendForJob:self.szJobId PhoneNumber:contact.modelPhone.szLocalNumber Callback:^(int status) {
+    [managerJob requestSuggestFriendForJob:self.szJobId PhoneNumber:szPhoneFriendNumber Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"Your request has sent." DismissAfter:-1 Callback:^{
                 [self gotoJobApplyCompletedVC];

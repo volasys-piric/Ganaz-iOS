@@ -101,6 +101,10 @@
     
     self.isVCVisible = YES;
     [self updateReadStatusIfNeeded];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableview reloadData];
+    });
 }
 
 - (void) viewDidDisappear:(BOOL)animated{
@@ -187,6 +191,7 @@
 - (void) animateToHidePopup{
     if (self.isPopupShowing == NO) return;
     
+    self.textview.text = @"";
     self.isPopupShowing = NO;
     int height = (int) self.viewPopupPanel.frame.size.height;
     
@@ -237,8 +242,15 @@
         szUserId = message.szSenderUserId;
     }
     [managerCache requestGetIndexForUserByUserId:szUserId Callback:^(int index) {
+        
+        if(index == -1)
+            return;
+        
         GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-        self.lblReplyTitle.text = [NSString stringWithFormat:@"Reply to %@", [user getValidUsername]];
+        GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+        [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+            self.lblReplyTitle.text = [NSString stringWithFormat:@"Reply to %@", displayName];
+        }];
     }];
     
     [self animateToShowPopup];
@@ -258,7 +270,7 @@
     NSString *szMessage = self.textview.text;
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers Message:szMessage AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
+    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"Message is succesfully sent!" DismissAfter:-1 Callback:^{
                 [self animateToHidePopup];
@@ -274,6 +286,7 @@
 #pragma mark - UITableView Delegate
 
 - (void) configureCell: (GANMessageItemTVC *) cell AtIndex: (int) index{
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     GANCacheManager *managerCache = [GANCacheManager sharedInstance];
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
     GANJobManager *managerJob = [GANJobManager sharedInstance];
@@ -288,7 +301,9 @@
             [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
                 if (index == -1) return;
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Message To %@", [user getValidUsername]];
+                [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+                    cell.lblTitle.text = [NSString stringWithFormat:@"Message To %@", displayName];
+                }];
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT){
@@ -307,7 +322,9 @@
             [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
                 if (index == -1) return;
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Recruited %@", [user getValidUsername]];
+                [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+                    cell.lblTitle.text = [NSString stringWithFormat:@"Recruited %@", displayName];
+                }];
             }];
         }
     }
@@ -318,7 +335,9 @@
             [managerCache requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 if (index == -1) return;
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Message from %@", [user getValidUsername]];
+                [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+                    cell.lblTitle.text = [NSString stringWithFormat:@"Message from %@", displayName];
+                }];
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION){
@@ -337,7 +356,9 @@
             [[GANCacheManager sharedInstance] requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 if (index != -1){
                     GANUserBaseDataModel *user = [[GANCacheManager sharedInstance].arrUsers objectAtIndex:index];
-                    cell.lblMessage.text = [NSString stringWithFormat:@"Reply to %@", [user getValidUsername]];
+                    [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+                        cell.lblMessage.text = [NSString stringWithFormat:@"Reply to %@", displayName];
+                    }];
                 }
             }];
         }
@@ -357,7 +378,9 @@
             [[GANCacheManager sharedInstance] requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 if (index != -1){
                     GANUserBaseDataModel *user = [[GANCacheManager sharedInstance].arrUsers objectAtIndex:index];
-                    cell.lblMessage.text = [NSString stringWithFormat:@"%@ suggested worker @%@", [user getValidUsername], [message getPhoneNumberForSuggestFriend]];
+                    [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+                        cell.lblMessage.text = [NSString stringWithFormat:@"%@ suggested worker @%@", displayName, [message getPhoneNumberForSuggestFriend]];
+                    }];
                 }
             }];
         }

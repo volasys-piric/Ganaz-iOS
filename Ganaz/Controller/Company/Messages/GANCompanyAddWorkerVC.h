@@ -12,5 +12,5 @@
 @interface GANCompanyAddWorkerVC : UIViewController
 
 @property (atomic, assign) ENUM_COMPANY_ADDWORKERS_FROM_CUSTOMVC fromCustomVC;
-
+@property (strong, nonatomic) NSString *szDescription;
 @end

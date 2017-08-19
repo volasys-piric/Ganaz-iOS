@@ -121,7 +121,7 @@
     });
 }
 
-- (void) dorecruitWorkers{
+- (void) doRecruitWorkers{
 
     if (self.indexSelected == -1 && [self.txtSearch.text isEqualToString:@""]){
         [GANGlobalVCManager showHudErrorWithMessage:@"Please select contact." DismissAfter:-1 Callback:nil];
@@ -159,7 +159,7 @@
 
 - (IBAction)onShare:(id)sender {
     [self.view endEditing:YES];
-    [self dorecruitWorkers];
+    [self doRecruitWorkers];
 }
 
 - (IBAction)onDone:(id)sender {
@@ -169,7 +169,7 @@
 
 - (void) gotoJobListVC {
     if(self.fromVC == ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_JOBPOST) {
-        [self.tabBarController setSelectedIndex:1];
+        [GANGlobalVCManager tabBarController:self.tabBarController shouldSelectViewController:1];
     }
     [self.navigationController popToRootViewControllerAnimated:NO];
 }
@@ -249,7 +249,7 @@
 #pragma mark - GANCompanySuggestWorkersItemTVCDelegate
 -(void) onWorkersShare:(NSInteger) nIndex {
     self.indexSelected = (int)nIndex;
-    [self dorecruitWorkers];
+    [self doRecruitWorkers];
 }
 
 @end

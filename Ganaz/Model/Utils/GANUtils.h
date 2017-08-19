@@ -164,4 +164,6 @@ typedef enum _ENUM_APPCONFIG_APPUPDATETYPE{
                ToLanguage: (NSString *) toLanguage
                  Callback: (void (^) (int status, NSString *translatedText)) callback;
 
++ (BOOL)validatePhoneNumber:(NSString *)phoneNumber;
+
 @end

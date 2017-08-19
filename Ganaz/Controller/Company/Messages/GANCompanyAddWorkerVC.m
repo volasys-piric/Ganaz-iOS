@@ -35,6 +35,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     NSInteger nSelectedIndex;
 }
 
+@property (weak, nonatomic) IBOutlet UILabel *lblDescription;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 
 @property (weak, nonatomic) IBOutlet UIView *viewPhone;
@@ -75,6 +76,8 @@ typedef enum _ENUM_FOUNDSTATUS{
     self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE;
     self.arrWorkersFound = [[NSMutableArray alloc] init];
     self.arrInvitedWorkers = [[NSMutableArray alloc] init];
+    
+    self.lblDescription.text = self.szDescription;
     
     [self registerTableViewCellFromNib];
     [self refreshViews];
@@ -306,15 +309,15 @@ typedef enum _ENUM_FOUNDSTATUS{
     [self.view endEditing:YES];
     
     if(self.fromCustomVC == ENUM_COMPANY_ADDWORKERS_FROM_HOME) {
-        [self.tabBarController setSelectedIndex:2];
+        [GANGlobalVCManager tabBarController:self.tabBarController shouldSelectViewController:2];
         [self.navigationController popToRootViewControllerAnimated:NO];
     } else if(self.fromCustomVC == ENUM_COMPANY_ADDWORKERS_FROM_MESSAGE) {
         [self.navigationController popViewControllerAnimated:YES];
     } else if(self.fromCustomVC == ENUM_COMPANY_ADDWORKERS_FROM_RECRUITJOB) {
-        [self.tabBarController setSelectedIndex:2];
-        [self.navigationController popViewControllerAnimated:YES];
+        [GANGlobalVCManager tabBarController:self.tabBarController shouldSelectViewController:2];
+        [self.navigationController popViewControllerAnimated:NO];
     } else if(self.fromCustomVC == ENUM_COMPANY_ADDWORKERS_FROM_RETAINMYWORKERS) {
-        [self.tabBarController setSelectedIndex:2];
+        [GANGlobalVCManager tabBarController:self.tabBarController shouldSelectViewController:2];
         [self.navigationController popToRootViewControllerAnimated:NO];
     }
 }

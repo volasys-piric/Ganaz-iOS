@@ -48,7 +48,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
 
 @interface GANJobsDetailsVC () <UITextFieldDelegate, GMSMapViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate, GANJobPostSuccessPopupDelegate>
 {
-    ENUM_COMPANY_SIGNUP_FROM_CUSTOMVC fromCustomVC;
+//    ENUM_COMPANY_SIGNUP_FROM_CUSTOMVC fromCustomVC;
     GANENUM_JOBPOSTTYPE postType;
 }
 
@@ -152,7 +152,8 @@ typedef enum _ENUM_JOBPOSTTYPE{
     self.locationCenter = nil;
     
     postType = GANENUM_JOBPOSTONLY;
-    fromCustomVC = ENUM_DEFAULT_SIGNUP;
+//    fromCustomVC = ENUM_DEFAULT_SIGNUP;
+    self.transController = [[GANFadeTransitionDelegate alloc] init];
     
     [self refreshFields];
     [self refreshViews];
@@ -170,7 +171,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    if(self.bAddedAllFields == YES && fromCustomVC == ENUM_JOBPOST_SIGNUP) {
+    if(self.bPostedNewJob == YES) {
         [self CompletedUserSignup];
         return;
     }
@@ -225,7 +226,8 @@ typedef enum _ENUM_JOBPOSTTYPE{
         self.btnPostwithBroadcast.hidden = YES;
     }
     
-    if([[GANUserManager sharedInstance] getNearbyWorkerCount] <= 5) {
+    //Test Code, It should be changed to 20 in Live version.
+    if([[GANUserManager sharedInstance] getNearbyWorkerCount] <= 2) {
         self.constraintlblWorkerCount.constant = -58;
         [self.lblWorkerCount setHidden:YES];
     } else {
@@ -581,6 +583,9 @@ typedef enum _ENUM_JOBPOSTTYPE{
 }
 
 - (void) doPostWithTranslatedTitle: (NSString *) titleTranslated TranslatedComments: (NSString *) commentsTranslated{
+    
+    self.bPostedNewJob = NO;
+    
     GANJobManager *managerJob = [GANJobManager sharedInstance];
     GANJobDataModel *job = managerJob.modelOnboardingJob;
     
@@ -615,6 +620,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
     if (self.indexJob == -1){
         [managerJob requestAddJob:job Callback:^(int status) {
             if (status == SUCCESS_WITH_NO_ERROR){
+                
                 if(postType == GANENUM_JOBPOSTANDBROADCAST) {
                     [self recruitWorkersToCurrentJob];
                 } else {
@@ -622,7 +628,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
                         if([[GANCompanyManager sharedInstance].arrMyWorkers count] == 0) {
                             [self gotoSharePostWithContacts];
                         } else {
-                            [self.tabBarController setSelectedIndex:1];
+                            [GANGlobalVCManager tabBarController:self.tabBarController shouldSelectViewController:1];
                             [self.navigationController popToRootViewControllerAnimated:NO];
                         }
                         
@@ -709,7 +715,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
         vc.modalPresentationStyle = UIModalPresentationCustom;
         [self presentViewController:vc animated:YES completion:nil];
     } else {
-        [self.tabBarController setSelectedIndex:1];
+        [GANGlobalVCManager tabBarController:self.tabBarController shouldSelectViewController:1];
         [self.navigationController popToRootViewControllerAnimated:NO];
     }
     
@@ -721,12 +727,21 @@ typedef enum _ENUM_JOBPOSTTYPE{
 }
 
 - (void)gotoSharePostWithContacts {
+    
+    [GANGlobalVCManager tabBarController:self.tabBarController shouldSelectViewController:1];
+    
+    UINavigationController *navVC = [self.tabBarController selectedViewController];
+    UIViewController *selectedVC = [navVC.viewControllers objectAtIndex:0];
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
     
     GANSharePostingWithContactsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_JOBS_SHAREWITHWORKERS"];
     vc.fromVC = ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_JOBPOST;
-    [self.navigationController pushViewController:vc animated:YES];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    [selectedVC.navigationController pushViewController:vc animated:YES];
+    selectedVC.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    
 }
 
 - (void) gotoJobListVC{
