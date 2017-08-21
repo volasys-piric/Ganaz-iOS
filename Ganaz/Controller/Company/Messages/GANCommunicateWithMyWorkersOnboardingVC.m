@@ -127,18 +127,23 @@
     
     if([self isAddedUser:newContact] == NO) {
         [self.arrAddedUsers addObject:newContact];
+        [self gotoMessageOnboarding];
     } else {
-        [GANGlobalVCManager showAlertWithMessage:@"This User was already added."];
+        [GANGlobalVCManager showAlertWithMessage:@"The User was already added."];
     }
 }
 
 - (IBAction)onContinue:(id)sender {
     
     if(self.arrAddedUsers.count == 0) {
-        [GANGlobalVCManager showAlertWithMessage:@"Please select some contacts to send message."];
+        [GANGlobalVCManager showAlertWithMessage:@"Please select contacts to send message."];
         return;
     }
     
+    [self gotoMessageOnboarding];
+}
+
+- (void) gotoMessageOnboarding {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
     GANComposeMessageOnboardingVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES_ONBOARDING"];
     vc.aryCommunicateUsers = [self.arrAddedUsers mutableCopy];

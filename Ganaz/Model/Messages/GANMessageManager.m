@@ -148,7 +148,7 @@
         [params setObject:(isAutoTranslate == YES) ? @"true" : @"false" forKey:@"auto_translate"];
         
         if(receivers_phone_numbers.count > 0) {
-            [params setObject:receivers_phone_numbers forKey:@"@receivers_phone_numbers"];
+            [params setObject:receivers_phone_numbers forKey:@"receivers_phone_numbers"];
         }
         
         [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {

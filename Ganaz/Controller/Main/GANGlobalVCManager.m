@@ -268,6 +268,8 @@
 
 + (void)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(NSInteger) nIndex
 {
+    tabBarController.selectedIndex = nIndex;
+    /*
     UIView * fromView = tabBarController.selectedViewController.view;
     UIView * toView = [[tabBarController.viewControllers objectAtIndex:nIndex] view];
     
@@ -277,7 +279,7 @@
                        options: UIViewAnimationOptionTransitionNone
                     completion:^(BOOL finished) {
                         tabBarController.selectedIndex = nIndex;
-    }];
+    }];*/
 }
 
 @end

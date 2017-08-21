@@ -44,8 +44,7 @@
     // Do any additional setup after loading the view.
     [self refreshViews];
     [self refreshCodePanel];
-    
-    [self.textfieldCode becomeFirstResponder];
+    [self checkAutoLogin];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -65,6 +64,21 @@
     self.buttonContinue.clipsToBounds = YES;
     self.buttonContinue.layer.cornerRadius = 3;
     self.textfieldCode.tintColor = [UIColor clearColor];
+}
+
+- (void) checkAutoLogin{
+    if (self.isAutoLogin == YES){
+        GANUserManager *managerUser = [GANUserManager sharedInstance];
+        self.szPhoneNumber = managerUser.modelUserMinInfo.modelPhone.szLocalNumber;
+        self.textfieldCode.text = managerUser.modelUserMinInfo.szPassword;
+        [self refreshCodePanel];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self doLogin];
+        });
+    }
+    else {
+        [self.textfieldCode becomeFirstResponder];
+    }
 }
 
 #pragma mark - Biz Logic
@@ -166,7 +180,18 @@
                 [self.navigationController setViewControllers:@[[self.navigationController.viewControllers objectAtIndex:0]]];
             }];
             
-        } else if(self.fromCustomVC == ENUM_COMMUNICATE_SIGNUP) {
+        } else if((self.fromCustomVC == ENUM_COMMUNICATE_SIGNUP) || (self.fromCustomVC == ENUM_RETAIN_SIGNUP)) {
+            
+            for (int i = 0; i < (int)([arrNewVCs count]); i++){
+                UIViewController *vc = [arrNewVCs objectAtIndex:i];
+                if ([vc isKindOfClass:[GANJobHomeVC class]] == YES){
+                    [arrNewVCs removeObjectAtIndex:i];
+                }
+            }
+            
+            UIViewController *vcMessage = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES"];
+            [arrNewVCs insertObject:vcMessage atIndex:0];
+            
             for (int i = 0; i < (int)([arrNewVCs count]); i++){
                 UIViewController *vc = [arrNewVCs objectAtIndex:i];
                 if ([vc isKindOfClass:[GANComposeMessageOnboardingVC class]] == YES){
@@ -175,25 +200,7 @@
             }
             
             UITabBarController *tbc = [storyboard instantiateInitialViewController];
-            if ([arrNewVCs count] > 0){
-                UINavigationController *nav = [tbc.viewControllers objectAtIndex:2];
-                nav.viewControllers = arrNewVCs;
-            }
-            
-            [self.navigationController presentViewController:tbc animated:YES completion:^{
-                [self.navigationController setViewControllers:@[[self.navigationController.viewControllers objectAtIndex:0]]];
-            }];
-            
-        } else if(self.fromCustomVC == ENUM_RETAIN_SIGNUP) {
-            
-            for (int i = 0; i < (int)([arrNewVCs count]); i++){
-                UIViewController *vc = [arrNewVCs objectAtIndex:i];
-                if ([vc isKindOfClass:[GANComposeMessageOnboardingVC class]] == YES){
-                    ((GANComposeMessageOnboardingVC *)vc).isFromSignup = ENUM_RETAIN_SIGNUP;
-                }
-            }
-            
-            UITabBarController *tbc = [storyboard instantiateInitialViewController];
+            [tbc setSelectedIndex:2];
             if ([arrNewVCs count] > 0){
                 UINavigationController *nav = [tbc.viewControllers objectAtIndex:2];
                 nav.viewControllers = arrNewVCs;

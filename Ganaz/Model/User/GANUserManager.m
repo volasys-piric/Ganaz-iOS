@@ -70,6 +70,7 @@
     self.modelUserMinInfo.szPassword = self.modelUser.szPassword;
     [self.modelUserMinInfo.modelPhone  initializeWithPhone:self.modelUser.modelPhone];
     self.modelUserMinInfo.enumAuthType = self.modelUser.enumAuthType;
+    self.modelUserMinInfo.enumUserType = self.modelUser.enumType;
     [GANLocalstorageManager saveGlobalObject:[self.modelUserMinInfo serializeToDictionary] Key:LOCALSTORAGE_USER_LOGIN];
 }
 
@@ -91,7 +92,8 @@
     NSString *szAuthType = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"auth_type"]];
     NSString *szUserName = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"username"]];
     NSString *szPassword = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"password"]];
-    if (szAuthType.length > 0 && szUserName.length > 0 && szPassword.length > 0){
+    int userType = [GANGenericFunctionManager refineInt:[dict objectForKey:@"user_type"] DefaultValue:GANENUM_USER_TYPE_WORKER];
+    if (szAuthType.length > 0 && szUserName.length > 0 && szPassword.length > 0 && userType > -1){
         return YES;
     }
     return NO;

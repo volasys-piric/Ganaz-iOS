@@ -9,6 +9,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="SFUIDisplay-Bold.otf">
+            <string>SFUIDisplay-Bold</string>
+        </array>
         <array key="SFUIDisplay-Medium.otf">
             <string>SFUIDisplay-Medium</string>
         </array>
@@ -30,21 +33,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="62.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bvc-Wf-B08" userLabel="Label - Name">
-                                <rect key="frame" x="16" y="8" width="92.5" height="24"/>
+                                <rect key="frame" x="16" y="8" width="257" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="V5r-Cd-rzx"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="16"/>
-                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(191) 344-1714" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xvf-fC-9dW" userLabel="Label - Phone">
-                                <rect key="frame" x="16" y="35" width="92.5" height="20"/>
+                                <rect key="frame" x="16" y="35" width="257" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="yt8-pf-R8r"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="14"/>
-                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="13"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KAd-Ym-3fz" userLabel="Label - Separator">
@@ -64,7 +67,7 @@
                                     <constraint firstAttribute="height" constant="40" id="CBN-5v-8yL"/>
                                     <constraint firstAttribute="width" constant="74" id="caW-Qz-SOJ"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
                                 <state key="normal" title="Share">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -83,8 +86,9 @@
                             <constraint firstItem="dZH-15-YCB" firstAttribute="centerY" secondItem="Jbi-Hm-pMP" secondAttribute="centerY" id="M8d-i8-tyh"/>
                             <constraint firstItem="KAd-Ym-3fz" firstAttribute="leading" secondItem="Jbi-Hm-pMP" secondAttribute="leading" constant="12" id="OPr-Co-cS3"/>
                             <constraint firstItem="Bvc-Wf-B08" firstAttribute="top" secondItem="Jbi-Hm-pMP" secondAttribute="top" constant="8" id="bW9-np-a21"/>
-                            <constraint firstItem="Xvf-fC-9dW" firstAttribute="width" secondItem="Bvc-Wf-B08" secondAttribute="width" id="lO5-o1-Myv"/>
-                            <constraint firstItem="Xvf-fC-9dW" firstAttribute="centerX" secondItem="Bvc-Wf-B08" secondAttribute="centerX" id="xfr-Tq-gJB"/>
+                            <constraint firstItem="Xvf-fC-9dW" firstAttribute="width" secondItem="Bvc-Wf-B08" secondAttribute="width" id="cKU-Um-UWi"/>
+                            <constraint firstItem="Xvf-fC-9dW" firstAttribute="leading" secondItem="Bvc-Wf-B08" secondAttribute="leading" id="hqQ-k7-1oe"/>
+                            <constraint firstItem="dZH-15-YCB" firstAttribute="leading" secondItem="Bvc-Wf-B08" secondAttribute="trailing" constant="20" id="snv-uh-2wG"/>
                         </constraints>
                     </view>
                 </subviews>

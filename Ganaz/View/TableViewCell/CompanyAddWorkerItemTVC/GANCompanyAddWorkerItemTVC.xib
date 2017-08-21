@@ -9,6 +9,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="SFUIDisplay-Bold.otf">
+            <string>SFUIDisplay-Bold</string>
+        </array>
         <array key="SFUIDisplay-Medium.otf">
             <string>SFUIDisplay-Medium</string>
         </array>
@@ -30,21 +33,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="62.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O00-Xb-5zw" userLabel="Label - Name">
-                                <rect key="frame" x="16" y="8" width="92.5" height="24"/>
+                                <rect key="frame" x="16" y="8" width="257" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="ReW-Rg-mTN"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="16"/>
-                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(191) 344-1714" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x7X-xA-Icp" userLabel="Label - Phone">
-                                <rect key="frame" x="16" y="35" width="92.5" height="20"/>
+                                <rect key="frame" x="16" y="35" width="257" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="hdd-n1-P1A"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="14"/>
-                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="13"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xaD-0d-tbJ" userLabel="Label - Separator">
@@ -64,7 +67,7 @@
                                     <constraint firstAttribute="width" constant="74" id="RDV-74-fea"/>
                                     <constraint firstAttribute="height" constant="40" id="r9P-lz-kLr"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="14"/>
                                 <state key="normal" title="Add">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -75,9 +78,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Ak1-Sx-0xz" firstAttribute="leading" secondItem="O00-Xb-5zw" secondAttribute="trailing" constant="20" id="380-cy-opY"/>
                             <constraint firstItem="Ak1-Sx-0xz" firstAttribute="centerY" secondItem="trL-ho-iic" secondAttribute="centerY" id="6EX-JU-yRs"/>
-                            <constraint firstItem="x7X-xA-Icp" firstAttribute="width" secondItem="O00-Xb-5zw" secondAttribute="width" id="Aut-fy-YKR"/>
+                            <constraint firstItem="x7X-xA-Icp" firstAttribute="leading" secondItem="O00-Xb-5zw" secondAttribute="leading" id="ChW-mq-5GA"/>
                             <constraint firstAttribute="trailing" secondItem="xaD-0d-tbJ" secondAttribute="trailing" id="I74-j7-gfc"/>
+                            <constraint firstItem="x7X-xA-Icp" firstAttribute="width" secondItem="O00-Xb-5zw" secondAttribute="width" id="Qbu-wv-SUM"/>
                             <constraint firstItem="xaD-0d-tbJ" firstAttribute="leading" secondItem="trL-ho-iic" secondAttribute="leading" constant="12" id="Z7z-5E-g08"/>
                             <constraint firstItem="x7X-xA-Icp" firstAttribute="top" secondItem="O00-Xb-5zw" secondAttribute="bottom" constant="3" id="fGR-qB-2UE"/>
                             <constraint firstItem="O00-Xb-5zw" firstAttribute="top" secondItem="trL-ho-iic" secondAttribute="top" constant="8" id="rU3-g4-UkO"/>

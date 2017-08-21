@@ -103,7 +103,7 @@
     [self updateReadStatusIfNeeded];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableview reloadData];
+        [self buildMessageList];
     });
 }
 

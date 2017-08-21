@@ -12,6 +12,8 @@
 @interface GANCompanyLoginCodeVC : UIViewController
 
 @property (strong, nonatomic) NSString *szPhoneNumber;
+@property (assign, atomic) BOOL isLogin;
+@property (assign, atomic) BOOL isAutoLogin;
 @property (atomic, assign) ENUM_COMPANY_SIGNUP_FROM_CUSTOMVC fromCustomVC;
 
 @end

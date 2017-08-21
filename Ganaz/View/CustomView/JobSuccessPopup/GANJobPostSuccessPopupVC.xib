@@ -11,11 +11,8 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="SFUIDisplay-Medium.otf">
-            <string>SFUIDisplay-Medium</string>
-        </array>
-        <array key="SFUIDisplay-Regular.otf">
-            <string>SFUIDisplay-Regular</string>
+        <array key="SFUIDisplay-Bold.otf">
+            <string>SFUIDisplay-Bold</string>
         </array>
     </customFonts>
     <objects>
@@ -43,31 +40,31 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ma4-G7-nC5" userLabel="View - Content View">
-                            <rect key="frame" x="37" y="213" width="300" height="240"/>
+                            <rect key="frame" x="37" y="223" width="300" height="220"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AAv-ba-uks" userLabel="View - Content View">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="178"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="158"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8fp-hl-cRJ" userLabel="Label - Description">
-                                            <rect key="frame" x="30" y="30" width="240" height="115"/>
+                                            <rect key="frame" x="10" y="31.5" width="280" height="95.5"/>
                                             <string key="text">Well done!
 Your job has been 
 posted and broadcast 
 to 38 workers</string>
-                                            <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="24"/>
+                                            <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="20"/>
                                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="8fp-hl-cRJ" secondAttribute="trailing" constant="30" id="KAQ-hf-GSD"/>
-                                        <constraint firstItem="8fp-hl-cRJ" firstAttribute="top" secondItem="AAv-ba-uks" secondAttribute="top" constant="30" id="VO1-3j-G1K"/>
-                                        <constraint firstItem="8fp-hl-cRJ" firstAttribute="leading" secondItem="AAv-ba-uks" secondAttribute="leading" constant="30" id="W0B-2d-eNA"/>
+                                        <constraint firstAttribute="trailing" secondItem="8fp-hl-cRJ" secondAttribute="trailing" constant="10" id="KAQ-hf-GSD"/>
+                                        <constraint firstItem="8fp-hl-cRJ" firstAttribute="centerY" secondItem="AAv-ba-uks" secondAttribute="centerY" id="MkE-JX-7Yw"/>
+                                        <constraint firstItem="8fp-hl-cRJ" firstAttribute="leading" secondItem="AAv-ba-uks" secondAttribute="leading" constant="10" id="W0B-2d-eNA"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mHZ-62-FqF" userLabel="View - Action Panel">
-                                    <rect key="frame" x="12" y="178" width="276" height="50"/>
+                                    <rect key="frame" x="12" y="158" width="276" height="50"/>
                                     <subviews>
                                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vp0-d9-LNS" userLabel="Button - OK">
                                             <rect key="frame" x="65" y="3" width="147" height="45"/>
@@ -75,7 +72,7 @@ to 38 workers</string>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="vp0-d9-LNS" secondAttribute="height" multiplier="49:15" id="l07-SX-FCq"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                            <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
                                             <state key="normal" title="OK">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
@@ -96,7 +93,7 @@ to 38 workers</string>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="AAv-ba-uks" firstAttribute="centerX" secondItem="ma4-G7-nC5" secondAttribute="centerX" id="Awz-Ut-DKV"/>
-                                <constraint firstAttribute="height" constant="240" id="C9P-Uz-IlH"/>
+                                <constraint firstAttribute="height" constant="220" id="C9P-Uz-IlH"/>
                                 <constraint firstItem="AAv-ba-uks" firstAttribute="top" secondItem="ma4-G7-nC5" secondAttribute="top" id="Qvu-Q5-vLU"/>
                                 <constraint firstItem="mHZ-62-FqF" firstAttribute="top" secondItem="AAv-ba-uks" secondAttribute="bottom" id="YVQ-Ui-ryj"/>
                                 <constraint firstItem="mHZ-62-FqF" firstAttribute="leading" secondItem="ma4-G7-nC5" secondAttribute="leading" constant="12" id="Yxe-bc-RpW"/>

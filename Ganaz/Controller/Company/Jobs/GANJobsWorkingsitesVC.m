@@ -35,11 +35,12 @@
     self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     [self registerTableViewCellFromNib];
-    [self refreshViews];
 }
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    [self refreshViews];
     [self.tableview reloadData];
 }
 
