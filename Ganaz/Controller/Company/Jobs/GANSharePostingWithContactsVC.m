@@ -132,8 +132,17 @@
     GANRecruitManager *managerRecruit = [GANRecruitManager sharedInstance];
     NSMutableArray *arrPhoneNumbers = [[NSMutableArray alloc] init];
     
-    GANPhonebookContactDataModel *worker = [self.arrFilteredContacts objectAtIndex:self.indexSelected];
-    [arrPhoneNumbers addObject:worker.modelPhone.szLocalNumber];
+    if(self.indexSelected == -1 ) {
+        NSString *szPhoneNumber = [GANUtils validatePhoneNumber:self.txtSearch.text];
+        if([szPhoneNumber isEqualToString:@""]) {
+            [GANGlobalVCManager showAlertWithMessage:@"Please input valid Phone Number."];
+            return;
+        }
+        [arrPhoneNumbers addObject:szPhoneNumber];
+    } else {
+        GANPhonebookContactDataModel *worker = [self.arrFilteredContacts objectAtIndex:self.indexSelected];
+        [arrPhoneNumbers addObject:worker.modelPhone.szLocalNumber];
+    }
     
     NSMutableArray *arrJobIds = [[NSMutableArray alloc] init];
     GANJobDataModel *job = [managerJob.arrMyJobs lastObject];
@@ -141,6 +150,7 @@
 
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [managerRecruit requestSubmitRecruitWithJobIds:arrJobIds Broadcast:0 ReRecruitUserIds:nil PhoneNumbers:arrPhoneNumbers Callback:^(int status, int count) {
+        
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager hideHudProgress];
             [self showPopupDialog];
@@ -148,6 +158,7 @@
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
         }
+        self.indexSelected = -1;
         GANACTIVITY_REPORT(@"Company - Recruit");
     }];
 }
@@ -181,7 +192,7 @@
     vc.view.backgroundColor = [UIColor clearColor];
     
     NSString *strDescription;
-    if([self.txtSearch.text isEqualToString:@""]) {
+    if(self.indexSelected != -1) {
         GANPhonebookContactDataModel *contact = [self.arrFilteredContacts objectAtIndex:self.indexSelected];
         strDescription = [NSString stringWithFormat:@"Your job has been\nshared with\n%@", [contact getFullName]];
     } else {
@@ -207,7 +218,6 @@
 }
 
 - (IBAction)onSeachTextFieldChanged:(id)sender {
-    [self.view endEditing:YES];
     [self buildFilteredArray];
 }
 
@@ -248,6 +258,8 @@
 
 #pragma mark - GANCompanySuggestWorkersItemTVCDelegate
 -(void) onWorkersShare:(NSInteger) nIndex {
+    [self.view endEditing:YES];
+    
     self.indexSelected = (int)nIndex;
     [self doRecruitWorkers];
 }

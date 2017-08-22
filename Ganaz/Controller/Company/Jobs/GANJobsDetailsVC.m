@@ -246,6 +246,14 @@ typedef enum _ENUM_JOBPOSTTYPE{
     return @"This is a good place to say more about any benefits, job requirements, shift hours and any other info about what makes your company a great place to work.";
 }
 
+- (NSString *) getFinalCommentsText {
+    if([self.textviewComments.text isEqualToString:[self getTextviewCommentsPlaceholderText]]) {
+        return @"";
+    } else {
+        return self.textviewComments.text;
+    }
+}
+
 - (void) refreshFields{
     self.textviewComments.text = [self getTextviewCommentsPlaceholderText];
     self.textviewComments.textColor = [UIColor lightGrayColor];
@@ -563,7 +571,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
 - (void) preparePost{
     if ([self checkMandatoryFields] == NO) return;
     NSString *szTitle = self.txtTitle.text;
-    NSString *szComments = self.textviewComments.text;
+    NSString *szComments = [self getFinalCommentsText];
     __block NSString *szTitleTranslated = szTitle;
     __block NSString *szCommentsTranslated = szComments;
     BOOL shouldTranslate = self.isAutoTranslate;
@@ -592,7 +600,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
     NSString *szTitle = self.txtTitle.text;
     float fPrice = [self.txtPrice.text floatValue];
     int nPos = [self.txtPositions.text intValue];
-    NSString *szComments = self.textviewComments.text;
+    NSString *szComments = [self getFinalCommentsText];
     
     job.szCompanyId = [GANUserManager getCompanyDataModel].szId;
     job.szCompanyUserId = [GANUserManager getUserCompanyDataModel].szId;

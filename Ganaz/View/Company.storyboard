@@ -225,7 +225,7 @@
             </objects>
             <point key="canvasLocation" x="-841" y="1208"/>
         </scene>
-        <!--Share Job-->
+        <!--Add Workers-->
         <scene sceneID="GZV-fE-55d">
             <objects>
                 <viewController storyboardIdentifier="STORYBOARD_COMPANY_ADDWORKER" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Db0-vm-j2k" customClass="GANCompanyAddWorkerVC" sceneMemberID="viewController">
@@ -385,7 +385,7 @@
                             <constraint firstItem="fm3-M8-bQG" firstAttribute="leading" secondItem="nu3-Uf-Hns" secondAttribute="leading" id="xJ8-x1-glL"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Share Job" id="E9N-Rb-EpP"/>
+                    <navigationItem key="navigationItem" title="Add Workers" id="E9N-Rb-EpP"/>
                     <connections>
                         <outlet property="btnAdd" destination="RWL-nK-Fbf" id="Ddv-CG-bhB"/>
                         <outlet property="btnInvite" destination="0FG-eR-oCV" id="wW8-dg-NSf"/>
@@ -1314,7 +1314,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What would you like to do?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y8j-QM-s8O">
-                                <rect key="frame" x="48" y="86" width="279" height="29"/>
+                                <rect key="frame" x="48.5" y="86" width="279" height="29"/>
                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="24"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -2374,7 +2374,7 @@ all workers in area</string>
             </objects>
             <point key="canvasLocation" x="-1794.4000000000001" y="2688.3058470764618"/>
         </scene>
-        <!--Share job-->
+        <!--Share Job-->
         <scene sceneID="Ntk-W9-nIH">
             <objects>
                 <viewController storyboardIdentifier="STORYBOARD_COMPANY_JOBS_SHAREWITHWORKERS" id="tKS-Bi-hnz" customClass="GANSharePostingWithContactsVC" sceneMemberID="viewController">
@@ -2446,7 +2446,7 @@ your job post with?</string>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suggested:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LML-eI-f08">
-                                                <rect key="frame" x="0.0" y="97" width="76.5" height="24"/>
+                                                <rect key="frame" x="0.0" y="97" width="77" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="5hN-fb-MAM"/>
                                                 </constraints>
@@ -2525,7 +2525,7 @@ your job post with?</string>
                             <constraint firstItem="VxF-XB-Mhg" firstAttribute="leading" secondItem="HI9-IQ-8cI" secondAttribute="leading" id="yLZ-Fx-kcX"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Share job" id="UhI-H3-H3n"/>
+                    <navigationItem key="navigationItem" title="Share Job" id="UhI-H3-H3n"/>
                     <connections>
                         <outlet property="buttonDone" destination="wzb-E3-cbI" id="bsI-Sf-Y7x"/>
                         <outlet property="buttonShare" destination="L5n-DH-6NF" id="zO3-CL-Hv4"/>

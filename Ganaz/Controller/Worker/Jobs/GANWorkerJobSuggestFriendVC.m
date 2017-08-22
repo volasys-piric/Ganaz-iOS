@@ -122,8 +122,8 @@
     }
     NSString *szPhoneFriendNumber;
     if(self.indexSelected == -1) {
-        szPhoneFriendNumber = self.textfieldSearch.text;
-        if([GANUtils validatePhoneNumber:szPhoneFriendNumber] == NO) {
+        szPhoneFriendNumber = [GANUtils validatePhoneNumber:self.textfieldSearch.text];
+        if([szPhoneFriendNumber isEqualToString:@""]) {
             [GANGlobalVCManager showAlertWithMessage:@"Please input valid Phone Number."];
             [self.textfieldSearch becomeFirstResponder];
             return;
