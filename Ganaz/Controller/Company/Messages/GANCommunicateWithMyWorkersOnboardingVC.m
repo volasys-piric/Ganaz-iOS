@@ -10,14 +10,13 @@
 #import "GANWorkerSuggestFriendItemTVC.h"
 #import "GANComposeMessageOnboardingVC.h"
 
-#import "GANUIPhoneTextField.h"
 #import "GANPhonebookContactsManager.h"
 #import "GANGlobalVCManager.h"
 #import "GANGenericFunctionManager.h"
 #import <UIView+Shake.h>
 
 @interface GANCommunicateWithMyWorkersOnboardingVC ()<UITableViewDelegate, UITableViewDataSource>
-@property (strong, nonatomic) IBOutlet GANUIPhoneTextField *txtPhoneNumber;
+@property (strong, nonatomic) IBOutlet UITextField *txtPhoneNumber;
 @property (strong, nonatomic) IBOutlet UITableView *tblWorker;
 @property (strong, nonatomic) IBOutlet UIButton *btnAdd;
 @property (strong, nonatomic) IBOutlet UIButton *btnContinue;
@@ -113,10 +112,15 @@
 
 - (IBAction)onAdd:(id)sender {
     
-    NSString *szPhoneNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:self.txtPhoneNumber.text];
-    
-    if (szPhoneNumber.length == 0){
+    if (self.txtPhoneNumber.text.length == 0){
         [self shakeInvalidFields:self.viewSearch];
+        return;
+    }
+    
+    NSString *szPhoneNumber = [GANGenericFunctionManager getValidPhoneNumber:self.txtPhoneNumber.text];
+    
+    if([szPhoneNumber isEqualToString:@""]) {
+        [GANGlobalVCManager showAlertWithMessage:@"Please input valid Phone Number."];
         return;
     }
     
@@ -129,7 +133,7 @@
         [self.arrAddedUsers addObject:newContact];
         [self gotoMessageOnboarding];
     } else {
-        [GANGlobalVCManager showAlertWithMessage:@"The User was already added."];
+        [GANGlobalVCManager showAlertWithMessage:@"User is already added."];
     }
 }
 

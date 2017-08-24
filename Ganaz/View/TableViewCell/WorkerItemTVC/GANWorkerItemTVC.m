@@ -42,5 +42,10 @@
     self.lblCircle.layer.cornerRadius = 3;
     self.lblCircle.clipsToBounds = YES;
 }
+- (IBAction)onEdit:(id)sender {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(setWorkerNickName:)]) {
+        [self.delegate setWorkerNickName:self.nIndex];
+    }
+}
 
 @end

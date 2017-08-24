@@ -10,13 +10,10 @@
 #import "GANCompanyAddWorkerItemTVC.h"
 #import "GANJobRecruitPopupVC.h"
 
-#import "GANUIPhoneTextField.h"
-
 #import "GANUserWorkerDataModel.h"
 #import "GANCompanyManager.h"
 #import "GANUserManager.h"
 #import "GANFadeTransitionDelegate.h"
-#import "GANUtils.h"
 #import "GANGenericFunctionManager.h"
 #import "Global.h"
 #import "GANGlobalVCManager.h"
@@ -30,7 +27,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND
 } GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS;
 
-@interface GANCompanyAddWorkerVC () <UITableViewDelegate, UITableViewDataSource, GANCompanyAddWorkerItemTVCDelegate, GANJobRecruitPopupVCDelegate>
+@interface GANCompanyAddWorkerVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, GANCompanyAddWorkerItemTVCDelegate, GANJobRecruitPopupVCDelegate>
 {
     NSInteger nSelectedIndex;
 }
@@ -39,7 +36,7 @@ typedef enum _ENUM_FOUNDSTATUS{
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 
 @property (weak, nonatomic) IBOutlet UIView *viewPhone;
-@property (weak, nonatomic) IBOutlet GANUIPhoneTextField *txtPhone;
+@property (weak, nonatomic) IBOutlet UITextField *txtPhone;
 @property (weak, nonatomic) IBOutlet UIButton *btnAdd;
 @property (weak, nonatomic) IBOutlet UIButton *btnInvite;
 @property (weak, nonatomic) IBOutlet UILabel *lblNote;
@@ -183,7 +180,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     
     if([self isInvitedUser:self.txtPhone.text])
     {
-        [GANGlobalVCManager showAlertWithMessage:@"User was already added."];
+        [GANGlobalVCManager showAlertWithMessage:@"User is already added."];
         return;
     }
     
@@ -194,11 +191,17 @@ typedef enum _ENUM_FOUNDSTATUS{
         GANPhonebookContactDataModel *worker = [self.arrWorkersFound objectAtIndex:nSelectedIndex];
         szPhoneNumber = worker.modelPhone.szLocalNumber;
         szWorkerName = [worker getFullName];
-    }
-    szPhoneNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:szPhoneNumber];
-    if (szPhoneNumber.length == 0 && fromSeachField){
-        [self shakeInvalidFields:self.viewPhone];
-        return;
+    } else {
+        if ([szPhoneNumber isEqualToString:@""]){
+            [self shakeInvalidFields:self.viewPhone];
+            return;
+        }
+        
+        szPhoneNumber = [GANGenericFunctionManager getValidPhoneNumber:szPhoneNumber];
+        if([szPhoneNumber isEqualToString:@""]) {
+            [GANGlobalVCManager showAlertWithMessage:@"Please input valid Phone Number."];
+            return;
+        }
     }
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];

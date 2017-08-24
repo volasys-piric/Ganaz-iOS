@@ -36,7 +36,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.lblSendMessageUsers.text = [NSString stringWithFormat:@"To: %@", [self getWorkersName]];
+    self.lblSendMessageUsers.text = [NSString stringWithFormat:@"%@", [self getWorkerNames]];
     
     self.isAutoTranslate = NO;
     
@@ -68,17 +68,13 @@
     }
 }
 
-- (NSString *) getWorkersName {
+- (NSString *) getWorkerNames {
     
     NSString *szName = @"";
     if(self.aryCommunicateUsers.count > 0) {
         for(int i = 0; i < self.aryCommunicateUsers.count; i ++) {
-            if(i > 2) {
-                szName = [NSString stringWithFormat:@"%@...", szName];
-                break;
-            } else if (i != 0){
+            if (i != 0)
                 szName = [NSString stringWithFormat:@"%@, ", szName];
-            }
             
             GANPhonebookContactDataModel *contact = [self.aryCommunicateUsers objectAtIndex:i];
             if([contact.szFirstName isEqualToString:@""] || contact.szFirstName == nil) {

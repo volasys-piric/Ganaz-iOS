@@ -17,6 +17,7 @@
 #import "Global.h"
 #import "GANAppManager.h"
 #import "GANRecruitManager.h"
+#import "GANGenericFunctionManager.h"
 
 @interface GANSharePostingWithContactsVC ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, GANCompanySuggestWorkersItemTVCDelegate, GANJobPostingSharedPopupVCDelegate>
 
@@ -133,7 +134,7 @@
     NSMutableArray *arrPhoneNumbers = [[NSMutableArray alloc] init];
     
     if(self.indexSelected == -1 ) {
-        NSString *szPhoneNumber = [GANUtils validatePhoneNumber:self.txtSearch.text];
+        NSString *szPhoneNumber = [GANGenericFunctionManager getValidPhoneNumber:self.txtSearch.text];
         if([szPhoneNumber isEqualToString:@""]) {
             [GANGlobalVCManager showAlertWithMessage:@"Please input valid Phone Number."];
             return;

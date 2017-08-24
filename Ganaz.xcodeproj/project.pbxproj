@@ -366,6 +366,7 @@
 		83E322971F120872002DA8CB /* GANWorkerLoginCodeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANWorkerLoginCodeVC.m; path = "Controller/Login+Signup/Worker/GANWorkerLoginCodeVC.m"; sourceTree = "<group>"; };
 		83E322991F12089A002DA8CB /* GANWorkerLoginPhoneVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANWorkerLoginPhoneVC.h; path = "Controller/Login+Signup/Worker/GANWorkerLoginPhoneVC.h"; sourceTree = "<group>"; };
 		83E3229A1F12089A002DA8CB /* GANWorkerLoginPhoneVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANWorkerLoginPhoneVC.m; path = "Controller/Login+Signup/Worker/GANWorkerLoginPhoneVC.m"; sourceTree = "<group>"; };
+		9F32532C1F4E92BD00F07B69 /* GANStrings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GANStrings.h; path = Model/Utils/GANStrings.h; sourceTree = "<group>"; };
 		9F724D461F47C5BD00EED0F7 /* GANCommunicateWithMyWorkersOnboardingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANCommunicateWithMyWorkersOnboardingVC.h; path = Controller/Company/Messages/GANCommunicateWithMyWorkersOnboardingVC.h; sourceTree = "<group>"; };
 		9F724D471F47C5BD00EED0F7 /* GANCommunicateWithMyWorkersOnboardingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANCommunicateWithMyWorkersOnboardingVC.m; path = Controller/Company/Messages/GANCommunicateWithMyWorkersOnboardingVC.m; sourceTree = "<group>"; };
 		9F724D491F47C60600EED0F7 /* GANComposeMessageOnboardingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANComposeMessageOnboardingVC.h; path = Controller/Company/Messages/GANComposeMessageOnboardingVC.h; sourceTree = "<group>"; };
@@ -772,6 +773,7 @@
 			children = (
 				834A87D91EE2014300EB6E51 /* Data Model */,
 				838AAC4D1E57A16C006CC33D /* Global.h */,
+				9F32532C1F4E92BD00F07B69 /* GANStrings.h */,
 				83CA210A1E57EF7800C0D787 /* GANAppManager.h */,
 				83CA210B1E57EF7800C0D787 /* GANAppManager.m */,
 				834A87D61EE2013A00EB6E51 /* GANDataManager.h */,

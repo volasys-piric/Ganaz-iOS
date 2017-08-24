@@ -15,7 +15,7 @@
 #import "GANGlobalVCManager.h"
 #import "Global.h"
 #import "GANAppManager.h"
-#import "GANUtils.h"
+#import "GANGenericFunctionManager.h"
 
 @interface GANWorkerJobSuggestFriendVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
@@ -122,7 +122,7 @@
     }
     NSString *szPhoneFriendNumber;
     if(self.indexSelected == -1) {
-        szPhoneFriendNumber = [GANUtils validatePhoneNumber:self.textfieldSearch.text];
+        szPhoneFriendNumber = [GANGenericFunctionManager getValidPhoneNumber:self.textfieldSearch.text];
         if([szPhoneFriendNumber isEqualToString:@""]) {
             [GANGlobalVCManager showAlertWithMessage:@"Please input valid Phone Number."];
             [self.textfieldSearch becomeFirstResponder];
@@ -135,7 +135,7 @@
     
     GANJobManager *managerJob = [GANJobManager sharedInstance];
     
-    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     
     [managerJob requestSuggestFriendForJob:self.szJobId PhoneNumber:szPhoneFriendNumber Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
@@ -144,7 +144,7 @@
             }];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, your request has been failed." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
         }
     }];
     GANACTIVITY_REPORT(@"Worker - Suggest Friend for Job");

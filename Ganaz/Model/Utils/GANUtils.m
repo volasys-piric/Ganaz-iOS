@@ -222,18 +222,4 @@
     }];
 }
 
-+ (NSString *)validatePhoneNumber:(NSString *)phoneNumber
-{
-    NSString *szPhoneNumber = [phoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    
-    NSString *phoneRegex = @"[0-9]{10}";
-    NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", phoneRegex];
-    
-    if([phoneTest evaluateWithObject:szPhoneNumber] == NO)
-        return @"";
-    
-    return szPhoneNumber;
-}
-
-
 @end

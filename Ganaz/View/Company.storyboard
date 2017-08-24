@@ -213,7 +213,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="iJU-eR-HVA" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Jobs" image="tab-list" id="PZV-ec-WC1"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="oC6-jv-mUH">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oC6-jv-mUH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -246,7 +246,7 @@
                                             <constraint firstAttribute="height" constant="30" id="0OZ-Vf-C9f"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="20"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter phone number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hL1-TQ-UV6" userLabel="Label - Add workers">
@@ -255,19 +255,20 @@
                                             <constraint firstAttribute="height" constant="20" id="eXj-os-AXI"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
-                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wvp-F3-6tJ" userLabel="View - Phone Panel">
                                         <rect key="frame" x="20" y="89" width="335" height="44"/>
                                         <subviews>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="(###) ###-####" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="E82-ZN-buc" userLabel="Text Field - Phone" customClass="GANUIPhoneTextField">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="E82-ZN-buc" userLabel="Text Field - Phone">
                                                 <rect key="frame" x="12" y="0.0" width="311" height="44"/>
                                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="decimalPad"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                                 <connections>
-                                                    <action selector="onSeachTextFieldChanged:" destination="Db0-vm-j2k" eventType="editingChanged" id="hm9-TP-r8P"/>
+                                                    <action selector="onSeachTextFieldChanged:" destination="Db0-vm-j2k" eventType="editingChanged" id="oJp-Dn-gwx"/>
+                                                    <outlet property="delegate" destination="Db0-vm-j2k" id="o6Q-W3-fzY"/>
                                                 </connections>
                                             </textField>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gce-3j-5gT" userLabel="View - Search">
@@ -394,7 +395,7 @@
                         <outlet property="lblSuggested" destination="Vi7-F5-G5k" id="Axi-od-owf"/>
                         <outlet property="lblTitle" destination="hL1-TQ-UV6" id="1xY-ED-JD5"/>
                         <outlet property="tableview" destination="DbU-yY-MoP" id="g9V-Uf-HPk"/>
-                        <outlet property="txtPhone" destination="E82-ZN-buc" id="8Nt-Wy-wUa"/>
+                        <outlet property="txtPhone" destination="E82-ZN-buc" id="kmF-nK-QKT"/>
                         <outlet property="viewPhone" destination="wvp-F3-6tJ" id="nmK-XL-n0n"/>
                     </connections>
                 </viewController>
@@ -646,14 +647,14 @@
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GsC-v3-5un" userLabel="View - Phone Panel">
                                         <rect key="frame" x="20" y="89" width="335" height="44"/>
                                         <subviews>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="(###) ###-####" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lNe-Uh-VEv" userLabel="Text Field - Phone" customClass="GANUIPhoneTextField">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lNe-Uh-VEv" userLabel="Text Field - Phone">
                                                 <rect key="frame" x="12" y="0.0" width="311" height="44"/>
                                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="decimalPad"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                                 <connections>
-                                                    <action selector="onTextFieldSearchChanged:" destination="IgI-Dg-aPB" eventType="editingChanged" id="Mb9-Ev-I4W"/>
-                                                    <outlet property="delegate" destination="IgI-Dg-aPB" id="FEv-gC-B1d"/>
+                                                    <action selector="onTextFieldSearchChanged:" destination="IgI-Dg-aPB" eventType="editingChanged" id="K70-Q1-Dst"/>
+                                                    <outlet property="delegate" destination="IgI-Dg-aPB" id="sAo-L3-t1c"/>
                                                 </connections>
                                             </textField>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WtI-t5-ta4" userLabel="View - Add">
@@ -767,7 +768,7 @@
                         <outlet property="btnAdd" destination="gcO-t2-PG0" id="iJz-Jf-TVd"/>
                         <outlet property="btnContinue" destination="cgn-1P-kvi" id="VVO-QE-8zR"/>
                         <outlet property="tblWorker" destination="qkj-s8-Xnt" id="IW0-vt-afB"/>
-                        <outlet property="txtPhoneNumber" destination="lNe-Uh-VEv" id="Dh2-b7-7Cu"/>
+                        <outlet property="txtPhoneNumber" destination="lNe-Uh-VEv" id="ure-cP-pmu"/>
                         <outlet property="viewSearch" destination="GsC-v3-5un" id="RLs-Oq-LZd"/>
                         <segue destination="YJf-X0-t1q" kind="show" id="cky-oj-RYZ"/>
                     </connections>
@@ -791,20 +792,26 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HFG-Dn-JJW" userLabel="View - Main Container">
                                 <rect key="frame" x="0.0" y="64" width="375" height="559"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: Sabrina, Juan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DKf-Tc-9Cu" userLabel="Label - Message">
-                                        <rect key="frame" x="20" y="34" width="335" height="20"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To : " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jhB-F1-9gf">
+                                        <rect key="frame" x="20" y="35" width="30" height="18"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="MZ3-Jo-s2l"/>
+                                            <constraint firstAttribute="width" constant="30" id="8uJ-wI-zPo"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sabrina, Juan" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DKf-Tc-9Cu" userLabel="Label - Message">
+                                        <rect key="frame" x="50" y="35" width="305" height="18"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tel-6j-X84" userLabel="View - Message">
-                                        <rect key="frame" x="20" y="68" width="335" height="229"/>
+                                        <rect key="frame" x="20" y="73" width="335" height="224"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Br7-om-Ngq" userLabel="Text View - Message">
-                                                <rect key="frame" x="12" y="8" width="311" height="213"/>
+                                                <rect key="frame" x="12" y="8" width="311" height="208"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="13"/>
@@ -816,6 +823,7 @@
                                         </subviews>
                                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
                                         <constraints>
+                                            <constraint firstAttribute="height" constant="224" id="26r-Lc-mpz"/>
                                             <constraint firstAttribute="trailing" secondItem="Br7-om-Ngq" secondAttribute="trailing" constant="12" id="4we-m7-kCi"/>
                                             <constraint firstItem="Br7-om-Ngq" firstAttribute="top" secondItem="tel-6j-X84" secondAttribute="top" constant="8" id="IhS-cU-Cwx"/>
                                             <constraint firstItem="Br7-om-Ngq" firstAttribute="leading" secondItem="tel-6j-X84" secondAttribute="leading" constant="12" id="a8C-4x-atZ"/>
@@ -852,19 +860,20 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="DKf-Tc-9Cu" firstAttribute="top" secondItem="HFG-Dn-JJW" secondAttribute="top" constant="34" id="1Db-G6-wxH"/>
+                                    <constraint firstItem="DKf-Tc-9Cu" firstAttribute="top" secondItem="HFG-Dn-JJW" secondAttribute="top" constant="35" id="1Db-G6-wxH"/>
                                     <constraint firstItem="1Z7-UD-D7r" firstAttribute="top" secondItem="tel-6j-X84" secondAttribute="bottom" constant="8" id="30O-IP-5vA"/>
-                                    <constraint firstItem="tel-6j-X84" firstAttribute="centerX" secondItem="DKf-Tc-9Cu" secondAttribute="centerX" id="JaK-mw-lbe"/>
-                                    <constraint firstItem="tel-6j-X84" firstAttribute="width" secondItem="DKf-Tc-9Cu" secondAttribute="width" id="Mxj-d0-2js"/>
-                                    <constraint firstItem="1Z7-UD-D7r" firstAttribute="centerX" secondItem="DKf-Tc-9Cu" secondAttribute="centerX" id="Vnu-yU-kYn"/>
-                                    <constraint firstItem="tel-6j-X84" firstAttribute="top" secondItem="DKf-Tc-9Cu" secondAttribute="bottom" constant="14" id="duI-dy-CLF"/>
+                                    <constraint firstItem="tel-6j-X84" firstAttribute="leading" secondItem="HFG-Dn-JJW" secondAttribute="leading" constant="20" id="PKO-PG-56x"/>
+                                    <constraint firstItem="jhB-F1-9gf" firstAttribute="top" secondItem="HFG-Dn-JJW" secondAttribute="top" constant="35" id="acy-FH-rji"/>
+                                    <constraint firstItem="tel-6j-X84" firstAttribute="top" secondItem="DKf-Tc-9Cu" secondAttribute="bottom" constant="20" id="duI-dy-CLF"/>
                                     <constraint firstAttribute="trailing" secondItem="DKf-Tc-9Cu" secondAttribute="trailing" constant="20" id="eka-sL-ahM"/>
-                                    <constraint firstItem="1Z7-UD-D7r" firstAttribute="width" secondItem="DKf-Tc-9Cu" secondAttribute="width" id="gAX-Zb-ILD"/>
+                                    <constraint firstItem="tel-6j-X84" firstAttribute="centerX" secondItem="HFG-Dn-JJW" secondAttribute="centerX" id="fRG-AS-Xjc"/>
                                     <constraint firstAttribute="trailing" secondItem="NbW-Ai-quA" secondAttribute="trailing" constant="20" id="ipg-3N-q9w"/>
+                                    <constraint firstItem="1Z7-UD-D7r" firstAttribute="leading" secondItem="HFG-Dn-JJW" secondAttribute="leading" constant="20" id="lxi-Rr-rcY"/>
+                                    <constraint firstItem="jhB-F1-9gf" firstAttribute="leading" secondItem="HFG-Dn-JJW" secondAttribute="leading" constant="20" id="mR5-l3-n7P"/>
                                     <constraint firstAttribute="bottom" secondItem="NbW-Ai-quA" secondAttribute="bottom" constant="20" id="mbB-Pa-u0c"/>
                                     <constraint firstItem="NbW-Ai-quA" firstAttribute="leading" secondItem="HFG-Dn-JJW" secondAttribute="leading" constant="20" id="p7f-aU-13r"/>
-                                    <constraint firstItem="NbW-Ai-quA" firstAttribute="top" secondItem="1Z7-UD-D7r" secondAttribute="bottom" constant="150" id="qiB-TM-57r"/>
-                                    <constraint firstItem="DKf-Tc-9Cu" firstAttribute="leading" secondItem="HFG-Dn-JJW" secondAttribute="leading" constant="20" id="y8a-dK-nXe"/>
+                                    <constraint firstAttribute="trailing" secondItem="1Z7-UD-D7r" secondAttribute="trailing" constant="20" id="wM6-Mz-XdJ"/>
+                                    <constraint firstItem="DKf-Tc-9Cu" firstAttribute="leading" secondItem="jhB-F1-9gf" secondAttribute="trailing" id="y5h-LQ-TIF"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -1073,7 +1082,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uTe-3a-X90" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Messages" image="tab-message" id="HiR-VK-JAF"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="ZES-Oq-N2i">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZES-Oq-N2i">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1272,7 +1281,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KRB-R9-5dL" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Settings" image="tab-settings" id="1OE-FK-kTO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="973-Uq-eLR">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="973-Uq-eLR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1289,7 +1298,7 @@
             <objects>
                 <navigationController id="Oaj-tt-ZXe" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" image="tab-home" id="LmR-s0-GYg"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="OhS-BJ-3Fl">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="OhS-BJ-3Fl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1314,7 +1323,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What would you like to do?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y8j-QM-s8O">
-                                <rect key="frame" x="48.5" y="86" width="279" height="29"/>
+                                <rect key="frame" x="48" y="86" width="279" height="29"/>
                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="24"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>

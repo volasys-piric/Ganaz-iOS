@@ -21,7 +21,7 @@
 #import "GANGlobalVCManager.h"
 #import "GANAppManager.h"
 
-@interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource, GANMyWorkerNickNameEditPopupVCDelegate>
+@interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource, GANMyWorkerNickNameEditPopupVCDelegate, GANWorkerItemTVCDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 
@@ -213,9 +213,14 @@
 - (void) configureCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
     GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:index];
     cell.lblWorkerId.text = [myWorker getDisplayName];
+    cell.delegate = self;
+    cell.nIndex = index;
+    
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+    cell.btnEdit.layer.cornerRadius = 3.f;
+    cell.btnEdit.clipsToBounds = YES;
+        
     BOOL isSelected = [[self.arrWorkerSelected objectAtIndex:index] boolValue];
     [cell setItemSelected:isSelected];
 }
@@ -235,7 +240,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 50;
+    return 63;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -245,21 +250,7 @@
     [self.tableview reloadData];
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-
--(NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    UITableViewRowAction *editAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Edit" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-        [self changeMyWorkerNickName:(int) indexPath.row];
-    }];
-    editAction.backgroundColor = GANUICOLOR_THEMECOLOR_GREEN;
-    
-    return @[editAction];
-}
-
-- (void) changeMyWorkerNickName: (int) index{
+- (void) changeMyWorkerNickName: (NSInteger) index{
     dispatch_async(dispatch_get_main_queue(), ^{
         GANMyWorkerNickNameEditPopupVC *vc = [[GANMyWorkerNickNameEditPopupVC alloc] initWithNibName:@"GANMyWorkerNickNameEditPopupVC" bundle:nil];
         vc.delegate = self;
@@ -269,6 +260,11 @@
         vc.modalPresentationStyle = UIModalPresentationCustom;
         [self presentViewController:vc animated:YES completion:nil];
     });
+}
+
+#pragma mark - GANWorkerITEMTVCDelegate
+- (void) setWorkerNickName:(NSInteger)nIndex {
+    [self changeMyWorkerNickName:nIndex];
 }
 
 #pragma mark - GANMyWorkerNickNameEditPopupVCDelegate
