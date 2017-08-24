@@ -14,7 +14,7 @@
 */
 
 #define GANWORKER_S_CONTACT_PERMISSION_ALERT_TITLE    @"Contacts Disabled"
-#define GANWORKER_S_CONTACT_PERMISSION_ALERT_MESSAGE  @"You will need to allow the access to contacts manually to add family members."
+#define GANWORKER_S_CONTACT_PERMISSION_ALERT_MESSAGE  @"You will need to allow the access to contacts manually later."
 #define GANWORKER_S_CONTACT_NON_SELECT_PROG           @"Please select contact."
 #define GANWORKER_S_VALIDATE_PHONE_NUMBER_PROG        @"Please input valid Phone Number."
 #define GANWORKER_S_REQUEST_SENT_PROG                 @"Your request has sent."

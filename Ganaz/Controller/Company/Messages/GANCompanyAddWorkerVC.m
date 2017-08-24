@@ -130,7 +130,7 @@ typedef enum _ENUM_FOUNDSTATUS{
             [self buildFilteredArray];
         }
         else {
-            [GANGlobalVCManager showAlertControllerWithVC:self Title:@"Contacts Disabled" Message:@"You will need to allow the access to contacts manually to add family members." Callback:nil];
+            [GANGlobalVCManager showAlertControllerWithVC:self Title:@"Permission Not Granted" Message:@"You will need to allow the access to contacts manually later." Callback:nil];
         }
     }];
 }
@@ -180,7 +180,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     
     if([self isInvitedUser:self.txtPhone.text])
     {
-        [GANGlobalVCManager showAlertWithMessage:@"User is already added."];
+        [GANGlobalVCManager showHudErrorWithMessage:@"User is already added." DismissAfter:-1 Callback:nil];
         return;
     }
     
@@ -199,7 +199,7 @@ typedef enum _ENUM_FOUNDSTATUS{
         
         szPhoneNumber = [GANGenericFunctionManager getValidPhoneNumber:szPhoneNumber];
         if([szPhoneNumber isEqualToString:@""]) {
-            [GANGlobalVCManager showAlertWithMessage:@"Please input valid Phone Number."];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Please input valid phone number." DismissAfter:-1 Callback:nil];
             return;
         }
     }
