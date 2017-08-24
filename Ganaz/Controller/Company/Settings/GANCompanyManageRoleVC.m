@@ -126,7 +126,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (status == SUCCESS_WITH_NO_ERROR){
                     [self buildUserList];
-                    [GANGlobalVCManager showHudSuccessWithMessage:@"Succeeded!" DismissAfter:-1 Callback:nil];
+                    [GANGlobalVCManager showHudSuccessWithMessage:@"You have successfully changed the user's role." DismissAfter:-1 Callback:nil];
                 }
                 else {
                     [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];

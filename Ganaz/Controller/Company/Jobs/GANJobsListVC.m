@@ -128,7 +128,7 @@
             }];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:3 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:3 Callback:nil];
         }
     }];
     GANACTIVITY_REPORT(@"Company - Delete job from job list");

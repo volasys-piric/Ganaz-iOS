@@ -138,7 +138,7 @@
             [self showPopupDialog:count];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
         }
         GANACTIVITY_REPORT(@"Company - Recruit");
     }];
@@ -250,7 +250,7 @@
             });
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
         }
     }];
 }

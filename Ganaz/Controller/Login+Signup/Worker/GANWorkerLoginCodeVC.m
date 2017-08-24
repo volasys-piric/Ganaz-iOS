@@ -133,10 +133,12 @@
             }];
         }
         else if (status == ERROR_USER_LOGINFAILED_USERNOTFOUND || status == ERROR_USER_LOGINFAILED_PASSWORDWRONG){
+            // Login information is not correct.
             [GANGlobalVCManager showHudErrorWithMessage:@"Login information is not correct." DismissAfter:-1 Callback:nil];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:-1 Callback:nil];
+            // Sorry, we've encountered an issue.
+            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
         }
     }];
 }
@@ -172,13 +174,16 @@
             GANACTIVITY_REPORT(@"User signed up");
         }
         else if (status == ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT){
+            // User name is already registered.
             [GANGlobalVCManager showHudErrorWithMessage:@"User name is already registered." DismissAfter:-1 Callback:nil];
         }
         else if (status == ERROR_USER_SIGNUPFAILED_EMAILCONFLICT){
+            // Same email address is already registered.
             [GANGlobalVCManager showHudErrorWithMessage:@"Same email address is already registered." DismissAfter:-1 Callback:nil];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:3 Callback:nil];
+            // Sorry, we've encountered an issue.
+            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:3 Callback:nil];
         }
     }];
 

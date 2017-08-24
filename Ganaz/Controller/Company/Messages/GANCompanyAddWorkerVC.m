@@ -271,7 +271,7 @@ typedef enum _ENUM_FOUNDSTATUS{
             }];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
         }
     }];
     GANACTIVITY_REPORT(@"Company - Add worker");
@@ -297,7 +297,7 @@ typedef enum _ENUM_FOUNDSTATUS{
             [self.tableview reloadData];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error" DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
         }
     }];
     GANACTIVITY_REPORT(@"Company - Send invite");

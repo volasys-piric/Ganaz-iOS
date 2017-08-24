@@ -135,15 +135,18 @@
     
     GANJobManager *managerJob = [GANJobManager sharedInstance];
     
+    // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     
     [managerJob requestSuggestFriendForJob:self.szJobId PhoneNumber:szPhoneFriendNumber Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Your request has sent." DismissAfter:-1 Callback:^{
+            // Your request has been sent...
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Your request has been sent." DismissAfter:-1 Callback:^{
                 [self gotoJobApplyCompletedVC];
             }];
         }
         else {
+            // Sorry, we've encountered an issue
             [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
         }
     }];

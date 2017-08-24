@@ -133,7 +133,7 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Login information is not correct." DismissAfter:-1 Callback:nil];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
         }
     }];
 }

@@ -143,7 +143,7 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Login information is not correct." DismissAfter:-1 Callback:nil];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
         }
     }];
 }
@@ -173,7 +173,7 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Login information is not correct." DismissAfter:-1 Callback:nil];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
         }
     }];
 }

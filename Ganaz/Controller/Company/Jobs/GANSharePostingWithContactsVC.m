@@ -157,7 +157,7 @@
             [self showPopupDialog];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
         }
         self.indexSelected = -1;
         GANACTIVITY_REPORT(@"Company - Recruit");
