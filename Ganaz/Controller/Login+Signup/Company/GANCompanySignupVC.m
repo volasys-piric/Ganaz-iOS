@@ -383,13 +383,13 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Phone number already in use. Please choose a different one." DismissAfter:3 Callback:nil];
         }
         else if (status == ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT){
-            [GANGlobalVCManager showHudErrorWithMessage:@"User name is already registered." DismissAfter:3 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"User name is already registered" DismissAfter:3 Callback:nil];
         }
         else if (status == ERROR_USER_SIGNUPFAILED_EMAILCONFLICT){
-            [GANGlobalVCManager showHudErrorWithMessage:@"Same email address is already registered." DismissAfter:3 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Email address is already registered" DismissAfter:3 Callback:nil];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:3 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:3 Callback:nil];
         }
     }];
 }

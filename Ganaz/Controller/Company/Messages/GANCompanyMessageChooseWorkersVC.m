@@ -197,7 +197,7 @@
 
     [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Message is sent!" DismissAfter:-1 Callback:^{
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Message sent!" DismissAfter:-1 Callback:^{
                 [self.navigationController popViewControllerAnimated:YES];
             }];
         }
@@ -277,7 +277,7 @@
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:szNickName Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR) {
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Nickname is updated successfully." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Worker's alias has been updated" DismissAfter:-1 Callback:nil];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableview reloadData];
             });
@@ -293,7 +293,7 @@
 - (IBAction)onBtnContinueClick:(id)sender {
     [self.view endEditing:YES];
     if ([self isWorkerSelected] == NO){
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please select workers to send message." DismissAfter:-1 Callback:nil];
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please select the worker(s) you want to message" DismissAfter:-1 Callback:nil];
         return;
     }
     [self animateToShowPopup];
@@ -314,7 +314,7 @@
     [self.view endEditing:YES];
     NSString *sz = self.textview.text;
     if (sz.length == 0){
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please input message to send." DismissAfter:-1 Callback:nil];
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please enter a message to send" DismissAfter:-1 Callback:nil];
         return;
     }
     

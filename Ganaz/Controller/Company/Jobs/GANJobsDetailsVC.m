@@ -561,7 +561,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
     
     NSArray *arrSite = [GANJobManager sharedInstance].modelOnboardingJob.arrSite;
     if ([arrSite count] == 0){
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please add at least one working site!" DismissAfter:-1 Callback:nil];
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please add at least one working site" DismissAfter:-1 Callback:nil];
         return NO;
     }
     
@@ -632,7 +632,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
                 if(postType == GANENUM_JOBPOSTANDBROADCAST) {
                     [self recruitWorkersToCurrentJob];
                 } else {
-                    [GANGlobalVCManager showHudSuccessWithMessage:@"Job is created successfully." DismissAfter:3 Callback:^{
+                    [GANGlobalVCManager showHudSuccessWithMessage:@"Job has been created successfully" DismissAfter:3 Callback:^{
                         if([[GANCompanyManager sharedInstance].arrMyWorkers count] == 0) {
                             [self gotoSharePostWithContacts];
                         } else {
@@ -653,7 +653,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
     else {
         [managerJob requestUpdateJobAtIndex:self.indexJob Job:job Callback:^(int status) {
             if (status == SUCCESS_WITH_NO_ERROR){
-                [GANGlobalVCManager showHudSuccessWithMessage:@"Job is updated successfully." DismissAfter:3 Callback:^{
+                [GANGlobalVCManager showHudSuccessWithMessage:@"Job has been updated successfully" DismissAfter:3 Callback:^{
                     [self gotoJobListVC];
                 }];
             }
@@ -694,7 +694,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [[GANJobManager sharedInstance] requestDeleteJobAtIndex:self.indexJob Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Job is deleted successfully." DismissAfter:3 Callback:^{
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Job has been deleted successfully" DismissAfter:3 Callback:^{
                 [self gotoJobListVC];
             }];
         }
@@ -706,7 +706,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
 }
 
 - (void) promptForDelete{
-    [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:@"Are you sure you want to delete?" ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
+    [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:@"Are you sure you want to delete this?" ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
         [self doDelete];
     } CallbackNo:nil];
 }

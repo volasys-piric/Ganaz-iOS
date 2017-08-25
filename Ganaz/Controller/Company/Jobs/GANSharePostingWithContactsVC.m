@@ -81,7 +81,7 @@
             [self buildFilteredArray];
         }
         else {
-            [GANGlobalVCManager showAlertControllerWithVC:self Title:@"Permission Not Granted" Message:@"You will need to allow the access to contacts manually later." Callback:nil];
+            [GANGlobalVCManager showAlertControllerWithVC:self Title:@"Permission Not Granted" Message:@"You'll need to allow access to contacts later." Callback:nil];
         }
     }];
 }
@@ -125,7 +125,7 @@
 - (void) doRecruitWorkers{
 
     if (self.indexSelected == -1 && [self.txtSearch.text isEqualToString:@""]){
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please select contact." DismissAfter:-1 Callback:nil];
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please select a contact." DismissAfter:-1 Callback:nil];
         return;
     }
     
@@ -136,7 +136,7 @@
     if(self.indexSelected == -1 ) {
         NSString *szPhoneNumber = [GANGenericFunctionManager getValidPhoneNumber:self.txtSearch.text];
         if([szPhoneNumber isEqualToString:@""]) {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Please input valid phone number." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Please enter a valid phone number" DismissAfter:-1 Callback:nil];
             return;
         }
         [arrPhoneNumbers addObject:szPhoneNumber];

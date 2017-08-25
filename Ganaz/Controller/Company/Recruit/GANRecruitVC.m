@@ -244,7 +244,7 @@
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:szNickName Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR) {
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Nickname is updated successfully." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Worker's alias has been updated" DismissAfter:-1 Callback:nil];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableviewWorkers reloadData];
             });

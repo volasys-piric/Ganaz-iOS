@@ -74,7 +74,8 @@
             [self buildFilteredArray];
         }
         else {
-            [GANGlobalVCManager showAlertControllerWithVC:self Title:@"Permission Not Granted" Message:@"You will need to allow the access to contacts manually later." Callback:nil];
+            // You will need to allow access to contacts later.
+            [GANGlobalVCManager showAlertControllerWithVC:self Title:@"Ud. no ha permitido acceso" Message:@"Si quiere acceder sus contactos, habrá que ir a Configuración en su teléfono para permitirlo." Callback:nil];
         }
     }];
 }
@@ -117,14 +118,16 @@
 
 - (void) doSuggestFrield{
     if (self.indexSelected == -1 && [self.textfieldSearch.text isEqualToString:@""]){
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please select contact." DismissAfter:-1 Callback:nil];
+        // Please select a contact
+        [GANGlobalVCManager showHudErrorWithMessage:@"Por favor, elija un contacto" DismissAfter:-1 Callback:nil];
         return;
     }
     NSString *szPhoneFriendNumber;
     if(self.indexSelected == -1) {
         szPhoneFriendNumber = [GANGenericFunctionManager getValidPhoneNumber:self.textfieldSearch.text];
         if([szPhoneFriendNumber isEqualToString:@""]) {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Please input valid phone number." DismissAfter:-1 Callback:nil];
+            // Please enter a valid phone number
+            [GANGlobalVCManager showHudErrorWithMessage:@"Por favor, entre un número de teléfono correcto (sin el “1”)" DismissAfter:-1 Callback:nil];
             [self.textfieldSearch becomeFirstResponder];
             return;
         }
@@ -141,7 +144,7 @@
     [managerJob requestSuggestFriendForJob:self.szJobId PhoneNumber:szPhoneFriendNumber Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             // Your request has been sent...
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Your request has been sent." DismissAfter:-1 Callback:^{
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Gracias! Hemos notificado la empresa del interés de su amigo/a" DismissAfter:-1 Callback:^{
                 [self gotoJobApplyCompletedVC];
             }];
         }

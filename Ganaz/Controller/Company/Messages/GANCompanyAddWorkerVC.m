@@ -130,7 +130,7 @@ typedef enum _ENUM_FOUNDSTATUS{
             [self buildFilteredArray];
         }
         else {
-            [GANGlobalVCManager showAlertControllerWithVC:self Title:@"Permission Not Granted" Message:@"You will need to allow the access to contacts manually later." Callback:nil];
+            [GANGlobalVCManager showAlertControllerWithVC:self Title:@"Permission Not Granted" Message:@"You'll need to allow access to contacts later." Callback:nil];
         }
     }];
 }
@@ -180,7 +180,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     
     if([self isInvitedUser:self.txtPhone.text])
     {
-        [GANGlobalVCManager showHudErrorWithMessage:@"User is already added." DismissAfter:-1 Callback:nil];
+        [GANGlobalVCManager showHudErrorWithMessage:@"This user has already been added" DismissAfter:-1 Callback:nil];
         return;
     }
     
@@ -199,7 +199,7 @@ typedef enum _ENUM_FOUNDSTATUS{
         
         szPhoneNumber = [GANGenericFunctionManager getValidPhoneNumber:szPhoneNumber];
         if([szPhoneNumber isEqualToString:@""]) {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Please input valid phone number." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Please enter a valid phone number" DismissAfter:-1 Callback:nil];
             return;
         }
     }
@@ -213,7 +213,7 @@ typedef enum _ENUM_FOUNDSTATUS{
                 self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND;
                 if(fromSeachField) {
                     [self refreshViews];
-                    [GANGlobalVCManager showHudInfoWithMessage:@"No new worker found!" DismissAfter:-1 Callback:nil];
+                    [GANGlobalVCManager showHudInfoWithMessage:@"No new workers found" DismissAfter:-1 Callback:nil];
                 } else {
                     [self showPopupDialog:szWorkerName];
                 }
@@ -266,7 +266,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     [[GANCompanyManager sharedInstance] requestAddMyWorkerWithUserIds:arrUserIds Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [self.arrInvitedWorkers addObject:worker.modelPhone.szLocalNumber];
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Worker is added successfully." DismissAfter:-3 Callback:^{
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Worker has been added successfully" DismissAfter:-3 Callback:^{
                 [self.tableview reloadData];
             }];
         }
@@ -293,7 +293,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     [[GANCompanyManager sharedInstance] requestSendInvite:phone CompanyId:szCompanyId Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [self.arrInvitedWorkers addObject:phone.szLocalNumber];
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Invitation SMS will be sent shortly." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudSuccessWithMessage:@"An invitation will be sent shortly via SMS" DismissAfter:-1 Callback:nil];
             [self.tableview reloadData];
         }
         else {

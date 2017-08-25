@@ -130,7 +130,7 @@
             }];
         }
         else if (status == ERROR_USER_LOGINFAILED_USERNOTFOUND || status == ERROR_USER_LOGINFAILED_PASSWORDWRONG){
-            [GANGlobalVCManager showHudErrorWithMessage:@"Login information is not correct." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Login information incorrect. Please try again." DismissAfter:-1 Callback:nil];
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];

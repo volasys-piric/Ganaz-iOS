@@ -123,7 +123,7 @@
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [[GANJobManager sharedInstance] requestDeleteJobAtIndex:index Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Job is deleted successfully." DismissAfter:3 Callback:^{
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Job has been deleted successfully" DismissAfter:3 Callback:^{
                 [self.tableview reloadData];
             }];
         }
@@ -136,7 +136,7 @@
 
 - (void) promptForDeleteAtIndex: (int) index{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:@"Are you sure you want to delete?" ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
+        [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:@"Are you sure you want to delete this?" ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
             [self deleteJobAtIndex:index];
         } CallbackNo:nil];
         [self.tableview setEditing:NO animated:YES];

@@ -69,7 +69,7 @@
             [self buildFilteredArray];
         }
         else {
-            [GANGlobalVCManager showAlertControllerWithVC:self Title:@"Permission Not Granted" Message:@"You will need to allow the access to contacts manually later." Callback:nil];
+            [GANGlobalVCManager showAlertControllerWithVC:self Title:@"Permission Not Granted" Message:@"You'll need to allow access to contacts later." Callback:nil];
         }
     }];
 }
@@ -120,7 +120,7 @@
     NSString *szPhoneNumber = [GANGenericFunctionManager getValidPhoneNumber:self.txtPhoneNumber.text];
     
     if([szPhoneNumber isEqualToString:@""]) {
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please input valid phone number." DismissAfter:-1 Callback:nil];
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please enter a valid phone number" DismissAfter:-1 Callback:nil];
         return;
     }
     
@@ -133,14 +133,14 @@
         [self.arrAddedUsers addObject:newContact];
         [self gotoMessageOnboarding];
     } else {
-        [GANGlobalVCManager showHudErrorWithMessage:@"User is already added." DismissAfter:-1 Callback:nil];
+        [GANGlobalVCManager showHudErrorWithMessage:@"This user has already been added" DismissAfter:-1 Callback:nil];
     }
 }
 
 - (IBAction)onContinue:(id)sender {
     
     if(self.arrAddedUsers.count == 0) {
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please select contacts to send message." DismissAfter:-1 Callback:nil];
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please select the contact(s) you want to message" DismissAfter:-1 Callback:nil];
         return;
     }
     

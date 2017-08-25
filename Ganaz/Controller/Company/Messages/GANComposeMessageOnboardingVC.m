@@ -91,7 +91,7 @@
     
     NSString *szMessage = self.txtMessage.text;
     if (szMessage.length == 0){
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please input message to send." DismissAfter:-1 Callback:nil];
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please enter a message to send" DismissAfter:-1 Callback:nil];
         return;
     }
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
@@ -106,7 +106,7 @@
     [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:nil ReceiversPhoneNumbers: arrPhoneNumber Message:szMessage AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Message is sent!" DismissAfter:-1 Callback:^{
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Message sent!" DismissAfter:-1 Callback:^{
                 [self gotoMessageVC];
             }];
         }

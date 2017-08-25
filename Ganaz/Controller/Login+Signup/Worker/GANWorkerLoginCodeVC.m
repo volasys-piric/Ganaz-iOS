@@ -134,7 +134,7 @@
         }
         else if (status == ERROR_USER_LOGINFAILED_USERNOTFOUND || status == ERROR_USER_LOGINFAILED_PASSWORDWRONG){
             // Login information is not correct.
-            [GANGlobalVCManager showHudErrorWithMessage:@"Login information is not correct." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"O el número de teléfono o su contraseña es incorrecto" DismissAfter:-1 Callback:nil];
         }
         else {
             // Sorry, we've encountered an issue.
