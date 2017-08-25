@@ -98,7 +98,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     if (self.enumStatus == GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE){
         self.tableview.hidden = NO;
         self.lblSuggested.hidden = NO;
-        self.lblTitle.text = @"Enter phone number";
+        self.lblTitle.text = @"Type a name or phone number";
         self.lblNote.text = @"If you have a large number of workers to add, you can send Ganaz a list of those workers at info@ganazapp.com and we’ll happily add them for you.";
         self.btnInvite.hidden = YES;
         self.btnAdd.hidden = NO;
