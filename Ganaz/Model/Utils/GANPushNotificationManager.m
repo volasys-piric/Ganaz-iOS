@@ -62,7 +62,7 @@
     
     if ([[GANUserManager sharedInstance] isWorker] == YES){
         if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE){
-            // New message is arrived.
+            // New message has arrived.
             [GANGlobalVCManager showHudInfoWithMessage:@"Nuevo mensaje llegó." DismissAfter:-1 Callback:nil];
         }
         else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_RECRUIT){
@@ -72,13 +72,13 @@
     }
     else {
         if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE){
-            [GANGlobalVCManager showHudInfoWithMessage:@"New message is arrived." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudInfoWithMessage:@"New message has arrived." DismissAfter:-1 Callback:nil];
         }
         else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_APPLICATION){
-            [GANGlobalVCManager showHudInfoWithMessage:@"New job inquiry is arrived." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudInfoWithMessage:@"New job inquiry has arrived." DismissAfter:-1 Callback:nil];
         }
         else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_SUGGEST){
-            [GANGlobalVCManager showHudInfoWithMessage:@"New job inquiry is arrived." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudInfoWithMessage:@"New job inquiry has arrived." DismissAfter:-1 Callback:nil];
         }
     }
     [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];

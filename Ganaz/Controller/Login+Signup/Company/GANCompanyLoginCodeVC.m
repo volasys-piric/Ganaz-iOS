@@ -10,8 +10,12 @@
 #import "GANUserManager.h"
 #import "GANMainChooseVC.h"
 #import "GANCompanyLoginPhoneVC.h"
+#import "GANJobHomeVC.h"
+#import "GANJobsDetailsVC.h"
+#import "GANCompanySignupVC.h"
+#import "GANComposeMessageOnboardingVC.h"
+
 #import "GANGenericFunctionManager.h"
-#import "Global.h"
 #import "GANGlobalVCManager.h"
 #import "GANAppManager.h"
 
@@ -40,8 +44,7 @@
     // Do any additional setup after loading the view.
     [self refreshViews];
     [self refreshCodePanel];
-    
-    [self.textfieldCode becomeFirstResponder];
+    [self checkAutoLogin];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -61,6 +64,21 @@
     self.buttonContinue.clipsToBounds = YES;
     self.buttonContinue.layer.cornerRadius = 3;
     self.textfieldCode.tintColor = [UIColor clearColor];
+}
+
+- (void) checkAutoLogin{
+    if (self.isAutoLogin == YES){
+        GANUserManager *managerUser = [GANUserManager sharedInstance];
+        self.szPhoneNumber = managerUser.modelUserMinInfo.modelPhone.szLocalNumber;
+        self.textfieldCode.text = managerUser.modelUserMinInfo.szPassword;
+        [self refreshCodePanel];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self doLogin];
+        });
+    }
+    else {
+        [self.textfieldCode becomeFirstResponder];
+    }
 }
 
 #pragma mark - Biz Logic
@@ -112,21 +130,87 @@
             }];
         }
         else if (status == ERROR_USER_LOGINFAILED_USERNOTFOUND || status == ERROR_USER_LOGINFAILED_PASSWORDWRONG){
-            [GANGlobalVCManager showHudErrorWithMessage:@"Login information is not correct." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Login information incorrect. Please try again." DismissAfter:-1 Callback:nil];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
         }
     }];
 }
 
 - (void) gotoCompanyMain{
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-    UIViewController *vc = [storyboard instantiateInitialViewController];
-    UINavigationController *nav = self.navigationController;
-    [self presentViewController:vc animated:YES completion:^{
-        [self.navigationController setViewControllers:@[[nav.viewControllers objectAtIndex:0]]];
-    }];
+    
+    NSMutableArray *arrNewVCs = [[NSMutableArray alloc] init];
+    NSArray *arrVCs = self.navigationController.viewControllers;
+    
+    for (int i = 0; i < (int)([arrVCs count]); i++){
+        UIViewController *vc = [arrVCs objectAtIndex:i];
+        if (([vc isKindOfClass:[GANMainChooseVC class]] == NO) &&
+            ([vc isKindOfClass:[GANCompanyLoginPhoneVC class]] == NO) &&
+            ([vc isKindOfClass:[GANCompanyLoginCodeVC class]] == NO) &&
+            ([vc isKindOfClass:[GANCompanySignupVC class]] == NO)){
+            [arrNewVCs addObject:vc];
+        }
+    }
+    
+    if(self.fromCustomVC == ENUM_DEFAULT_SIGNUP) {
+        UIViewController *vc = [storyboard instantiateInitialViewController];
+        UINavigationController *nav = self.navigationController;
+        [self presentViewController:vc animated:YES completion:^{
+            [self.navigationController setViewControllers:@[[nav.viewControllers objectAtIndex:0]]];
+        }];
+    } else {
+        if(self.fromCustomVC == ENUM_JOBPOST_SIGNUP) {
+            
+            for (int i = 0; i < (int)([arrNewVCs count]); i++){
+                UIViewController *vc = [arrNewVCs objectAtIndex:i];
+                if ([vc isKindOfClass:[GANJobsDetailsVC class]] == YES){
+                    ((GANJobsDetailsVC *)vc).bPostedNewJob = YES;
+                }
+            }
+            UITabBarController *tbc = [storyboard instantiateInitialViewController];
+            if ([arrNewVCs count] > 0){
+                UINavigationController *nav = [tbc.viewControllers objectAtIndex:0];
+                nav.viewControllers = arrNewVCs;
+            }
+            
+            [self.navigationController presentViewController:tbc animated:YES completion:^{
+                [self.navigationController setViewControllers:@[[self.navigationController.viewControllers objectAtIndex:0]]];
+            }];
+            
+        } else if((self.fromCustomVC == ENUM_COMMUNICATE_SIGNUP) || (self.fromCustomVC == ENUM_RETAIN_SIGNUP)) {
+            
+            for (int i = 0; i < (int)([arrNewVCs count]); i++){
+                UIViewController *vc = [arrNewVCs objectAtIndex:i];
+                if ([vc isKindOfClass:[GANJobHomeVC class]] == YES){
+                    [arrNewVCs removeObjectAtIndex:i];
+                }
+            }
+            
+            UIViewController *vcMessage = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES"];
+            [arrNewVCs insertObject:vcMessage atIndex:0];
+            
+            for (int i = 0; i < (int)([arrNewVCs count]); i++){
+                UIViewController *vc = [arrNewVCs objectAtIndex:i];
+                if ([vc isKindOfClass:[GANComposeMessageOnboardingVC class]] == YES){
+                    ((GANComposeMessageOnboardingVC *)vc).isFromSignup = ENUM_COMMUNICATE_SIGNUP;
+                }
+            }
+            
+            UITabBarController *tbc = [storyboard instantiateInitialViewController];
+            [tbc setSelectedIndex:2];
+            if ([arrNewVCs count] > 0){
+                UINavigationController *nav = [tbc.viewControllers objectAtIndex:2];
+                nav.viewControllers = arrNewVCs;
+            }
+            
+            [self.navigationController presentViewController:tbc animated:YES completion:^{
+                [self.navigationController setViewControllers:@[[self.navigationController.viewControllers objectAtIndex:0]]];
+            }];
+        }
+    }
     
     [[GANAppManager sharedInstance] initializeManagersAfterLogin];
 }

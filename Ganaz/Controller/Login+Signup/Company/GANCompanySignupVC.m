@@ -7,7 +7,6 @@
 //
 
 #import "GANCompanySignupVC.h"
-#import "GANUserManager.h"
 #import "GANCompanyManager.h"
 #import "GANCacheManager.h"
 #import "GANMembershipPlanManager.h"
@@ -20,10 +19,17 @@
 
 #import "GANPushNotificationManager.h"
 #import "GANFadeTransitionDelegate.h"
-#import "GANCompanyCodePopupVC.h"
 
-#import "Global.h"
 #import <UIView+Shake/UIView+Shake.h>
+
+#import "GANJobsDetailsVC.h"
+#import "GANComposeMessageOnboardingVC.h"
+#import "GANCompanyLoginPhoneVC.h"
+#import "GANCompanyCodePopupVC.h"
+#import "GANMainChooseVC.h"
+#import "GANCompanyLoginCodeVC.h"
+#import "GANCompanyLoginPhoneVC.h"
+#import "GANJobHomeVC.h"
 
 @interface GANCompanySignupVC () <UITextFieldDelegate, GANCompanyCodePopupDelegate>
 
@@ -104,6 +110,9 @@
     self.btnSignup.layer.cornerRadius = 3;
     self.btnLogin.layer.cornerRadius = 3;
     self.btnCompanyCode.layer.cornerRadius = 3;
+    self.btnCompanyCode.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.btnCompanyCode.titleLabel.textAlignment    = NSTextAlignmentCenter;
+    self.btnCompanyCode.titleLabel.numberOfLines = 2;
     self.btnLogin.layer.borderWidth = 1;
     self.btnLogin.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
     
@@ -329,7 +338,7 @@
             }];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:3 Callback:^{
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:3 Callback:^{
                 if (callback){
                     callback(status, nil);
                 }
@@ -366,7 +375,7 @@
     [[GANUserManager sharedInstance] requestUserSignupWithCallback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager hideHudProgressWithCallback:^{
-                [self gotoCompanyMain];
+                [self gotoCompanyHome];
             }];
             GANACTIVITY_REPORT(@"User signed up");
         }
@@ -374,30 +383,113 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Phone number already in use. Please choose a different one." DismissAfter:3 Callback:nil];
         }
         else if (status == ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT){
-            [GANGlobalVCManager showHudErrorWithMessage:@"User name is already registered." DismissAfter:3 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"User name is already registered" DismissAfter:3 Callback:nil];
         }
         else if (status == ERROR_USER_SIGNUPFAILED_EMAILCONFLICT){
-            [GANGlobalVCManager showHudErrorWithMessage:@"Same email address is already registered." DismissAfter:3 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Email address is already registered" DismissAfter:3 Callback:nil];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:3 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:3 Callback:nil];
         }
     }];
 }
 
-- (void) gotoCompanyMain{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-    UIViewController *vc = [storyboard instantiateInitialViewController];
-    UINavigationController *nav = self.navigationController;
-    [self presentViewController:vc animated:YES completion:^{
-        [self.navigationController setViewControllers:@[[nav.viewControllers objectAtIndex:0]]];
-    }];
+- (void) gotoCompanyHome{
     
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+    
+    NSMutableArray *arrNewVCs = [[NSMutableArray alloc] init];
+    NSArray *arrVCs = self.navigationController.viewControllers;
+    
+    for (int i = 0; i < (int)([arrVCs count]); i++){
+        UIViewController *vc = [arrVCs objectAtIndex:i];
+        if (([vc isKindOfClass:[GANMainChooseVC class]] == NO) &&
+            ([vc isKindOfClass:[GANCompanyLoginPhoneVC class]] == NO) &&
+            ([vc isKindOfClass:[GANCompanyLoginCodeVC class]] == NO) &&
+            ([vc isKindOfClass:[GANCompanySignupVC class]] == NO)){
+            [arrNewVCs addObject:vc];
+        }
+    }
+    
+    if(self.fromCustomVC == ENUM_DEFAULT_SIGNUP) {
+        UIViewController *vc = [storyboard instantiateInitialViewController];
+        UINavigationController *nav = self.navigationController;
+        [self presentViewController:vc animated:YES completion:^{
+            [self.navigationController setViewControllers:@[[nav.viewControllers objectAtIndex:0]]];
+        }];
+    } else {
+        if(self.fromCustomVC == ENUM_JOBPOST_SIGNUP) {
+            
+            for (int i = 0; i < (int)([arrNewVCs count]); i++){
+                UIViewController *vc = [arrNewVCs objectAtIndex:i];
+                if ([vc isKindOfClass:[GANJobsDetailsVC class]] == YES){
+                    ((GANJobsDetailsVC *)vc).bPostedNewJob = YES;
+                }
+            }
+            UITabBarController *tbc = [storyboard instantiateInitialViewController];
+            if ([arrNewVCs count] > 0){
+                UINavigationController *nav = [tbc.viewControllers objectAtIndex:0];
+                nav.viewControllers = arrNewVCs;
+            }
+            
+            [self.navigationController presentViewController:tbc animated:YES completion:^{
+                [self.navigationController setViewControllers:@[[self.navigationController.viewControllers objectAtIndex:0]]];
+            }];
+            
+        } else if((self.fromCustomVC == ENUM_COMMUNICATE_SIGNUP) || (self.fromCustomVC == ENUM_RETAIN_SIGNUP)) {
+            
+            for (int i = 0; i < (int)([arrNewVCs count]); i++){
+                UIViewController *vc = [arrNewVCs objectAtIndex:i];
+                if ([vc isKindOfClass:[GANJobHomeVC class]] == YES){
+                    [arrNewVCs removeObjectAtIndex:i];
+                }
+            }
+            
+             UIViewController *vcMessage = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES"];
+            [arrNewVCs insertObject:vcMessage atIndex:0];
+            
+            for (int i = 0; i < (int)([arrNewVCs count]); i++){
+                UIViewController *vc = [arrNewVCs objectAtIndex:i];
+                if ([vc isKindOfClass:[GANComposeMessageOnboardingVC class]] == YES){
+                    ((GANComposeMessageOnboardingVC *)vc).isFromSignup = ENUM_COMMUNICATE_SIGNUP;
+                }
+            }
+            
+            UITabBarController *tbc = [storyboard instantiateInitialViewController];
+            [tbc setSelectedIndex:2];
+            if ([arrNewVCs count] > 0){
+                UINavigationController *nav = [tbc.viewControllers objectAtIndex:2];
+                nav.viewControllers = arrNewVCs;
+            }
+            
+            [self.navigationController presentViewController:tbc animated:YES completion:^{
+                [self.navigationController setViewControllers:@[[self.navigationController.viewControllers objectAtIndex:0]]];
+            }];
+        }
+    }
+
     [[GANAppManager sharedInstance] initializeManagersAfterLogin];
 }
 
 - (void) gotoLogin{
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    NSArray *arrVCs = self.navigationController.viewControllers;
+    
+    for (int i = 0; i < (int)([arrVCs count]); i++){
+        UIViewController *vc = [arrVCs objectAtIndex:i];
+        if ([vc isKindOfClass:[GANCompanyLoginPhoneVC class]] == YES){
+            GANCompanyLoginPhoneVC *viewController = (GANCompanyLoginPhoneVC*)vc;
+            viewController.fromCustomVC = self.fromCustomVC;
+            [self.navigationController popToViewController:viewController animated:YES];
+            return;
+        }
+    }
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
+    GANCompanyLoginPhoneVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_LOGIN_PHONE"];
+    vc.fromCustomVC = self.fromCustomVC;
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (void) gotoToS{

@@ -9,9 +9,11 @@
 #import "GANJobsListVC.h"
 #import "GANJobItemTVC.h"
 #import "GANJobsDetailsVC.h"
+#import "GANJobRecruitPopupVC.h"
+#import "GANRecruitVC.h"
 
 #import "GANCompanyDataModel.h"
-
+#import "GANFadeTransitionDelegate.h"
 #import "GANUserManager.h"
 #import "GANJobManager.h"
 #import "GANJobDataModel.h"
@@ -21,13 +23,17 @@
 #import "Global.h"
 #import "GANAppManager.h"
 
-@interface GANJobsListVC () <UITableViewDelegate, UITableViewDataSource>
-
+@interface GANJobsListVC () <UITableViewDelegate, UITableViewDataSource, GANJobRecruitPopupVCDelegate>
+{
+    int nSelectedIndex;
+}
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (weak, nonatomic) IBOutlet UIView *viewBadge;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblBadge;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTableviewTopSpacing;
+
+@property (strong, nonatomic) GANFadeTransitionDelegate *transController;
 
 @end
 
@@ -41,6 +47,7 @@
     self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
+    self.transController = [[GANFadeTransitionDelegate alloc] init];
     [self registerTableViewCellFromNib];
     [self refreshViews];
     
@@ -92,6 +99,16 @@
     }
 }
 
+- (void) showPopupDialog {
+    GANJobRecruitPopupVC *vc = [[GANJobRecruitPopupVC alloc] initWithNibName:@"GANJobRecruitPopupVC" bundle:nil];
+    
+    vc.delegate = self;
+    vc.view.backgroundColor = [UIColor clearColor];
+    [vc setTransitioningDelegate:self.transController];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
 - (void) gotoDetailsVCAtIndex: (int) index{
     [[GANJobManager sharedInstance] initializeOnboardingJobAtIndex:index];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
@@ -106,12 +123,12 @@
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [[GANJobManager sharedInstance] requestDeleteJobAtIndex:index Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Job is deleted successfully." DismissAfter:3 Callback:^{
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Job has been deleted successfully" DismissAfter:3 Callback:^{
                 [self.tableview reloadData];
             }];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:3 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:3 Callback:nil];
         }
     }];
     GANACTIVITY_REPORT(@"Company - Delete job from job list");
@@ -119,11 +136,24 @@
 
 - (void) promptForDeleteAtIndex: (int) index{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:@"Are you sure you want to delete?" ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
+        [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:@"Are you sure you want to delete this?" ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
             [self deleteJobAtIndex:index];
         } CallbackNo:nil];
         [self.tableview setEditing:NO animated:YES];
     });
+}
+
+#pragma mark - GANJobRecruitPopupVCDelegate
+
+- (void) didRecruit {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+    GANRecruitVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_RECRUIT"];
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+}
+
+- (void) didEdit {
+    [self gotoDetailsVCAtIndex:nSelectedIndex];
 }
 
 #pragma mark - UITableView Delegate
@@ -174,8 +204,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    int index = (int) indexPath.row;
-    [self gotoDetailsVCAtIndex:index];
+    nSelectedIndex = (int) indexPath.row;
+    [self showPopupDialog];
 }
 
 #pragma mark - UIButton Delegate

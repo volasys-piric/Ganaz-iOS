@@ -85,6 +85,10 @@
     return [NSString stringWithFormat:@"%@/user/password_recovery/reset", [GANUrlManager getBaseUrl]];
 }
 
++ (NSString *) getEndPointForUserBulkSearch{
+    return [NSString stringWithFormat:@"%@/user/bulksearch", [GANUrlManager getBaseUrl]];
+}
+
 #pragma mark - Endpoint for Job
 
 + (NSString *) getEndpointForAddJob{
@@ -129,6 +133,10 @@
 
 + (NSString *) getEndpointForAddMyWorkersWithCompanyId: (NSString *) companyId{
     return [NSString stringWithFormat:@"%@/company/%@/my-workers", [GANUrlManager getBaseUrl], companyId];
+}
+
++ (NSString *) getEndpointForUpdateMyWorkersNicknameWithCompanyId: (NSString *) companyId MyWorkerId: (NSString *) myWorkerId{
+    return [NSString stringWithFormat:@"%@/company/%@/my-workers/%@", [GANUrlManager getBaseUrl], companyId, myWorkerId];
 }
 
 #pragma mark - Messages

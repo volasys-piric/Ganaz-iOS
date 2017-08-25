@@ -11,5 +11,6 @@
 @interface GANJobsDetailsVC : UIViewController
 
 @property (assign, atomic) int indexJob;
+@property (assign, atomic) BOOL bPostedNewJob;
 
 @end

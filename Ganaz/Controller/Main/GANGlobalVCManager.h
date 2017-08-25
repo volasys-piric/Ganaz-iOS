@@ -25,6 +25,8 @@
 + (void) shakeView: (UIView *) view;
 + (void) shakeView: (UIView *) view InScrollView: (UIScrollView *) scrollView;
 
++ (void)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(NSInteger) nIndex;
+
 #pragma mark - Redirect to certain VC
 
 + (void) logoutToWorkerLoginVC: (UIViewController *) vcCurrent;

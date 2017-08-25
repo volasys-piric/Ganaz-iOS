@@ -15,7 +15,7 @@
 #define GANACTIVITY_REPORT(s) [[GANAppManager sharedInstance] logActivity: (s) ] 
 
 #warning This should be removed before submission!
-#define GANENVIRONMENT_DEMO
+#define GANENVIRONMENT_STAGING
 
 // BASE URL
 
@@ -49,6 +49,9 @@
 
 #define GANLOCATION_DEFAULT_LATITUDE                        40.7128
 #define GANLOCATION_DEFAULT_LONGITUDE                       -74.0059
+
+#define GANNEARBY_DEFAULT_RADIUS                            50
+
 #define GOOGLEMAPS_API_KEY                                  @"AIzaSyCrYm3QN8cfIN5rbGcFHBEGSAye8G4lUho"
 #define GOOGLE_TRANSLATE_API_KEY                            @"AIzaSyCVm0nvaYBqtNOOepzALr7iCKNW1_96J6o"
 
@@ -111,4 +114,23 @@
 #define LOCALSTORAGE_PREFIX                                             @"GANAZLOCALSTORAGE_"
 #define LOCALSTORAGE_USER_LOGIN                                         @"USER_LOGIN"
 
+typedef enum company_signup_from_vc
+{
+    ENUM_DEFAULT_SIGNUP = 0,
+    ENUM_JOBPOST_SIGNUP,
+    ENUM_COMMUNICATE_SIGNUP,
+    ENUM_RETAIN_SIGNUP
+} ENUM_COMPANY_SIGNUP_FROM_CUSTOMVC;
+
+typedef enum company_addworkers_from_vc {
+    ENUM_COMPANY_ADDWORKERS_FROM_HOME = 0,
+    ENUM_COMPANY_ADDWORKERS_FROM_MESSAGE,
+    ENUM_COMPANY_ADDWORKERS_FROM_RECRUITJOB,
+    ENUM_COMPANY_ADDWORKERS_FROM_RETAINMYWORKERS
+} ENUM_COMPANY_ADDWORKERS_FROM_CUSTOMVC;
+
+typedef enum company_sharePostingWithContactFrom_vc {
+    ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_HOME = 0,
+    ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_JOBPOST
+} ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_CUSTOMVC;
 #endif /* Global_h */

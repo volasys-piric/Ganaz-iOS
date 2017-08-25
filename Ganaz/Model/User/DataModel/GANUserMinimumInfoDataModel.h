@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSString *szPassword;
 @property (strong, nonatomic) GANPhoneDataModel *modelPhone;
 @property (assign, atomic) GANENUM_USER_AUTHTYPE enumAuthType;
+@property (assign, atomic) GANENUM_USER_TYPE enumUserType;
 
 - (instancetype) init;
 - (void) setWithDictionary:(NSDictionary *)dict;

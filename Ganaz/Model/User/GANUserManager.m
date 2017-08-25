@@ -70,6 +70,7 @@
     self.modelUserMinInfo.szPassword = self.modelUser.szPassword;
     [self.modelUserMinInfo.modelPhone  initializeWithPhone:self.modelUser.modelPhone];
     self.modelUserMinInfo.enumAuthType = self.modelUser.enumAuthType;
+    self.modelUserMinInfo.enumUserType = self.modelUser.enumType;
     [GANLocalstorageManager saveGlobalObject:[self.modelUserMinInfo serializeToDictionary] Key:LOCALSTORAGE_USER_LOGIN];
 }
 
@@ -91,7 +92,8 @@
     NSString *szAuthType = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"auth_type"]];
     NSString *szUserName = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"username"]];
     NSString *szPassword = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"password"]];
-    if (szAuthType.length > 0 && szUserName.length > 0 && szPassword.length > 0){
+    int userType = [GANGenericFunctionManager refineInt:[dict objectForKey:@"user_type"] DefaultValue:GANENUM_USER_TYPE_WORKER];
+    if (szAuthType.length > 0 && szUserName.length > 0 && szPassword.length > 0 && userType > -1){
         return YES;
     }
     return NO;
@@ -118,6 +120,10 @@
         location = [[GANUserManager getUserWorkerDataModel].modelLocation generateCLLocation];
     }
     return location;
+}
+
+- (NSInteger) getNearbyWorkerCount {
+    return self.nNearbyWorkerCount;
 }
 
 #pragma mark - Login & Signup
@@ -383,4 +389,28 @@
     }];
 }
 
+- (void) requestUserBulkSearch:(float)radius WithCallback:(void (^) (int status)) callback {
+    CLLocation *location = [self getCurrentLocation];
+    NSString *broadcast = [NSString stringWithFormat:@"%.02f", radius];
+    NSDictionary *params = @{@"type": @"worker",
+                             @"area": @{@"loc" : @[@(location.coordinate.longitude), @(location.coordinate.latitude)],
+                                        @"radius" : broadcast}};
+    
+    NSString *szUrl = [GANUrlManager getEndPointForUserBulkSearch];
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:NO parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            
+            self.nNearbyWorkerCount = [[dict objectForKey:@"counts"] integerValue];
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+    }];
+}
 @end

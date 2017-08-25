@@ -95,7 +95,8 @@
     GANUserManager *managerUser = [GANUserManager sharedInstance];
     
     // Check if user exists
-    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    // Please wait...
+    [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     [managerUser requestSearchUserByPhoneNumber:phoneNumber Type:GANENUM_USER_TYPE_ANY Callback:^(int status, NSArray *array) {
         if (status == SUCCESS_WITH_NO_ERROR && array != nil && [array count] > 0){
             GANUserBaseDataModel *user = [array objectAtIndex:0];
@@ -136,7 +137,8 @@
             GANACTIVITY_REPORT(@"Worker - Login phone number not recognized. Go to signup");
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
+            // Sorry, we've encountered an issue.
+            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
         }
     }];
 }
