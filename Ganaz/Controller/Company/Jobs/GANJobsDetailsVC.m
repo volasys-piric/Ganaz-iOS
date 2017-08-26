@@ -227,7 +227,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
     }
     
     //Test Code, It should be changed to 20 in Live version.
-    if([[GANUserManager sharedInstance] getNearbyWorkerCount] <= 2) {
+    if([[GANUserManager sharedInstance] getNearbyWorkerCount] <= GANNEARBY_MIN_WORKERS_COUNT) {
         self.constraintlblWorkerCount.constant = -58;
         [self.lblWorkerCount setHidden:YES];
     } else {
