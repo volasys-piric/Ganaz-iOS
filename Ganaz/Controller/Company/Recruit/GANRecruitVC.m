@@ -24,7 +24,12 @@
 #import "Global.h"
 #import "GANAppManager.h"
 
-@interface GANRecruitVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, GANJobPostingSharedPopupVCDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANWorkerItemTVCDelegate>
+#define NON_SELECTED -1
+
+@interface GANRecruitVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIActionSheetDelegate, GANJobPostingSharedPopupVCDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANWorkerItemTVCDelegate>
+{
+    NSInteger nSelectedIndex;
+}
 
 @property (weak, nonatomic) IBOutlet UILabel *lblJobTitle;
 @property (weak, nonatomic) IBOutlet UITableView *tableviewWorkers;
@@ -52,11 +57,11 @@
     self.tableviewWorkers.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableviewWorkers.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
+    nSelectedIndex = NON_SELECTED;
+    
     self.transController = [[GANFadeTransitionDelegate alloc] init];
     self.arrWorkerSelected = [[NSMutableArray alloc] init];
 
-    [self buildWorkerList];
-    
     [self registerTableViewCellFromNib];
     [self refreshViews];
     
@@ -64,6 +69,12 @@
                                              selector:@selector(onLocalNotificationReceived:)
                                                  name:nil
                                                object:nil];
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self buildWorkerList];
 }
 
 - (void) dealloc{
@@ -182,8 +193,6 @@
     cell.nIndex = index;
     cell.delegate = self;
     
-    cell.btnEdit.layer.cornerRadius = 3.f;
-    cell.btnEdit.clipsToBounds = YES;
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -231,7 +240,72 @@
 
 #pragma mark - GANWorkerITEMTVCDelegate
 - (void) setWorkerNickName:(NSInteger)nIndex {
-    [self changeMyWorkerNickName:nIndex];
+    
+    nSelectedIndex = nIndex;
+    
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
+    
+    if(myWorker.modelWorker.enumType == GANENUM_USER_TYPE_WORKER) {
+        [self changeMyWorkerNickName:nSelectedIndex];
+        return;
+    }
+    
+    NSString *szUserName = [myWorker getDisplayName];
+    
+    UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:szUserName delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Re-send Invitation",@"Edit", nil];
+    popup.tag = 0;
+    [popup showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    switch (popup.tag) {
+        case 0: {
+            switch (buttonIndex) {
+                case 0:
+                    [self resendInvite:nSelectedIndex];
+                    break;
+                case 1:
+                    
+                    break;
+                default:
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void) resendInvite:(NSInteger) nIndex {
+    NSString *szCompanyId = [GANUserManager getCompanyDataModel].szId;
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
+    
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    
+    [[GANCompanyManager sharedInstance] requestSendInvite:myWorker.modelWorker.modelPhone CompanyId:szCompanyId Callback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR){
+            [GANGlobalVCManager showHudSuccessWithMessage:@"An invitation will be sent shortly via SMS" DismissAfter:-1 Callback:nil];
+            
+            [self getMyWorkerList];
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
+        }
+        nSelectedIndex = NON_SELECTED;
+    }];
+    GANACTIVITY_REPORT(@"Company - Send invite");
+}
+
+- (void) getMyWorkerList {
+    [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:^(int status) {
+        if(status == SUCCESS_WITH_NO_ERROR) {
+            [self buildWorkerList];
+        } else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
+        }
+    }];
 }
 
 #pragma mark - GANMyWorkerNickNameEditPopupVCDelegate
@@ -252,8 +326,10 @@
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
         }
+        nSelectedIndex = NON_SELECTED;
     }];
 }
+
 #pragma mark - UITextField Delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{

@@ -271,7 +271,17 @@
     [[GANCacheManager sharedInstance] getCompanyBusinessNameESByCompanyId:job.szCompanyId Callback:^(NSString *businessNameES) {
         cell.lblCompany.text = businessNameES;
     }];
-    cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f / %@", job.fPayRate, ((job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"hr" : @"lb")];
+    if(job.fPayRate == 0) {
+        cell.lblPrice.hidden    = YES;
+        cell.lblUnit.hidden     = YES;
+        cell.lblPriceNA.hidden  = NO;
+    } else {
+        cell.lblPrice.text      = [NSString stringWithFormat:@"$%.02f / %@", job.fPayRate, job.szPayUnit];
+        cell.lblPrice.hidden    = NO;
+        cell.lblUnit.hidden     = NO;
+        cell.lblPriceNA.hidden  = YES;
+    }
+    
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 }

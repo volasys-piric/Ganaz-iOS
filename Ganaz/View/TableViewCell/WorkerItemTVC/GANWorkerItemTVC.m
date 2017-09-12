@@ -30,17 +30,14 @@
 
 - (void) setItemSelected: (BOOL) selected{
     if (selected == YES){
-//        self.viewContainer.layer.backgroundColor = UICOLOR_WORKERITEM_BACKGROUND_SELECTED.CGColor;
         self.lblWorkerId.textColor = UICOLOR_WORKERITEM_TITLE_SELECTED;
-        self.lblCircle.backgroundColor = UICOLOR_WORKERITEM_TITLE_SELECTED;
+        self.btnEdit.titleLabel.textColor = UICOLOR_WORKERITEM_TITLE_SELECTED;
     }
     else {
-//        self.viewContainer.layer.backgroundColor = UICOLOR_WORKERITEM_BACKGROUND_NOTSELECTED.CGColor;
         self.lblWorkerId.textColor = UICOLOR_WORKERITEM_TITLE_NOTSELECTED;
-        self.lblCircle.backgroundColor = UICOLOR_WORKERITEM_TITLE_NOTSELECTED;
+        self.btnEdit.titleLabel.textColor = UICOLOR_WORKERITEM_TITLE_NOTSELECTED;
     }
-    self.lblCircle.layer.cornerRadius = 3;
-    self.lblCircle.clipsToBounds = YES;
+
 }
 - (IBAction)onEdit:(id)sender {
     if (self.delegate && [self.delegate respondsToSelector:@selector(setWorkerNickName:)]) {

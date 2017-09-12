@@ -19,6 +19,7 @@
 
 @interface GANMainLoadingVC () <GANAppUpdatesPopupDelegate>
 
+@property (strong, nonatomic) IBOutlet UIImageView *imgBackground;
 @property (assign, atomic) BOOL didMainViewShow;
 @property (assign, atomic) int nRetry;
 @property (strong, nonatomic) GANFadeTransitionDelegate *transController;
@@ -31,6 +32,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    
+#if defined(GANENVIRONMENT_STAGING)
+    self.imgBackground.backgroundColor = [UIColor redColor];
+#elif defined(GANENVIRONMENT_DEMO)
+    self.imgBackground.backgroundColor = [UIColor yellowColor];
+#else
+    self.imgBackground.image = [UIImage imageNamed:@"background"];
+#endif
     self.nRetry = 0;
     self.didMainViewShow = NO;
     

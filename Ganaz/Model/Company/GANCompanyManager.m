@@ -333,4 +333,14 @@
     }];
 }
 
+- (BOOL) checkUserInMyworkerList:(NSString *) szPhoneNumber {
+    for (int i = 0; i < self.arrMyWorkers.count; i ++) {
+        GANMyWorkerDataModel *worker = [self.arrMyWorkers objectAtIndex:i];
+        if([szPhoneNumber caseInsensitiveCompare:worker.modelWorker.modelPhone.szLocalNumber] == NSOrderedSame) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 @end

@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GANUserWorkerDataModel.h"
 
 @interface GANWorkerLoginCodeVC : UIViewController
 
 @property (strong, nonatomic) NSString *szPhoneNumber;
 @property (assign, atomic) BOOL isLogin;
 @property (assign, atomic) BOOL isAutoLogin;
+@property (assign, atomic) BOOL isOnboardingWorker;
+@property (nonatomic, strong) NSString *szId;
 
 @end

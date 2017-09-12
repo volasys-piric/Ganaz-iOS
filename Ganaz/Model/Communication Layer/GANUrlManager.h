@@ -30,6 +30,7 @@
 #pragma mark - Endpoint for User
 
 + (NSString *) getEndpointForUserDetailsWithUserId: (NSString *) userId;
++ (NSString *) getEndpointForOnboardingUserSignup:(NSString *)szUserId;
 + (NSString *) getEndpointForUserSignup;
 + (NSString *) getEndpointForUserLogin;
 + (NSString *) getEndpointForUserUpdateProfile;

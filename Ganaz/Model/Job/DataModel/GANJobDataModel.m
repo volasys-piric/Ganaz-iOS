@@ -8,7 +8,6 @@
 
 #import "GANJobDataModel.h"
 #import "GANUserManager.h"
-#import "GANUtils.h"
 #import "Global.h"
 #import "GANLocationManager.h"
 #import "GANGenericFunctionManager.h"
@@ -35,7 +34,7 @@
     self.modelComments = [[GANTransContentsDataModel alloc] init];
     self.isAutoTranslate = NO;
     self.fPayRate = 0;
-    self.enumPayUnit = GANENUM_PAY_UNIT_HOUR;
+    self.szPayUnit = @"";
     self.dateFrom = nil;
     self.dateTo = nil;
     self.nPositions = 0;
@@ -57,7 +56,7 @@
     [self.modelTitle setWithContents:job.modelTitle];
     [self.modelComments setWithContents:job.modelComments];
     self.fPayRate = job.fPayRate;
-    self.enumPayUnit = job.enumPayUnit;
+    self.szPayUnit = job.szPayUnit;
     self.dateFrom = job.dateFrom;
     self.dateTo = job.dateTo;
     self.nPositions = job.nPositions;
@@ -92,7 +91,7 @@
 
     NSDictionary *dictPay = [dict objectForKey:@"pay"];
     self.fPayRate = [GANGenericFunctionManager refineFloat:[dictPay objectForKey:@"rate"] DefaultValue:0];
-    self.enumPayUnit = [GANUtils getPayUnitFromString:[GANGenericFunctionManager refineNSString:[dictPay objectForKey:@"unit"]]];
+    self.szPayUnit = [GANUtils getPayUnitFromString:[GANGenericFunctionManager refineNSString:[dictPay objectForKey:@"unit"]]];
     
     NSDictionary *dictDate = [dict objectForKey:@"dates"];
     self.dateFrom = [GANGenericFunctionManager getDateTimeFromNormalizedString:[dictDate objectForKey:@"from"]];
@@ -135,7 +134,7 @@
     [dict setObject:(self.isAutoTranslate == YES) ? @"true": @"false" forKey:@"auto_translate"];
 
     [dict setObject:@{@"rate": [NSString stringWithFormat:@"%.2f", self.fPayRate],
-                      @"unit": ((self.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"hr" : @"lb")
+                      @"unit": self.szPayUnit
                       }
              forKey:@"pay"];
     [dict setObject:@{@"from": [GANGenericFunctionManager getNormalizedStringFromDate:self.dateFrom],

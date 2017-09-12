@@ -56,6 +56,9 @@
 }
 
 #pragma mark - Endpoint for User
++ (NSString *) getEndpointForOnboardingUserSignup:(NSString *)szUserId{
+    return [NSString stringWithFormat:@"%@/user/onboarding/%@", [GANUrlManager getBaseUrl], szUserId];
+}
 
 + (NSString *) getEndpointForUserSignup{
     return [NSString stringWithFormat:@"%@/user", [GANUrlManager getBaseUrl]];

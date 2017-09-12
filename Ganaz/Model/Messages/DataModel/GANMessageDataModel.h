@@ -28,6 +28,8 @@
 @property (strong, nonatomic) NSDictionary *dictMetadata;
 @property (strong, nonatomic) NSDate *dateSent;
 
+@property (strong, nonatomic) GANLocationDataModel *locationInfo;
+
 - (instancetype) init;
 - (void) setWithDictionary: (NSDictionary *) dict;
 - (NSDictionary *) serializeToDictionary;

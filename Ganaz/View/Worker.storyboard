@@ -52,7 +52,7 @@
             <objects>
                 <navigationController id="kDe-s0-Nxi" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Configuración" image="tab-settings" id="jO2-1g-ui9"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Zas-qj-eaI">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Zas-qj-eaI">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1587,7 +1587,7 @@
             <objects>
                 <navigationController id="Zqn-dQ-zLd" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Trabajos" image="tab-list" id="LEK-gv-QVU"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="UXF-sK-EP0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="UXF-sK-EP0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1604,7 +1604,7 @@
             <objects>
                 <navigationController id="zPw-5u-DlH" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Mensajes" image="tab-message" id="aFw-PP-fVl"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="s76-vc-a05">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="s76-vc-a05">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

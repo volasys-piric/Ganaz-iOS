@@ -30,6 +30,7 @@
                            Receivers: (NSArray *) receivers
                ReceiversPhoneNumbers: (NSArray *) receivers_phone_numbers
                              Message: (NSString *) message
+                            MetaData: (NSDictionary *)metaData
                        AutoTranslate: (BOOL) isAutoTranslate
                         FromLanguage: (NSString *) fromLanguage
                           ToLanguage: (NSString *) toLanguage

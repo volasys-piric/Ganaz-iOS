@@ -165,7 +165,7 @@
     
     self.lblPrice.text = [NSString stringWithFormat:@"$%.02f", self.job.fPayRate];
     self.lblDate.text = [NSString stringWithFormat:@"%@ - %@", [GANGenericFunctionManager getBeautifiedSpanishDate:self.job.dateFrom], [GANGenericFunctionManager getBeautifiedSpanishDate:self.job.dateTo]];
-    self.lblUnit.text = (self.job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"por hora" : @"por libra";
+    self.lblUnit.text = self.job.szPayUnit; // == GANENUM_PAY_UNIT_HOUR) ? @"por hora" : @"por libra";
     self.lblPositions.text = [NSString stringWithFormat:@"%d puestos", self.job.nPositions];
     self.lblDescription.text = [self.job getCommentsES];
     

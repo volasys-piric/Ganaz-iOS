@@ -176,7 +176,7 @@
     GANJobDataModel *job = [self.company.arrJobs objectAtIndex:index];
     
     cell.lblTitle.text = [job getTitleES];
-    cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f / %@", job.fPayRate, ((job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"hr" : @"lb")];
+    cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f / %@", job.fPayRate, job.szPayUnit];
     // View Details...
     cell.lblUnit.text = @"Ver más";
     cell.lblDate.text = [NSString stringWithFormat:@"%@ - %@", [GANGenericFunctionManager getBeautifiedSpanishDate:job.dateFrom], [GANGenericFunctionManager getBeautifiedSpanishDate:job.dateTo]];

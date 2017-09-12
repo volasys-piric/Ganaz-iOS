@@ -38,6 +38,7 @@
 
 #pragma mark - Login & Signup
 
+- (void) requestOnboardingUserSignupWithCallback: (void(^) (int status)) callback;
 - (void) requestUserSignupWithCallback: (void (^) (int status)) callback;
 - (void) requestUserLoginWithUsername: (NSString *) username Password: (NSString *) password Callback: (void (^) (int status)) callback;
 - (void) requestUserLoginWithPhoneNumber: (NSString *) phoneNumber Password: (NSString *) password Callback: (void (^) (int status)) callback;

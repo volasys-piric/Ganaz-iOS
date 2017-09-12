@@ -1,44 +1,44 @@
 //
-//  GANMyWorkerNickNameEditPopupVC.m
+//  GANConformMessagePopupVC.m
 //  Ganaz
 //
-//  Created by forever on 8/18/17.
+//  Created by forever on 9/12/17.
 //  Copyright © 2017 Ganaz. All rights reserved.
 //
 
-#import "GANMyWorkerNickNameEditPopupVC.h"
+#import "GANConformMessagePopupVC.h"
 #import "Global.h"
-#import "GANGenericFunctionManager.h"
 
-@interface GANMyWorkerNickNameEditPopupVC ()<UITextFieldDelegate>
-
-@property (weak, nonatomic) IBOutlet UIView *viewContents;
-@property (weak, nonatomic) IBOutlet UIButton *btnDone;
-@property (weak, nonatomic) IBOutlet UIView *viewTextField;
-@property (weak, nonatomic) IBOutlet UITextField *txtNickName;
+@interface GANConformMessagePopupVC ()
+@property (strong, nonatomic) IBOutlet UIView *viewContents;
+@property (strong, nonatomic) IBOutlet UILabel *lblDescription;
+@property (strong, nonatomic) IBOutlet UIButton *btnCancel;
+@property (strong, nonatomic) IBOutlet UIButton *btnSend;
 
 @end
 
-@implementation GANMyWorkerNickNameEditPopupVC
+@implementation GANConformMessagePopupVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.txtNickName.delegate = self;
-    
     [self refreshViews];
 }
 
-- (void) refreshViews{
+- (void) refreshViews {
     self.viewContents.clipsToBounds         = YES;
     self.viewContents.layer.cornerRadius    = 3;
     self.viewContents.layer.borderWidth     = 1;
     self.viewContents.layer.borderColor     = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
-    self.viewTextField.layer.cornerRadius = 3;
     
-    self.btnDone.clipsToBounds        = YES;
-    self.btnDone.layer.cornerRadius   = 3;
+    self.btnCancel.layer.cornerRadius       = 3;
+    self.btnCancel.clipsToBounds            = YES;
+    self.btnCancel.layer.borderWidth        = 1;
+    self.btnCancel.layer.borderColor        = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
+    
+    self.btnSend.layer.cornerRadius         = 3;
+    self.btnSend.clipsToBounds              = YES;
 }
 
 - (void) closeDialog{
@@ -49,27 +49,28 @@
     }];
 }
 
+- (void) setDescription:(NSInteger) nCount {
+    self.lblDescription.text = [NSString stringWithFormat:@"%ld of your workers are not using Ganaz so this message will cost $0.15\n to send", (long)nCount];
+}
+
 - (IBAction)onBtnWrapperClick:(id)sender {
     [self.view endEditing:YES];
     [self closeDialog];
 }
 
-- (IBAction)onSetMyWorkNickName:(id)sender {
+- (IBAction)onSend:(id)sender {
     
-    NSString *szNickName = [GANGenericFunctionManager refineNSString:self.txtNickName.text];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(sendMessagetoWorkers)]) {
+        [self.delegate sendMessagetoWorkers];
+    }
     
     [self.view endEditing:YES];
     [self closeDialog];
-    
-    if(self.delegate && [self.delegate respondsToSelector:@selector(setMyWorkerNickName:index:)]) {
-        [self.delegate setMyWorkerNickName:szNickName index:self.nIndex];
-    }
 }
 
-#pragma mark - UITextFieldDelegate
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return YES;
+- (IBAction)onCancel:(id)sender {
+    [self.view endEditing:YES];
+    [self closeDialog];
 }
 
 - (void)didReceiveMemoryWarning {

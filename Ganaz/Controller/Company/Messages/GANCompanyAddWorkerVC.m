@@ -288,19 +288,36 @@ typedef enum _ENUM_FOUNDSTATUS{
         phone.szLocalNumber = worker.modelPhone.szLocalNumber;
     }
     
+    if([[GANCompanyManager sharedInstance] checkUserInMyworkerList:phone.szLocalNumber]) {
+        [GANGlobalVCManager showHudInfoWithMessage:@"User is already added" DismissAfter:-1 Callback:^{
+            return;
+        }];
+    }
+    
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
     [[GANCompanyManager sharedInstance] requestSendInvite:phone CompanyId:szCompanyId Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [self.arrInvitedWorkers addObject:phone.szLocalNumber];
             [GANGlobalVCManager showHudSuccessWithMessage:@"An invitation will be sent shortly via SMS" DismissAfter:-1 Callback:nil];
-            [self.tableview reloadData];
+            [self getMyWorkerList];
+//            [self.tableview reloadData];
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
         }
     }];
     GANACTIVITY_REPORT(@"Company - Send invite");
+}
+
+- (void) getMyWorkerList {
+    [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:^(int status) {
+        if(status == SUCCESS_WITH_NO_ERROR) {
+            
+        } else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
+        }
+    }];
 }
 
 - (IBAction)onBtnSearchClick:(id)sender {

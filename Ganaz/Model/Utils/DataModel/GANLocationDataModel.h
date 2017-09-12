@@ -18,6 +18,7 @@
 - (void) setWithDictionary:(NSDictionary *)dict;
 - (void) initializeWithLocation: (GANLocationDataModel *) location;
 - (NSDictionary *) serializeToDictionary;
+- (NSDictionary *) serializeToMetaDataDictionary;
 - (CLLocation *) generateCLLocation;
 
 @end

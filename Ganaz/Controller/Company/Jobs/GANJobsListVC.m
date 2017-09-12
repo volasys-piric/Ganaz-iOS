@@ -162,7 +162,7 @@
     GANJobDataModel *job = [[GANJobManager sharedInstance].arrMyJobs objectAtIndex:index];
     cell.lblTitle.text = [job getTitleEN];
     cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f", job.fPayRate];
-    cell.lblUnit.text = (job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"per hour" : @"per lb";
+    cell.lblUnit.text = job.szPayUnit;
     cell.lblDate.text = [NSString stringWithFormat:@"%@ - %@", [GANGenericFunctionManager getBeautifiedDate:job.dateFrom], [GANGenericFunctionManager getBeautifiedDate:job.dateTo]];
     
     [cell showPayRate:[job isPayRateSpecified]];
