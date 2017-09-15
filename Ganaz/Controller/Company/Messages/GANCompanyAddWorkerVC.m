@@ -44,7 +44,7 @@ typedef enum _ENUM_FOUNDSTATUS{
 @property (weak, nonatomic) IBOutlet UILabel *lblSuggested;
 
 @property (strong, nonatomic) NSMutableArray *arrWorkersFound;
-@property (strong, nonatomic) NSMutableArray *arrInvitedWorkers;
+//@property (strong, nonatomic) NSMutableArray *arrInvitedWorkers;
 
 @property (assign, atomic) GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS enumStatus;
 
@@ -72,7 +72,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     
     self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE;
     self.arrWorkersFound = [[NSMutableArray alloc] init];
-    self.arrInvitedWorkers = [[NSMutableArray alloc] init];
+//    self.arrInvitedWorkers = [[NSMutableArray alloc] init];
     
     self.lblDescription.text = self.szDescription;
     
@@ -137,7 +137,7 @@ typedef enum _ENUM_FOUNDSTATUS{
 
 - (void) buildFilteredArray{
     
-    [self.arrInvitedWorkers removeAllObjects];
+//    [self.arrInvitedWorkers removeAllObjects];
     [self.arrWorkersFound removeAllObjects];
     
     GANPhonebookContactsManager *managerPhonebook = [GANPhonebookContactsManager sharedInstance];
@@ -177,12 +177,12 @@ typedef enum _ENUM_FOUNDSTATUS{
 }
 
 - (void) searchWorkers:(BOOL) fromSeachField {
-    
+    /*
     if([self isInvitedUser:self.txtPhone.text])
     {
         [GANGlobalVCManager showHudErrorWithMessage:@"This user has already been added" DismissAfter:-1 Callback:nil];
         return;
-    }
+    }*/
     
     NSString *szPhoneNumber = self.txtPhone.text;
     NSString *szWorkerName = self.txtPhone.text;
@@ -262,10 +262,10 @@ typedef enum _ENUM_FOUNDSTATUS{
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [[GANCompanyManager sharedInstance] requestAddMyWorkerWithUserIds:arrUserIds Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            for (int i = 0; i < (int) [arrWorkers count]; i++) {
+            /*for (int i = 0; i < (int) [arrWorkers count]; i++) {
                 GANUserWorkerDataModel *worker = [arrWorkers objectAtIndex:i];
                 [self.arrInvitedWorkers addObject:worker.modelPhone.szLocalNumber];
-            }
+            }*/
             
             [GANGlobalVCManager showHudSuccessWithMessage:@"Worker has been added successfully" DismissAfter:-3 Callback:^{
                 [self.tableview reloadData];
@@ -298,7 +298,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     
     [[GANCompanyManager sharedInstance] requestSendInvite:phone CompanyId:szCompanyId Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            [self.arrInvitedWorkers addObject:phone.szLocalNumber];
+//            [self.arrInvitedWorkers addObject:phone.szLocalNumber];
             [GANGlobalVCManager showHudSuccessWithMessage:@"An invitation will be sent shortly via SMS" DismissAfter:-1 Callback:nil];
             [self getMyWorkerList];
 //            [self.tableview reloadData];
@@ -348,7 +348,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     nSelectedIndex = -1;
     [self showPopupDialog: self.txtPhone.text];
 }
-
+/*
 - (BOOL) isInvitedUser:(NSString*)szPhoneNumber {
     for(int i = 0; i < self.arrInvitedWorkers.count; i ++) {
         NSString *szUserPhone = [self.arrInvitedWorkers objectAtIndex:i];
@@ -356,7 +356,7 @@ typedef enum _ENUM_FOUNDSTATUS{
             return YES;
     }
     return NO;
-}
+}*/
 
 #pragma mark - UITableView Delegate
 

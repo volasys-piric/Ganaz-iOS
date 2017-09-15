@@ -13,6 +13,7 @@
 #import "GANAddressDataModel.h"
 #import "GANTransContentsDataModel.h"
 #import "GANBenefitDataModel.h"
+#import <UIImageView+AFNetworking.h>
 
 typedef enum _ENUM_USER_TYPE{
     GANENUM_USER_TYPE_ANY = -1,
@@ -159,6 +160,8 @@ typedef enum _ENUM_APPCONFIG_APPUPDATETYPE{
 + (GANENUM_MEMBERSHIPPLAN_TYPE) getMembershipPlayTypeFromString: (NSString *) szType;
 + (NSString *) getStringFromMembershipPlanType: (GANENUM_MEMBERSHIPPLAN_TYPE) type;
 
++ (void) syncImageWithUrl:(UIImageView *) imageView latitude:(float) latitude longitude:(float) longitude;
+                                 
 + (void) requestTranslate: (NSString *) text
                 Translate: (BOOL) shouldTranslate
              FromLanguage: (NSString *) fromLanguage

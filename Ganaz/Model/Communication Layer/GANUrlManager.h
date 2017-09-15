@@ -86,4 +86,8 @@
 
 + (NSString *) getEndpointForGoogleTranslate;
 
+#pragma mark - Google Static Map API
+
++ (NSString *) getEndpointForStaticMap:(float)latitude longitue:(float)longitude;
+
 @end

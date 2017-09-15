@@ -197,6 +197,19 @@
     return @"running";
 }
 
++ (void) syncImageWithUrl:(UIImageView *) imageView latitude:(float) latitude longitude:(float) longitude {
+    NSString *szUrl = [GANUrlManager getEndpointForStaticMap:latitude longitue:longitude];
+    
+    CGSize size = CGSizeMake(imageView.frame.size.width, imageView.frame.size.height);
+    UIGraphicsBeginImageContextWithOptions(size, YES, 0);
+    [[UIColor lightGrayColor] setFill];
+    UIRectFill(CGRectMake(0, 0, size.width, size.height));
+    UIImage *imagePlaceholder = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [imageView setImageWithURL:[NSURL URLWithString:szUrl] placeholderImage:imagePlaceholder];
+}
+
 // Translate
 
 + (void) requestTranslate: (NSString *) text

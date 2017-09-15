@@ -190,4 +190,9 @@
     return @"https://translation.googleapis.com/language/translate/v2";
 }
 
++ (NSString *) getEndpointForStaticMap:(float)latitude longitue:(float)longitude {
+    NSString *szUrl = [NSString stringWithFormat:@"http://maps.google.com/maps/api/staticmap?center=%f,%f&zoom=18&size=600x360&markers=color:green%%7Clabel:%%7C%f,%f", latitude, longitude, latitude, longitude];
+    return szUrl;
+}
+
 @end

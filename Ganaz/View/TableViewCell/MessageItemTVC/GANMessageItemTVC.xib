@@ -102,17 +102,16 @@
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LjB-fz-OwU" userLabel="View - MapView">
                                 <rect key="frame" x="62" y="73" width="301" height="181.5"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rgu-mv-kX7" userLabel="View - MapContent">
-                                        <rect key="frame" x="0.0" y="0.0" width="301.5" height="181.5"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NcJ-6d-HQo">
+                                        <rect key="frame" x="0.0" y="0.0" width="301" height="181.5"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="rgu-mv-kX7" firstAttribute="top" secondItem="LjB-fz-OwU" secondAttribute="top" id="LrK-at-EIL"/>
-                                    <constraint firstItem="rgu-mv-kX7" firstAttribute="leading" secondItem="LjB-fz-OwU" secondAttribute="leading" id="No4-Mg-nlW"/>
-                                    <constraint firstAttribute="bottom" secondItem="rgu-mv-kX7" secondAttribute="bottom" id="fE6-So-DNp"/>
-                                    <constraint firstAttribute="trailing" secondItem="rgu-mv-kX7" secondAttribute="trailing" id="urv-3y-l6U"/>
+                                    <constraint firstAttribute="trailing" secondItem="NcJ-6d-HQo" secondAttribute="trailing" id="2gu-cq-0zj"/>
+                                    <constraint firstAttribute="bottom" secondItem="NcJ-6d-HQo" secondAttribute="bottom" id="YmH-5d-oIt"/>
+                                    <constraint firstItem="NcJ-6d-HQo" firstAttribute="leading" secondItem="LjB-fz-OwU" secondAttribute="leading" id="ZK9-Yq-Xoj"/>
+                                    <constraint firstItem="NcJ-6d-HQo" firstAttribute="top" secondItem="LjB-fz-OwU" secondAttribute="top" id="fu2-6x-Q3E"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YPq-g1-Glc" userLabel="Label - Separator">
@@ -150,11 +149,11 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="imgAvatar" destination="ZNL-2L-f7x" id="Na6-Vc-LGv"/>
+                <outlet property="imgMap" destination="NcJ-6d-HQo" id="MuS-GO-XoX"/>
                 <outlet property="lblAvatar" destination="yDD-Pt-wIX" id="k8g-UZ-nd8"/>
                 <outlet property="lblDateTime" destination="gxe-Sd-mC4" id="Ocv-RE-gxu"/>
                 <outlet property="lblMessage" destination="TOb-MW-wde" id="kFx-nK-PuB"/>
                 <outlet property="lblTitle" destination="d8k-f0-uFE" id="uoQ-lS-SHU"/>
-                <outlet property="viewMap" destination="rgu-mv-kX7" id="Xd5-KF-8ZB"/>
             </connections>
             <point key="canvasLocation" x="26.5" y="52"/>
         </tableViewCell>
