@@ -173,7 +173,7 @@
             [GANGlobalVCManager hideHudProgressWithCallback:^{
                 [self gotoWorkerMain];
             }];
-            GANACTIVITY_REPORT(@"User signed up");
+            GANACTIVITY_REPORT(@"Onboarding User signed up");
         }
         else if (status == ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT){
             // User name is already registered.

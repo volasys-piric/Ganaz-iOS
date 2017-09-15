@@ -283,7 +283,11 @@
                     user = [[GANUserWorkerDataModel alloc] init];
                     [user setWithDictionary:dictAccount];
                 }
-                else {
+                else if (enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
+                    user = [[GANUserWorkerDataModel alloc] init];
+                    [user setWithDictionary:dictAccount];
+                }
+                else if (enumUserType == GANENUM_USER_TYPE_COMPANY_ADMIN || enumUserType == GANENUM_USER_TYPE_COMPANY_REGULAR) {
                     user = [[GANUserCompanyDataModel alloc] init];
                     [user setWithDictionary:dictAccount];
                 }
@@ -315,7 +319,11 @@
                 user = [[GANUserWorkerDataModel alloc] init];
                 [user setWithDictionary:dictAccount];
             }
-            else {
+            else if (enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
+                user = [[GANUserWorkerDataModel alloc] init];
+                [user setWithDictionary:dictAccount];
+            }
+            else if (enumUserType == GANENUM_USER_TYPE_COMPANY_ADMIN || enumUserType == GANENUM_USER_TYPE_COMPANY_REGULAR) {
                 user = [[GANUserCompanyDataModel alloc] init];
                 [user setWithDictionary:dictAccount];
             }

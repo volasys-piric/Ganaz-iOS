@@ -224,13 +224,7 @@ typedef enum _ENUM_FOUNDSTATUS{
                      [self refreshViews];
                      [GANGlobalVCManager showHudSuccessWithMessage:[NSString stringWithFormat:@"%d worker(s) found!", (int) [arrWorkers count]] DismissAfter:-1 Callback:nil];
                  } else {
-                     for(int i = 0; i < arrWorkers.count; i ++) {
-                         GANUserWorkerDataModel *model = [arrWorkers objectAtIndex:i];
-                         if([model.modelPhone.szLocalNumber isEqualToString:szPhoneNumber]) {
-                             [self doAddMyWorkers:model];
-                             break;
-                         }
-                     }
+                     [self doAddMyWorkers:(NSArray<GANUserWorkerDataModel *> *) arrWorkers];
                  }
             }
         }
@@ -257,15 +251,22 @@ typedef enum _ENUM_FOUNDSTATUS{
     [self.tableview reloadData];
 }
 
-- (void) doAddMyWorkers:(GANUserWorkerDataModel *)worker {
+- (void) doAddMyWorkers:(NSArray<GANUserWorkerDataModel *> *) arrWorkers {
     NSMutableArray *arrUserIds = [[NSMutableArray alloc] init];
     
-    [arrUserIds addObject:worker.szId];
+    for (int i = 0; i < (int) [arrWorkers count]; i++) {
+        GANUserWorkerDataModel *worker = [arrWorkers objectAtIndex:i];
+        [arrUserIds addObject:worker.szId];
+    }
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [[GANCompanyManager sharedInstance] requestAddMyWorkerWithUserIds:arrUserIds Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            [self.arrInvitedWorkers addObject:worker.modelPhone.szLocalNumber];
+            for (int i = 0; i < (int) [arrWorkers count]; i++) {
+                GANUserWorkerDataModel *worker = [arrWorkers objectAtIndex:i];
+                [self.arrInvitedWorkers addObject:worker.modelPhone.szLocalNumber];
+            }
+            
             [GANGlobalVCManager showHudSuccessWithMessage:@"Worker has been added successfully" DismissAfter:-3 Callback:^{
                 [self.tableview reloadData];
             }];
@@ -289,9 +290,8 @@ typedef enum _ENUM_FOUNDSTATUS{
     }
     
     if([[GANCompanyManager sharedInstance] checkUserInMyworkerList:phone.szLocalNumber]) {
-        [GANGlobalVCManager showHudInfoWithMessage:@"User is already added" DismissAfter:-1 Callback:^{
-            return;
-        }];
+        [GANGlobalVCManager showHudInfoWithMessage:@"User is already added" DismissAfter:-1 Callback:nil];
+        return;
     }
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
@@ -397,7 +397,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     
     if(self.enumStatus == GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_FOUND) {
         GANUserWorkerDataModel *worker = [self.arrWorkersFound objectAtIndex:nIndex];
-        [self doAddMyWorkers:worker];
+        [self doAddMyWorkers:@[worker]];
     } else {
         nSelectedIndex = nIndex;
         [self searchWorkers:NO];
