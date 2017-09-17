@@ -8,7 +8,7 @@
 
 #import "GANCompanyAddWorkerVC.h"
 #import "GANCompanyAddWorkerItemTVC.h"
-#import "GANJobRecruitPopupVC.h"
+#import "GANInviteWorkerPopupVC.h"
 
 #import "GANUserWorkerDataModel.h"
 #import "GANCompanyManager.h"
@@ -27,7 +27,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND
 } GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS;
 
-@interface GANCompanyAddWorkerVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, GANCompanyAddWorkerItemTVCDelegate, GANJobRecruitPopupVCDelegate>
+@interface GANCompanyAddWorkerVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, GANCompanyAddWorkerItemTVCDelegate, GANInviteWorkerPopupVCDelegate>
 {
     NSInteger nSelectedIndex;
 }
@@ -215,6 +215,7 @@ typedef enum _ENUM_FOUNDSTATUS{
                     [self refreshViews];
                     [GANGlobalVCManager showHudInfoWithMessage:@"No new workers found" DismissAfter:-1 Callback:nil];
                 } else {
+                    [GANGlobalVCManager hideHudProgress];
                     [self showPopupDialog:szWorkerName];
                 }
             } else {
@@ -224,6 +225,7 @@ typedef enum _ENUM_FOUNDSTATUS{
                      [self refreshViews];
                      [GANGlobalVCManager showHudSuccessWithMessage:[NSString stringWithFormat:@"%d worker(s) found!", (int) [arrWorkers count]] DismissAfter:-1 Callback:nil];
                  } else {
+                     [GANGlobalVCManager hideHudProgress];
                      [self doAddMyWorkers:(NSArray<GANUserWorkerDataModel *> *) arrWorkers];
                  }
             }
@@ -234,6 +236,7 @@ typedef enum _ENUM_FOUNDSTATUS{
                 [self refreshViews];
                 [GANGlobalVCManager showHudInfoWithMessage:@"No worker found!" DismissAfter:-1 Callback:nil];
             } else {
+                [GANGlobalVCManager hideHudProgress];
                 [self showPopupDialog:szWorkerName];
             }
             
@@ -278,7 +281,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     GANACTIVITY_REPORT(@"Company - Add worker");
 }
 
-- (void) InviteMyWorker
+- (void) InviteMyWorker:(BOOL) bInviteOnly
 {
     NSString *szCompanyId = [GANUserManager getCompanyDataModel].szId;
     GANPhoneDataModel *phone = [[GANPhoneDataModel alloc] init];
@@ -296,11 +299,13 @@ typedef enum _ENUM_FOUNDSTATUS{
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
-    [[GANCompanyManager sharedInstance] requestSendInvite:phone CompanyId:szCompanyId Callback:^(int status) {
+    [[GANCompanyManager sharedInstance] requestSendInvite:phone CompanyId:szCompanyId inviteOnly:bInviteOnly Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
 //            [self.arrInvitedWorkers addObject:phone.szLocalNumber];
             [GANGlobalVCManager showHudSuccessWithMessage:@"An invitation will be sent shortly via SMS" DismissAfter:-1 Callback:nil];
-            [self getMyWorkerList];
+            
+            if(!bInviteOnly)
+                [self getMyWorkerList];
 //            [self.tableview reloadData];
         }
         else {
@@ -404,32 +409,27 @@ typedef enum _ENUM_FOUNDSTATUS{
     }
 }
 
-#pragma mark - GANJobRecruitPopupVCDelegate
+#pragma mark - GANInviteWorkerPopupVCDelegate
 - (void) showPopupDialog:(NSString*) szWorkerName {
     
-    GANJobRecruitPopupVC *vc = [[GANJobRecruitPopupVC alloc] initWithNibName:@"GANJobRecruitPopupVC" bundle:nil];
+    GANInviteWorkerPopupVC *vc = [[GANInviteWorkerPopupVC alloc] initWithNibName:@"GANInviteWorkerPopupVC" bundle:nil];
     
     vc.delegate = self;
     vc.view.backgroundColor = [UIColor clearColor];
     
-    [vc setRecruitButtonTitle:@"Invite them to Ganaz"];
-    [vc setEditButtonTitle:@"Go back"];
-    
-    NSString *strDescription = [NSString stringWithFormat:@"%@ is not\n using Ganaz yet", szWorkerName];
-    [vc setDescriptionTitle:strDescription];
-    
     [vc setTransitioningDelegate:self.transController];
     vc.modalPresentationStyle = UIModalPresentationCustom;
-    [self presentViewController:vc animated:YES completion:nil];
+    [self presentViewController:vc animated:YES completion:^{
+        [vc setDescription:szWorkerName];
+    }];
 }
 
-- (void) didRecruit {
-    
-    [self InviteMyWorker];
+- (void) InviteWorkertoGanaz {
+    [self InviteMyWorker:YES];
 }
 
-- (void) didEdit {
-    [GANGlobalVCManager hideHudProgress];
+- (void) CommunicateWithWorkers {
+    [self InviteMyWorker:NO];
 }
 
 #pragma mark - UITextFieldDelegate

@@ -27,7 +27,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="260"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="259.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="260"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lvo-rK-pma" userLabel="View - Content View">
@@ -105,13 +105,23 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NcJ-6d-HQo">
                                         <rect key="frame" x="0.0" y="0.0" width="301" height="181.5"/>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yo6-W6-BkP" userLabel="Button - Map">
+                                        <rect key="frame" x="0.0" y="-0.5" width="301" height="181.5"/>
+                                        <connections>
+                                            <action selector="gotoMapApplication:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="2MT-Mp-UCG"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="yo6-W6-BkP" firstAttribute="centerY" secondItem="NcJ-6d-HQo" secondAttribute="centerY" id="1Bm-3q-Yne"/>
                                     <constraint firstAttribute="trailing" secondItem="NcJ-6d-HQo" secondAttribute="trailing" id="2gu-cq-0zj"/>
+                                    <constraint firstItem="yo6-W6-BkP" firstAttribute="height" secondItem="NcJ-6d-HQo" secondAttribute="height" id="DFI-R1-hBV"/>
                                     <constraint firstAttribute="bottom" secondItem="NcJ-6d-HQo" secondAttribute="bottom" id="YmH-5d-oIt"/>
                                     <constraint firstItem="NcJ-6d-HQo" firstAttribute="leading" secondItem="LjB-fz-OwU" secondAttribute="leading" id="ZK9-Yq-Xoj"/>
                                     <constraint firstItem="NcJ-6d-HQo" firstAttribute="top" secondItem="LjB-fz-OwU" secondAttribute="top" id="fu2-6x-Q3E"/>
+                                    <constraint firstItem="yo6-W6-BkP" firstAttribute="width" secondItem="NcJ-6d-HQo" secondAttribute="width" id="lxG-40-hGL"/>
+                                    <constraint firstItem="yo6-W6-BkP" firstAttribute="centerX" secondItem="NcJ-6d-HQo" secondAttribute="centerX" id="nm4-1D-XDy"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YPq-g1-Glc" userLabel="Label - Separator">

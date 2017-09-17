@@ -10,6 +10,7 @@
 #import "GANWorkerItemTVC.h"
 #import "GANCompanyAddWorkerVC.h"
 #import "GANMyWorkerNickNameEditPopupVC.h"
+#import "GANOnboardingWorkerNickNamePopupVC.h"
 #import "GANCompanyMapPopupVC.h"
 #import "GANConformMessagePopupVC.h"
 
@@ -24,7 +25,7 @@
 
 #define NON_SELECTED -1
 
-@interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANWorkerItemTVCDelegate, GANCompanyMapPopupVCDelegate, GANConformMessagePopupVCDelegate>
+@interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANOnboardingWorkerNickNamePopupVCDelegate, GANWorkerItemTVCDelegate, GANCompanyMapPopupVCDelegate, GANConformMessagePopupVCDelegate>
 {
     NSInteger nSelectedIndex;
 }
@@ -253,9 +254,12 @@
         GANConformMessagePopupVC *vc = [[GANConformMessagePopupVC alloc] initWithNibName:@"GANConformMessagePopupVC" bundle:nil];
         vc.delegate = self;
         [vc setTransitioningDelegate:self.transController];
-        [vc setDescription:nCount];
+        vc.view.backgroundColor = [UIColor clearColor];
         vc.modalPresentationStyle = UIModalPresentationCustom;
-        [self presentViewController:vc animated:YES completion:nil];
+        [self presentViewController:vc animated:YES completion:^{
+            
+        }];
+        [vc setDescription:nCount];
     });
 }
 
@@ -271,6 +275,12 @@
     cell.lblWorkerId.text = [myWorker getDisplayName];
     cell.delegate = self;
     cell.nIndex = index;
+    
+    if(myWorker.modelWorker.enumType == GANENUM_USER_TYPE_WORKER) {
+        [cell setButtonColor:YES];
+    } else {
+        [cell setButtonColor:NO];
+    }
     
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -306,13 +316,42 @@
 
 - (void) changeMyWorkerNickName: (NSInteger) index{
     dispatch_async(dispatch_get_main_queue(), ^{
-        GANMyWorkerNickNameEditPopupVC *vc = [[GANMyWorkerNickNameEditPopupVC alloc] initWithNibName:@"GANMyWorkerNickNameEditPopupVC" bundle:nil];
-        vc.delegate = self;
-        vc.nIndex = index;
-        vc.view.backgroundColor = [UIColor clearColor];
-        [vc setTransitioningDelegate:self.transController];
-        vc.modalPresentationStyle = UIModalPresentationCustom;
-        [self presentViewController:vc animated:YES completion:nil];
+        
+        GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:index];
+        
+        
+        if(myWorker.modelWorker.enumType == GANENUM_USER_TYPE_ONBOARDING_WORKER){
+            GANOnboardingWorkerNickNamePopupVC *vc = [[GANOnboardingWorkerNickNamePopupVC alloc] initWithNibName:@"GANOnboardingWorkerNickNamePopupVC" bundle:nil];
+            vc.delegate = self;
+            
+            vc.view.backgroundColor = [UIColor clearColor];
+            [vc setTransitioningDelegate:self.transController];
+            vc.modalPresentationStyle = UIModalPresentationCustom;
+            [self presentViewController:vc animated:YES completion:^{
+                
+            }];
+            
+            vc.nIndex = index;
+            [vc setTitle:[myWorker.modelWorker.modelPhone getBeautifiedPhoneNumber]];
+            if(![myWorker.szNickname isEqualToString:@""] || myWorker.szNickname != nil)
+                vc.txtNickName.text = myWorker.szNickname;
+        } else {
+            GANMyWorkerNickNameEditPopupVC *vc = [[GANMyWorkerNickNameEditPopupVC alloc] initWithNibName:@"GANMyWorkerNickNameEditPopupVC" bundle:nil];
+            vc.delegate = self;
+            
+            vc.view.backgroundColor = [UIColor clearColor];
+            [vc setTransitioningDelegate:self.transController];
+            vc.modalPresentationStyle = UIModalPresentationCustom;
+            [self presentViewController:vc animated:YES completion:^{
+                
+            }];
+            
+            vc.nIndex = index;
+            [vc setTitle:[myWorker.modelWorker.modelPhone getBeautifiedPhoneNumber]];
+            if(![myWorker.szNickname isEqualToString:@""] || myWorker.szNickname != nil)
+                vc.txtNickName.text = myWorker.szNickname;
+        }        
+        
     });
 }
 
@@ -331,6 +370,27 @@
     UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:szUserName delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Re-send Invitation",@"Edit", nil];
     popup.tag = 0;
     [popup showInView:self.view];
+}
+
+- (void) setOnboardingWorkerNickName:(NSString*)szNickName index:(NSInteger) nIndex {
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
+    myWorker.szNickname = szNickName;
+    
+    //Add NickName
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:szNickName Callback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR) {
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Worker's alias has been updated" DismissAfter:-1 Callback:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableview reloadData];
+            });
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
+        }
+        nSelectedIndex = NON_SELECTED;
+    }];
 }
 
 - (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -360,7 +420,7 @@
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
-    [[GANCompanyManager sharedInstance] requestSendInvite:myWorker.modelWorker.modelPhone CompanyId:szCompanyId Callback:^(int status) {
+    [[GANCompanyManager sharedInstance] requestSendInvite:myWorker.modelWorker.modelPhone CompanyId:szCompanyId inviteOnly:NO Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"An invitation will be sent shortly via SMS" DismissAfter:-1 Callback:nil];
             [self getMyWorkerList];

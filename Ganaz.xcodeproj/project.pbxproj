@@ -128,6 +128,10 @@
 		85D856B9D301E048DF3E85AE /* libPods-Ganaz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7680D2DDBE95C3053040625 /* libPods-Ganaz.a */; };
 		9F3E7C821F60413800A42DE8 /* GANCompanyMapPopupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F3E7C801F60413800A42DE8 /* GANCompanyMapPopupVC.m */; };
 		9F3E7C831F60413800A42DE8 /* GANCompanyMapPopupVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F3E7C811F60413800A42DE8 /* GANCompanyMapPopupVC.xib */; };
+		9F5A89FF1F6E894B00E78342 /* GANInviteWorkerPopupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5A89FD1F6E894B00E78342 /* GANInviteWorkerPopupVC.m */; };
+		9F5A8A001F6E894B00E78342 /* GANInviteWorkerPopupVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F5A89FE1F6E894B00E78342 /* GANInviteWorkerPopupVC.xib */; };
+		9F5A8A0A1F6EDF6900E78342 /* GANOnboardingWorkerNickNamePopupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5A8A081F6EDF6900E78342 /* GANOnboardingWorkerNickNamePopupVC.m */; };
+		9F5A8A0B1F6EDF6900E78342 /* GANOnboardingWorkerNickNamePopupVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F5A8A091F6EDF6900E78342 /* GANOnboardingWorkerNickNamePopupVC.xib */; };
 		9F724D481F47C5BD00EED0F7 /* GANCommunicateWithMyWorkersOnboardingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F724D471F47C5BD00EED0F7 /* GANCommunicateWithMyWorkersOnboardingVC.m */; };
 		9F724D4B1F47C60600EED0F7 /* GANComposeMessageOnboardingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F724D4A1F47C60600EED0F7 /* GANComposeMessageOnboardingVC.m */; };
 		9FA560941F47419400D9E65B /* GANMyWorkerNickNameEditPopupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA560921F47419300D9E65B /* GANMyWorkerNickNameEditPopupVC.m */; };
@@ -368,6 +372,12 @@
 		9F3E7C7F1F60413800A42DE8 /* GANCompanyMapPopupVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANCompanyMapPopupVC.h; path = View/CustomView/CompanyMapPopup/GANCompanyMapPopupVC.h; sourceTree = "<group>"; };
 		9F3E7C801F60413800A42DE8 /* GANCompanyMapPopupVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANCompanyMapPopupVC.m; path = View/CustomView/CompanyMapPopup/GANCompanyMapPopupVC.m; sourceTree = "<group>"; };
 		9F3E7C811F60413800A42DE8 /* GANCompanyMapPopupVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GANCompanyMapPopupVC.xib; path = View/CustomView/CompanyMapPopup/GANCompanyMapPopupVC.xib; sourceTree = "<group>"; };
+		9F5A89FC1F6E894B00E78342 /* GANInviteWorkerPopupVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANInviteWorkerPopupVC.h; path = View/CustomView/GANInviteWorkerPopup/GANInviteWorkerPopupVC.h; sourceTree = "<group>"; };
+		9F5A89FD1F6E894B00E78342 /* GANInviteWorkerPopupVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANInviteWorkerPopupVC.m; path = View/CustomView/GANInviteWorkerPopup/GANInviteWorkerPopupVC.m; sourceTree = "<group>"; };
+		9F5A89FE1F6E894B00E78342 /* GANInviteWorkerPopupVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GANInviteWorkerPopupVC.xib; path = View/CustomView/GANInviteWorkerPopup/GANInviteWorkerPopupVC.xib; sourceTree = "<group>"; };
+		9F5A8A071F6EDF6900E78342 /* GANOnboardingWorkerNickNamePopupVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANOnboardingWorkerNickNamePopupVC.h; path = View/CustomView/GANOnboardingWorkerNickNamePopupVC/GANOnboardingWorkerNickNamePopupVC.h; sourceTree = "<group>"; };
+		9F5A8A081F6EDF6900E78342 /* GANOnboardingWorkerNickNamePopupVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANOnboardingWorkerNickNamePopupVC.m; path = View/CustomView/GANOnboardingWorkerNickNamePopupVC/GANOnboardingWorkerNickNamePopupVC.m; sourceTree = "<group>"; };
+		9F5A8A091F6EDF6900E78342 /* GANOnboardingWorkerNickNamePopupVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GANOnboardingWorkerNickNamePopupVC.xib; path = View/CustomView/GANOnboardingWorkerNickNamePopupVC/GANOnboardingWorkerNickNamePopupVC.xib; sourceTree = "<group>"; };
 		9F724D461F47C5BD00EED0F7 /* GANCommunicateWithMyWorkersOnboardingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANCommunicateWithMyWorkersOnboardingVC.h; path = Controller/Company/Messages/GANCommunicateWithMyWorkersOnboardingVC.h; sourceTree = "<group>"; };
 		9F724D471F47C5BD00EED0F7 /* GANCommunicateWithMyWorkersOnboardingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANCommunicateWithMyWorkersOnboardingVC.m; path = Controller/Company/Messages/GANCommunicateWithMyWorkersOnboardingVC.m; sourceTree = "<group>"; };
 		9F724D491F47C60600EED0F7 /* GANComposeMessageOnboardingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANComposeMessageOnboardingVC.h; path = Controller/Company/Messages/GANComposeMessageOnboardingVC.h; sourceTree = "<group>"; };
@@ -813,8 +823,10 @@
 		839DB51A1ED6756B00E2652A /* Custom View */ = {
 			isa = PBXGroup;
 			children = (
+				9F5A89FB1F6E88B400E78342 /* InviteWorkerPopup */,
 				9FAF4B4C1F6806180002D33D /* ConformMessagePopup */,
 				9F3E7C7E1F6040E200A42DE8 /* CompanyMapPopup */,
+				9F5A8A011F6EDEC800E78342 /* MyOnboardingWorkeNickNamePopup */,
 				9FA560901F47412700D9E65B /* MyWorkerNickNameEditPopup */,
 				9FE57D8B1F327565002BCAFE /* JobRecruitPopup */,
 				9FE57D7F1F3027CF002BCAFE /* JobPostingSharedPopup */,
@@ -1129,6 +1141,26 @@
 			name = CompanyMapPopup;
 			sourceTree = "<group>";
 		};
+		9F5A89FB1F6E88B400E78342 /* InviteWorkerPopup */ = {
+			isa = PBXGroup;
+			children = (
+				9F5A89FC1F6E894B00E78342 /* GANInviteWorkerPopupVC.h */,
+				9F5A89FD1F6E894B00E78342 /* GANInviteWorkerPopupVC.m */,
+				9F5A89FE1F6E894B00E78342 /* GANInviteWorkerPopupVC.xib */,
+			);
+			name = InviteWorkerPopup;
+			sourceTree = "<group>";
+		};
+		9F5A8A011F6EDEC800E78342 /* MyOnboardingWorkeNickNamePopup */ = {
+			isa = PBXGroup;
+			children = (
+				9F5A8A071F6EDF6900E78342 /* GANOnboardingWorkerNickNamePopupVC.h */,
+				9F5A8A081F6EDF6900E78342 /* GANOnboardingWorkerNickNamePopupVC.m */,
+				9F5A8A091F6EDF6900E78342 /* GANOnboardingWorkerNickNamePopupVC.xib */,
+			);
+			name = MyOnboardingWorkeNickNamePopup;
+			sourceTree = "<group>";
+		};
 		9FA560901F47412700D9E65B /* MyWorkerNickNameEditPopup */ = {
 			isa = PBXGroup;
 			children = (
@@ -1337,6 +1369,7 @@
 				838AAC431E579AA1006CC33D /* SFUIDisplay-Black.otf in Resources */,
 				837B86D21F0D589900FCF260 /* Localizable.strings in Resources */,
 				837E63DE1EF309DC001EFBE1 /* WorkerBenefitItemCVC.xib in Resources */,
+				9F5A8A001F6E894B00E78342 /* GANInviteWorkerPopupVC.xib in Resources */,
 				838AAC2B1E578A9F006CC33D /* LaunchScreen.storyboard in Resources */,
 				836C87F21F0AA1CF00968D40 /* AppUpdatesPopup.xib in Resources */,
 				838AAC471E579AA1006CC33D /* SFUIDisplay-Medium.otf in Resources */,
@@ -1349,6 +1382,7 @@
 				9FA560951F47419400D9E65B /* GANMyWorkerNickNameEditPopupVC.xib in Resources */,
 				838AAC491E579AA1006CC33D /* SFUIDisplay-Semibold.otf in Resources */,
 				838AAC441E579AA1006CC33D /* SFUIDisplay-Bold.otf in Resources */,
+				9F5A8A0B1F6EDF6900E78342 /* GANOnboardingWorkerNickNamePopupVC.xib in Resources */,
 				83CB263C1E623FB200C2D8C7 /* WorkerCompanyReviewItemTVC.xib in Resources */,
 				839DB51D1ED675C000E2652A /* CompanyCodePopup.xib in Resources */,
 				9FE57D8A1F3085B5002BCAFE /* GANCompanySuggestWorkersItemTVC.xib in Resources */,
@@ -1456,9 +1490,11 @@
 				83CB264A1E6308E900C2D8C7 /* GANWorkerSettingsVC.m in Sources */,
 				83A9B4EF1ED452E700BFA49D /* GANCompanyDataModel.m in Sources */,
 				834F01D31E82AA8C00D58989 /* GANReviewDataModel.m in Sources */,
+				9F5A8A0A1F6EDF6900E78342 /* GANOnboardingWorkerNickNamePopupVC.m in Sources */,
 				9FE57D831F302823002BCAFE /* GANJobPostingSharedPopupVC.m in Sources */,
 				834A87D81EE2013A00EB6E51 /* GANDataManager.m in Sources */,
 				83AC85511E70B707005B9422 /* GANUserCompanyDataModel.m in Sources */,
+				9F5A89FF1F6E894B00E78342 /* GANInviteWorkerPopupVC.m in Sources */,
 				836DBC421F1BF71700CCD6AA /* GANPhonebookContactDataModel.m in Sources */,
 				83CA21121E57F05800C0D787 /* GANErrorManager.m in Sources */,
 				83CA21411E5CA60F00C0D787 /* GANJobsDetailsVC.m in Sources */,

@@ -114,7 +114,6 @@ typedef enum _ENUM_JOBPOSTTYPE{
 @property (strong, nonatomic) CLLocation *locationCenter;
 
 @property (assign, atomic) GANENUM_POPUPFOR enumPopupFor;
-@property (strong, nonatomic) NSString *szPayUnit;
 
 @property (strong, nonatomic) NSDate *dateFrom;
 @property (strong, nonatomic) NSDate *dateTo;
@@ -145,7 +144,6 @@ typedef enum _ENUM_JOBPOSTTYPE{
     }
     
     self.enumPopupFor = GANENUM_POPUPFOR_NONE;
-    self.szPayUnit = @"";
     self.dateFrom = nil;
     self.dateTo = nil;
     self.datePicker.minimumDate = [NSDate date];
@@ -269,7 +267,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
         self.txtPrice.text = @"";
     }
     
-    self.szPayUnit = job.szPayUnit;
+    self.textUnit.text = job.szPayUnit;
     self.dateFrom = job.dateFrom;
     self.dateTo = job.dateTo;
     self.txtPositions.text = [NSString stringWithFormat:@"%d", job.nPositions];
@@ -582,6 +580,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
     NSString *szTitle = self.txtTitle.text;
     float fPrice = [self.txtPrice.text floatValue];
     int nPos = [self.txtPositions.text intValue];
+    NSString *szPayUnit = self.textUnit.text;
     NSString *szComments = [self getFinalCommentsText];
     
     job.szCompanyId = [GANUserManager getCompanyDataModel].szId;
@@ -593,7 +592,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
     job.isAutoTranslate = self.isAutoTranslate;
 
     job.fPayRate = fPrice;
-    job.szPayUnit = self.szPayUnit;
+    job.szPayUnit = szPayUnit;
     job.dateFrom = self.dateFrom;
     job.dateTo = self.dateTo;
     job.nPositions = nPos;

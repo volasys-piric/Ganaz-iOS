@@ -1,16 +1,16 @@
 //
-//  GANMyWorkerNickNameEditPopupVC.m
+//  GANOnboardingWorkerNickNamePopupVC.m
 //  Ganaz
 //
-//  Created by forever on 8/18/17.
+//  Created by forever on 9/17/17.
 //  Copyright © 2017 Ganaz. All rights reserved.
 //
 
-#import "GANMyWorkerNickNameEditPopupVC.h"
+#import "GANOnboardingWorkerNickNamePopupVC.h"
 #import "Global.h"
 #import "GANGenericFunctionManager.h"
 
-@interface GANMyWorkerNickNameEditPopupVC ()<UITextFieldDelegate>
+@interface GANOnboardingWorkerNickNamePopupVC ()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewContents;
 @property (strong, nonatomic) IBOutlet UILabel *lblTitle;
@@ -20,7 +20,7 @@
 
 @end
 
-@implementation GANMyWorkerNickNameEditPopupVC
+@implementation GANOnboardingWorkerNickNamePopupVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -70,8 +70,8 @@
     [self.view endEditing:YES];
     [self closeDialog];
     
-    if(self.delegate && [self.delegate respondsToSelector:@selector(setMyWorkerNickName:index:)]) {
-        [self.delegate setMyWorkerNickName:szNickName index:self.nIndex];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(setOnboardingWorkerNickName:index:)]) {
+        [self.delegate setOnboardingWorkerNickName:szNickName index:self.nIndex];
     }
 }
 

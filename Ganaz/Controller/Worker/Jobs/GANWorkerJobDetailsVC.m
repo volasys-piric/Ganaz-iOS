@@ -315,7 +315,7 @@
     NSString *message = [NSString stringWithFormat:@"Pensé que te interesaría este trabajo: %@, %@%@. Hay más información y más trabajo en la aplicación Ganaz", [self.company getBusinessNameES], [self.job getTitleES], szPay];
     
     
-    NSURL *url = [NSURL URLWithString:GANURL_APPSTORE];
+    NSURL *url = [NSURL URLWithString:@"https://ganaz.com/download"];
     NSArray *objShare = @[message, url];
     
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objShare applicationActivities:nil];

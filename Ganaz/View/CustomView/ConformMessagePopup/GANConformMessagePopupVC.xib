@@ -37,7 +37,7 @@
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Olw-Ce-kpc">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                            <state key="normal" title="Button"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="onBtnWrapperClick:" destination="-1" eventType="touchUpInside" id="CI0-Ov-dAp"/>
                             </connections>

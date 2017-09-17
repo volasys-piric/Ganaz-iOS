@@ -113,5 +113,16 @@
     [GANUtils syncImageWithUrl:self.imgMap latitude:self.locationCenter.coordinate.latitude longitude:self.locationCenter.coordinate.longitude];
     
 }
+- (IBAction)gotoMapApplication:(id)sender {
+    
+    if ([[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString:@"comgooglemaps:"]]) {
+        NSString *urlString = [NSString stringWithFormat:@"comgooglemaps://?ll=%f,%f",self.locationCenter.coordinate.latitude,self.locationCenter.coordinate.longitude];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+    } else {
+        NSString *string = [NSString stringWithFormat:@"http://maps.google.com/maps?ll=%f,%f",self.locationCenter.coordinate.latitude,self.locationCenter.coordinate.longitude];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:string]];
+    }
+
+}
 
 @end
