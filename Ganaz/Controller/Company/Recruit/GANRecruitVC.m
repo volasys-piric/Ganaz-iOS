@@ -167,7 +167,10 @@
     [vc refreshFields:strDescription];
     [vc setTransitioningDelegate:self.transController];
     vc.modalPresentationStyle = UIModalPresentationCustom;
-    [self presentViewController:vc animated:YES completion:nil];
+    [self presentViewController:vc animated:YES completion:^{
+        
+    }];
+    
 }
 
 - (void) gotoAddWorkerVC{

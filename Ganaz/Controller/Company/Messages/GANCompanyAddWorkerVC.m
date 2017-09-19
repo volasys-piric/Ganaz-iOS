@@ -351,7 +351,11 @@ typedef enum _ENUM_FOUNDSTATUS{
     [self.view endEditing:YES];
 
     nSelectedIndex = -1;
-    [self showPopupDialog: self.txtPhone.text];
+    
+    GANPhoneDataModel *phone = [[GANPhoneDataModel alloc] init];
+    [phone setLocalNumber:self.txtPhone.text];
+    
+    [self showPopupDialog: [phone getBeautifiedPhoneNumber]];
 }
 /*
 - (BOOL) isInvitedUser:(NSString*)szPhoneNumber {
@@ -415,13 +419,16 @@ typedef enum _ENUM_FOUNDSTATUS{
     GANInviteWorkerPopupVC *vc = [[GANInviteWorkerPopupVC alloc] initWithNibName:@"GANInviteWorkerPopupVC" bundle:nil];
     
     vc.delegate = self;
+
     vc.view.backgroundColor = [UIColor clearColor];
     
     [vc setTransitioningDelegate:self.transController];
     vc.modalPresentationStyle = UIModalPresentationCustom;
     [self presentViewController:vc animated:YES completion:^{
-        [vc setDescription:szWorkerName];
+        
     }];
+    
+    [vc setDescription:szWorkerName];
 }
 
 - (void) InviteWorkertoGanaz {

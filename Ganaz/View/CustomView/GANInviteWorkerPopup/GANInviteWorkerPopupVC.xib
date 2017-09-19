@@ -18,7 +18,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GANInviteWorkerPopupVC">
             <connections>
+                <outlet property="btnCancel" destination="avU-dP-CUR" id="SZ8-ff-8vL"/>
+                <outlet property="btnCommunicateText" destination="sBA-vj-uH7" id="XuX-YM-hWj"/>
+                <outlet property="btnInviteWorker" destination="XVX-Pn-y80" id="vQ9-bA-31R"/>
+                <outlet property="lblDescription" destination="dKC-aj-qIu" id="U9O-k3-D84"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="viewContents" destination="NYd-iD-PxA" id="u4l-hR-E3j"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -37,7 +42,7 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NYd-iD-PxA" userLabel="View - Content View">
-                            <rect key="frame" x="37" y="203.5" width="300" height="260"/>
+                            <rect key="frame" x="37" y="193.5" width="300" height="280"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zcB-SJ-t4L" userLabel="View - Content View">
                                     <rect key="frame" x="0.0" y="15" width="300" height="60"/>
@@ -58,10 +63,10 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5C4-Yq-EW5" userLabel="View - Action Panel">
-                                    <rect key="frame" x="0.0" y="74.5" width="300" height="185.5"/>
+                                    <rect key="frame" x="0.0" y="74.5" width="300" height="205.5"/>
                                     <subviews>
                                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XVX-Pn-y80" userLabel="button-invite">
-                                            <rect key="frame" x="50.5" y="11.5" width="198.5" height="44.5"/>
+                                            <rect key="frame" x="50.5" y="21.5" width="198.5" height="44.5"/>
                                             <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="XVX-Pn-y80" secondAttribute="height" multiplier="40:9" id="wVR-1h-eok"/>
@@ -75,7 +80,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sBA-vj-uH7">
-                                            <rect key="frame" x="50.5" y="71" width="198.5" height="44.5"/>
+                                            <rect key="frame" x="50.5" y="81" width="198.5" height="44.5"/>
                                             <color key="backgroundColor" red="0.39215686274509803" green="0.70196078431372544" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
                                             <state key="normal" title="Communicate via text">
@@ -86,7 +91,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="avU-dP-CUR" userLabel="Button - Go back">
-                                            <rect key="frame" x="51" y="130" width="198.5" height="44.5"/>
+                                            <rect key="frame" x="51" y="140" width="198.5" height="44.5"/>
                                             <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
                                             <state key="normal" title="Go back">
@@ -122,7 +127,7 @@
                                 <constraint firstItem="zcB-SJ-t4L" firstAttribute="centerX" secondItem="NYd-iD-PxA" secondAttribute="centerX" id="Y7z-BE-V9l"/>
                                 <constraint firstItem="5C4-Yq-EW5" firstAttribute="leading" secondItem="NYd-iD-PxA" secondAttribute="leading" id="b3O-pl-np3"/>
                                 <constraint firstItem="5C4-Yq-EW5" firstAttribute="top" secondItem="zcB-SJ-t4L" secondAttribute="bottom" id="mw7-lY-geL"/>
-                                <constraint firstAttribute="height" constant="260" id="wxn-iL-TdY"/>
+                                <constraint firstAttribute="height" constant="280" id="wxn-iL-TdY"/>
                             </constraints>
                         </view>
                     </subviews>

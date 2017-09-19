@@ -13,6 +13,8 @@
 #import "GANFadeTransitionDelegate.h"
 #import "GANPhonebookContactsManager.h"
 #import "GANJobManager.h"
+#import "GANCompanyManager.h"
+#import "GANMessageManager.h"
 #import "GANGlobalVCManager.h"
 #import "Global.h"
 #import "GANAppManager.h"
@@ -155,12 +157,23 @@
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager hideHudProgress];
             [self showPopupDialog];
+            [self getMyWorkerList];
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
         }
         self.indexSelected = -1;
         GANACTIVITY_REPORT(@"Company - Recruit");
+    }];
+}
+
+- (void) getMyWorkerList {
+    [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:^(int status) {
+        
+    }];
+    
+    [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:^(int status) {
+        
     }];
 }
 
@@ -201,6 +214,7 @@
     }
     
     [vc refreshFields:strDescription];
+    
     [vc setTransitioningDelegate:self.transController];
     
     vc.modalPresentationStyle = UIModalPresentationCustom;

@@ -276,7 +276,7 @@
         cell.lblUnit.hidden     = YES;
         cell.lblPriceNA.hidden  = NO;
     } else {
-        cell.lblPrice.text      = [NSString stringWithFormat:@"$%.02f / %@", job.fPayRate, job.szPayUnit];
+        cell.lblPrice.text      = [NSString stringWithFormat:@"$%.02f", job.fPayRate];//[NSString stringWithFormat:@"$%.02f / %@", job.fPayRate, job.szPayUnit];
         cell.lblPrice.hidden    = NO;
         cell.lblUnit.hidden     = NO;
         cell.lblPriceNA.hidden  = YES;
