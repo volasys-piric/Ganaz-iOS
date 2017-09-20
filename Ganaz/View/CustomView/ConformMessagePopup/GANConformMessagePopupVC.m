@@ -50,7 +50,7 @@
 }
 
 - (void) setDescription:(NSInteger) nCount {
-    self.lblDescription.text = [NSString stringWithFormat:@"%ld of your workers are not using Ganaz so this message will cost $0.15\n to send", (long)nCount];
+    self.lblDescription.text = [NSString stringWithFormat:@"%ld of your workers are not using Ganaz so this message will cost $%.02f\n to send", (long)nCount, nCount * 0.05];
 }
 
 - (IBAction)onBtnWrapperClick:(id)sender {

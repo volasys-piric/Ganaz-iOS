@@ -156,8 +156,8 @@
         
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager hideHudProgress];
-            [self showPopupDialog];
             [self getMyWorkerList];
+            [self showPopupDialog];
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
@@ -168,13 +168,8 @@
 }
 
 - (void) getMyWorkerList {
-    [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:^(int status) {
-        
-    }];
-    
-    [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:^(int status) {
-        
-    }];
+    [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:nil];
+    [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
 }
 
 - (void)didReceiveMemoryWarning {

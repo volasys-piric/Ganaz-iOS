@@ -176,6 +176,8 @@
     self.viewPopupWrapper.alpha = 1;
     [self.viewPopupWrapper layoutIfNeeded];
     
+    self.textview.text = @"";
+    
     [UIView animateWithDuration:0.25 animations:^{
         self.constraintPopupPanelBottomSpace.constant = -height;
         self.viewPopupWrapper.alpha = 0;

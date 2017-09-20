@@ -116,12 +116,13 @@
 - (IBAction)gotoMapApplication:(id)sender {
     
     if ([[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString:@"comgooglemaps:"]]) {
-        NSString *urlString = [NSString stringWithFormat:@"comgooglemaps://?ll=%f,%f",self.locationCenter.coordinate.latitude,self.locationCenter.coordinate.longitude];
+        NSString *urlString = [NSString stringWithFormat:@"comgooglemaps://?q=%f,%f",self.locationCenter.coordinate.latitude,self.locationCenter.coordinate.longitude];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
     } else {
-        NSString *string = [NSString stringWithFormat:@"http://maps.google.com/maps?ll=%f,%f",self.locationCenter.coordinate.latitude,self.locationCenter.coordinate.longitude];
+        NSString *string = [NSString stringWithFormat:@"http://maps.google.com/maps?q=%f,%f",self.locationCenter.coordinate.latitude,self.locationCenter.coordinate.longitude];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:string]];
     }
+    /*NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f",self.locationCenter.coordinate.latitude, self.locationCenter.coordinate.longitude, self.locationCenter.coordinate.latitude, self.locationCenter.coordinate.longitude];*/
 
 }
 

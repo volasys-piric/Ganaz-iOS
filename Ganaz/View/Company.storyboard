@@ -894,6 +894,9 @@
                                         <state key="normal" title="Map">
                                             <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="onBtnMap:" destination="YJf-X0-t1q" eventType="touchUpInside" id="BrM-8B-rGK"/>
+                                        </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map-pin" translatesAutoresizingMaskIntoConstraints="NO" id="3il-a1-OeY">
                                         <rect key="frame" x="306" y="33" width="14" height="23"/>
@@ -1374,7 +1377,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What would you like to do?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y8j-QM-s8O">
-                                <rect key="frame" x="48.5" y="86" width="279" height="29"/>
+                                <rect key="frame" x="48" y="86" width="279" height="29"/>
                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="24"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
