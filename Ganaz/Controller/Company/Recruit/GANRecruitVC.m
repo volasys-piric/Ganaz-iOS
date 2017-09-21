@@ -300,7 +300,7 @@
                     [self resendInvite:nSelectedIndex];
                     break;
                 case 1:
-                    
+                    [self changeMyWorkerNickName:nSelectedIndex];
                     break;
                 default:
                     break;
