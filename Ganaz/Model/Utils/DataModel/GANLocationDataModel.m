@@ -56,4 +56,9 @@
     return [[CLLocation alloc] initWithLatitude:self.fLatitude longitude:self.fLongitude];
 }
 
+- (BOOL) isValidLocation{
+    if (self.szAddress.length == 0 && fabs(self.fLatitude) < 0.1 && fabs(self.fLongitude) < 0.1) return NO;
+    return YES;
+}
+
 @end

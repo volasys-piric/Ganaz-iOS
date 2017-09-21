@@ -131,4 +131,9 @@
     return [GANGenericFunctionManager beautifyPhoneNumber:sz CountryCode:@"1"];
 }
 
+- (BOOL) hasLocationInfo{
+    if (self.locationInfo == nil || [self.locationInfo isValidLocation] == NO) return NO;
+    return YES;
+}
+
 @end

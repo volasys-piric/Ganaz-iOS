@@ -39,5 +39,6 @@
 - (NSString *) getContentsEN;
 - (NSString *) getContentsES;
 - (NSString *) getPhoneNumberForSuggestFriend;
+- (BOOL) hasLocationInfo;
 
 @end

@@ -386,7 +386,7 @@
         }
     }
     
-    if(message.locationInfo != nil && message.locationInfo.fLongitude) {
+    if([message hasLocationInfo] == YES) {
         cell.locationCenter = [[CLLocation alloc]initWithLatitude:message.locationInfo.fLatitude longitude:message.locationInfo.fLongitude];
     }
     
@@ -411,7 +411,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:indexPath.row];
-    if(message.locationInfo != nil && message.locationInfo.fLongitude) {
+    if([message hasLocationInfo]) {
         return 260;//UITableViewAutomaticDimension;
     }
     return 70;

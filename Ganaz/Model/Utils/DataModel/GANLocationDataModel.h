@@ -20,5 +20,6 @@
 - (NSDictionary *) serializeToDictionary;
 - (NSDictionary *) serializeToMetaDataDictionary;
 - (CLLocation *) generateCLLocation;
+- (BOOL) isValidLocation;
 
 @end
