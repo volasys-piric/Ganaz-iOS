@@ -60,8 +60,8 @@
 
 - (IBAction)onSend:(id)sender {
     
-    if(self.delegate && [self.delegate respondsToSelector:@selector(sendMessagetoWorkers)]) {
-        [self.delegate sendMessagetoWorkers];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(didClickSend)]) {
+        [self.delegate didClickSend];
     }
     
     [self.view endEditing:YES];
@@ -70,6 +70,10 @@
 
 - (IBAction)onCancel:(id)sender {
     [self.view endEditing:YES];
+    
+    if(self.delegate && [self.delegate respondsToSelector:@selector(didClickCancel)]) {
+        [self.delegate didClickCancel];
+    }
     [self closeDialog];
 }
 

@@ -10,7 +10,10 @@
 
 @protocol GANConformMessagePopupVCDelegate <NSObject>
 
-- (void) sendMessagetoWorkers;
+@optional
+
+- (void) didClickSend;
+- (void) didClickCancel;
 
 @end
 
