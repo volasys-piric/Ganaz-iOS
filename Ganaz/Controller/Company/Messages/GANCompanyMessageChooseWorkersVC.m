@@ -266,8 +266,17 @@
 }
 
 #pragma mark - GANConformMessagePopupVCDelegate
-- (void) sendMessagetoWorkers {
-    [self doSendMessage];
+
+- (void) didClickSend {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self doSendMessage];
+    });
+}
+
+- (void) didClickCancel {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self animateToHidePopup];
+    });
 }
 
 #pragma mark - UITableViewDelegate
@@ -496,8 +505,7 @@
         [GANGlobalVCManager showHudErrorWithMessage:@"Please enter a message to send" DismissAfter:-1 Callback:nil];
         return;
     }
-    
-    [self animateToHidePopup];
+
     [self checkOnboardingWorker];
 }
 
