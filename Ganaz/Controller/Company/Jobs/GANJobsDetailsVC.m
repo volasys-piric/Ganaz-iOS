@@ -11,6 +11,7 @@
 #import "GANJobPostSuccessPopupVC.h"
 #import "GANSharePostingWithContactsVC.h"
 #import "GANJobsWorkingsitesVC.h"
+#import "GANJObsListVC.h"
 
 #import "GANUserManager.h"
 #import "GANJobManager.h"
@@ -728,8 +729,10 @@ typedef enum _ENUM_JOBPOSTTYPE{
     vc.fromVC = ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_JOBPOST;
     [selectedVC.navigationController pushViewController:vc animated:YES];
     selectedVC.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    [self.navigationController popToRootViewControllerAnimated:NO];
     
+    if([[self.navigationController.viewControllers objectAtIndex:0] isKindOfClass:[GANJobsListVC class]] == NO) {
+        [self.navigationController popToRootViewControllerAnimated:NO];
+    }
 }
 
 - (void) gotoJobListVC{

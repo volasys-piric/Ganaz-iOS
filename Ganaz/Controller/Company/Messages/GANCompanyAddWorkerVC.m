@@ -20,6 +20,7 @@
 #import <UIView+Shake.h>
 #import "GANAppManager.h"
 #import "GANPhonebookContactsManager.h"
+#import "GANMessageManager.h"
 
 typedef enum _ENUM_FOUNDSTATUS{
     GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE,
@@ -302,11 +303,13 @@ typedef enum _ENUM_FOUNDSTATUS{
     [[GANCompanyManager sharedInstance] requestSendInvite:phone CompanyId:szCompanyId inviteOnly:bInviteOnly Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
 //            [self.arrInvitedWorkers addObject:phone.szLocalNumber];
-            [GANGlobalVCManager showHudSuccessWithMessage:@"An invitation will be sent shortly via SMS" DismissAfter:-1 Callback:nil];
-            
-            if(!bInviteOnly)
-                [self getMyWorkerList];
-//            [self.tableview reloadData];
+            if(bInviteOnly)
+                [GANGlobalVCManager showHudSuccessWithMessage:@"An invitation will be sent shortly via SMS" DismissAfter:-1 Callback:nil];
+            else {
+                [GANGlobalVCManager showHudSuccessWithMessage:@"Worker has been added successfully" DismissAfter:-3 Callback:^{
+                    [self getMyWorkerList];
+                }];
+            }
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
@@ -318,11 +321,12 @@ typedef enum _ENUM_FOUNDSTATUS{
 - (void) getMyWorkerList {
     [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:^(int status) {
         if(status == SUCCESS_WITH_NO_ERROR) {
-            
+            [self.tableview reloadData];
         } else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
         }
     }];
+    [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
 }
 
 - (IBAction)onBtnSearchClick:(id)sender {

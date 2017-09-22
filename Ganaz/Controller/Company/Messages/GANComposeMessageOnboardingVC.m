@@ -133,7 +133,9 @@
 }
 
 - (void) gotoMessageVC {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:^(int status) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }];
 }
 
 - (IBAction)onAutoTranslate:(id)sender {
