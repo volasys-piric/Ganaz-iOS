@@ -93,7 +93,7 @@
 }
 
 - (void) registerTableViewCellFromNib{
-    [self.tableview registerNib:[UINib nibWithNibName:@"MessageItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_MESSAGEITEM"];
+    [self.tableview registerNib:[UINib nibWithNibName:@"GANMessageItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_MESSAGEITEM"];
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -162,7 +162,6 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES_CHOOSEWORKER"];
     [self.navigationController pushViewController:vc animated:YES];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     GANACTIVITY_REPORT(@"Company - Go to send message from Messages");
 }
@@ -270,7 +269,7 @@
     NSString *szMessage = self.textview.text;
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
+    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage MetaData: nil AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"Message is succesfully sent!" DismissAfter:-1 Callback:^{
                 [self animateToHidePopup];
@@ -385,6 +384,11 @@
             }];
         }
     }
+    
+    if([message hasLocationInfo] == YES) {
+        cell.locationCenter = [[CLLocation alloc]initWithLatitude:message.locationInfo.fLatitude longitude:message.locationInfo.fLongitude];
+    }
+    
     BOOL didRead = !([message amIReceiver] && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell refreshViewsWithType:message.enumType DidRead:didRead DidSend:amISender];
@@ -405,7 +409,11 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return UITableViewAutomaticDimension;
+    GANMessageDataModel *message = [self.arrMessages objectAtIndex:indexPath.row];
+    if([message hasLocationInfo]) {
+        return 260;//UITableViewAutomaticDimension;
+    }
+    return 70;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

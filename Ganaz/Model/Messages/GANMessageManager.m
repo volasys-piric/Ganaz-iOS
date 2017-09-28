@@ -117,6 +117,7 @@
                            Receivers: (NSArray *) receivers
                ReceiversPhoneNumbers: (NSArray *) receivers_phone_numbers
                              Message: (NSString *) message
+                            MetaData: (NSDictionary *)metaData
                        AutoTranslate: (BOOL) isAutoTranslate
                         FromLanguage: (NSString *) fromLanguage
                           ToLanguage: (NSString *) toLanguage
@@ -145,6 +146,9 @@
         [params setObject:@{fromLanguage: message,
                             toLanguage: translatedText
                             } forKey:@"message"];
+        if(metaData != nil)
+            [params setObject:metaData forKey:@"metadata"];
+        
         [params setObject:(isAutoTranslate == YES) ? @"true" : @"false" forKey:@"auto_translate"];
         
         if(receivers_phone_numbers.count > 0) {

@@ -30,6 +30,7 @@
 #pragma mark - Endpoint for User
 
 + (NSString *) getEndpointForUserDetailsWithUserId: (NSString *) userId;
++ (NSString *) getEndpointForOnboardingUserSignup:(NSString *)szUserId;
 + (NSString *) getEndpointForUserSignup;
 + (NSString *) getEndpointForUserLogin;
 + (NSString *) getEndpointForUserUpdateProfile;
@@ -84,5 +85,9 @@
 #pragma mark - Google Translate
 
 + (NSString *) getEndpointForGoogleTranslate;
+
+#pragma mark - Google Static Map API
+
++ (NSString *) getEndpointForStaticMap:(float)latitude longitue:(float)longitude;
 
 @end

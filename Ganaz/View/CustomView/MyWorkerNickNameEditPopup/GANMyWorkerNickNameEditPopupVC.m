@@ -8,15 +8,15 @@
 
 #import "GANMyWorkerNickNameEditPopupVC.h"
 #import "Global.h"
-#import "GANGlobalVCManager.h"
 #import "GANGenericFunctionManager.h"
 
 @interface GANMyWorkerNickNameEditPopupVC ()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewContents;
+@property (strong, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UIButton *btnDone;
+@property (strong, nonatomic) IBOutlet UIButton *btnCancel;
 @property (weak, nonatomic) IBOutlet UIView *viewTextField;
-@property (weak, nonatomic) IBOutlet UITextField *txtNickName;
 
 @end
 
@@ -40,6 +40,10 @@
     
     self.btnDone.clipsToBounds        = YES;
     self.btnDone.layer.cornerRadius   = 3;
+    self.btnCancel.clipsToBounds      = YES;
+    self.btnCancel.layer.cornerRadius = 3;
+    self.btnCancel.layer.borderColor  = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
+    self.btnCancel.layer.borderWidth  = 1;
 }
 
 - (void) closeDialog{
@@ -48,6 +52,10 @@
     } completion:^(BOOL b){
         [self dismissViewControllerAnimated:NO completion:nil];
     }];
+}
+
+- (void) setTitle:(NSString*) phoneNumber {
+    self.lblTitle.text = [NSString stringWithFormat:@"Edit worker\n%@", phoneNumber];
 }
 
 - (IBAction)onBtnWrapperClick:(id)sender {
@@ -65,6 +73,11 @@
     if(self.delegate && [self.delegate respondsToSelector:@selector(setMyWorkerNickName:index:)]) {
         [self.delegate setMyWorkerNickName:szNickName index:self.nIndex];
     }
+}
+
+- (IBAction)onCancel:(id)sender {
+    [self.view endEditing:YES];
+    [self closeDialog];
 }
 
 #pragma mark - UITextFieldDelegate

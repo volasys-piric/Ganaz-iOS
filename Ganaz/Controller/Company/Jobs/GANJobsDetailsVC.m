@@ -11,6 +11,7 @@
 #import "GANJobPostSuccessPopupVC.h"
 #import "GANSharePostingWithContactsVC.h"
 #import "GANJobsWorkingsitesVC.h"
+#import "GANJObsListVC.h"
 
 #import "GANUserManager.h"
 #import "GANJobManager.h"
@@ -78,7 +79,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
 @property (weak, nonatomic) IBOutlet UITextField *txtPositions;
 @property (weak, nonatomic) IBOutlet UITextView *textviewComments;
 
-@property (weak, nonatomic) IBOutlet UIButton *btnUnit;
+@property (strong, nonatomic) IBOutlet UITextField *textUnit;
 @property (weak, nonatomic) IBOutlet UIButton *btnDateFrom;
 @property (weak, nonatomic) IBOutlet UIButton *btnDateTo;
 @property (weak, nonatomic) IBOutlet UIButton *btnBenefitsTraining;
@@ -114,7 +115,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
 @property (strong, nonatomic) CLLocation *locationCenter;
 
 @property (assign, atomic) GANENUM_POPUPFOR enumPopupFor;
-@property (assign, atomic) GANENUM_PAY_UNIT enumPayUnit;
+
 @property (strong, nonatomic) NSDate *dateFrom;
 @property (strong, nonatomic) NSDate *dateTo;
 @property (assign, atomic) BOOL isAutoTranslate;
@@ -144,7 +145,6 @@ typedef enum _ENUM_JOBPOSTTYPE{
     }
     
     self.enumPopupFor = GANENUM_POPUPFOR_NONE;
-    self.enumPayUnit = GANENUM_PAY_UNIT_HOUR;
     self.dateFrom = nil;
     self.dateTo = nil;
     self.datePicker.minimumDate = [NSDate date];
@@ -238,7 +238,6 @@ typedef enum _ENUM_JOBPOSTTYPE{
     [self refreshDateFields];
     [self refreshBenefitsPanel];
     [self refreshPopupPanel];
-    [self refreshPickerView];
     [self refreshAutoTranslateView];
 }
 
@@ -269,7 +268,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
         self.txtPrice.text = @"";
     }
     
-    self.enumPayUnit = job.enumPayUnit;
+    self.textUnit.text = job.szPayUnit;
     self.dateFrom = job.dateFrom;
     self.dateTo = job.dateTo;
     self.txtPositions.text = [NSString stringWithFormat:@"%d", job.nPositions];
@@ -330,15 +329,6 @@ typedef enum _ENUM_JOBPOSTTYPE{
     }
 }
 
-- (void) refreshPickerView{
-    if (self.enumPayUnit == GANENUM_PAY_UNIT_HOUR){
-        [self.pickerView selectRow:1 inComponent:0 animated:NO];
-    }
-    else {
-        [self.pickerView selectRow:0 inComponent:0 animated:NO];
-    }
-}
-
 - (void) refreshAutoTranslateView{
     if (self.isAutoTranslate == YES){
         [self.btnAutoTranslate setImage:[UIImage imageNamed:@"icon-checked"] forState:UIControlStateNormal];
@@ -362,15 +352,6 @@ typedef enum _ENUM_JOBPOSTTYPE{
     }
     else {
         self.lblDateTo.text = [GANGenericFunctionManager getBeautifiedDate:self.dateTo];
-    }
-}
-
-- (void) refreshPayUnitField{
-    if (self.enumPayUnit == GANENUM_PAY_UNIT_HOUR){
-        [self.btnUnit setTitle:@"Hour" forState:UIControlStateNormal];
-    }
-    else {
-        [self.btnUnit setTitle:@"Lb" forState:UIControlStateNormal];
     }
 }
 
@@ -600,6 +581,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
     NSString *szTitle = self.txtTitle.text;
     float fPrice = [self.txtPrice.text floatValue];
     int nPos = [self.txtPositions.text intValue];
+    NSString *szPayUnit = self.textUnit.text;
     NSString *szComments = [self getFinalCommentsText];
     
     job.szCompanyId = [GANUserManager getCompanyDataModel].szId;
@@ -611,7 +593,7 @@ typedef enum _ENUM_JOBPOSTTYPE{
     job.isAutoTranslate = self.isAutoTranslate;
 
     job.fPayRate = fPrice;
-    job.enumPayUnit = self.enumPayUnit;
+    job.szPayUnit = szPayUnit;
     job.dateFrom = self.dateFrom;
     job.dateTo = self.dateTo;
     job.nPositions = nPos;
@@ -748,8 +730,9 @@ typedef enum _ENUM_JOBPOSTTYPE{
     [selectedVC.navigationController pushViewController:vc animated:YES];
     selectedVC.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
-    [self.navigationController popToRootViewControllerAnimated:YES];
-    
+    if([[self.navigationController.viewControllers objectAtIndex:0] isKindOfClass:[GANJobsListVC class]] == NO) {
+        [self.navigationController popToRootViewControllerAnimated:NO];
+    }
 }
 
 - (void) gotoJobListVC{
@@ -776,13 +759,13 @@ typedef enum _ENUM_JOBPOSTTYPE{
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    if (row == 0){
+    /*if (row == 0){
         self.enumPayUnit = GANENUM_PAY_UNIT_LB;
     }
     else {
         self.enumPayUnit = GANENUM_PAY_UNIT_HOUR;
     }
-    [self refreshPayUnitField];
+    [self refreshPayUnitField];*/
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {

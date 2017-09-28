@@ -165,7 +165,7 @@
     
     self.lblPrice.text = [NSString stringWithFormat:@"$%.02f", self.job.fPayRate];
     self.lblDate.text = [NSString stringWithFormat:@"%@ - %@", [GANGenericFunctionManager getBeautifiedSpanishDate:self.job.dateFrom], [GANGenericFunctionManager getBeautifiedSpanishDate:self.job.dateTo]];
-    self.lblUnit.text = (self.job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"por hora" : @"por libra";
+    self.lblUnit.text = self.job.szPayUnit; // == GANENUM_PAY_UNIT_HOUR) ? @"por hora" : @"por libra";
     self.lblPositions.text = [NSString stringWithFormat:@"%d puestos", self.job.nPositions];
     self.lblDescription.text = [self.job getCommentsES];
     
@@ -315,7 +315,7 @@
     NSString *message = [NSString stringWithFormat:@"Pensé que te interesaría este trabajo: %@, %@%@. Hay más información y más trabajo en la aplicación Ganaz", [self.company getBusinessNameES], [self.job getTitleES], szPay];
     
     
-    NSURL *url = [NSURL URLWithString:GANURL_APPSTORE];
+    NSURL *url = [NSURL URLWithString:@"https://ganaz.com/download"];
     NSArray *objShare = @[message, url];
     
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objShare applicationActivities:nil];

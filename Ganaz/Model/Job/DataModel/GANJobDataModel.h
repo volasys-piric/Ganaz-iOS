@@ -20,7 +20,8 @@
 @property (assign, atomic) BOOL isAutoTranslate;
 
 @property (assign, atomic) float fPayRate;
-@property (assign, atomic) GANENUM_PAY_UNIT enumPayUnit;
+//@property (assign, atomic) GANENUM_PAY_UNIT enumPayUnit;
+@property (strong, nonatomic) NSString *szPayUnit;
 
 @property (strong, nonatomic) NSDate *dateFrom;
 @property (strong, nonatomic) NSDate *dateTo;

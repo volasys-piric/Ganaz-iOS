@@ -64,6 +64,7 @@
 }
 
 - (IBAction)onRecruit:(id)sender {
+    [self.view endEditing:YES];
     [self closeDialog];
     if(self.delegate && [self.delegate respondsToSelector:@selector(didRecruit)]) {
         [self.delegate didRecruit];
@@ -71,6 +72,7 @@
 }
 
 - (IBAction)onEdit:(id)sender {
+    [self.view endEditing:YES];
     [self closeDialog];
     
     if(self.delegate && [self.delegate respondsToSelector:@selector(didEdit)]) {

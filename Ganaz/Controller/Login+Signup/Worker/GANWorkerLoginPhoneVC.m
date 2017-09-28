@@ -100,7 +100,7 @@
     [managerUser requestSearchUserByPhoneNumber:phoneNumber Type:GANENUM_USER_TYPE_ANY Callback:^(int status, NSArray *array) {
         if (status == SUCCESS_WITH_NO_ERROR && array != nil && [array count] > 0){
             GANUserBaseDataModel *user = [array objectAtIndex:0];
-            if (user.enumAuthType == GANENUM_USER_AUTHTYPE_EMAIL){
+            if (user.enumAuthType == GANENUM_USER_AUTHTYPE_EMAIL && user.enumType != GANENUM_USER_TYPE_ONBOARDING_WORKER){
                 // Old user, migration needed
                 [GANGlobalVCManager hideHudProgressWithCallback:^{
                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
@@ -116,8 +116,16 @@
                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
                     GANWorkerLoginCodeVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_CODE"];
                     vc.szPhoneNumber = phoneNumber;
-                    vc.isLogin = YES;
                     vc.isAutoLogin = NO;
+                    if(user.enumType == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
+                        vc.isOnboardingWorker = YES;
+                        vc.isLogin = NO;
+                        vc.szId = user.szId;
+                    } else {
+                        vc.isOnboardingWorker = NO;
+                        vc.isLogin = YES;
+                    }
+                    
                     [self.navigationController pushViewController:vc animated:YES];
                     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
                 }];

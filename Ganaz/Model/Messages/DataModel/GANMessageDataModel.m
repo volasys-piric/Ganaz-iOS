@@ -36,9 +36,11 @@
     self.isAutoTranslate = NO;
     self.dateSent = nil;
     self.dictMetadata = nil;
+    self.locationInfo = [[GANLocationDataModel alloc] init];
 }
 
-- (void) setWithDictionary:(NSDictionary *)dict{
+- (void) setWithDictionary:(NSDictionary *)dict {
+    
     self.szId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"_id"]];
     self.szJobId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"job_id"]];
     self.enumType = [GANUtils getMessageTypeFromString:[GANGenericFunctionManager refineNSString:[dict objectForKey:@"type"]]];
@@ -56,10 +58,16 @@
     
     self.isAutoTranslate = [GANGenericFunctionManager refineBool:[dict objectForKey:@"auto_translate"] DefaultValue:NO];
     self.dictMetadata = [dict objectForKey:@"metadata"];
+    
+    if ([[self.dictMetadata allKeys] containsObject:@"map"]) {
+        NSDictionary *dicData = [self.dictMetadata objectForKey:@"map"];
+        [self.locationInfo setWithDictionary:dicData];
+    }
+    
     self.dateSent = [GANGenericFunctionManager getDateTimeFromNormalizedString:[dict objectForKey:@"datetime"]];
 }
 
-- (NSDictionary *) serializeToDictionary{
+- (NSDictionary *) serializeToDictionary {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:self.szJobId forKey:@"job_id"];
     [dict setObject:[GANUtils getStringFromMessageType:self.enumType] forKey:@"type"];
@@ -121,6 +129,11 @@
     if (sz.length == 0) return @"";
     sz = [GANGenericFunctionManager stripNonnumericsFromNSString:sz];
     return [GANGenericFunctionManager beautifyPhoneNumber:sz CountryCode:@"1"];
+}
+
+- (BOOL) hasLocationInfo{
+    if (self.locationInfo == nil || [self.locationInfo isValidLocation] == NO) return NO;
+    return YES;
 }
 
 @end

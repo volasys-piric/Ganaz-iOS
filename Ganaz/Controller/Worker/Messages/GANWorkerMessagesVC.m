@@ -93,7 +93,7 @@
 }
 
 - (void) registerTableViewCellFromNib{
-    [self.tableview registerNib:[UINib nibWithNibName:@"MessageItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_MESSAGEITEM"];
+    [self.tableview registerNib:[UINib nibWithNibName:@"GANMessageItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_MESSAGEITEM"];
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -321,7 +321,7 @@
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN Callback:^(int status) {
+    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage MetaData: nil AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             // Message is successfully sent!
             [GANGlobalVCManager showHudSuccessWithMessage:@"Éxito! Su mensaje ha sido enviado" DismissAfter:-1 Callback:^{
@@ -449,6 +449,11 @@
             }];
         }
     }
+    
+    if([message hasLocationInfo] == YES) {
+        cell.locationCenter = [[CLLocation alloc]initWithLatitude:message.locationInfo.fLatitude longitude:message.locationInfo.fLongitude];
+    }
+    
     BOOL didRead = !([message amIReceiver] && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell refreshViewsWithType:message.enumType DidRead:didRead DidSend:amISender];
@@ -469,7 +474,12 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return UITableViewAutomaticDimension;
+    GANMessageDataModel *message = [self.arrMessages objectAtIndex:indexPath.row];
+    if([message hasLocationInfo]) {
+        return 260;
+    }
+    return 70;
+//    return UITableViewAutomaticDimension;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

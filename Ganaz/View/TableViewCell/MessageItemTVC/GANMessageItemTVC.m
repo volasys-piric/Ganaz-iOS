@@ -2,12 +2,16 @@
 //  GANMessageItemTVC.m
 //  Ganaz
 //
-//  Created by Piric Djordje on 2/22/17.
+//  Created by forever on 9/8/17.
 //  Copyright © 2017 Ganaz. All rights reserved.
 //
 
 #import "GANMessageItemTVC.h"
 #import "Global.h"
+
+#import "GANGenericFunctionManager.h"
+#import "GANUrlManager.h"
+#import "GANUtils.h"
 
 #define UICOLOR_MESSAGEITEM_BLACK                           [UIColor colorWithRed:(51 / 255.0) green:(51 / 255.0) blue:(51 / 255.0) alpha:1]
 #define UICOLOR_MESSAGEITEM_WHITE                           [UIColor colorWithRed:(255 / 255.0) green:(255 / 255.0) blue:(255 / 255.0) alpha:1]
@@ -87,6 +91,39 @@
             self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_WHITE;
         }
     }
+    
+    self.imgMap.layer.cornerRadius = 3.f;
+    self.imgMap.clipsToBounds = YES;
+    
+    self.imgMap.layer.borderColor = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
+    self.imgMap.layer.borderWidth = 1.f;
+    
+    if(self.locationCenter != nil) {
+        [self buildMapView];
+        self.imgMap.hidden = NO;
+    } else {
+        self.imgMap.hidden = YES;
+    }
+}
+
+#pragma mark - GoogleMaps
+
+- (void) buildMapView {
+
+    [GANUtils syncImageWithUrl:self.imgMap latitude:self.locationCenter.coordinate.latitude longitude:self.locationCenter.coordinate.longitude];
+    
+}
+- (IBAction)gotoMapApplication:(id)sender {
+    
+    if ([[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString:@"comgooglemaps:"]]) {
+        NSString *urlString = [NSString stringWithFormat:@"comgooglemaps://?q=%f,%f",self.locationCenter.coordinate.latitude,self.locationCenter.coordinate.longitude];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+    } else {
+        NSString *string = [NSString stringWithFormat:@"http://maps.google.com/maps?q=%f,%f",self.locationCenter.coordinate.latitude,self.locationCenter.coordinate.longitude];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:string]];
+    }
+    /*NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f",self.locationCenter.coordinate.latitude, self.locationCenter.coordinate.longitude, self.locationCenter.coordinate.latitude, self.locationCenter.coordinate.longitude];*/
+
 }
 
 @end

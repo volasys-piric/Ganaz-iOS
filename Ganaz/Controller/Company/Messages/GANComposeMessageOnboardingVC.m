@@ -9,6 +9,7 @@
 #import "GANComposeMessageOnboardingVC.h"
 #import "GANCompanySignupVC.h"
 #import "GANSharePostingWithContactsVC.h"
+#import "GANCompanyMapPopupVC.h"
 
 #import "GANPhonebookContactDataModel.h"
 #import "GANGlobalVCManager.h"
@@ -17,8 +18,9 @@
 #import "GANMessageManager.h"
 #import "GANUtils.h"
 #import "Global.h"
+#import "GANFadeTransitionDelegate.h"
 
-@interface GANComposeMessageOnboardingVC ()<UITextViewDelegate>
+@interface GANComposeMessageOnboardingVC ()<UITextViewDelegate, GANCompanyMapPopupVCDelegate>
 
 @property (strong, nonatomic) IBOutlet UILabel *lblSendMessageUsers;
 @property (strong, nonatomic) IBOutlet UIView *viewMessage;
@@ -26,7 +28,13 @@
 @property (strong, nonatomic) IBOutlet UIButton *btnSubmit;
 @property (strong, nonatomic) IBOutlet UIButton *btnAutoTranslate;
 
+@property (strong, nonatomic) IBOutlet UIButton *btnMap;
+@property (strong, nonatomic) IBOutlet UIImageView *imgMapIcon;
+
 @property (assign, atomic) BOOL isAutoTranslate;
+
+@property (strong, nonatomic) GANFadeTransitionDelegate *transController;
+@property (strong, nonatomic) GANLocationDataModel *mapData;
 
 @end
 
@@ -37,7 +45,7 @@
     // Do any additional setup after loading the view.
     
     self.lblSendMessageUsers.text = [NSString stringWithFormat:@"%@", [self getWorkerNames]];
-    
+    self.transController = [[GANFadeTransitionDelegate alloc] init];
     self.isAutoTranslate = NO;
     
     [self refreshView];
@@ -103,14 +111,18 @@
         [arrPhoneNumber addObject:contact.modelPhone.szLocalNumber];
     }
     
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:nil ReceiversPhoneNumbers: arrPhoneNumber Message:szMessage AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
-        if (status == SUCCESS_WITH_NO_ERROR){
+    NSDictionary *metaData;
+    if(self.mapData) {
+        metaData = @{@"map" : [self.mapData serializeToMetaDataDictionary]};
+    }
+    
+    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:nil ReceiversPhoneNumbers: arrPhoneNumber Message:szMessage MetaData:metaData AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR) {
             
             [GANGlobalVCManager showHudSuccessWithMessage:@"Message sent!" DismissAfter:-1 Callback:^{
                 [self gotoMessageVC];
             }];
-        }
-        else {
+        } else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:^{
                 [self gotoMessageVC];
             }];
@@ -121,7 +133,9 @@
 }
 
 - (void) gotoMessageVC {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:^(int status) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }];
 }
 
 - (IBAction)onAutoTranslate:(id)sender {
@@ -136,6 +150,24 @@
     vc.fromCustomVC = ENUM_COMMUNICATE_SIGNUP;
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+}
+
+- (IBAction)onBtnMap:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        GANCompanyMapPopupVC *vc = [[GANCompanyMapPopupVC alloc] initWithNibName:@"GANCompanyMapPopupVC" bundle:nil];
+        vc.delegate = self;
+        vc.view.backgroundColor = [UIColor clearColor];
+        [vc setTransitioningDelegate:self.transController];
+        vc.modalPresentationStyle = UIModalPresentationCustom;
+        [self presentViewController:vc animated:YES completion:nil];
+    });
+}
+
+#pragma mark - GANCompanyMapPopupVCDelegate
+- (void) submitLocation:(GANLocationDataModel *)location {
+    self.mapData = location;
+    self.imgMapIcon.image = [UIImage imageNamed:@"map_pin-green"];
+    [self.btnMap.titleLabel setTextColor:GANUICOLOR_THEMECOLOR_GREEN];
 }
 
 - (void)didReceiveMemoryWarning {
