@@ -46,8 +46,19 @@
              };
 }
 
+- (NSDictionary *) serializeToMetaDataDictionary {
+    return @{@"address" : self.szAddress,
+                        @"loc" : @[[NSString stringWithFormat:@"%.6f", self.fLongitude],
+                                  [NSString stringWithFormat:@"%.6f", self.fLatitude]]};
+}
+
 - (CLLocation *) generateCLLocation{
     return [[CLLocation alloc] initWithLatitude:self.fLatitude longitude:self.fLongitude];
+}
+
+- (BOOL) isValidLocation{
+    if (self.szAddress.length == 0 && fabs(self.fLatitude) < 0.1 && fabs(self.fLongitude) < 0.1) return NO;
+    return YES;
 }
 
 @end

@@ -95,11 +95,12 @@
     GANUserManager *managerUser = [GANUserManager sharedInstance];
     
     // Check if user exists
-    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    // Please wait...
+    [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     [managerUser requestSearchUserByPhoneNumber:phoneNumber Type:GANENUM_USER_TYPE_ANY Callback:^(int status, NSArray *array) {
         if (status == SUCCESS_WITH_NO_ERROR && array != nil && [array count] > 0){
             GANUserBaseDataModel *user = [array objectAtIndex:0];
-            if (user.enumAuthType == GANENUM_USER_AUTHTYPE_EMAIL){
+            if (user.enumAuthType == GANENUM_USER_AUTHTYPE_EMAIL && user.enumType != GANENUM_USER_TYPE_ONBOARDING_WORKER){
                 // Old user, migration needed
                 [GANGlobalVCManager hideHudProgressWithCallback:^{
                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
@@ -115,8 +116,16 @@
                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
                     GANWorkerLoginCodeVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_CODE"];
                     vc.szPhoneNumber = phoneNumber;
-                    vc.isLogin = YES;
                     vc.isAutoLogin = NO;
+                    if(user.enumType == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
+                        vc.isOnboardingWorker = YES;
+                        vc.isLogin = NO;
+                        vc.szId = user.szId;
+                    } else {
+                        vc.isOnboardingWorker = NO;
+                        vc.isLogin = YES;
+                    }
+                    
                     [self.navigationController pushViewController:vc animated:YES];
                     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
                 }];
@@ -136,7 +145,8 @@
             GANACTIVITY_REPORT(@"Worker - Login phone number not recognized. Go to signup");
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
+            // Sorry, we've encountered an issue.
+            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
         }
     }];
 }

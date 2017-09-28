@@ -25,6 +25,7 @@
 + (NSString *) getLongStringFromDate: (NSDate *) dt;
 + (NSString *) stripNonnumericsFromNSString :(NSString *) sz;
 + (NSString *) stripNonAlphanumericsFromNSString :(NSString *) sz;
++ (NSString *) getValidPhoneNumber:(NSString *)phoneNumber;
 
 + (NSString *) beautifyPhoneNumber: (NSString *) localNumber CountryCode: (NSString *) countryCode;
 

@@ -15,6 +15,7 @@
 #import "GANGlobalVCManager.h"
 #import "Global.h"
 #import "GANAppManager.h"
+#import "GANGenericFunctionManager.h"
 
 @interface GANWorkerJobSuggestFriendVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
@@ -73,7 +74,8 @@
             [self buildFilteredArray];
         }
         else {
-            [GANGlobalVCManager showAlertControllerWithVC:self Title:@"Contacts Disabled" Message:@"You will need to allow the access to contacts manually to add family members." Callback:nil];
+            // You will need to allow access to contacts later.
+            [GANGlobalVCManager showAlertControllerWithVC:self Title:@"Ud. no ha permitido acceso" Message:@"Si quiere acceder sus contactos, habrá que ir a Configuración en su teléfono para permitirlo." Callback:nil];
         }
     }];
 }
@@ -115,23 +117,40 @@
 }
 
 - (void) doSuggestFrield{
-    if (self.indexSelected == -1){
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please select contact." DismissAfter:-1 Callback:nil];
+    if (self.indexSelected == -1 && [self.textfieldSearch.text isEqualToString:@""]){
+        // Please select a contact
+        [GANGlobalVCManager showHudErrorWithMessage:@"Por favor, elija un contacto" DismissAfter:-1 Callback:nil];
         return;
     }
+    NSString *szPhoneFriendNumber;
+    if(self.indexSelected == -1) {
+        szPhoneFriendNumber = [GANGenericFunctionManager getValidPhoneNumber:self.textfieldSearch.text];
+        if([szPhoneFriendNumber isEqualToString:@""]) {
+            // Please enter a valid phone number
+            [GANGlobalVCManager showHudErrorWithMessage:@"Por favor, entre un número de teléfono correcto (sin el “1”)" DismissAfter:-1 Callback:nil];
+            [self.textfieldSearch becomeFirstResponder];
+            return;
+        }
+    } else {
+        GANPhonebookContactDataModel *contact = [self.arrFilteredContacts objectAtIndex:self.indexSelected];
+        szPhoneFriendNumber = contact.modelPhone.szLocalNumber;
+    }
+    
     GANJobManager *managerJob = [GANJobManager sharedInstance];
-    GANPhonebookContactDataModel *contact = [self.arrFilteredContacts objectAtIndex:self.indexSelected];
     
-    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    // Please wait...
+    [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     
-    [managerJob requestSuggestFriendForJob:self.szJobId PhoneNumber:contact.modelPhone.szLocalNumber Callback:^(int status) {
+    [managerJob requestSuggestFriendForJob:self.szJobId PhoneNumber:szPhoneFriendNumber Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Your request has sent." DismissAfter:-1 Callback:^{
+            // Your request has been sent...
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Gracias! Hemos notificado la empresa del interés de su amigo/a" DismissAfter:-1 Callback:^{
                 [self gotoJobApplyCompletedVC];
             }];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, your request has been failed." DismissAfter:-1 Callback:nil];
+            // Sorry, we've encountered an issue
+            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
         }
     }];
     GANACTIVITY_REPORT(@"Worker - Suggest Friend for Job");

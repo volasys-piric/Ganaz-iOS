@@ -10,39 +10,39 @@
 #import "GANJobItemTVC.h"
 #import "GANWorkerItemTVC.h"
 #import "GANGlobalVCManager.h"
+#import "GANJobPostingSharedPopupVC.h"
+#import "GANCompanyAddWorkerVC.h"
+#import "GANMyWorkerNickNameEditPopupVC.h"
+#import "GANOnboardingWorkerNickNamePopupVC.h"
 
 #import "GANJobManager.h"
 #import "GANUserManager.h"
 #import "GANCacheManager.h"
 #import "GANCompanyManager.h"
 #import "GANRecruitManager.h"
-
+#import "GANFadeTransitionDelegate.h"
 #import "GANGenericFunctionManager.h"
 #import "Global.h"
 #import "GANAppManager.h"
 
-@interface GANRecruitVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+#define NON_SELECTED -1
 
-@property (weak, nonatomic) IBOutlet UITableView *tableviewJobs;
+@interface GANRecruitVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIActionSheetDelegate, GANJobPostingSharedPopupVCDelegate, GANOnboardingWorkerNickNamePopupVCDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANWorkerItemTVCDelegate>
+{
+    NSInteger nSelectedIndex;
+}
+
+@property (weak, nonatomic) IBOutlet UILabel *lblJobTitle;
 @property (weak, nonatomic) IBOutlet UITableView *tableviewWorkers;
 
-@property (weak, nonatomic) IBOutlet UIView *viewPopupWrapper;
 @property (weak, nonatomic) IBOutlet UIView *viewBroadcastPanel;
-@property (weak, nonatomic) IBOutlet UIView *viewPopupPanel;
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollviewPopup;
 
 @property (weak, nonatomic) IBOutlet UITextField *txtMiles;
-
-@property (weak, nonatomic) IBOutlet UIButton *btnContinue;
-@property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
+@property (weak, nonatomic) IBOutlet UIButton *btnShareJob;
 @property (weak, nonatomic) IBOutlet UIButton *btnAddWorker;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintPopupPanelTopSpacing;
+@property (strong, nonatomic) GANFadeTransitionDelegate *transController;
 
-@property (assign, atomic) BOOL isPopupShowing;
-@property (assign, atomic) int nPopupStep;
-
-@property (strong, nonatomic) NSMutableArray *arrJobSelected;
 @property (strong, nonatomic) NSMutableArray *arrWorkerSelected;
 
 @end
@@ -54,20 +54,15 @@
     // Do any additional setup after loading the view.
     
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.tableviewJobs.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableviewJobs.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.tableviewJobs.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableviewWorkers.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableviewWorkers.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableviewWorkers.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.isPopupShowing = NO;
-    self.nPopupStep = 0;
-    self.arrJobSelected = [[NSMutableArray alloc] init];
+
+    nSelectedIndex = NON_SELECTED;
+    
+    self.transController = [[GANFadeTransitionDelegate alloc] init];
     self.arrWorkerSelected = [[NSMutableArray alloc] init];
 
-    [self buildJobsList];
-    [self buildWorkerList];
-    
     [self registerTableViewCellFromNib];
     [self refreshViews];
     
@@ -75,6 +70,12 @@
                                              selector:@selector(onLocalNotificationReceived:)
                                                  name:nil
                                                object:nil];
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self buildWorkerList];
 }
 
 - (void) dealloc{
@@ -91,31 +92,17 @@
 }
 
 - (void) registerTableViewCellFromNib{
-    [self.tableviewJobs registerNib:[UINib nibWithNibName:@"JobItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_JOBLIST_ITEM"];
     [self.tableviewWorkers registerNib:[UINib nibWithNibName:@"WorkerItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_WORKERITEM"];
 }
 
 - (void) refreshViews{
     self.viewBroadcastPanel.layer.cornerRadius = 3;
-    self.btnSubmit.layer.cornerRadius = 3;
-    self.btnContinue.layer.cornerRadius = 3;
+    self.btnShareJob.layer.cornerRadius = 3;
     self.btnAddWorker.layer.cornerRadius = 3;
-}
-
-- (void) refreshPopupView{
-    self.viewPopupWrapper.hidden = !self.isPopupShowing;
-}
-
-- (void) buildJobsList{
-    [self.arrJobSelected removeAllObjects];
-    int count = (int) [[GANJobManager sharedInstance].arrMyJobs count];
-    for (int i = 0; i < count; i++){
-        [self.arrJobSelected addObject:@(NO)];
-    }
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableviewJobs reloadData];
-    });
+    GANJobManager *managerJob = [GANJobManager sharedInstance];
+    GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:self.nJobIndex];
+    self.lblJobTitle.text = [job getTitleEN];
 }
 
 - (void) buildWorkerList{
@@ -131,83 +118,17 @@
     });
 }
 
-#pragma mark - UI Stuff
-
-- (void) animateToShowPopup{
-    if (self.isPopupShowing == YES) return;
-    self.isPopupShowing = YES;
-    self.nPopupStep = 0;
-    [self.scrollviewPopup setContentOffset:CGPointMake(0, 0)];
-    [self.btnSubmit setTitle:@"Continue" forState:UIControlStateNormal];
-    
-    // Animate to show
-    int height = (int) self.viewPopupPanel.frame.size.height;
-    
-    self.viewPopupWrapper.hidden = NO;
-    self.viewPopupWrapper.alpha = 0;
-    self.constraintPopupPanelTopSpacing.constant = -height;
-    [self.viewPopupWrapper layoutIfNeeded];
-    
-    [UIView animateWithDuration:0.25 animations:^{
-        self.constraintPopupPanelTopSpacing.constant = 0;
-        self.viewPopupWrapper.alpha = 1;
-        [self.viewPopupWrapper layoutIfNeeded];
-    }];
-}
-
-- (void) animateToHidePopup{
-    if (self.isPopupShowing == NO) return;
-    
-    self.isPopupShowing = NO;
-    int height = (int) self.viewPopupPanel.frame.size.height;
-
-    self.constraintPopupPanelTopSpacing.constant = 0;
-    self.viewPopupWrapper.alpha = 1;
-    [self.viewPopupWrapper layoutIfNeeded];
-    
-    [UIView animateWithDuration:0.25 animations:^{
-        self.constraintPopupPanelTopSpacing.constant = -height;
-        self.viewPopupWrapper.alpha = 0;
-        [self.viewPopupWrapper layoutIfNeeded];
-    } completion:^(BOOL finished) {
-        if (finished == YES){
-            self.viewPopupWrapper.hidden = YES;
-        }
-    }];
-}
-
-- (void) animateScrollViewPopupToStep: (int) step{
-    if (self.nPopupStep == step) return;
-    self.nPopupStep = step;
-    
-    float width = self.scrollviewPopup.frame.size.width;
-    [self.scrollviewPopup setContentOffset:CGPointMake(width * step, 0) animated:YES];
-}
-
 #pragma mark - Biz Logic
-
-- (BOOL) isJobSelected{
-    for (int i = 0; i < (int) [self.arrJobSelected count]; i++){
-        BOOL selected = [[self.arrJobSelected objectAtIndex:i] boolValue];
-        if (selected == YES) return YES;
-    }
-    return NO;
-}
 
 - (void) doSubmitRecruit{
     GANJobManager *managerJob = [GANJobManager sharedInstance];
     GANRecruitManager *managerRecruit = [GANRecruitManager sharedInstance];
-    NSMutableArray *arrJobIds = [[NSMutableArray alloc] init];
     NSMutableArray *arrReRecruitUserIds = [[NSMutableArray alloc] init];
-    float fBroadcast = 0;
     
-    for (int i = 0; i < (int) [self.arrJobSelected count]; i++){
-        BOOL isSelected = [[self.arrJobSelected objectAtIndex:i] boolValue];
-        if (isSelected == YES){
-            GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:i];
-            [arrJobIds addObject:job.szId];
-        }
-    }
+    float fBroadcast = 0;
+    NSMutableArray *arrJobIds = [[NSMutableArray alloc] init];
+    GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:self.nJobIndex];
+    [arrJobIds addObject:job.szId];
     
     for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
         BOOL isSelected = [[self.arrWorkerSelected objectAtIndex:i] boolValue];
@@ -223,45 +144,64 @@
     }
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [managerRecruit requestSubmitRecruitWithJobIds:arrJobIds Broadcast:fBroadcast ReRecruitUserIds:arrReRecruitUserIds Callback:^(int status, int count) {
+    [managerRecruit requestSubmitRecruitWithJobIds:arrJobIds Broadcast:fBroadcast ReRecruitUserIds:arrReRecruitUserIds PhoneNumbers:nil Callback:^(int status, int count) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            [GANGlobalVCManager showHudSuccessWithMessage:[NSString stringWithFormat:@"Worker(s) are recruited."] DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager hideHudProgress];
+            [self showPopupDialog:count];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
         }
         GANACTIVITY_REPORT(@"Company - Recruit");
     }];
 }
 
+-(void) showPopupDialog:(int)nCount {
+    
+    GANJobPostingSharedPopupVC *vc = [[GANJobPostingSharedPopupVC alloc] initWithNibName:@"GANJobPostingSharedPopupVC" bundle:nil];
+    
+    vc.delegate = self;
+    vc.view.backgroundColor = [UIColor clearColor];
+    NSString *strDescription = [NSString stringWithFormat:@"Your job has been\nshared with %d\n workers.", nCount];
+    
+    [vc refreshFields:strDescription];
+    [vc setTransitioningDelegate:self.transController];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:vc animated:YES completion:^{
+        
+    }];
+    
+}
+
 - (void) gotoAddWorkerVC{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
+    GANCompanyAddWorkerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
+    vc.fromCustomVC = ENUM_COMPANY_ADDWORKERS_FROM_RECRUITJOB;
+    vc.szDescription = @"Who would you like to add?";
     [self.navigationController pushViewController:vc animated:YES];
+
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     GANACTIVITY_REPORT(@"Company - Go to add-worker from Recruit");
 }
 
-#pragma mark - UITableView Delegate
-
-- (void) configureJobItemCell: (GANJobItemTVC *) cell AtIndex: (int) index{
-    GANJobDataModel *job = [[GANJobManager sharedInstance].arrMyJobs objectAtIndex:index];
-    cell.lblTitle.text = [job getTitleEN];
-    cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f", job.fPayRate];
-    cell.lblUnit.text = (job.enumPayUnit == GANENUM_PAY_UNIT_HOUR) ? @"per hour" : @"per lb";
-    cell.lblDate.text = [NSString stringWithFormat:@"%@ - %@", [GANGenericFunctionManager getBeautifiedDate:job.dateFrom], [GANGenericFunctionManager getBeautifiedDate:job.dateTo]];
-    [cell showPayRate:[job isPayRateSpecified]];
-    
-    cell.viewContainer.layer.cornerRadius = 4;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    BOOL isSelected = [[self.arrJobSelected objectAtIndex:index] boolValue];
-    [cell setItemSelected:isSelected];
+#pragma mark - GANJobPostingSharedPopupDelegate
+- (void)didOK {
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
+
+#pragma mark - UITableView Delegate
 
 - (void) configureWorkerItemCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
     GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:index];
-    cell.lblWorkerId.text = [myWorker.modelWorker getValidUsername];
+    cell.lblWorkerId.text = [myWorker getDisplayName];
+    cell.nIndex = index;
+    cell.delegate = self;
+    
+    if(myWorker.modelWorker.enumType == GANENUM_USER_TYPE_WORKER) {
+        [cell setButtonColor:YES];
+    } else {
+        [cell setButtonColor:NO];
+    }
     
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -275,48 +215,174 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (tableView == self.tableviewJobs){
-        return [[GANJobManager sharedInstance].arrMyJobs count];
-    }
     return [[GANCompanyManager sharedInstance].arrMyWorkers count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (tableView == self.tableviewJobs){
-        GANJobItemTVC *cell = [tableView dequeueReusableCellWithIdentifier:@"TVC_JOBLIST_ITEM"];
-        [self configureJobItemCell:cell AtIndex:(int) indexPath.row];
-        return cell;
-    }
-    else if (tableView == self.tableviewWorkers){
-        GANWorkerItemTVC *cell = [tableView dequeueReusableCellWithIdentifier:@"TVC_WORKERITEM"];
-        [self configureWorkerItemCell:cell AtIndex:(int) indexPath.row];
-        return cell;
-    }
-    return nil;
+    GANWorkerItemTVC *cell = [tableView dequeueReusableCellWithIdentifier:@"TVC_WORKERITEM"];
+    [self configureWorkerItemCell:cell AtIndex:(int) indexPath.row];
+    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (tableView == self.tableviewJobs){
-        return 76;
-    }
-    else if (tableView == self.tableviewWorkers){
-        return 50;
-    }
-    return 0;
+    return 63;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     int index = (int) indexPath.row;
-    if (tableView == self.tableviewJobs){
-        BOOL isSelected = [[self.arrJobSelected objectAtIndex:index] boolValue];
-        [self.arrJobSelected replaceObjectAtIndex:index withObject:@(!isSelected)];
-        [self.tableviewJobs reloadData];
+    BOOL isSelected = [[self.arrWorkerSelected objectAtIndex:index] boolValue];
+    [self.arrWorkerSelected replaceObjectAtIndex:index withObject:@(!isSelected)];
+    [self.tableviewWorkers reloadData];
+}
+
+- (void) changeMyWorkerNickName: (NSInteger) index{
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:index];
+    
+    
+    if(myWorker.modelWorker.enumType == GANENUM_USER_TYPE_ONBOARDING_WORKER){
+        GANOnboardingWorkerNickNamePopupVC *vc = [[GANOnboardingWorkerNickNamePopupVC alloc] initWithNibName:@"GANOnboardingWorkerNickNamePopupVC" bundle:nil];
+        vc.delegate = self;
+        
+        vc.view.backgroundColor = [UIColor clearColor];
+        [vc setTransitioningDelegate:self.transController];
+        vc.modalPresentationStyle = UIModalPresentationCustom;
+        [self presentViewController:vc animated:YES completion:^{
+            
+        }];
+        
+        vc.nIndex = index;
+        [vc setTitle:[myWorker.modelWorker.modelPhone getBeautifiedPhoneNumber]];
+        if(![myWorker.szNickname isEqualToString:@""] || myWorker.szNickname != nil)
+            vc.txtNickName.text = myWorker.szNickname;
+    } else {
+        GANMyWorkerNickNameEditPopupVC *vc = [[GANMyWorkerNickNameEditPopupVC alloc] initWithNibName:@"GANMyWorkerNickNameEditPopupVC" bundle:nil];
+        vc.delegate = self;
+        
+        vc.view.backgroundColor = [UIColor clearColor];
+        [vc setTransitioningDelegate:self.transController];
+        vc.modalPresentationStyle = UIModalPresentationCustom;
+        [self presentViewController:vc animated:YES completion:^{
+            
+        }];
+        
+        vc.nIndex = index;
+        [vc setTitle:[myWorker.modelWorker.modelPhone getBeautifiedPhoneNumber]];
+        if(![myWorker.szNickname isEqualToString:@""] || myWorker.szNickname != nil)
+            vc.txtNickName.text = myWorker.szNickname;
     }
-    else if (tableView == self.tableviewWorkers){
-        BOOL isSelected = [[self.arrWorkerSelected objectAtIndex:index] boolValue];
-        [self.arrWorkerSelected replaceObjectAtIndex:index withObject:@(!isSelected)];
-        [self.tableviewWorkers reloadData];
+}
+
+#pragma mark - GANWorkerITEMTVCDelegate
+- (void) setWorkerNickName:(NSInteger)nIndex {
+    
+    nSelectedIndex = nIndex;
+    
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
+    
+    if(myWorker.modelWorker.enumType == GANENUM_USER_TYPE_WORKER) {
+        [self changeMyWorkerNickName:nSelectedIndex];
+        return;
     }
+    
+    NSString *szUserName = [myWorker getDisplayName];
+    
+    UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:szUserName delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Re-send Invitation",@"Edit", nil];
+    popup.tag = 0;
+    [popup showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    switch (popup.tag) {
+        case 0: {
+            switch (buttonIndex) {
+                case 0:
+                    [self resendInvite:nSelectedIndex];
+                    break;
+                case 1:
+                    [self changeMyWorkerNickName:nSelectedIndex];
+                    break;
+                default:
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void) resendInvite:(NSInteger) nIndex {
+    NSString *szCompanyId = [GANUserManager getCompanyDataModel].szId;
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
+    
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    
+    [[GANCompanyManager sharedInstance] requestSendInvite:myWorker.modelWorker.modelPhone CompanyId:szCompanyId inviteOnly:YES Callback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR){
+            [GANGlobalVCManager showHudSuccessWithMessage:@"An invitation will be sent shortly via SMS" DismissAfter:-1 Callback:nil];
+            
+            [self getMyWorkerList];
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
+        }
+        nSelectedIndex = NON_SELECTED;
+    }];
+    GANACTIVITY_REPORT(@"Company - Send invite");
+}
+
+- (void) getMyWorkerList {
+    [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:^(int status) {
+        if(status == SUCCESS_WITH_NO_ERROR) {
+            [self buildWorkerList];
+        } else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
+        }
+    }];
+}
+
+#pragma mark - GANMyWorkerNickNameEditPopupVCDelegate
+- (void) setMyWorkerNickName:(NSString*)szNickName index:(NSInteger) nIndex {
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
+    myWorker.szNickname = szNickName;
+    
+    //Add NickName
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:szNickName Callback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR) {
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Worker's alias has been updated" DismissAfter:-1 Callback:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableviewWorkers reloadData];
+            });
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
+        }
+        nSelectedIndex = NON_SELECTED;
+    }];
+}
+
+- (void) setOnboardingWorkerNickName:(NSString*)szNickName index:(NSInteger) nIndex {
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
+    myWorker.szNickname = szNickName;
+    
+    //Add NickName
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:szNickName Callback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR) {
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Worker's alias has been updated" DismissAfter:-1 Callback:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableviewWorkers reloadData];
+            });
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
+        }
+        nSelectedIndex = NON_SELECTED;
+    }];
 }
 
 #pragma mark - UITextField Delegate
@@ -328,12 +394,9 @@
 
 #pragma mark - UIButton Delegate
 
-- (IBAction)onBtnContinueClick:(id)sender {
-    if ([self isJobSelected] == NO){
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please select jobs!" DismissAfter:-1 Callback:nil];
-        return;
-    }
-    [self animateToShowPopup];
+- (IBAction)onBtnShareJobClick:(id)sender {
+    [self.view endEditing:YES];
+    [self doSubmitRecruit];
 }
 
 - (IBAction)onBtnAddWorkerClick:(id)sender {
@@ -341,29 +404,12 @@
     [self gotoAddWorkerVC];
 }
 
-- (IBAction)onBtnSubmitClick:(id)sender {
-    [self.view endEditing:YES];
-    if (self.nPopupStep == 0){
-        [self animateScrollViewPopupToStep:1];
-        [self.btnSubmit setTitle:@"Submit" forState:UIControlStateNormal];
-    }
-    else {
-        [self animateToHidePopup];
-        [self doSubmitRecruit];
-    }
-}
-
-- (IBAction)onBtnPopupWrapperClick:(id)sender {
-    [self.view endEditing:YES];
-    [self animateToHidePopup];
-}
-
 #pragma mark -NSNotification
 
 - (void) onLocalNotificationReceived:(NSNotification *) notification{
     if (([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_JOBLIST_UPDATED]) ||
         ([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_JOBLIST_UPDATEFAILED])){
-        [self buildJobsList];
+//        [self buildJobsList];
     }
     else if (([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATED]) ||
         ([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATEFAILED])){

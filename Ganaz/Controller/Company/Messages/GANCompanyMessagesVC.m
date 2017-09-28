@@ -93,7 +93,7 @@
 }
 
 - (void) registerTableViewCellFromNib{
-    [self.tableview registerNib:[UINib nibWithNibName:@"MessageItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_MESSAGEITEM"];
+    [self.tableview registerNib:[UINib nibWithNibName:@"GANMessageItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_MESSAGEITEM"];
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -101,6 +101,10 @@
     
     self.isVCVisible = YES;
     [self updateReadStatusIfNeeded];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self buildMessageList];
+    });
 }
 
 - (void) viewDidDisappear:(BOOL)animated{
@@ -159,7 +163,6 @@
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES_CHOOSEWORKER"];
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    
     GANACTIVITY_REPORT(@"Company - Go to send message from Messages");
 }
 
@@ -187,6 +190,7 @@
 - (void) animateToHidePopup{
     if (self.isPopupShowing == NO) return;
     
+    self.textview.text = @"";
     self.isPopupShowing = NO;
     int height = (int) self.viewPopupPanel.frame.size.height;
     
@@ -210,14 +214,14 @@
 - (void) callSuggestedFriendAtIndex: (int) indexMessage{
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:indexMessage];
     NSString *phoneNumber = [message getPhoneNumberForSuggestFriend];
-    [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:[NSString stringWithFormat:@"Do you want to make a call to %@?", phoneNumber] ButtonYes:@"Yes" ButtonNo:@"NO" CallbackYes:^{
+    [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:[NSString stringWithFormat:@"Do you want to call %@?", phoneNumber] ButtonYes:@"Yes" ButtonNo:@"NO" CallbackYes:^{
         NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",[GANGenericFunctionManager stripNonnumericsFromNSString:phoneNumber]]];
         
         if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
             [[UIApplication sharedApplication] openURL:phoneUrl];
         }
         else{
-            [GANGlobalVCManager showHudErrorWithMessage:@"Your device does not support phone call" DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"Your device does not support phone calls" DismissAfter:-1 Callback:nil];
         }
     } CallbackNo:nil];
 }
@@ -237,8 +241,15 @@
         szUserId = message.szSenderUserId;
     }
     [managerCache requestGetIndexForUserByUserId:szUserId Callback:^(int index) {
+        
+        if(index == -1)
+            return;
+        
         GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-        self.lblReplyTitle.text = [NSString stringWithFormat:@"Reply to %@", [user getValidUsername]];
+        GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+        [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+            self.lblReplyTitle.text = [NSString stringWithFormat:@"Reply to %@", displayName];
+        }];
     }];
     
     [self animateToShowPopup];
@@ -258,7 +269,7 @@
     NSString *szMessage = self.textview.text;
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers Message:szMessage AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
+    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage MetaData: nil AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"Message is succesfully sent!" DismissAfter:-1 Callback:^{
                 [self animateToHidePopup];
@@ -274,6 +285,7 @@
 #pragma mark - UITableView Delegate
 
 - (void) configureCell: (GANMessageItemTVC *) cell AtIndex: (int) index{
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     GANCacheManager *managerCache = [GANCacheManager sharedInstance];
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
     GANJobManager *managerJob = [GANJobManager sharedInstance];
@@ -288,7 +300,9 @@
             [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
                 if (index == -1) return;
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Message To %@", [user getValidUsername]];
+                [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+                    cell.lblTitle.text = [NSString stringWithFormat:@"Message To %@", displayName];
+                }];
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT){
@@ -307,7 +321,9 @@
             [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
                 if (index == -1) return;
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Recruited %@", [user getValidUsername]];
+                [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+                    cell.lblTitle.text = [NSString stringWithFormat:@"Recruited %@", displayName];
+                }];
             }];
         }
     }
@@ -318,7 +334,9 @@
             [managerCache requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 if (index == -1) return;
                 GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-                cell.lblTitle.text = [NSString stringWithFormat:@"Message from %@", [user getValidUsername]];
+                [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+                    cell.lblTitle.text = [NSString stringWithFormat:@"Message from %@", displayName];
+                }];
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION){
@@ -337,7 +355,9 @@
             [[GANCacheManager sharedInstance] requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 if (index != -1){
                     GANUserBaseDataModel *user = [[GANCacheManager sharedInstance].arrUsers objectAtIndex:index];
-                    cell.lblMessage.text = [NSString stringWithFormat:@"Reply to %@", [user getValidUsername]];
+                    [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+                        cell.lblMessage.text = [NSString stringWithFormat:@"Reply to %@", displayName];
+                    }];
                 }
             }];
         }
@@ -357,11 +377,18 @@
             [[GANCacheManager sharedInstance] requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 if (index != -1){
                     GANUserBaseDataModel *user = [[GANCacheManager sharedInstance].arrUsers objectAtIndex:index];
-                    cell.lblMessage.text = [NSString stringWithFormat:@"%@ suggested worker @%@", [user getValidUsername], [message getPhoneNumberForSuggestFriend]];
+                    [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+                        cell.lblMessage.text = [NSString stringWithFormat:@"%@ suggested worker @%@", displayName, [message getPhoneNumberForSuggestFriend]];
+                    }];
                 }
             }];
         }
     }
+    
+    if([message hasLocationInfo] == YES) {
+        cell.locationCenter = [[CLLocation alloc]initWithLatitude:message.locationInfo.fLatitude longitude:message.locationInfo.fLongitude];
+    }
+    
     BOOL didRead = !([message amIReceiver] && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell refreshViewsWithType:message.enumType DidRead:didRead DidSend:amISender];
@@ -382,7 +409,11 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return UITableViewAutomaticDimension;
+    GANMessageDataModel *message = [self.arrMessages objectAtIndex:indexPath.row];
+    if([message hasLocationInfo]) {
+        return 260;//UITableViewAutomaticDimension;
+    }
+    return 70;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -412,7 +443,7 @@
     [self.view endEditing:YES];
     NSString *sz = self.textview.text;
     if (sz.length == 0){
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please input message to send." DismissAfter:-1 Callback:nil];
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please enter a message to send" DismissAfter:-1 Callback:nil];
         return;
     }
     [self doReplyMessage];

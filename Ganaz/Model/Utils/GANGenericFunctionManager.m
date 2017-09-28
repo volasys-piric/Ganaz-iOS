@@ -79,6 +79,19 @@
     return YES;
 }
 
++ (NSString *)getValidPhoneNumber:(NSString *)phoneNumber
+{
+    NSString *szPhoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet: [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet]] componentsJoinedByString:@""];
+    
+    NSString *phoneRegex = @"[0-9]{10}";
+    NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", phoneRegex];
+    
+    if([phoneTest evaluateWithObject:szPhoneNumber] == NO)
+        return @"";
+    
+    return szPhoneNumber;
+}
+
 + (NSString *) stripNonnumericsFromNSString :(NSString *) sz{
     NSString *szResult = sz;
     

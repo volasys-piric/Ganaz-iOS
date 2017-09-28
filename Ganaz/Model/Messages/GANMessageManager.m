@@ -115,7 +115,9 @@
 - (void) requestSendMessageWithJobId: (NSString *) jobId
                                 Type: (GANENUM_MESSAGE_TYPE) type
                            Receivers: (NSArray *) receivers
+               ReceiversPhoneNumbers: (NSArray *) receivers_phone_numbers
                              Message: (NSString *) message
+                            MetaData: (NSDictionary *)metaData
                        AutoTranslate: (BOOL) isAutoTranslate
                         FromLanguage: (NSString *) fromLanguage
                           ToLanguage: (NSString *) toLanguage
@@ -132,17 +134,26 @@
             szSenderCompanyId = [GANUserManager getCompanyDataModel].szId;
         }
         
-        NSDictionary *params = @{@"job_id": jobId,
-                                 @"type": [GANUtils getStringFromMessageType:type],
-                                 @"sender": @{@"user_id": szSenderUserId,
-                                              @"company_id": szSenderCompanyId
-                                              },
-                                 @"receivers": receivers,
-                                 @"message": @{fromLanguage: message,
-                                               toLanguage: translatedText
-                                               },
-                                 @"auto_translate": (isAutoTranslate == YES) ? @"true" : @"false"
-                                 };
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setObject:jobId forKey:@"job_id"];
+        [params setObject:[GANUtils getStringFromMessageType:type] forKey:@"type"];
+        [params setObject:@{@"user_id": szSenderUserId,
+                            @"company_id": szSenderCompanyId
+                            } forKey:@"sender"];
+        if(receivers.count > 0)
+            [params setObject:receivers forKey:@"receivers"];
+        
+        [params setObject:@{fromLanguage: message,
+                            toLanguage: translatedText
+                            } forKey:@"message"];
+        if(metaData != nil)
+            [params setObject:metaData forKey:@"metadata"];
+        
+        [params setObject:(isAutoTranslate == YES) ? @"true" : @"false" forKey:@"auto_translate"];
+        
+        if(receivers_phone_numbers.count > 0) {
+            [params setObject:receivers_phone_numbers forKey:@"receivers_phone_numbers"];
+        }
         
         [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
             NSDictionary *dict = responseObject;

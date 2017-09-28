@@ -56,6 +56,9 @@
 }
 
 #pragma mark - Endpoint for User
++ (NSString *) getEndpointForOnboardingUserSignup:(NSString *)szUserId{
+    return [NSString stringWithFormat:@"%@/user/onboarding/%@", [GANUrlManager getBaseUrl], szUserId];
+}
 
 + (NSString *) getEndpointForUserSignup{
     return [NSString stringWithFormat:@"%@/user", [GANUrlManager getBaseUrl]];
@@ -83,6 +86,10 @@
 
 + (NSString *) getEndpointForUserUpdatePassword{
     return [NSString stringWithFormat:@"%@/user/password_recovery/reset", [GANUrlManager getBaseUrl]];
+}
+
++ (NSString *) getEndPointForUserBulkSearch{
+    return [NSString stringWithFormat:@"%@/user/bulksearch", [GANUrlManager getBaseUrl]];
 }
 
 #pragma mark - Endpoint for Job
@@ -131,6 +138,10 @@
     return [NSString stringWithFormat:@"%@/company/%@/my-workers", [GANUrlManager getBaseUrl], companyId];
 }
 
++ (NSString *) getEndpointForUpdateMyWorkersNicknameWithCompanyId: (NSString *) companyId MyWorkerId: (NSString *) myWorkerId{
+    return [NSString stringWithFormat:@"%@/company/%@/my-workers/%@", [GANUrlManager getBaseUrl], companyId, myWorkerId];
+}
+
 #pragma mark - Messages
 
 + (NSString *) getEndpointForGetMessages{
@@ -177,6 +188,11 @@
 
 + (NSString *) getEndpointForGoogleTranslate{
     return @"https://translation.googleapis.com/language/translate/v2";
+}
+
++ (NSString *) getEndpointForStaticMap:(float)latitude longitue:(float)longitude {
+    NSString *szUrl = [NSString stringWithFormat:@"http://maps.google.com/maps/api/staticmap?center=%f,%f&zoom=18&size=600x360&markers=color:green%%7Clabel:%%7C%f,%f", latitude, longitude, latitude, longitude];
+    return szUrl;
 }
 
 @end

@@ -50,6 +50,10 @@
     if ([szType caseInsensitiveCompare:@"worker"] == NSOrderedSame){
         return GANENUM_USER_TYPE_WORKER;
     }
+    
+    if([szType caseInsensitiveCompare:@"onboarding-worker"] == NSOrderedSame) {
+        return GANENUM_USER_TYPE_ONBOARDING_WORKER;
+    }
     if ([szType caseInsensitiveCompare:@"company-regular"] == NSOrderedSame){
         return GANENUM_USER_TYPE_COMPANY_REGULAR;
     }
@@ -61,6 +65,7 @@
 
 + (NSString *) getStringFromUserType: (GANENUM_USER_TYPE) type{
     if (type == GANENUM_USER_TYPE_WORKER) return @"worker";
+    if (type == GANENUM_USER_TYPE_ONBOARDING_WORKER) return @"onboarding-worker";
     if (type == GANENUM_USER_TYPE_COMPANY_REGULAR) return @"company-regular";
     if (type == GANENUM_USER_TYPE_COMPANY_ADMIN) return @"company-admin";
     return @"any";
@@ -68,15 +73,15 @@
 
 // Pay Unit
 
-+ (GANENUM_PAY_UNIT) getPayUnitFromString: (NSString *) szUnit{
-    if ([szUnit caseInsensitiveCompare:@"hour"] == NSOrderedSame ||
++ (NSString *) getPayUnitFromString: (NSString *) szUnit{
+    /*if ([szUnit caseInsensitiveCompare:@"hour"] == NSOrderedSame ||
         [szUnit caseInsensitiveCompare:@"hr"] == NSOrderedSame){
         return GANENUM_PAY_UNIT_HOUR;
     }
     if ([szUnit caseInsensitiveCompare:@"lb"] == NSOrderedSame){
         return GANENUM_PAY_UNIT_LB;
-    }
-    return GANENUM_PAY_UNIT_HOUR;
+    }*/
+    return szUnit;
 }
 
 // Field Condition Type
@@ -192,6 +197,19 @@
     return @"running";
 }
 
++ (void) syncImageWithUrl:(UIImageView *) imageView latitude:(float) latitude longitude:(float) longitude {
+    NSString *szUrl = [GANUrlManager getEndpointForStaticMap:latitude longitue:longitude];
+    
+    CGSize size = CGSizeMake(imageView.frame.size.width, imageView.frame.size.height);
+    UIGraphicsBeginImageContextWithOptions(size, YES, 0);
+    [[UIColor lightGrayColor] setFill];
+    UIRectFill(CGRectMake(0, 0, size.width, size.height));
+    UIImage *imagePlaceholder = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [imageView setImageWithURL:[NSURL URLWithString:szUrl] placeholderImage:imagePlaceholder];
+}
+
 // Translate
 
 + (void) requestTranslate: (NSString *) text
@@ -221,6 +239,5 @@
         if (callback) callback(ERROR_UNKNOWN, @"");
     }];
 }
-
 
 @end

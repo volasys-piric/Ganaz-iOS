@@ -16,6 +16,7 @@
 
 @property (strong, nonatomic) GANUserBaseDataModel *modelUser;
 @property (strong, nonatomic) GANUserMinimumInfoDataModel *modelUserMinInfo;
+@property (assign, atomic) NSInteger nNearbyWorkerCount;
 
 + (instancetype) sharedInstance;
 - (void) initializeManagerWithType: (GANENUM_USER_TYPE) type;
@@ -33,9 +34,11 @@
 - (void) doLogout;
 
 - (CLLocation *) getCurrentLocation;
+- (NSInteger) getNearbyWorkerCount;
 
 #pragma mark - Login & Signup
 
+- (void) requestOnboardingUserSignupWithCallback: (void(^) (int status)) callback;
 - (void) requestUserSignupWithCallback: (void (^) (int status)) callback;
 - (void) requestUserLoginWithUsername: (NSString *) username Password: (NSString *) password Callback: (void (^) (int status)) callback;
 - (void) requestUserLoginWithPhoneNumber: (NSString *) phoneNumber Password: (NSString *) password Callback: (void (^) (int status)) callback;
@@ -50,5 +53,7 @@
 // Reset Password
 
 - (void) requestUpdatePassword: (NSString *) password WithCallback: (void (^) (int status)) callback;
+
+- (void) requestUserBulkSearch:(float)radius WithCallback:(void (^) (int status)) callback;
 
 @end

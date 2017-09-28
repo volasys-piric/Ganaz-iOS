@@ -13,12 +13,14 @@
 #import "GANAddressDataModel.h"
 #import "GANTransContentsDataModel.h"
 #import "GANBenefitDataModel.h"
+#import <UIImageView+AFNetworking.h>
 
 typedef enum _ENUM_USER_TYPE{
     GANENUM_USER_TYPE_ANY = -1,
     GANENUM_USER_TYPE_WORKER = 0,
     GANENUM_USER_TYPE_COMPANY_REGULAR = 1,
     GANENUM_USER_TYPE_COMPANY_ADMIN = 2,
+    GANENUM_USER_TYPE_ONBOARDING_WORKER = 3
 }GANENUM_USER_TYPE;
 
 // Enum User Auth Type
@@ -32,12 +34,12 @@ typedef enum _ENUM_USER_AUTHTYPE{
 }GANENUM_USER_AUTHTYPE;
 
 // Enum Pay Unit
-
+/*
 typedef enum _ENUM_PAY_UNIT{
     GANENUM_PAY_UNIT_HOUR,
     GANENUM_PAY_UNIT_LB
 }GANENUM_PAY_UNIT;
-
+*/
 // Enum Field Condition
 
 typedef enum _ENUM_FIELDCONDITION_TYPE{
@@ -131,7 +133,7 @@ typedef enum _ENUM_APPCONFIG_APPUPDATETYPE{
 + (GANENUM_USER_AUTHTYPE) getUserAuthTypeFromString: (NSString *) szType;
 + (NSString *) getStringFromUserAuthType: (GANENUM_USER_AUTHTYPE) type;
 
-+ (GANENUM_PAY_UNIT) getPayUnitFromString: (NSString *) szUnit;
++ (NSString*) getPayUnitFromString: (NSString *) szUnit;
 
 + (GANENUM_FIELDCONDITION_TYPE) getFieldConditionTypeFromString: (NSString *) szType;
 + (NSString *) getStringFromFieldConditionType: (GANENUM_FIELDCONDITION_TYPE) type;
@@ -158,6 +160,8 @@ typedef enum _ENUM_APPCONFIG_APPUPDATETYPE{
 + (GANENUM_MEMBERSHIPPLAN_TYPE) getMembershipPlayTypeFromString: (NSString *) szType;
 + (NSString *) getStringFromMembershipPlanType: (GANENUM_MEMBERSHIPPLAN_TYPE) type;
 
++ (void) syncImageWithUrl:(UIImageView *) imageView latitude:(float) latitude longitude:(float) longitude;
+                                 
 + (void) requestTranslate: (NSString *) text
                 Translate: (BOOL) shouldTranslate
              FromLanguage: (NSString *) fromLanguage

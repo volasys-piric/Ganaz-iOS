@@ -18,6 +18,7 @@
         self.szPassword = @"";
         self.modelPhone = [[GANPhoneDataModel alloc] init];
         self.enumAuthType = GANENUM_USER_AUTHTYPE_PHONE;
+        self.enumUserType = GANENUM_USER_TYPE_WORKER;
     }
     return self;
 }
@@ -38,6 +39,8 @@
         // old version (v1.2-)
         self.enumAuthType = GANENUM_USER_AUTHTYPE_EMAIL;
     }
+    
+    self.enumUserType = [GANGenericFunctionManager refineInt:[dict objectForKey:@"user_type"] DefaultValue:GANENUM_USER_TYPE_WORKER];
 }
 
 - (NSDictionary *) serializeToDictionary{
@@ -45,6 +48,7 @@
              @"password": self.szPassword,
              @"phone_number": [self.modelPhone serializeToDictionary],
              @"auth_type": [GANUtils getStringFromUserAuthType:self.enumAuthType],
+             @"user_type": @(self.enumUserType),
              };
 }
 

@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,7 +24,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="76"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="D7m-YM-oLF" id="R2Q-La-A3U">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="75.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rf2-Xq-FfN" userLabel="View - Container View">
@@ -62,7 +62,7 @@
                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$12.05 / hr" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="a0n-Qc-9my" userLabel="Label - Price">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$12.05 / hr" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a0n-Qc-9my" userLabel="Label - Price">
                                 <rect key="frame" x="290" y="12.5" width="77" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="w99-ry-IZq"/>
@@ -77,6 +77,12 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ver más" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EBr-rz-rTy">
+                                <rect key="frame" x="282" y="0.5" width="93" height="70"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -86,6 +92,7 @@
                             <constraint firstAttribute="trailing" secondItem="0gt-EL-WS7" secondAttribute="trailing" id="GLF-nE-qfJ"/>
                             <constraint firstItem="PQP-hs-orV" firstAttribute="centerX" secondItem="Rf2-Xq-FfN" secondAttribute="centerX" multiplier="1.5" id="HVj-h1-QgF"/>
                             <constraint firstItem="PQP-hs-orV" firstAttribute="centerY" secondItem="Rf2-Xq-FfN" secondAttribute="centerY" id="Q4A-xr-4Om"/>
+                            <constraint firstItem="EBr-rz-rTy" firstAttribute="centerY" secondItem="0gt-EL-WS7" secondAttribute="centerY" id="Qv6-wb-5Ok"/>
                             <constraint firstItem="PQP-hs-orV" firstAttribute="height" secondItem="Rf2-Xq-FfN" secondAttribute="height" id="VBG-Gv-Gkp"/>
                             <constraint firstItem="6sj-qO-u8q" firstAttribute="leading" secondItem="Rf2-Xq-FfN" secondAttribute="leading" constant="15" id="WlS-oh-wOJ"/>
                             <constraint firstItem="a0n-Qc-9my" firstAttribute="centerY" secondItem="6sj-qO-u8q" secondAttribute="centerY" id="XcD-aK-e1H"/>
@@ -93,9 +100,12 @@
                             <constraint firstItem="6sj-qO-u8q" firstAttribute="top" secondItem="Rf2-Xq-FfN" secondAttribute="top" constant="14" id="ZEf-NS-eNq"/>
                             <constraint firstItem="tIp-Bk-Zqd" firstAttribute="centerX" secondItem="6sj-qO-u8q" secondAttribute="centerX" id="baa-4M-JZM"/>
                             <constraint firstItem="6sj-qO-u8q" firstAttribute="trailing" secondItem="PQP-hs-orV" secondAttribute="trailing" constant="-15" id="c8i-y9-oVw"/>
+                            <constraint firstItem="EBr-rz-rTy" firstAttribute="width" secondItem="0gt-EL-WS7" secondAttribute="width" id="d2Z-8Q-Gfo"/>
                             <constraint firstItem="tIp-Bk-Zqd" firstAttribute="top" secondItem="6sj-qO-u8q" secondAttribute="bottom" constant="5" id="mSB-gW-V7F"/>
+                            <constraint firstItem="EBr-rz-rTy" firstAttribute="centerX" secondItem="0gt-EL-WS7" secondAttribute="centerX" id="nV7-K1-lQO"/>
                             <constraint firstItem="0gt-EL-WS7" firstAttribute="leading" secondItem="PQP-hs-orV" secondAttribute="trailing" id="pN5-2j-jeh"/>
                             <constraint firstItem="0gt-EL-WS7" firstAttribute="centerY" secondItem="Rf2-Xq-FfN" secondAttribute="centerY" id="sBu-E8-chZ"/>
+                            <constraint firstItem="EBr-rz-rTy" firstAttribute="height" secondItem="0gt-EL-WS7" secondAttribute="height" id="sUh-dJ-109"/>
                             <constraint firstItem="pxb-64-iv2" firstAttribute="centerX" secondItem="a0n-Qc-9my" secondAttribute="centerX" id="t4U-0Q-OBx"/>
                             <constraint firstItem="a0n-Qc-9my" firstAttribute="leading" secondItem="PQP-hs-orV" secondAttribute="trailing" constant="8" id="vf9-Aq-6AF"/>
                             <constraint firstItem="pxb-64-iv2" firstAttribute="width" secondItem="a0n-Qc-9my" secondAttribute="width" id="ySx-01-igD"/>
@@ -112,7 +122,9 @@
             <connections>
                 <outlet property="lblCompany" destination="tIp-Bk-Zqd" id="Ord-a7-N4W"/>
                 <outlet property="lblPrice" destination="a0n-Qc-9my" id="EQo-YK-OVU"/>
+                <outlet property="lblPriceNA" destination="EBr-rz-rTy" id="oB1-bt-KOG"/>
                 <outlet property="lblTitle" destination="6sj-qO-u8q" id="Dwy-xu-1fC"/>
+                <outlet property="lblUnit" destination="pxb-64-iv2" id="ocM-fa-gWd"/>
                 <outlet property="viewContainer" destination="Rf2-Xq-FfN" id="ya8-5b-tr0"/>
             </connections>
             <point key="canvasLocation" x="26.5" y="68"/>

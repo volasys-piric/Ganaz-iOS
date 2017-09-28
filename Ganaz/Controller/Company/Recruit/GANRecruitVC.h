@@ -10,4 +10,6 @@
 
 @interface GANRecruitVC : UIViewController
 
+@property (atomic, assign) int nJobIndex;
+
 @end

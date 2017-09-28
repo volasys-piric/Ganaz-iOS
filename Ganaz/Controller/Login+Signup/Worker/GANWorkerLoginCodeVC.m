@@ -133,10 +133,59 @@
             }];
         }
         else if (status == ERROR_USER_LOGINFAILED_USERNOTFOUND || status == ERROR_USER_LOGINFAILED_PASSWORDWRONG){
-            [GANGlobalVCManager showHudErrorWithMessage:@"Login information is not correct." DismissAfter:-1 Callback:nil];
+            // Login information is not correct.
+            [GANGlobalVCManager showHudErrorWithMessage:@"O el número de teléfono o su contraseña es incorrecto" DismissAfter:-1 Callback:nil];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:-1 Callback:nil];
+            // Sorry, we've encountered an issue.
+            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
+        }
+    }];
+}
+
+- (void) doOnboardingSignup {
+    if ([self checkMandatoryFields] == NO){
+        return;
+    }
+    NSString *szPassword = self.textfieldCode.text;
+    
+    GANUserManager *managerUser = [GANUserManager sharedInstance];
+    [managerUser initializeManagerWithType:GANENUM_USER_TYPE_WORKER];
+    
+    GANUserWorkerDataModel *modelWorker = [GANUserManager getUserWorkerDataModel];
+    modelWorker.enumAuthType = GANENUM_USER_AUTHTYPE_PHONE;
+    modelWorker.szUserName = self.szPhoneNumber;
+    modelWorker.modelPhone.szLocalNumber = self.szPhoneNumber;
+    modelWorker.szPassword = szPassword;
+    modelWorker.szId = self.szId;
+    
+    [modelWorker addPlayerIdIfNeeded:[GANPushNotificationManager sharedInstance].szOneSignalPlayerId];
+    
+#warning Following attributes should be [optional] in API
+    
+    modelWorker.szFirstName = @"worker_fname";
+    modelWorker.szLastName = @"worker_lname";
+    
+    // Please wait...
+    [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
+    [[GANUserManager sharedInstance] requestOnboardingUserSignupWithCallback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR){
+            [GANGlobalVCManager hideHudProgressWithCallback:^{
+                [self gotoWorkerMain];
+            }];
+            GANACTIVITY_REPORT(@"Onboarding User signed up");
+        }
+        else if (status == ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT){
+            // User name is already registered.
+            [GANGlobalVCManager showHudErrorWithMessage:@"User name is already registered." DismissAfter:-1 Callback:nil];
+        }
+        else if (status == ERROR_USER_SIGNUPFAILED_EMAILCONFLICT){
+            // Same email address is already registered.
+            [GANGlobalVCManager showHudErrorWithMessage:@"Same email address is already registered." DismissAfter:-1 Callback:nil];
+        }
+        else {
+            // Sorry, we've encountered an issue.
+            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:3 Callback:nil];
         }
     }];
 }
@@ -172,13 +221,16 @@
             GANACTIVITY_REPORT(@"User signed up");
         }
         else if (status == ERROR_USER_SIGNUPFAILED_USERNAMECONFLICT){
+            // User name is already registered.
             [GANGlobalVCManager showHudErrorWithMessage:@"User name is already registered." DismissAfter:-1 Callback:nil];
         }
         else if (status == ERROR_USER_SIGNUPFAILED_EMAILCONFLICT){
+            // Same email address is already registered.
             [GANGlobalVCManager showHudErrorWithMessage:@"Same email address is already registered." DismissAfter:-1 Callback:nil];
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Unknown Error." DismissAfter:3 Callback:nil];
+            // Sorry, we've encountered an issue.
+            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:3 Callback:nil];
         }
     }];
 
@@ -237,6 +289,8 @@
     [self.view endEditing:YES];
     if (self.isLogin == YES){
         [self doLogin];
+    } else if (self.isOnboardingWorker == YES) {
+        [self doOnboardingSignup];
     }
     else {
         [self doSignup];

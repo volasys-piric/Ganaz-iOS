@@ -37,8 +37,10 @@
 - (void) initializeManagerWithType: (GANENUM_USER_TYPE) type{
     if (type == GANENUM_USER_TYPE_WORKER){
         self.modelUser = [[GANUserWorkerDataModel alloc] init];
-    }
-    else if (type == GANENUM_USER_TYPE_COMPANY_REGULAR || type == GANENUM_USER_TYPE_COMPANY_ADMIN){
+    } else if (type == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
+        self.modelUser = [[GANUserWorkerDataModel alloc] init];
+        [self.modelUser setEnumType:GANENUM_USER_TYPE_ONBOARDING_WORKER];
+    } else if (type == GANENUM_USER_TYPE_COMPANY_REGULAR || type == GANENUM_USER_TYPE_COMPANY_ADMIN){
         self.modelUser = [[GANUserCompanyDataModel alloc] init];
     }
     self.modelUser.enumType = type;
@@ -70,6 +72,7 @@
     self.modelUserMinInfo.szPassword = self.modelUser.szPassword;
     [self.modelUserMinInfo.modelPhone  initializeWithPhone:self.modelUser.modelPhone];
     self.modelUserMinInfo.enumAuthType = self.modelUser.enumAuthType;
+    self.modelUserMinInfo.enumUserType = self.modelUser.enumType;
     [GANLocalstorageManager saveGlobalObject:[self.modelUserMinInfo serializeToDictionary] Key:LOCALSTORAGE_USER_LOGIN];
 }
 
@@ -91,7 +94,8 @@
     NSString *szAuthType = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"auth_type"]];
     NSString *szUserName = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"username"]];
     NSString *szPassword = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"password"]];
-    if (szAuthType.length > 0 && szUserName.length > 0 && szPassword.length > 0){
+    int userType = [GANGenericFunctionManager refineInt:[dict objectForKey:@"user_type"] DefaultValue:GANENUM_USER_TYPE_WORKER];
+    if (szAuthType.length > 0 && szUserName.length > 0 && szPassword.length > 0 && userType > -1){
         return YES;
     }
     return NO;
@@ -120,7 +124,38 @@
     return location;
 }
 
+- (NSInteger) getNearbyWorkerCount {
+    return self.nNearbyWorkerCount;
+}
+
 #pragma mark - Login & Signup
+
+- (void) requestOnboardingUserSignupWithCallback: (void(^) (int status)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForOnboardingUserSignup:self.modelUser.szId];
+    NSDictionary *params = [self.modelUser serializeToDictionary];
+
+    [[GANNetworkRequestManager sharedInstance] PATCH:szUrl requireAuth:NO parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        GANLOG(@"User Signup Response ===> %@", responseObject);
+        NSDictionary *dict = responseObject;
+        NSString *szPassword = self.modelUser.szPassword;
+        
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            NSDictionary *dictAccount = [dict objectForKey:@"account"];
+            [self.modelUser setWithDictionary:dictAccount];
+            self.modelUser.szPassword = szPassword;
+            [self saveToLocalstorage];
+            
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+    }];
+}
 
 - (void) requestUserSignupWithCallback: (void (^) (int status)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForUserSignup];
@@ -248,7 +283,11 @@
                     user = [[GANUserWorkerDataModel alloc] init];
                     [user setWithDictionary:dictAccount];
                 }
-                else {
+                else if (enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
+                    user = [[GANUserWorkerDataModel alloc] init];
+                    [user setWithDictionary:dictAccount];
+                }
+                else if (enumUserType == GANENUM_USER_TYPE_COMPANY_ADMIN || enumUserType == GANENUM_USER_TYPE_COMPANY_REGULAR) {
                     user = [[GANUserCompanyDataModel alloc] init];
                     [user setWithDictionary:dictAccount];
                 }
@@ -280,7 +319,11 @@
                 user = [[GANUserWorkerDataModel alloc] init];
                 [user setWithDictionary:dictAccount];
             }
-            else {
+            else if (enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
+                user = [[GANUserWorkerDataModel alloc] init];
+                [user setWithDictionary:dictAccount];
+            }
+            else if (enumUserType == GANENUM_USER_TYPE_COMPANY_ADMIN || enumUserType == GANENUM_USER_TYPE_COMPANY_REGULAR) {
                 user = [[GANUserCompanyDataModel alloc] init];
                 [user setWithDictionary:dictAccount];
             }
@@ -383,4 +426,28 @@
     }];
 }
 
+- (void) requestUserBulkSearch:(float)radius WithCallback:(void (^) (int status)) callback {
+    CLLocation *location = [self getCurrentLocation];
+    NSString *broadcast = [NSString stringWithFormat:@"%.02f", radius];
+    NSDictionary *params = @{@"type": @"worker",
+                             @"area": @{@"loc" : @[@(location.coordinate.longitude), @(location.coordinate.latitude)],
+                                        @"radius" : broadcast}};
+    
+    NSString *szUrl = [GANUrlManager getEndPointForUserBulkSearch];
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:NO parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            
+            self.nNearbyWorkerCount = [[dict objectForKey:@"counts"] integerValue];
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+    }];
+}
 @end
