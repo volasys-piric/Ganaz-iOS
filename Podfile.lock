@@ -14,21 +14,24 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - Crashlytics (3.8.4):
+  - Crashlytics (3.8.6):
     - Fabric (~> 1.6.3)
-  - Fabric (1.6.11)
-  - GoogleMaps (2.1.1):
-    - GoogleMaps/Maps (= 2.1.1)
-  - GoogleMaps/Base (2.1.1)
-  - GoogleMaps/Maps (2.1.1):
+  - Fabric (1.6.13)
+  - GoogleMaps (2.4.0):
+    - GoogleMaps/Maps (= 2.4.0)
+  - GoogleMaps/Base (2.4.0)
+  - GoogleMaps/Maps (2.4.0):
     - GoogleMaps/Base
   - HCSStarRatingView (1.5)
-  - IQKeyboardManager (4.0.8)
-  - Mixpanel (3.1.5)
-  - OneSignal (2.4.2)
-  - SVProgressHUD (2.1.2)
+  - IQKeyboardManager (5.0.3)
+  - Mixpanel (3.2.1)
+  - OneSignal (2.5.4)
+  - PNChart (0.8.9):
+    - UICountingLabel (~> 1.2.0)
+  - SVProgressHUD (2.2.1)
   - SVPullToRefresh (0.4.1)
-  - UIView+Shake (1.2.0)
+  - UICountingLabel (1.2.0)
+  - UIView+Shake (1.4.0)
 
 DEPENDENCIES:
   - AFNetworking
@@ -39,23 +42,26 @@ DEPENDENCIES:
   - IQKeyboardManager
   - Mixpanel
   - OneSignal
+  - PNChart
   - SVProgressHUD
   - SVPullToRefresh
   - UIView+Shake
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
-  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
-  GoogleMaps: a5b5bbe47734e2443bde781a6aa64e69fdb6d785
+  Crashlytics: 95d05f4e4c19a771250c4bd9ce344d996de32bbf
+  Fabric: 2fb5676bc811af011a04513451f463dac6803206
+  GoogleMaps: 8436ab5d1c25e36915b2f7416d0c8e3fa2e76c61
   HCSStarRatingView: 1d18f79654735514cd6f00e6d90e38cb6320dc31
-  IQKeyboardManager: 1a8189fa153bf09044355ee0ad36826f6767e7f7
-  Mixpanel: 9b33e5de998cd42597767f67e2b8fcd1d158c71d
-  OneSignal: a94d1ca53d05c29de4f4b150bad8ff9c4cc34f67
-  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
+  IQKeyboardManager: dc5b18b47e5170e4d150bb86dbee8c8a2fc48997
+  Mixpanel: a88b1db0a1e381f9d37a1756aa37a9c670d22f61
+  OneSignal: da994bcf6a2efbdceaf71e389e1d05245c562899
+  PNChart: 84774d225c2126ded6c93d4dbe6ae98c3a73c2d2
+  SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
-  UIView+Shake: a64f7d009222e33cf73d699b06c028cfab4cf2ad
+  UICountingLabel: 1db4e7d023e1762171eb226d6dff47a7a84f27aa
+  UIView+Shake: 055ad67721de1f74d29c0a1d464697e505dfc62f
 
-PODFILE CHECKSUM: c2fc99bbfc6cb277487f1097effe2a3dbbc33f87
+PODFILE CHECKSUM: bd1ae5ee2f1d0708c6c625541cf4c1c1cc479962
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.3.1

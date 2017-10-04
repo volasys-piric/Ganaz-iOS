@@ -18,11 +18,11 @@
 
 @property (weak, nonatomic) IBOutlet UIView *viewContainer;
 @property (weak, nonatomic) IBOutlet UILabel *lblWorkerId;
-@property (strong, nonatomic) IBOutlet UILabel *lblPoint;
-@property (strong, nonatomic) IBOutlet UIButton *btnEdit;
+@property (weak, nonatomic) IBOutlet UILabel *lblPoint;
+@property (weak, nonatomic) IBOutlet UIButton *btnEdit;
 
 @property (atomic, assign) NSInteger nIndex;
-@property (strong, nonatomic) id<GANWorkerItemTVCDelegate> delegate;
+@property (weak, nonatomic) id<GANWorkerItemTVCDelegate> delegate;
 
 - (void) setButtonColor:(BOOL) isWorker;
 - (void) setItemSelected: (BOOL) selected;

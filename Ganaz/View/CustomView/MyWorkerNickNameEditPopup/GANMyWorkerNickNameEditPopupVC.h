@@ -17,7 +17,7 @@
 @interface GANMyWorkerNickNameEditPopupVC : UIViewController
 @property (atomic, assign) NSInteger nIndex;
 @property (weak, nonatomic) IBOutlet UITextField *txtNickName;
-@property (nonatomic, strong) id<GANMyWorkerNickNameEditPopupVCDelegate> delegate;
+@property (nonatomic, weak) id<GANMyWorkerNickNameEditPopupVCDelegate> delegate;
 
 - (void) setTitle:(NSString*) phoneNumber;
 

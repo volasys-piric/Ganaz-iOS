@@ -18,7 +18,7 @@
 @interface GANInviteWorkerPopupVC : UIViewController
 
 @property (atomic, assign) NSInteger nIndex;
-@property (nonatomic, strong) id<GANInviteWorkerPopupVCDelegate> delegate;
+@property (nonatomic, weak) id<GANInviteWorkerPopupVCDelegate> delegate;
 
 - (void) setDescription:(NSString *) szName;
 

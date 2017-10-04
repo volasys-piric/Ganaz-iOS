@@ -12,15 +12,15 @@
 
 @optional
 
-- (void) didClickSend;
-- (void) didClickCancel;
+- (void) didSendClick;
+- (void) didCancelClick;
 
 @end
 
 @interface GANConformMessagePopupVC : UIViewController
 
 @property (atomic, assign) NSInteger nIndex;
-@property (nonatomic, strong) id<GANConformMessagePopupVCDelegate> delegate;
+@property (nonatomic, weak) id<GANConformMessagePopupVCDelegate> delegate;
 
 - (void) setDescription:(NSInteger) nCount;
 

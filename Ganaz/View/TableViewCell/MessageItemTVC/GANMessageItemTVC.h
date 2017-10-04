@@ -17,7 +17,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblMessage;
 @property (weak, nonatomic) IBOutlet UIImageView *imgAvatar;
-@property (strong, nonatomic) IBOutlet UIImageView *imgMap;
+@property (weak, nonatomic) IBOutlet UIImageView *imgMap;
 
 @property (strong, nonatomic) CLLocation *locationCenter;
 

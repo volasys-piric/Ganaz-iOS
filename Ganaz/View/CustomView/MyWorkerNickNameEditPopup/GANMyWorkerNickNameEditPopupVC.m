@@ -13,9 +13,9 @@
 @interface GANMyWorkerNickNameEditPopupVC ()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewContents;
-@property (strong, nonatomic) IBOutlet UILabel *lblTitle;
+@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UIButton *btnDone;
-@property (strong, nonatomic) IBOutlet UIButton *btnCancel;
+@property (weak, nonatomic) IBOutlet UIButton *btnCancel;
 @property (weak, nonatomic) IBOutlet UIView *viewTextField;
 
 @end

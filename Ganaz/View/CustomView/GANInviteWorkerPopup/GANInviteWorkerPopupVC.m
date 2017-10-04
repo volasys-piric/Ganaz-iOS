@@ -11,11 +11,11 @@
 
 @interface GANInviteWorkerPopupVC ()
 
-@property (strong, nonatomic) IBOutlet UIView *viewContents;
-@property (strong, nonatomic) IBOutlet UILabel *lblDescription;
-@property (strong, nonatomic) IBOutlet UIButton *btnCancel;
-@property (strong, nonatomic) IBOutlet UIButton *btnInviteWorker;
-@property (strong, nonatomic) IBOutlet UIButton *btnCommunicateText;
+@property (weak, nonatomic) IBOutlet UIView *viewContents;
+@property (weak, nonatomic) IBOutlet UILabel *lblDescription;
+@property (weak, nonatomic) IBOutlet UIButton *btnCancel;
+@property (weak, nonatomic) IBOutlet UIButton *btnInviteWorker;
+@property (weak, nonatomic) IBOutlet UIButton *btnCommunicateText;
 
 @end
 

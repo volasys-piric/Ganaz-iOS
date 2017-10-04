@@ -10,6 +10,7 @@
 #import "Global.h"
 
 @interface GANJobRecruitPopupVC ()
+
 @property (weak, nonatomic) IBOutlet UILabel *lblDescription;
 @property (weak, nonatomic) IBOutlet UIView *viewContents;
 @property (weak, nonatomic) IBOutlet UIButton *btnRecruit;

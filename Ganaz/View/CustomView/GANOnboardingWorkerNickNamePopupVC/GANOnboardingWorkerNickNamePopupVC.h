@@ -18,7 +18,7 @@
 
 @property (atomic, assign) NSInteger nIndex;
 @property (weak, nonatomic) IBOutlet UITextField *txtNickName;
-@property (nonatomic, strong) id<GANOnboardingWorkerNickNamePopupVCDelegate> delegate;
+@property (nonatomic, weak) id<GANOnboardingWorkerNickNamePopupVCDelegate> delegate;
 
 - (void) setTitle:(NSString*) phoneNumber;
 

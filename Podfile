@@ -18,5 +18,6 @@ target 'Ganaz' do
   pod 'Mixpanel'
   pod 'Fabric'
   pod 'Crashlytics'
+  pod 'PNChart'
   
 end

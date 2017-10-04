@@ -10,10 +10,10 @@
 #import "Global.h"
 
 @interface GANConformMessagePopupVC ()
-@property (strong, nonatomic) IBOutlet UIView *viewContents;
-@property (strong, nonatomic) IBOutlet UILabel *lblDescription;
-@property (strong, nonatomic) IBOutlet UIButton *btnCancel;
-@property (strong, nonatomic) IBOutlet UIButton *btnSend;
+@property (weak, nonatomic) IBOutlet UIView *viewContents;
+@property (weak, nonatomic) IBOutlet UILabel *lblDescription;
+@property (weak, nonatomic) IBOutlet UIButton *btnCancel;
+@property (weak, nonatomic) IBOutlet UIButton *btnSend;
 
 @end
 
@@ -60,8 +60,8 @@
 
 - (IBAction)onSend:(id)sender {
     
-    if(self.delegate && [self.delegate respondsToSelector:@selector(didClickSend)]) {
-        [self.delegate didClickSend];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(didSendClick)]) {
+        [self.delegate didSendClick];
     }
     
     [self.view endEditing:YES];
@@ -71,8 +71,8 @@
 - (IBAction)onCancel:(id)sender {
     [self.view endEditing:YES];
     
-    if(self.delegate && [self.delegate respondsToSelector:@selector(didClickCancel)]) {
-        [self.delegate didClickCancel];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(didCancelClick)]) {
+        [self.delegate didCancelClick];
     }
     [self closeDialog];
 }
