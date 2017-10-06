@@ -8,7 +8,7 @@
 
 #import "GANCompanySurveyChoicesPostVC.h"
 #import "GANFadeTransitionDelegate.h"
-#import "GANConformMessagePopupVC.h"
+#import "GANMessageWithChargeConfirmationPopupVC.h"
 #import "GANCompanyMessagesVC.h"
 #import "GANSurveyManager.h"
 #import "GANMessageManager.h"
@@ -16,7 +16,7 @@
 #import "GANGlobalVCManager.h"
 #import "Global.h"
 
-@interface GANCompanySurveyChoicesPostVC () <UITextFieldDelegate, GANConformMessagePopupVCDelegate>
+@interface GANCompanySurveyChoicesPostVC () <UITextFieldDelegate, GANMessageWithChargeConfirmationPopupDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
 

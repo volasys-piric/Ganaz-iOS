@@ -9,7 +9,7 @@
 #import "GANCompanyMessageComposerVC.h"
 #import "GANFadeTransitionDelegate.h"
 #import "GANCompanyMapPopupVC.h"
-#import "GANConformMessagePopupVC.h"
+#import "GANMessageWithChargeConfirmationPopupVC.h"
 #import "GANSurveyTypeChoosePopupVC.h"
 #import "GANCompanyMessagesVC.h"
 #import "GANCompanySurveyChoicesPostVC.h"
@@ -22,7 +22,7 @@
 #import "GANAppManager.h"
 #import "Global.h"
 
-@interface GANCompanyMessageComposerVC () <GANCompanyMapPopupVCDelegate, GANConformMessagePopupVCDelegate, GANSurveyTypeChoosePopupDelegate>
+@interface GANCompanyMessageComposerVC () <GANCompanyMapPopupVCDelegate, GANMessageWithChargeConfirmationPopupDelegate, GANSurveyTypeChoosePopupDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewMessage;
 @property (weak, nonatomic) IBOutlet UITextView *textview;
@@ -171,9 +171,9 @@
 
 - (void) showOnboardingConfirmationDlg:(NSInteger) count{
     dispatch_async(dispatch_get_main_queue(), ^{
-        GANConformMessagePopupVC *vc = [[GANConformMessagePopupVC alloc] initWithNibName:@"GANConformMessagePopupVC" bundle:nil];
+        GANMessageWithChargeConfirmationPopupVC *vc = [[GANMessageWithChargeConfirmationPopupVC alloc] initWithNibName:@"GANMessageWithChargeConfirmationPopupVC" bundle:nil];
         vc.delegate = self;
-        [vc setDescription:count];
+        [vc setDescriptionWithCount:count];
         [vc setTransitioningDelegate:self.transController];
         vc.view.backgroundColor = [UIColor clearColor];
         vc.modalPresentationStyle = UIModalPresentationCustom;
@@ -261,15 +261,16 @@
     [self showSurveyTypeChooseDlg];
 }
 
-#pragma mark - GANConfirmMessagePopupVCDelegate
+#pragma mark - GANMessageWithChargeConfirmationPopupVC Delegate
 
-- (void) didSendClick {
+- (void)messageWithChargeConfirmationPopupDidSendClick:(GANMessageWithChargeConfirmationPopupVC *)popup {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self doSendMessage];
     });
 }
 
-- (void) didCancelClick {
+- (void)messageWithChargeConfirmationPopupDidCancelClick:(GANMessageWithChargeConfirmationPopupVC *)popup {
+    
 }
 
 #pragma mark - GANCompanyMapPopupVCDelegate

@@ -91,6 +91,20 @@
             self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_WHITE;
         }
     }
+    else if (type == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE ||
+             type == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT ||
+             type == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) {
+        self.lblAvatar.text = @"SUR";
+        self.imgAvatar.hidden = YES;
+        if (didRead == YES){
+            self.lblAvatar.backgroundColor = UICOLOR_MESSAGEITEM_YELLOW;
+            self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_BLACK;
+        }
+        else {
+            self.lblAvatar.backgroundColor = UICOLOR_MESSAGEITEM_GREEN;
+            self.lblAvatar.textColor = UICOLOR_MESSAGEITEM_WHITE;
+        }
+    }
     
     self.imgMap.layer.cornerRadius = 3.f;
     self.imgMap.clipsToBounds = YES;
@@ -101,7 +115,8 @@
     if(self.locationCenter != nil) {
         [self buildMapView];
         self.imgMap.hidden = NO;
-    } else {
+    }
+    else {
         self.imgMap.hidden = YES;
     }
 }
@@ -113,6 +128,7 @@
     [GANUtils syncImageWithUrl:self.imgMap latitude:self.locationCenter.coordinate.latitude longitude:self.locationCenter.coordinate.longitude];
     
 }
+
 - (IBAction)gotoMapApplication:(id)sender {
     
     if ([[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString:@"comgooglemaps:"]]) {

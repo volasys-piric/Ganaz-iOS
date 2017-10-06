@@ -326,6 +326,19 @@
                 }];
             }];
         }
+        else if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE ||
+                 message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT){
+            cell.lblTitle.text = @"Survey";
+            cell.lblMessage.text = [message getContentsEN];
+            
+            [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
+                if (index == -1) return;
+                GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
+                [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+                    cell.lblTitle.text = [NSString stringWithFormat:@"Survey To %@", displayName];
+                }];
+            }];
+        }
     }
     else {
         if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE){
@@ -383,6 +396,18 @@
                 }
             }];
         }
+        else if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER){
+            cell.lblTitle.text = @"Survey";
+            cell.lblMessage.text = [message getContentsEN];
+            
+            [managerCache requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
+                if (index == -1) return;
+                GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
+                [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+                    cell.lblTitle.text = [NSString stringWithFormat:@"Answer from %@", displayName];
+                }];
+            }];
+        }
     }
     
     if([message hasLocationInfo] == YES) {
@@ -413,7 +438,7 @@
     if([message hasLocationInfo]) {
         return 260;//UITableViewAutomaticDimension;
     }
-    return 70;
+    return 72;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

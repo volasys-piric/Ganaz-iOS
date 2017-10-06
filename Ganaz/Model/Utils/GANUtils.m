@@ -110,6 +110,10 @@
     if ([szType caseInsensitiveCompare:@"application"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_APPLICATION;
     if ([szType caseInsensitiveCompare:@"suggest"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SUGGEST;
     if ([szType caseInsensitiveCompare:@"recruit"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_RECRUIT;
+    if ([szType caseInsensitiveCompare:@"survey-choice-single"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE;
+    if ([szType caseInsensitiveCompare:@"survey-open-text"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT;
+    if ([szType caseInsensitiveCompare:@"survey-answer"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_ANSWER;
+    
     return GANENUM_MESSAGE_TYPE_MESSAGE;
 }
 
@@ -118,6 +122,10 @@
     if (type == GANENUM_MESSAGE_TYPE_SUGGEST) return @"suggest";
     if (type == GANENUM_MESSAGE_TYPE_APPLICATION) return @"application";
     if (type == GANENUM_MESSAGE_TYPE_RECRUIT) return @"recruit";
+    if (type == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE) return @"survey-choice-single";
+    if (type == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT) return @"survey-open-text";
+    if (type == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) return @"survey-answer";
+    
     return @"message";
 }
 

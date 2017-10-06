@@ -8,7 +8,7 @@
 
 #import "GANCompanySurveyOpenTextPostVC.h"
 #import "GANFadeTransitionDelegate.h"
-#import "GANConformMessagePopupVC.h"
+#import "GANMessageWithChargeConfirmationPopupVC.h"
 #import "GANCompanyMessagesVC.h"
 #import "GANGlobalVCManager.h"
 
@@ -19,7 +19,7 @@
 
 #define GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER      @"Enter question here..."
 
-@interface GANCompanySurveyOpenTextPostVC () <UITextViewDelegate, GANConformMessagePopupVCDelegate>
+@interface GANCompanySurveyOpenTextPostVC () <UITextViewDelegate, GANMessageWithChargeConfirmationPopupDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewQuestion;
 @property (weak, nonatomic) IBOutlet UITextView *textviewQuestion;
