@@ -49,6 +49,16 @@
     return YES;
 }
 
+- (int) getIndexForSurveyWithSurveyId: (NSString *) surveyId{
+    for (int i = 0; i < (int) [self.arraySurveys count]; i++){
+        GANSurveyDataModel *survey = [self.arraySurveys objectAtIndex:i];
+        if ([survey.szId isEqualToString:surveyId] == YES){
+            return i;
+        }
+    }
+    return -1;
+}
+
 #pragma mark - Requests
 
 - (void) requestGetSurveyListWithCallback: (void (^) (int status)) callback{

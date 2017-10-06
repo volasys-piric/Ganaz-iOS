@@ -23,6 +23,7 @@
 
 + (NSString *) generateCompanyCodeFromName: (NSString *) companyName;
 - (void) getBestUserDisplayNameWithUserId: (NSString *) userId Callback: (void (^) (NSString *displayName)) callback;
+- (int) getIndexForMyWorkersWithUserId: (NSString *) userId;
 
 - (BOOL) checkUserInMyworkerList:(NSString *) szPhoneNumber;
 

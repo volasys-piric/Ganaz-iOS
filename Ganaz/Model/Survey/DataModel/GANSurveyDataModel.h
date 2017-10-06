@@ -29,4 +29,12 @@
 - (void) setWithDictionary: (NSDictionary *) dict;
 - (NSDictionary *) serializeToDictionary;
 
+#pragma mark - Utils
+
+- (int) getCountForAnswersWithChoiceIndex: (int) indexChoice;
+
+#pragma mark - Requests
+
+- (void) requestGetAnswersWithCallback: (void (^) (int status)) callback;
+
 @end

@@ -13,7 +13,7 @@
 
 @property (strong, nonatomic) NSString *szId;
 @property (strong, nonatomic) NSString *szSurveyId;
-@property (assign, atomic) int indexAnswer;
+@property (assign, atomic) int indexChoice;
 @property (strong, nonatomic) GANTransContentsDataModel *modelAnswerText;
 @property (strong, nonatomic) GANUserRefDataModel *modelResponder;
 

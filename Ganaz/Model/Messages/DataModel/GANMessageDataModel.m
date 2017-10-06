@@ -8,6 +8,7 @@
 
 #import "GANMessageDataModel.h"
 #import "GANUserManager.h"
+#import "GANSurveyManager.h"
 #import "GANGenericFunctionManager.h"
 #import "Global.h"
 
@@ -37,6 +38,7 @@
     self.dateSent = nil;
     self.dictMetadata = nil;
     self.locationInfo = [[GANLocationDataModel alloc] init];
+    self.szSurveyId = @"";
 }
 
 - (void) setWithDictionary:(NSDictionary *)dict {
@@ -62,6 +64,10 @@
     if ([[self.dictMetadata allKeys] containsObject:@"map"]) {
         NSDictionary *dicData = [self.dictMetadata objectForKey:@"map"];
         [self.locationInfo setWithDictionary:dicData];
+    }
+    
+    if ([[self.dictMetadata allKeys] containsObject:@"survey"]) {
+        self.szSurveyId = [GANGenericFunctionManager refineNSString:[[self.dictMetadata objectForKey:@"survey"] objectForKey:@"survey_id"]];
     }
     
     self.dateSent = [GANGenericFunctionManager getDateTimeFromNormalizedString:[dict objectForKey:@"datetime"]];
@@ -131,9 +137,35 @@
     return [GANGenericFunctionManager beautifyPhoneNumber:sz CountryCode:@"1"];
 }
 
+// Message with Location
+
 - (BOOL) hasLocationInfo{
     if (self.locationInfo == nil || [self.locationInfo isValidLocation] == NO) return NO;
     return YES;
+}
+
+// Survey
+
+- (BOOL) isSurveyMessage{
+    if (self.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE ||
+        self.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT ||
+        self.enumType == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) {
+        if (self.szSurveyId.length > 0){
+            return YES;
+        }
+        else {
+            return NO;
+        }
+    }
+    return NO;
+}
+
+- (GANSurveyDataModel *) getSurvey{
+    if ([self isSurveyMessage] == NO) return nil;
+    GANSurveyManager *managerSurvey = [GANSurveyManager sharedInstance];
+    int indexSurvey = [managerSurvey getIndexForSurveyWithSurveyId:self.szSurveyId];
+    if (indexSurvey == -1) return nil;
+    return [managerSurvey.arraySurveys objectAtIndex:indexSurvey];
 }
 
 @end

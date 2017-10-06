@@ -21,6 +21,8 @@
 		833CB86D1F8589B6006693FF /* GANSurveyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 833CB86C1F8589B6006693FF /* GANSurveyManager.m */; };
 		833CB8711F877601006693FF /* GANMessageWithChargeConfirmationPopupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 833CB8701F877600006693FF /* GANMessageWithChargeConfirmationPopupVC.m */; };
 		833CB8731F877622006693FF /* GANMessageWithChargeConfirmationPopupVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833CB8721F877622006693FF /* GANMessageWithChargeConfirmationPopupVC.xib */; };
+		833CB8761F8815A7006693FF /* SurveyChoiceSingleResultLegendItemTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833CB8751F8815A7006693FF /* SurveyChoiceSingleResultLegendItemTVC.xib */; };
+		833CB8791F881627006693FF /* GANSurveyChoiceSingleResultLegendItemTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 833CB8781F881627006693FF /* GANSurveyChoiceSingleResultLegendItemTVC.m */; };
 		83422BC61EE01AF400A8F140 /* GANLoginTosVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83422BC51EE01AF400A8F140 /* GANLoginTosVC.m */; };
 		83422BC91EE02C1600A8F140 /* GANMainToSVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83422BC81EE02C1600A8F140 /* GANMainToSVC.m */; };
 		834A87CA1EE1091F00EB6E51 /* CompanyUserItemTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 834A87C91EE1091F00EB6E51 /* CompanyUserItemTVC.xib */; };
@@ -201,6 +203,9 @@
 		833CB86F1F877600006693FF /* GANMessageWithChargeConfirmationPopupVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GANMessageWithChargeConfirmationPopupVC.h; path = View/CustomView/MessageWithChargeConfirmationPopup/GANMessageWithChargeConfirmationPopupVC.h; sourceTree = "<group>"; };
 		833CB8701F877600006693FF /* GANMessageWithChargeConfirmationPopupVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GANMessageWithChargeConfirmationPopupVC.m; path = View/CustomView/MessageWithChargeConfirmationPopup/GANMessageWithChargeConfirmationPopupVC.m; sourceTree = "<group>"; };
 		833CB8721F877622006693FF /* GANMessageWithChargeConfirmationPopupVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GANMessageWithChargeConfirmationPopupVC.xib; path = View/CustomView/MessageWithChargeConfirmationPopup/GANMessageWithChargeConfirmationPopupVC.xib; sourceTree = "<group>"; };
+		833CB8751F8815A7006693FF /* SurveyChoiceSingleResultLegendItemTVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SurveyChoiceSingleResultLegendItemTVC.xib; path = View/TableViewCell/SurveyChoiceSingleResultLegendItemTVC/SurveyChoiceSingleResultLegendItemTVC.xib; sourceTree = "<group>"; };
+		833CB8771F881627006693FF /* GANSurveyChoiceSingleResultLegendItemTVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GANSurveyChoiceSingleResultLegendItemTVC.h; path = View/TableViewCell/SurveyChoiceSingleResultLegendItemTVC/GANSurveyChoiceSingleResultLegendItemTVC.h; sourceTree = "<group>"; };
+		833CB8781F881627006693FF /* GANSurveyChoiceSingleResultLegendItemTVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GANSurveyChoiceSingleResultLegendItemTVC.m; path = View/TableViewCell/SurveyChoiceSingleResultLegendItemTVC/GANSurveyChoiceSingleResultLegendItemTVC.m; sourceTree = "<group>"; };
 		83422BC41EE01AF400A8F140 /* GANLoginTosVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANLoginTosVC.h; path = "Controller/Login+Signup/GANLoginTosVC.h"; sourceTree = "<group>"; };
 		83422BC51EE01AF400A8F140 /* GANLoginTosVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANLoginTosVC.m; path = "Controller/Login+Signup/GANLoginTosVC.m"; sourceTree = "<group>"; };
 		83422BC71EE02C1600A8F140 /* GANMainToSVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANMainToSVC.h; path = Controller/Main/GANMainToSVC.h; sourceTree = "<group>"; };
@@ -529,6 +534,16 @@
 				833CB8721F877622006693FF /* GANMessageWithChargeConfirmationPopupVC.xib */,
 			);
 			name = MessageWithChargeConfirmationPopup;
+			sourceTree = "<group>";
+		};
+		833CB8741F881570006693FF /* SurveyChoiceSingleResultLegendItemTVC */ = {
+			isa = PBXGroup;
+			children = (
+				833CB8751F8815A7006693FF /* SurveyChoiceSingleResultLegendItemTVC.xib */,
+				833CB8771F881627006693FF /* GANSurveyChoiceSingleResultLegendItemTVC.h */,
+				833CB8781F881627006693FF /* GANSurveyChoiceSingleResultLegendItemTVC.m */,
+			);
+			name = SurveyChoiceSingleResultLegendItemTVC;
 			sourceTree = "<group>";
 		};
 		834A87C81EE108EC00EB6E51 /* CompanyUserItemTVC */ = {
@@ -1101,6 +1116,7 @@
 		83CA212A1E5BE42900C0D787 /* TableViewCell */ = {
 			isa = PBXGroup;
 			children = (
+				833CB8741F881570006693FF /* SurveyChoiceSingleResultLegendItemTVC */,
 				838E6A6C1F83E8320083F3BC /* SurveyOpenTextResultItemTVC */,
 				9FAF4B521F6822A10002D33D /* WorkerItemTVC */,
 				9FE57D921F37BC71002BCAFE /* CompanyAddWorkerItemTVC */,
@@ -1513,6 +1529,7 @@
 				9FE57D971F37F199002BCAFE /* GANCompanyAddWorkerItemTVC.xib in Resources */,
 				9FE57D901F3275B0002BCAFE /* GANJobRecruitPopupVC.xib in Resources */,
 				838AAC281E578A9F006CC33D /* Assets.xcassets in Resources */,
+				833CB8761F8815A7006693FF /* SurveyChoiceSingleResultLegendItemTVC.xib in Resources */,
 				9FA560951F47419400D9E65B /* GANMyWorkerNickNameEditPopupVC.xib in Resources */,
 				838E6A6E1F83E86E0083F3BC /* SurveyOpenTextResultItemTVC.xib in Resources */,
 				838AAC491E579AA1006CC33D /* SFUIDisplay-Semibold.otf in Resources */,
@@ -1713,6 +1730,7 @@
 				834A87E51EE2027C00EB6E51 /* GANTransContentsDataModel.m in Sources */,
 				838735DE1E7A232C00CFFB15 /* GANMessageManager.m in Sources */,
 				83CA214E1E5CF59400C0D787 /* GANNetworkRequestManager.m in Sources */,
+				833CB8791F881627006693FF /* GANSurveyChoiceSingleResultLegendItemTVC.m in Sources */,
 				834A87D31EE10CB900EB6E51 /* GANCompanyManageRoleVC.m in Sources */,
 				836DBC2E1F1866FD00CCD6AA /* GANUserMinimumInfoDataModel.m in Sources */,
 				838D9E311F13FA7500551FF2 /* GANCompanyLoginPhoneVC.m in Sources */,

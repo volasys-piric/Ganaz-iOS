@@ -7,7 +7,11 @@
 //
 
 #import "GANSurveyDataModel.h"
+#import "GANUserManager.h"
+#import "GANNetworkRequestManager.h"
+#import "GANUrlManager.h"
 #import "GANGenericFunctionManager.h"
+#import "GANErrorManager.h"
 #import "Global.h"
 
 @implementation GANSurveyDataModel
@@ -85,6 +89,53 @@
     }
     [dict setObject:(self.isAutoTranslate == YES) ? @"true": @"false" forKey:@"auto_translate"];
     return dict;
+}
+
+#pragma mark - Utils
+
+- (int) getCountForAnswersWithChoiceIndex: (int) indexChoice{
+    if (self.enumType != GANENUM_SURVEYTYPE_CHOICESINGLE) return 0;
+    
+    int count = 0;
+    for (int i = 0; i < (int) [self.arrayAnswers count]; i++){
+        GANSurveyAnswerDataModel *answer = [self.arrayAnswers objectAtIndex:i];
+        if (answer.indexChoice == indexChoice) count++;
+    }
+    return count;
+}
+
+#pragma mark - Requests
+
+- (void) requestGetAnswersWithCallback: (void (^) (int status)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForGetSurveyAnswers];
+    NSDictionary *param = @{@"survey_id": self.szId};
+
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            NSArray *arrayAnswers = [dict objectForKey:@"answers"];
+            [self.arrayAnswers removeAllObjects];
+            
+            for (int i = 0; i < (int) [arrayAnswers count]; i++){
+                NSDictionary *dictAnswer = [arrayAnswers objectAtIndex:i];
+                GANSurveyAnswerDataModel *answer = [[GANSurveyAnswerDataModel alloc] init];
+                [answer setWithDictionary:dictAnswer];
+                [self.arrayAnswers addObject:answer];
+            }
+            
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATED object:nil];
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATEFAILED object:nil];
+    }];
 }
 
 @end

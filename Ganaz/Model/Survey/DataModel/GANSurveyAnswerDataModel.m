@@ -22,7 +22,7 @@
 - (void) initialize{
     self.szId = @"";
     self.szSurveyId = @"";
-    self.indexAnswer = -1;
+    self.indexChoice = -1;
     self.modelAnswerText = [[GANTransContentsDataModel alloc] init];
     self.modelResponder = [[GANUserRefDataModel alloc] init];
     
@@ -38,7 +38,7 @@
     self.szSurveyId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"survey_id"]];
     
     id objectAnswer = [dict objectForKey:@"answer"];
-    self.indexAnswer = [GANGenericFunctionManager refineInt:[objectAnswer objectForKey:@"index"] DefaultValue:-1];
+    self.indexChoice = [GANGenericFunctionManager refineInt:[objectAnswer objectForKey:@"index"] DefaultValue:-1];
     [self.modelAnswerText setWithDictionary:[objectAnswer objectForKey:@"text"]];
     [self.modelResponder setWithDictionary:[dict objectForKey:@"responder"]];
     
@@ -50,7 +50,7 @@
 - (NSDictionary *) serializeToDictionary {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:self.szSurveyId forKey:@"survey_id"];
-    [dict setObject:@{@"index": (self.indexAnswer == -1) ? @"" : [NSString stringWithFormat:@"%d", self.indexAnswer],
+    [dict setObject:@{@"index": (self.indexChoice == -1) ? @"" : [NSString stringWithFormat:@"%d", self.indexChoice],
                       @"text": [self.modelAnswerText serializeToDictionary],
                       } forKey:@"answer"];
     [dict setObject:[self.modelResponder serializeToDictionary] forKey:@"responder"];

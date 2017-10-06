@@ -15,11 +15,17 @@
 #import "GANCompanyManager.h"
 #import "GANCacheManager.h"
 #import "GANUserManager.h"
+#import "GANSurveyManager.h"
+#import "GANAppManager.h"
+
+#import "GANCompanyMessageComposerVC.h"
+#import "GANCompanySurveyChoicesResultVC.h"
+#import "GANCompanySurveyOpenTextResultVC.h"
+
+#import "GANGenericFunctionManager.h"
+#import "Global.h"
 #import "GANGlobalVCManager.h"
 
-#import "Global.h"
-#import "GANGenericFunctionManager.h"
-#import "GANAppManager.h"
 
 @interface GANCompanyMessagesVC () <UITableViewDelegate, UITableViewDataSource>
 
@@ -226,6 +232,7 @@
     } CallbackNo:nil];
 }
 
+/*
 - (void) replyMessageAtIndex: (int) index{
     self.indexMessageForReply = index;
     self.lblReplyTitle.text = @"Reply";
@@ -254,6 +261,7 @@
     
     [self animateToShowPopup];
 }
+*/
 
 - (void) doReplyMessage{
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:self.indexMessageForReply];
@@ -280,6 +288,116 @@
         }
     }];
     GANACTIVITY_REPORT(@"Company - Reply message");
+}
+
+// MARK: ActionSheet for Survey
+
+- (void) showActionSheetForSurveyAtIndex: (int) index{
+    GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
+    if ([message isSurveyMessage] == NO){
+        return;
+    }
+    
+    NSString *szUserId = @"";
+    if ([message amISender] == YES){
+        szUserId = message.szReceiverUserId;
+    }
+    else {
+        szUserId = message.szSenderUserId;
+    }
+    
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    int indexMyWorker = [managerCompany getIndexForMyWorkersWithUserId:szUserId];
+    if (indexMyWorker == -1) return;
+    
+    GANSurveyManager *managerSurvey = [GANSurveyManager sharedInstance];
+    int indexSurvey = [managerSurvey getIndexForSurveyWithSurveyId:message.szSurveyId];
+    if (indexSurvey == -1) return;
+    GANSurveyDataModel *survey = [managerSurvey.arraySurveys objectAtIndex:indexSurvey];
+    
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    // Cancel
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    }]];
+    
+    // View Survey Results
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"View Survey Results" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        if (survey.enumType == GANENUM_SURVEYTYPE_CHOICESINGLE) {
+            [survey requestGetAnswersWithCallback:^(int status) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self gotoSurveyChoicesResultVCAtSurveyIndex:indexSurvey];
+                });
+            }];
+        }
+        else if (survey.enumType == GANENUM_SURVEYTYPE_OPENTEXT) {
+            [survey requestGetAnswersWithCallback:^(int status) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self gotoSurveyOpenTextResultVCAtSurveyIndex:indexSurvey];
+                });
+            }];
+        }
+    }]];
+    
+    // Reply with message
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Send Message" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self gotoMessageComposerVCAtMyWorkerIndex:indexMyWorker];
+        });
+    }]];
+    
+    // Present action sheet.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:actionSheet animated:YES completion:nil];
+    });
+}
+
+- (void) replyMessageAtIndex: (int) index{
+    GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
+    
+    NSString *szUserId = @"";
+    if ([message amISender] == YES){
+        szUserId = message.szReceiverUserId;
+    }
+    else {
+        szUserId = message.szSenderUserId;
+    }
+    
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    int indexMyWorker = [managerCompany getIndexForMyWorkersWithUserId:szUserId];
+    if (indexMyWorker == -1) return;
+    
+    [self gotoMessageComposerVCAtMyWorkerIndex:indexMyWorker];
+}
+
+- (void) gotoMessageComposerVCAtMyWorkerIndex: (int) indexMyWorker{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+    GANCompanyMessageComposerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_COMPOSER"];
+    vc.arrayReceivers = @[[[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:indexMyWorker]];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to MessageComposer from Messages");
+}
+
+- (void) gotoSurveyChoicesResultVCAtSurveyIndex: (int) indexSurvey{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+    GANCompanySurveyChoicesResultVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SURVEY_CHOICESRESULT"];
+    vc.indexSurvey = indexSurvey;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to Survey Results from Message");
+}
+
+- (void) gotoSurveyOpenTextResultVCAtSurveyIndex: (int) indexSurvey{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+    GANCompanySurveyOpenTextResultVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SURVEY_OPENTEXTRESULT"];
+    vc.indexSurvey = indexSurvey;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to Survey Results from Message");
 }
 
 #pragma mark - UITableView Delegate
@@ -444,11 +562,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     int index = (int) indexPath.row;
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
+    
     if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
         [self callSuggestedFriendAtIndex:index];
     }
+    if ([message isSurveyMessage] == YES){
+        [self showActionSheetForSurveyAtIndex:index];
+    }
     else {
-        [self replyMessageAtIndex:(int) indexPath.row];
+        [self replyMessageAtIndex:index];
     }
 }
 

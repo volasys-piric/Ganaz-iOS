@@ -17,6 +17,10 @@
 + (instancetype) sharedInstance;
 - (void) initializeManager;
 
+#pragma mark - Utils
+
+- (int) getIndexForSurveyWithSurveyId: (NSString *) surveyId;
+
 #pragma mark - Requests
 
 - (void) requestGetSurveyListWithCallback: (void (^) (int status)) callback;

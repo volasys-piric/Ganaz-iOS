@@ -17,6 +17,7 @@
 #import "GANRecruitManager.h"
 #import "GANMembershipPlanManager.h"
 #import "GANDataManager.h"
+#import "GANSurveyManager.h"
 
 #import "GANNetworkRequestManager.h"
 #import "GANUrlManager.h"
@@ -106,6 +107,7 @@
         [[GANJobManager sharedInstance] requestMyJobListWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetCompanyUsersWithCallback:nil];
+        [[GANSurveyManager sharedInstance] requestGetSurveyListWithCallback:nil];
     }
     else {
         [[GANJobManager sharedInstance] requestGetMyApplicationsWithCallback:nil];

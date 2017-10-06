@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GANSurveyDataModel.h"
 #import "GANUtils.h"
 
 @interface GANMessageDataModel : NSObject
@@ -29,6 +30,7 @@
 @property (strong, nonatomic) NSDate *dateSent;
 
 @property (strong, nonatomic) GANLocationDataModel *locationInfo;
+@property (strong, nonatomic) NSString *szSurveyId;
 
 - (instancetype) init;
 - (void) setWithDictionary: (NSDictionary *) dict;
@@ -39,6 +41,14 @@
 - (NSString *) getContentsEN;
 - (NSString *) getContentsES;
 - (NSString *) getPhoneNumberForSuggestFriend;
+
+// Message with Location
+
 - (BOOL) hasLocationInfo;
+
+// Survey
+
+- (BOOL) isSurveyMessage;
+- (GANSurveyDataModel *) getSurvey;
 
 @end

@@ -7,28 +7,29 @@
 //
 
 #import "GANCompanySurveyChoicesResultVC.h"
+#import "GANSurveyManager.h"
+#import "GANSurveyChoiceSingleResultLegendItemTVC.h"
+
 #import <PNChart.h>
 #import "UIColor+GANColor.h"
 
-@interface GANCompanySurveyChoicesResultVC ()
+@interface GANCompanySurveyChoicesResultVC () <UITableViewDelegate, UITableViewDataSource>
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
+@property (weak, nonatomic) IBOutlet UIView *viewEmptyPanel;
 
 @property (weak, nonatomic) IBOutlet UIView *viewGraph;
 
-@property (weak, nonatomic) IBOutlet UILabel *labelDot1;
-@property (weak, nonatomic) IBOutlet UILabel *labelDot2;
-@property (weak, nonatomic) IBOutlet UILabel *labelDot3;
-@property (weak, nonatomic) IBOutlet UILabel *labelDot4;
+@property (weak, nonatomic) IBOutlet UILabel *labelQuestionWithResults;
+@property (weak, nonatomic) IBOutlet UILabel *labelQuestionWithNoResults;
 
-@property (weak, nonatomic) IBOutlet UILabel *labelChoice1;
-@property (weak, nonatomic) IBOutlet UILabel *labelChoice2;
-@property (weak, nonatomic) IBOutlet UILabel *labelChoice3;
-@property (weak, nonatomic) IBOutlet UILabel *labelChoice4;
+@property (weak, nonatomic) IBOutlet UITableView *tableview;
 
-@property (weak, nonatomic) IBOutlet UILabel *labelQuestion;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTableviewHeight;
 
-@property (strong, nonatomic) NSArray <UIColor *> *arrayColors;
-@property (strong, nonatomic) NSArray <NSString *> *arrayChoices;
-@property (strong, nonatomic) NSArray <NSNumber *> *arrayValues;
+@property (strong, nonatomic) NSMutableArray <UIColor *> *arrayColors;
+@property (strong, nonatomic) NSMutableArray <NSString *> *arrayChoiceTexts;
+@property (strong, nonatomic) NSMutableArray <NSNumber *> *arrayValues;
 
 @property (assign, atomic) BOOL isChartAdded;
 
@@ -39,25 +40,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    self.arrayColors = @[[UIColor GANSurveyColor1],
-                         [UIColor GANSurveyColor2],
-                         [UIColor GANSurveyColor3],
-                         [UIColor GANSurveyColor4],
-                         ];
-    self.arrayChoices = @[@"Very likely",
-                          @"Somewhat likely",
-                          @"Neutral",
-                          @"Not likely",
-                          ];
-    self.arrayValues = @[@(10),
-                         @(12),
-                         @(3),
-                         @(23)
-                         ];
+
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableview.rowHeight = UITableViewAutomaticDimension;
+    self.tableview.estimatedRowHeight = 30;
+
+    self.arrayColors = [[NSMutableArray alloc] init];
+    self.arrayChoiceTexts = [[NSMutableArray alloc] init];
+    self.arrayValues = [[NSMutableArray alloc] init];
     
     self.isChartAdded = NO;
-    [self refreshViews];
+    
+    [self registerTableViewCellFromNib];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -65,37 +61,68 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) registerTableViewCellFromNib{
+    [self.tableview registerNib:[UINib nibWithNibName:@"SurveyChoiceSingleResultLegendItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_SURVEY_CHOICESINGLERESULTLEGENDITEM"];
+}
+
+- (void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self refreshViews];
+}
+
 - (void) refreshViews {
-    self.labelDot1.layer.borderWidth = 1;
-    self.labelDot1.layer.borderColor = [UIColor GANSurveyBorderColor].CGColor;
-    self.labelDot1.backgroundColor = [UIColor GANSurveyColor1];
+    GANSurveyManager *managerSurvey = [GANSurveyManager sharedInstance];
+    GANSurveyDataModel *survey = [managerSurvey.arraySurveys objectAtIndex:self.indexSurvey];
     
-    self.labelDot2.layer.borderWidth = 1;
-    self.labelDot2.layer.borderColor = [UIColor GANSurveyBorderColor].CGColor;
-    self.labelDot2.backgroundColor = [UIColor GANSurveyColor2];
+    self.labelQuestionWithResults.text = [survey.modelQuestion getTextEN];
+    self.labelQuestionWithNoResults.text = [survey.modelQuestion getTextEN];
     
-    self.labelDot3.layer.borderWidth = 1;
-    self.labelDot3.layer.borderColor = [UIColor GANSurveyBorderColor].CGColor;
-    self.labelDot3.backgroundColor = [UIColor GANSurveyColor3];
-    
-    self.labelDot4.layer.borderWidth = 1;
-    self.labelDot4.layer.borderColor = [UIColor GANSurveyBorderColor].CGColor;
-    self.labelDot4.backgroundColor = [UIColor GANSurveyColor4];
-    
-    
+    if ([survey.arrayAnswers count] == 0) {
+        self.scrollview.hidden = YES;
+        self.viewEmptyPanel.hidden = NO;
+    }
+    else {
+        self.scrollview.hidden = YES;
+        self.viewEmptyPanel.hidden = NO;
+        
+        // Build Arrays
+        NSArray *arrayAllColors = @[[UIColor GANSurveyColor1],
+                                    [UIColor GANSurveyColor2],
+                                    [UIColor GANSurveyColor3],
+                                    [UIColor GANSurveyColor4],
+                                    ];
+        
+        
+        [self.arrayColors removeAllObjects];
+        [self.arrayChoiceTexts removeAllObjects];
+        [self.arrayValues removeAllObjects];
+        
+        for (int i = 0; i < 4; i++) {
+            int count = [survey getCountForAnswersWithChoiceIndex:i];
+            if (count > 0){
+                [self.arrayColors addObject:[arrayAllColors objectAtIndex:i]];
+                [self.arrayChoiceTexts addObject:[[survey.arrayChoices objectAtIndex:i] getTextEN]];
+                [self.arrayValues addObject:@(count)];
+            }
+        }
+        
+        [self.tableview reloadData];
+    }
 }
 
 - (void) viewDidLayoutSubviews{
-    if (self.isChartAdded == NO){
+    [super viewDidLayoutSubviews];
+    
+    if (self.isChartAdded == NO && [self.arrayValues count] > 0){
         self.isChartAdded = YES;
         
         [self.viewGraph setNeedsLayout];
         [self.viewGraph layoutIfNeeded];
         
         NSMutableArray *items = [[NSMutableArray alloc] init];
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < [self.arrayValues count]; i++){
             UIColor *color = [self.arrayColors objectAtIndex:i];
-            NSString *desc = [self.arrayChoices objectAtIndex:i];
+            NSString *desc = [self.arrayChoiceTexts objectAtIndex:i];
             [items addObject:[PNPieChartDataItem dataItemWithValue:[[self.arrayValues objectAtIndex:i] intValue] color:color description:desc]];
         }
         
@@ -117,4 +144,28 @@
     }
 }
 
+#pragma mark - UITableView Delegate
+
+- (void) configureCell: (GANSurveyChoiceSingleResultLegendItemTVC *) cell AtIndex: (int) index{
+    [cell refreshViewsWithFillColor:[self.arrayColors objectAtIndex:index] BorderColor:[UIColor GANSurveyBorderColor] Text:[self.arrayChoiceTexts objectAtIndex:index]];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return [self.arrayValues count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    GANSurveyChoiceSingleResultLegendItemTVC *cell = [tableView dequeueReusableCellWithIdentifier:@"TVC_SURVEY_CHOICESINGLERESULTLEGENDITEM"];
+    [self configureCell:cell AtIndex:(int) indexPath.row];
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return UITableViewAutomaticDimension;
+}
 @end

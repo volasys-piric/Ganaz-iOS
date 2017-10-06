@@ -10,4 +10,6 @@
 
 @interface GANCompanySurveyOpenTextResultVC : UIViewController
 
+@property (assign, atomic) int indexSurvey;
+
 @end

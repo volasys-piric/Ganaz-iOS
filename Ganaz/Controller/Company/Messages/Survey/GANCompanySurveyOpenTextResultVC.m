@@ -12,7 +12,6 @@
 @interface GANCompanySurveyOpenTextResultVC () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
-
 @property (weak, nonatomic) IBOutlet UILabel *labelQuestion;
 
 @end
