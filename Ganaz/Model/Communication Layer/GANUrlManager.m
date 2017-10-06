@@ -178,6 +178,24 @@
     return [NSString stringWithFormat:@"%@/invite", [GANUrlManager getBaseUrl]];
 }
 
+#pragma mark - Survey
+
++ (NSString *) getEndpointForGetSurveys{
+    return [NSString stringWithFormat:@"%@/survey/search", [GANUrlManager getBaseUrl]];
+}
+
++ (NSString *) getEndpointForCreateSurvey{
+    return [NSString stringWithFormat:@"%@/survey", [GANUrlManager getBaseUrl]];
+}
+
++ (NSString *) getEndpointForGetSurveyAnswers{
+    return [NSString stringWithFormat:@"%@/survey/answer/search", [GANUrlManager getBaseUrl]];
+}
+
++ (NSString *) getEndpointForSubmitSurveyAnswer{
+    return [NSString stringWithFormat:@"%@/survey/answer", [GANUrlManager getBaseUrl]];
+}
+
 #pragma mark - Membership PLan
 
 + (NSString *) getEndpointForMembershipPlans{

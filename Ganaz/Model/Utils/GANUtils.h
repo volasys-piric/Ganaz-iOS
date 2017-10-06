@@ -13,6 +13,8 @@
 #import "GANAddressDataModel.h"
 #import "GANTransContentsDataModel.h"
 #import "GANBenefitDataModel.h"
+#import "GANUserRefDataModel.h"
+
 #import <UIImageView+AFNetworking.h>
 
 typedef enum _ENUM_USER_TYPE{
@@ -122,6 +124,13 @@ typedef enum _ENUM_APPCONFIG_APPUPDATETYPE{
     GANENUM_APPCONFIG_APPUPDATETYPE_OPTIONAL
 }GANENUM_APPCONFIG_APPUPDATETYPE;
 
+// Enum Survey Type
+
+typedef enum _ENUM_SURVEYTYPE{
+    GANENUM_SURVEYTYPE_CHOICESINGLE,
+    GANENUM_SURVEYTYPE_OPENTEXT,
+}GANENUM_SURVEYTYPE;
+
 #define GANCONSTANTS_TRANSLATE_LANGUAGE_EN                      @"en"
 #define GANCONSTANTS_TRANSLATE_LANGUAGE_ES                      @"es"
 
@@ -160,6 +169,10 @@ typedef enum _ENUM_APPCONFIG_APPUPDATETYPE{
 + (GANENUM_MEMBERSHIPPLAN_TYPE) getMembershipPlayTypeFromString: (NSString *) szType;
 + (NSString *) getStringFromMembershipPlanType: (GANENUM_MEMBERSHIPPLAN_TYPE) type;
 
+// Survey Type
++ (GANENUM_SURVEYTYPE) getSurveyTypeFromString: (NSString *) szType;
++ (NSString *) getStringFromSurveyType: (GANENUM_SURVEYTYPE) type;
+
 + (void) syncImageWithUrl:(UIImageView *) imageView latitude:(float) latitude longitude:(float) longitude;
                                  
 + (void) requestTranslate: (NSString *) text
@@ -167,5 +180,9 @@ typedef enum _ENUM_APPCONFIG_APPUPDATETYPE{
              FromLanguage: (NSString *) fromLanguage
                ToLanguage: (NSString *) toLanguage
                  Callback: (void (^) (int status, NSString *translatedText)) callback;
+
++ (void) requestTranslateEsMultipleTexts: (NSArray <NSString *>*) texts
+                               Translate: (BOOL) shouldTranslate
+                                Callback:(void (^)(int, NSArray <GANTransContentsDataModel *> *))callback;
 
 @end

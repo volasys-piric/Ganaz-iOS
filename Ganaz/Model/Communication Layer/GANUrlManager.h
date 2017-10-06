@@ -78,6 +78,13 @@
 
 + (NSString *) getEndpointForInvite;
 
+#pragma mark - Survey
+
++ (NSString *) getEndpointForGetSurveys;
++ (NSString *) getEndpointForCreateSurvey;
++ (NSString *) getEndpointForGetSurveyAnswers;
++ (NSString *) getEndpointForSubmitSurveyAnswer;
+
 #pragma mark - Membership PLan
 
 + (NSString *) getEndpointForMembershipPlans;
