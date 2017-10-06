@@ -146,10 +146,13 @@
 #pragma mark - GANJobRecruitPopupVCDelegate
 
 - (void) didRecruit {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-    GANRecruitVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_RECRUIT"];
-    [self.navigationController pushViewController:vc animated:YES];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+        GANRecruitVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_RECRUIT"];
+        vc.nJobIndex = nSelectedIndex;
+        [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    });
 }
 
 - (void) didEdit {

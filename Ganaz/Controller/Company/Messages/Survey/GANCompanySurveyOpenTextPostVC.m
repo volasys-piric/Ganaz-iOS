@@ -9,13 +9,20 @@
 #import "GANCompanySurveyOpenTextPostVC.h"
 #import "GANFadeTransitionDelegate.h"
 #import "GANConformMessagePopupVC.h"
+#import "GANCompanyMessagesVC.h"
+#import "GANGlobalVCManager.h"
+
+#import "GANSurveyManager.h"
+#import "GANMessageManager.h"
+
+#import "Global.h"
 
 #define GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER      @"Enter question here..."
 
 @interface GANCompanySurveyOpenTextPostVC () <UITextViewDelegate, GANConformMessagePopupVCDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewQuestion;
-@property (weak, nonatomic) IBOutlet UITextView *textviewMessage;
+@property (weak, nonatomic) IBOutlet UITextView *textviewQuestion;
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonAutoTranslate;
 @property (weak, nonatomic) IBOutlet UIButton *buttonSubmit;
@@ -34,8 +41,8 @@
     // Do any additional setup after loading the view.
     
     self.isAutoTranslate = NO;
-    self.textviewMessage.text = GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER;
-    self.textviewMessage.delegate = self;
+    self.textviewQuestion.text = GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER;
+    self.textviewQuestion.delegate = self;
     
     [self refreshViews];
     [self refreshFields];
@@ -86,6 +93,74 @@
     self.labelReceivers.text = szReceivers;
 }
 
+#pragma mark - Logic
+
+- (BOOL) checkMandatoryFields {
+    NSString *szQuestion = self.textviewQuestion.text;
+    
+    if (szQuestion.length == 0 || [szQuestion isEqualToString:GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER] == YES){
+        [GANGlobalVCManager shakeView:self.viewQuestion];
+        return NO;
+    }
+    return YES;
+}
+
+- (void) doSubmitSurvey{
+    if ([self checkMandatoryFields] == NO) return;
+    
+    NSString *szQuestion = self.textviewQuestion.text;
+    
+    NSMutableArray <GANUserRefDataModel *> *arrayReceiversUserRef = [[NSMutableArray alloc] init];
+    for (int i = 0; i < (int) [self.arrayReceivers count]; i++) {
+        GANMyWorkerDataModel *worker = [self.arrayReceivers objectAtIndex:i];
+        GANUserRefDataModel *userRef = [[GANUserRefDataModel alloc] init];
+        userRef.szCompanyId = @"";
+        userRef.szUserId = worker.szWorkerUserId;
+        [arrayReceiversUserRef addObject:userRef];
+    }
+    GANSurveyManager *managerSurvey = [GANSurveyManager sharedInstance];
+    
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [managerSurvey requestCreateSurveyWithType:GANENUM_SURVEYTYPE_OPENTEXT Question:szQuestion Choices:nil Receivers:arrayReceiversUserRef PhoneNumbers:nil MeataData:nil AutoTranslate:self.isAutoTranslate Callback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR) {
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Your survey is posted successfully." DismissAfter:-1 Callback:^{
+                [self refreshMessagesList];
+            }];
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error" DismissAfter:-1 Callback:nil];
+        }
+    }];
+}
+
+- (void) refreshMessagesList{
+    GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
+    [GANGlobalVCManager showHudProgressWithMessage:@"Loading messages..."];
+    [managerMessage requestGetMessageListWithCallback:^(int status) {
+        [GANGlobalVCManager hideHudProgressWithCallback:^{
+            [self gotoMessagesVC];
+        }];
+    }];
+}
+
+- (void) gotoMessagesVC{
+    UINavigationController *nav = self.navigationController;
+    NSArray <UIViewController *> *arrayVCs = nav.viewControllers;
+    for (int i = 0; i < (int) [arrayVCs count]; i++) {
+        UIViewController *vc = [arrayVCs objectAtIndex:i];
+        if ([vc isKindOfClass:[GANCompanyMessagesVC class]] == YES) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.navigationController popToViewController:vc animated:YES];
+            });
+            return;
+        }
+    }
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES"];
+    [self.navigationController setViewControllers:@[vc] animated:YES];
+}
+
 #pragma mark - UIButton Event Listeners
 
 - (IBAction)onButtonAutoTranslateClick:(id)sender {
@@ -96,18 +171,19 @@
 
 - (IBAction)onButtonSubmitClick:(id)sender {
     [self.view endEditing:YES];
+    [self doSubmitSurvey];
 }
 
 #pragma mark - UITextView Delegate
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
-    self.textviewMessage.text = @"";
+    self.textviewQuestion.text = @"";
     return YES;
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
-    if (self.textviewMessage.text.length == 0) {
-        self.textviewMessage.text = GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER;
+    if (self.textviewQuestion.text.length == 0) {
+        self.textviewQuestion.text = GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER;
     }
 }
 

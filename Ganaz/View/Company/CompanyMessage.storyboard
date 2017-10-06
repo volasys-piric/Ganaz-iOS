@@ -530,10 +530,12 @@
                         <outlet property="buttonAutoTranslate" destination="PpT-is-TA4" id="5Rp-QD-Jc3"/>
                         <outlet property="buttonSubmit" destination="9hY-Ie-Ojo" id="59f-Pz-YuX"/>
                         <outlet property="labelReceivers" destination="UWD-gH-g3T" id="ago-YT-Lps"/>
+                        <outlet property="scrollview" destination="ZS2-KJ-uuZ" id="s6S-Lf-sj2"/>
                         <outlet property="textfieldAnswer1" destination="WtL-9l-ups" id="bo6-Js-pYp"/>
                         <outlet property="textfieldAnswer2" destination="Ac6-uE-S7a" id="o2Q-Y6-YX0"/>
                         <outlet property="textfieldAnswer3" destination="tVT-X5-Mw7" id="6pM-qt-q7k"/>
                         <outlet property="textfieldAnswer4" destination="4NU-4J-X6d" id="5bd-7U-2cy"/>
+                        <outlet property="textfieldQuestion" destination="weX-Mb-akj" id="KTW-72-mIx"/>
                         <outlet property="viewAnswer1" destination="6bI-SO-vzL" id="ca6-nd-BPe"/>
                         <outlet property="viewAnswer2" destination="SkV-6L-J5y" id="SCd-W0-chH"/>
                         <outlet property="viewAnswer3" destination="qux-Au-E0D" id="gnv-46-k44"/>
@@ -655,7 +657,7 @@
                         <outlet property="buttonAutoTranslate" destination="Lxz-6u-GYC" id="kiH-sY-cMX"/>
                         <outlet property="buttonSubmit" destination="w14-rW-7Gz" id="psA-FL-Yvb"/>
                         <outlet property="labelReceivers" destination="lNB-Uj-01G" id="jxF-ZM-abO"/>
-                        <outlet property="textviewMessage" destination="V17-K4-hAN" id="lKd-pJ-oUe"/>
+                        <outlet property="textviewQuestion" destination="V17-K4-hAN" id="FJ6-lx-pVr"/>
                         <outlet property="viewQuestion" destination="iob-qm-Vxn" id="bPL-Wi-2zQ"/>
                     </connections>
                 </viewController>

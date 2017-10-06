@@ -98,7 +98,9 @@
     
     NSMutableArray *arrayTexts = [[NSMutableArray alloc] init];
     [arrayTexts addObject:questionText];
-    [arrayTexts addObjectsFromArray:choiceTexts];
+    if (choiceTexts != nil) {
+        [arrayTexts addObjectsFromArray:choiceTexts];
+    }
     
     [GANUtils requestTranslateEsMultipleTexts:arrayTexts Translate:isAutoTranslate Callback:^(int status, NSArray<GANTransContentsDataModel *> *arrayTransContents) {
         GANTransContentsDataModel *question = [arrayTransContents objectAtIndex:0];

@@ -14,8 +14,8 @@
 #define GANLOG( s, ... ) CLS_LOG( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
 #define GANACTIVITY_REPORT(s) [[GANAppManager sharedInstance] logActivity: (s) ] 
 
-//#warning This should be removed before submission!
-//#define GANENVIRONMENT_STAGING
+#warning This should be removed before submission!
+#define GANENVIRONMENT_STAGING
 
 // BASE URL
 

@@ -105,7 +105,7 @@
         pieChart.descriptionTextFont  = [UIFont fontWithName:@"Avenir-Medium" size:14.0];
         pieChart.showOnlyValues = YES;
         pieChart.showAbsoluteValues = YES;
-        pieChart.outlineColor = [UIColor GANSurveyBorderColor];
+//        pieChart.outlineColor = [UIColor GANSurveyBorderColor];
         pieChart.shouldHighlightSectorOnTouch = NO;
         
         // Override PNPieChart.m > recompute to set innerCircleRadius

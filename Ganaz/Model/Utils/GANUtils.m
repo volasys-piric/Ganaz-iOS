@@ -275,13 +275,18 @@
     }
     
     NSString *szUrl = [GANUrlManager getEndpointForGoogleTranslate];
-    NSDictionary *params = @{@"key": GOOGLE_TRANSLATE_API_KEY,
-                             @"source": @"en",
-                             @"target": @"es",
-                             @"q": texts,
-                             };
+//    NSDictionary *params = @{@"key": GOOGLE_TRANSLATE_API_KEY,
+//                             @"source": @"en",
+//                             @"target": @"es",
+//                             @"q": texts,
+//                             };
     
-    [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:NO parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+    szUrl = [NSString stringWithFormat:@"%@?key=%@&source=en&target=es", szUrl, [GANGenericFunctionManager urlEncode:GOOGLE_TRANSLATE_API_KEY]];
+    for (int i = 0; i < (int) [texts count]; i++) {
+        szUrl = [NSString stringWithFormat:@"%@&q=%@", szUrl, [GANGenericFunctionManager urlEncode:[texts objectAtIndex:i]]];
+    }
+    
+    [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:NO parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *arrTransTexts = [[responseObject objectForKey:@"data"] objectForKey:@"translations"];
         if ([arrTransTexts isKindOfClass:[NSArray class]] == YES && [arrTransTexts count] > 0) {
             for (int i = 0; i < [arrTransTexts count]; i++) {

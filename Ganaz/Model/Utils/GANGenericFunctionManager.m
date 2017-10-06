@@ -472,4 +472,8 @@
     return dict;
 }
 
++ (NSString *) urlEncode: (NSString *) originalString{
+    return [originalString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+}
+
 @end
