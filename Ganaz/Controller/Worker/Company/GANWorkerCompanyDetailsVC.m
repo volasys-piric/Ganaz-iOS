@@ -75,7 +75,7 @@
 }
 
 - (void) refreshFields{
-    self.company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
+    self.company = [[GANCacheManager sharedInstance].arrayCompanies objectAtIndex:self.indexCompany];
     
     self.lblTitle.text = [self.company getBusinessNameES];
     self.lblDescription.text = [self.company getDescriptionES];

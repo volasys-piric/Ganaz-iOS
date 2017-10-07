@@ -33,4 +33,20 @@
                        AutoTranslate: (BOOL) isAutoTranslate
                             Callback: (void (^) (int status)) callback;
 
+- (void) requestSurveyDetailsBySurveyId: (NSString *) surveyId
+                               Callback: (void (^) (int status, GANSurveyDataModel *survey)) callback;
+
+- (void) requestSubmitSurveyChoiceAnswerBySurveyId: (NSString *) surveyId
+                                       ChoiceIndex: (int) indexChoice
+                                          Callback: (void (^) (int status)) callback;
+
+- (void) requestSubmitSurveyOpenTextAnswerBySurveyId: (NSString *) surveyId
+                                                Text: (NSString *) text
+                                            Callback: (void (^) (int status)) callback;
+
+- (void) requestSurveyAnswerDetailsByAnswerId: (NSString *) answerId
+                                     Callback: (void (^) (int status, GANSurveyAnswerDataModel *answer)) callback;
+
+- (void) requestGetSurveyAnswerListByResponderId: (NSString *) responderId Callback: (void (^) (int status)) callback;
+
 @end

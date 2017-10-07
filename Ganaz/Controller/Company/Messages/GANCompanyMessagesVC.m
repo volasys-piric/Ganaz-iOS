@@ -417,7 +417,7 @@
             cell.lblMessage.text = [message getContentsEN];
             [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
                 if (index == -1) return;
-                GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
+                GANUserBaseDataModel *user = [managerCache.arrayUsers objectAtIndex:index];
                 [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
                     cell.lblTitle.text = [NSString stringWithFormat:@"Message To %@", displayName];
                 }];
@@ -438,7 +438,7 @@
             
             [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
                 if (index == -1) return;
-                GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
+                GANUserBaseDataModel *user = [managerCache.arrayUsers objectAtIndex:index];
                 [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
                     cell.lblTitle.text = [NSString stringWithFormat:@"Recruited %@", displayName];
                 }];
@@ -451,7 +451,7 @@
             
             [managerCache requestGetIndexForUserByUserId:message.szReceiverUserId Callback:^(int index) {
                 if (index == -1) return;
-                GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
+                GANUserBaseDataModel *user = [managerCache.arrayUsers objectAtIndex:index];
                 [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
                     cell.lblTitle.text = [NSString stringWithFormat:@"Survey To %@", displayName];
                 }];
@@ -464,7 +464,7 @@
             cell.lblMessage.text = [message getContentsEN];
             [managerCache requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 if (index == -1) return;
-                GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
+                GANUserBaseDataModel *user = [managerCache.arrayUsers objectAtIndex:index];
                 [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
                     cell.lblTitle.text = [NSString stringWithFormat:@"Message from %@", displayName];
                 }];
@@ -485,7 +485,7 @@
             
             [[GANCacheManager sharedInstance] requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 if (index != -1){
-                    GANUserBaseDataModel *user = [[GANCacheManager sharedInstance].arrUsers objectAtIndex:index];
+                    GANUserBaseDataModel *user = [[GANCacheManager sharedInstance].arrayUsers objectAtIndex:index];
                     [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
                         cell.lblMessage.text = [NSString stringWithFormat:@"Reply to %@", displayName];
                     }];
@@ -507,7 +507,7 @@
             
             [[GANCacheManager sharedInstance] requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 if (index != -1){
-                    GANUserBaseDataModel *user = [[GANCacheManager sharedInstance].arrUsers objectAtIndex:index];
+                    GANUserBaseDataModel *user = [[GANCacheManager sharedInstance].arrayUsers objectAtIndex:index];
                     [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
                         cell.lblMessage.text = [NSString stringWithFormat:@"%@ suggested worker @%@", displayName, [message getPhoneNumberForSuggestFriend]];
                     }];
@@ -520,7 +520,7 @@
             
             [managerCache requestGetIndexForUserByUserId:message.szSenderUserId Callback:^(int index) {
                 if (index == -1) return;
-                GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
+                GANUserBaseDataModel *user = [managerCache.arrayUsers objectAtIndex:index];
                 [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
                     cell.lblTitle.text = [NSString stringWithFormat:@"Answer from %@", displayName];
                 }];

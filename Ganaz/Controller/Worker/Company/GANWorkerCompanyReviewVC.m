@@ -66,7 +66,7 @@
 }
 
 - (void) refreshFields{
-    self.company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
+    self.company = [[GANCacheManager sharedInstance].arrayCompanies objectAtIndex:self.indexCompany];
     self.indexReview = [[GANReviewManager sharedInstance] getIndexForReviewByCompanyId:self.company.szId];
     if (self.indexReview == -1){
         self.review = [[GANReviewDataModel alloc] init];

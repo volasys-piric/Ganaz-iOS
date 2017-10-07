@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="nlM-1v-Goh">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFUIDisplay-Bold.otf">
+            <string>SFUIDisplay-Bold</string>
+        </array>
+        <array key="SFUIDisplay-Medium.otf">
+            <string>SFUIDisplay-Medium</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="haO-W2-spj">
+            <objects>
+                <navigationController id="nlM-1v-Goh" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="RpY-h8-iA2">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="2xB-7H-Vjc" kind="relationship" relationship="rootViewController" id="xbd-2n-cdF"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tO7-TS-kx1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1214" y="-8"/>
+        </scene>
+        <!--Pregunta de encuesta-->
+        <scene sceneID="uXP-45-kYc">
+            <objects>
+                <viewController storyboardIdentifier="STORYBOARD_WORKER_SURVEY_CHOICESINGLE" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2xB-7H-Vjc" customClass="GANWorkerSurveyChoicesVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Dqa-Qq-Iwl"/>
+                        <viewControllerLayoutGuide type="bottom" id="99m-96-f17"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vHg-H5-vmP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yqd-Sj-yRF" userLabel="View - Main Container">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="{%company name%} quiere saber:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vai-9D-yJB" userLabel="Label - Title">
+                                        <rect key="frame" x="20" y="30" width="335" height="17"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
+                                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="{%question%}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1L-BE-cmI" userLabel="Label - Question">
+                                        <rect key="frame" x="20.5" y="67" width="335" height="18"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                        <color key="textColor" red="0.1215686275" green="0.1215686275" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Kon-5b-3V6">
+                                        <rect key="frame" x="20" y="105" width="335" height="388"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="2xB-7H-Vjc" id="OZp-qo-gsT"/>
+                                            <outlet property="delegate" destination="2xB-7H-Vjc" id="7ng-5m-FXI"/>
+                                        </connections>
+                                    </tableView>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PbI-Ei-5XY" userLabel="Button - Submit">
+                                        <rect key="frame" x="20" y="513" width="335" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="4wz-64-LCT"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="Submit" backgroundImage="button-background">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonSubmitClick:" destination="2xB-7H-Vjc" eventType="touchUpInside" id="yFC-I8-1R0"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Vai-9D-yJB" firstAttribute="leading" secondItem="yqd-Sj-yRF" secondAttribute="leading" constant="20" id="4FV-Dz-9Iq"/>
+                                    <constraint firstItem="p1L-BE-cmI" firstAttribute="centerX" secondItem="Vai-9D-yJB" secondAttribute="centerX" id="9Nf-Vd-u0J"/>
+                                    <constraint firstAttribute="bottom" secondItem="PbI-Ei-5XY" secondAttribute="bottom" constant="30" id="AwL-0Y-617"/>
+                                    <constraint firstItem="Vai-9D-yJB" firstAttribute="top" secondItem="yqd-Sj-yRF" secondAttribute="top" constant="30" id="BcM-Ay-izj"/>
+                                    <constraint firstItem="PbI-Ei-5XY" firstAttribute="centerX" secondItem="p1L-BE-cmI" secondAttribute="centerX" id="II0-LF-WhL"/>
+                                    <constraint firstItem="p1L-BE-cmI" firstAttribute="width" secondItem="Vai-9D-yJB" secondAttribute="width" id="TES-ej-Fvo"/>
+                                    <constraint firstItem="Kon-5b-3V6" firstAttribute="centerX" secondItem="p1L-BE-cmI" secondAttribute="centerX" id="bJ9-2W-mu4"/>
+                                    <constraint firstItem="Kon-5b-3V6" firstAttribute="width" secondItem="p1L-BE-cmI" secondAttribute="width" id="gEc-9y-CSt"/>
+                                    <constraint firstItem="Kon-5b-3V6" firstAttribute="top" secondItem="p1L-BE-cmI" secondAttribute="bottom" constant="20" id="hBt-PR-ld9"/>
+                                    <constraint firstItem="PbI-Ei-5XY" firstAttribute="width" secondItem="p1L-BE-cmI" secondAttribute="width" id="oZj-4l-tRk"/>
+                                    <constraint firstItem="p1L-BE-cmI" firstAttribute="top" secondItem="Vai-9D-yJB" secondAttribute="bottom" constant="20" id="vZo-Q7-t9b"/>
+                                    <constraint firstItem="PbI-Ei-5XY" firstAttribute="top" secondItem="Kon-5b-3V6" secondAttribute="bottom" constant="20" id="vZt-Bw-Fcj"/>
+                                    <constraint firstAttribute="trailing" secondItem="Vai-9D-yJB" secondAttribute="trailing" constant="20" id="wd5-Rm-Reh"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="yqd-Sj-yRF" firstAttribute="leading" secondItem="vHg-H5-vmP" secondAttribute="leading" id="PQZ-TK-5cr"/>
+                            <constraint firstAttribute="trailing" secondItem="yqd-Sj-yRF" secondAttribute="trailing" id="cf3-1r-VsA"/>
+                            <constraint firstItem="yqd-Sj-yRF" firstAttribute="top" secondItem="Dqa-Qq-Iwl" secondAttribute="bottom" id="hWX-L3-aiB"/>
+                            <constraint firstItem="99m-96-f17" firstAttribute="top" secondItem="yqd-Sj-yRF" secondAttribute="bottom" id="nLd-qS-aXb"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Pregunta de encuesta" id="Szg-eQ-Yhi"/>
+                    <connections>
+                        <outlet property="buttonSubmit" destination="PbI-Ei-5XY" id="so6-7p-mFP"/>
+                        <outlet property="labelQuestion" destination="p1L-BE-cmI" id="114-6C-9R3"/>
+                        <outlet property="labelTitle" destination="Vai-9D-yJB" id="xi7-rL-ZI8"/>
+                        <outlet property="tableview" destination="Kon-5b-3V6" id="dMf-ab-rTl"/>
+                        <segue destination="6al-AX-Bkq" kind="show" id="g9q-Fd-c0R"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CwA-fr-b8K" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-346.39999999999998" y="-9.4452773613193415"/>
+        </scene>
+        <!--Pregunta de encuesta-->
+        <scene sceneID="5F0-iB-xbj">
+            <objects>
+                <viewController storyboardIdentifier="STORYBOARD_WORKER_SURVEY_OPENTEXT" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6al-AX-Bkq" customClass="GANWorkerSurveyOpenTextVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kf1-5s-fNf"/>
+                        <viewControllerLayoutGuide type="bottom" id="XPj-hT-uNO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pP7-KI-Lmn">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Etf-qh-03o" userLabel="View - Main Container">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="{%company name%} quiere saber:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gEE-19-ATu" userLabel="Label - Title">
+                                        <rect key="frame" x="20" y="30" width="335" height="17"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
+                                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="{%question%}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0eu-P7-zlC" userLabel="Label - Question">
+                                        <rect key="frame" x="20.5" y="67" width="335" height="18"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                        <color key="textColor" red="0.1215686275" green="0.1215686275" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ki1-2P-FQR" userLabel="View - Answer">
+                                        <rect key="frame" x="20" y="115" width="335" height="224"/>
+                                        <subviews>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Mdo-aB-BTy" userLabel="Text View - Answer">
+                                                <rect key="frame" x="12" y="8" width="311" height="208"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="13"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no"/>
+                                            </textView>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="Mdo-aB-BTy" firstAttribute="leading" secondItem="ki1-2P-FQR" secondAttribute="leading" constant="12" id="1Z0-ra-eHk"/>
+                                            <constraint firstItem="Mdo-aB-BTy" firstAttribute="top" secondItem="ki1-2P-FQR" secondAttribute="top" constant="8" id="6f3-OO-Vxc"/>
+                                            <constraint firstAttribute="bottom" secondItem="Mdo-aB-BTy" secondAttribute="bottom" constant="8" id="LOf-5V-6oD"/>
+                                            <constraint firstAttribute="trailing" secondItem="Mdo-aB-BTy" secondAttribute="trailing" constant="12" id="fH8-dM-MoX"/>
+                                            <constraint firstAttribute="height" constant="224" id="l3Q-Vl-EzZ"/>
+                                        </constraints>
+                                    </view>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ift-wI-A90" userLabel="Button - Submit">
+                                        <rect key="frame" x="20" y="513" width="335" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="T9m-ce-QhC"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="Submit" backgroundImage="button-background">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonSubmitClick:" destination="6al-AX-Bkq" eventType="touchUpInside" id="RJR-Z1-MTC"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="ki1-2P-FQR" firstAttribute="top" secondItem="0eu-P7-zlC" secondAttribute="bottom" constant="30" id="0lS-H4-OQH"/>
+                                    <constraint firstItem="0eu-P7-zlC" firstAttribute="width" secondItem="gEE-19-ATu" secondAttribute="width" id="4RP-VO-YyA"/>
+                                    <constraint firstItem="0eu-P7-zlC" firstAttribute="centerX" secondItem="gEE-19-ATu" secondAttribute="centerX" id="4zs-9e-VUR"/>
+                                    <constraint firstItem="gEE-19-ATu" firstAttribute="top" secondItem="Etf-qh-03o" secondAttribute="top" constant="30" id="AvK-NF-VfO"/>
+                                    <constraint firstItem="0eu-P7-zlC" firstAttribute="top" secondItem="gEE-19-ATu" secondAttribute="bottom" constant="20" id="EMl-q6-9l8"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ift-wI-A90" secondAttribute="trailing" constant="20" id="HBm-7l-hbY"/>
+                                    <constraint firstItem="ki1-2P-FQR" firstAttribute="centerX" secondItem="0eu-P7-zlC" secondAttribute="centerX" id="K7I-Ce-Lhv"/>
+                                    <constraint firstItem="Ift-wI-A90" firstAttribute="leading" secondItem="Etf-qh-03o" secondAttribute="leading" constant="20" id="KnD-tV-i8o"/>
+                                    <constraint firstAttribute="bottom" secondItem="Ift-wI-A90" secondAttribute="bottom" constant="30" id="R5D-is-9MQ"/>
+                                    <constraint firstItem="gEE-19-ATu" firstAttribute="leading" secondItem="Etf-qh-03o" secondAttribute="leading" constant="20" id="Sta-ch-htq"/>
+                                    <constraint firstItem="ki1-2P-FQR" firstAttribute="width" secondItem="0eu-P7-zlC" secondAttribute="width" id="YKb-Ll-NsC"/>
+                                    <constraint firstAttribute="trailing" secondItem="gEE-19-ATu" secondAttribute="trailing" constant="20" id="lFd-7o-jhO"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="XPj-hT-uNO" firstAttribute="top" secondItem="Etf-qh-03o" secondAttribute="bottom" id="5Qd-vW-6F9"/>
+                            <constraint firstItem="Etf-qh-03o" firstAttribute="top" secondItem="kf1-5s-fNf" secondAttribute="bottom" id="KuE-Ky-47b"/>
+                            <constraint firstItem="Etf-qh-03o" firstAttribute="leading" secondItem="pP7-KI-Lmn" secondAttribute="leading" id="d5Y-ux-8Q8"/>
+                            <constraint firstAttribute="trailing" secondItem="Etf-qh-03o" secondAttribute="trailing" id="wnY-lf-6Re"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Pregunta de encuesta" id="SQH-Zm-9Xs"/>
+                    <connections>
+                        <outlet property="buttonSubmit" destination="Ift-wI-A90" id="P4W-9O-RaI"/>
+                        <outlet property="labelQuestion" destination="0eu-P7-zlC" id="ssD-nc-7Mw"/>
+                        <outlet property="labelTitle" destination="gEE-19-ATu" id="Z7E-oG-mu2"/>
+                        <outlet property="textviewAnswer" destination="Mdo-aB-BTy" id="z8X-Nb-ZNA"/>
+                        <outlet property="viewAnswer" destination="ki1-2P-FQR" id="2r0-17-GdX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="utF-PK-nrT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="485.60000000000002" y="-9.4452773613193415"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="button-background" width="512" height="10"/>
+    </resources>
+</document>

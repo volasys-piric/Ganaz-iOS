@@ -242,7 +242,7 @@
             return;
         }
         
-        GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
+        GANCompanyDataModel *company = [managerCache.arrayCompanies objectAtIndex:indexCompany];
         [company requestJobsListWithJobId:jobId Callback:^(int status) {
             [GANGlobalVCManager hideHudProgress];
             if (status != SUCCESS_WITH_NO_ERROR){

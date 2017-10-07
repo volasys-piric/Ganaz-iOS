@@ -8,6 +8,7 @@
 
 #import "GANSurveyManager.h"
 #import "GANUserManager.h"
+#import "GANCacheManager.h"
 #import "GANNetworkRequestManager.h"
 #import "GANUrlManager.h"
 #import "GANGenericFunctionManager.h"
@@ -168,6 +169,171 @@
             if (callback) callback(status);
         }];
 
+    }];
+}
+
+- (void) requestSurveyDetailsBySurveyId: (NSString *) surveyId Callback: (void (^) (int status, GANSurveyDataModel *survey)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForGetSurveys];
+    NSDictionary *param = @{@"survey_id": surveyId};
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            NSArray *arraySurveys = [dict objectForKey:@"surveys"];
+            if ([arraySurveys count] > 0){
+                NSDictionary *dictSurvey = [arraySurveys objectAtIndex:0];
+                GANSurveyDataModel *survey = [[GANSurveyDataModel alloc] init];
+                [survey setWithDictionary:dictSurvey];
+                if (callback) callback(SUCCESS_WITH_NO_ERROR, survey);
+            }
+            else {
+                if (callback) callback(SUCCESS_WITH_NO_ERROR, nil);
+            }
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage], nil);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYLIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status, nil);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYLIST_UPDATEFAILED object:nil];
+    }];
+}
+
+// MARK: Survey Answer
+
+- (void) requestSubmitSurveyChoiceAnswerBySurveyId: (NSString *) surveyId ChoiceIndex: (int) indexChoice Callback: (void (^) (int status)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForSubmitSurveyAnswer];
+    NSDictionary *param = @{@"survey_id": surveyId,
+                            @"answer": @{
+                                    @"index": [NSString stringWithFormat:@"%d", indexChoice],
+                                    },
+                            @"responder": @{
+                                    @"user_id": [GANUserManager getUserWorkerDataModel].szId,
+                                    @"company_id": @""
+                                    },
+                            @"auto_translate": @"false"
+                            };
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            GANSurveyAnswerDataModel *answer = [[GANSurveyAnswerDataModel alloc] init];
+            [answer setWithDictionary:[dict objectForKey:@"answer"]];
+            [[GANCacheManager sharedInstance] addSurveyAnswerIfNeeded:answer];
+            if (callback)  callback(SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYLIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYLIST_UPDATEFAILED object:nil];
+    }];
+}
+
+- (void) requestSubmitSurveyOpenTextAnswerBySurveyId: (NSString *) surveyId Text: (NSString *) text Callback: (void (^) (int status)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForSubmitSurveyAnswer];
+    NSDictionary *param = @{@"survey_id": surveyId,
+                            @"answer": @{
+                                    @"text": @{
+                                            @"en": text,
+                                            @"es": text,
+                                            }
+                                    },
+                            @"responder": @{
+                                    @"user_id": [GANUserManager getUserWorkerDataModel].szId,
+                                    @"company_id": @""
+                                    },
+                            @"auto_translate": @"false"
+                            };
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            GANSurveyAnswerDataModel *answer = [[GANSurveyAnswerDataModel alloc] init];
+            [answer setWithDictionary:[dict objectForKey:@"answer"]];
+            [[GANCacheManager sharedInstance] addSurveyAnswerIfNeeded:answer];
+            if (callback)  callback(SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYLIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYLIST_UPDATEFAILED object:nil];
+    }];
+}
+
+- (void) requestSurveyAnswerDetailsByAnswerId: (NSString *) answerId Callback: (void (^) (int status, GANSurveyAnswerDataModel *answer)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForGetSurveyAnswers];
+    NSDictionary *param = @{@"answer_id": answerId};
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            NSArray *arrayAnswers = [dict objectForKey:@"answers"];
+            if ([arrayAnswers count] > 0){
+                NSDictionary *dictAnswer = [arrayAnswers objectAtIndex:0];
+                GANSurveyAnswerDataModel *answer = [[GANSurveyAnswerDataModel alloc] init];
+                [answer setWithDictionary:dictAnswer];
+                [[GANCacheManager sharedInstance] addSurveyAnswerIfNeeded:answer];
+                if (callback) callback(SUCCESS_WITH_NO_ERROR, answer);
+            }
+            else {
+                if (callback) callback(SUCCESS_WITH_NO_ERROR, nil);
+            }
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage], nil);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status, nil);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATEFAILED object:nil];
+    }];
+}
+
+- (void) requestGetSurveyAnswerListByResponderId: (NSString *) responderId Callback: (void (^) (int status)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForGetSurveyAnswers];
+    NSDictionary *param = @{@"responder": @{@"user_id": responderId}};
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            NSArray *arrayAnswers = [dict objectForKey:@"answers"];
+            if ([arrayAnswers count] > 0){
+                for (int i = 0; i < (int) [arrayAnswers count]; i++) {
+                    NSDictionary *dictAnswer = [arrayAnswers objectAtIndex:i];
+                    GANSurveyAnswerDataModel *answer = [[GANSurveyAnswerDataModel alloc] init];
+                    [answer setWithDictionary:dictAnswer];
+                    [[GANCacheManager sharedInstance] addSurveyAnswerIfNeeded:answer];
+                }
+                if (callback) callback(SUCCESS_WITH_NO_ERROR);
+            }
+            else {
+                if (callback) callback(SUCCESS_WITH_NO_ERROR);
+            }
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATEFAILED object:nil];
     }];
 }
 

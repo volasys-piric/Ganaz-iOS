@@ -138,7 +138,7 @@
 }
 
 - (void) refreshFields{
-    self.company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
+    self.company = [[GANCacheManager sharedInstance].arrayCompanies objectAtIndex:self.indexCompany];
     self.job = [self.company.arrJobs objectAtIndex:self.indexJob];
     
     GANENUM_COMPANY_BADGE_TYPE enumType = [self.company getBadgeType];

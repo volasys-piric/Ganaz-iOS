@@ -111,6 +111,7 @@
     }
     else {
         [[GANJobManager sharedInstance] requestGetMyApplicationsWithCallback:nil];
+        [[GANSurveyManager sharedInstance] requestGetSurveyAnswerListByResponderId:managerUser.modelUser.szId Callback:nil];
     }
     [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
     [[GANReviewManager sharedInstance] requestGetReviewsListWithCallback:nil];
