@@ -82,8 +82,8 @@
         self.viewEmptyPanel.hidden = NO;
     }
     else {
-        self.scrollview.hidden = YES;
-        self.viewEmptyPanel.hidden = NO;
+        self.scrollview.hidden = NO;
+        self.viewEmptyPanel.hidden = YES;
         
         // Build Arrays
         NSArray *arrayAllColors = @[[UIColor GANSurveyColor1],

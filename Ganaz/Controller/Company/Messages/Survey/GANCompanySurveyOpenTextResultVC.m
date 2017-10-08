@@ -8,11 +8,15 @@
 
 #import "GANCompanySurveyOpenTextResultVC.h"
 #import "GANSurveyOpenTextResultItemTVC.h"
+#import "GANSurveyManager.h"
 
 @interface GANCompanySurveyOpenTextResultVC () <UITableViewDelegate, UITableViewDataSource>
 
+@property (weak, nonatomic) IBOutlet UIView *viewNoResult;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (weak, nonatomic) IBOutlet UILabel *labelQuestion;
+
+@property (strong, nonatomic) GANSurveyDataModel *modelSurvey;
 
 @end
 
@@ -28,7 +32,19 @@
     self.tableview.rowHeight = UITableViewAutomaticDimension;
     self.tableview.estimatedRowHeight = 75;
     
+    self.modelSurvey = [[GANSurveyManager sharedInstance].arraySurveys objectAtIndex:self.indexSurvey];
+    
     [self registerTableViewCellFromNib];
+    
+    self.labelQuestion.text = [self.modelSurvey.modelQuestion getTextEN];
+    if ([self.modelSurvey.arrayAnswers count] == 0) {
+        self.tableview.hidden = YES;
+        self.viewNoResult.hidden = NO;
+    }
+    else {
+        self.tableview.hidden = NO;
+        self.viewNoResult.hidden = YES;
+    }
 }
 
 - (void) registerTableViewCellFromNib{
@@ -43,7 +59,8 @@
 #pragma mark - UITableViewCell Delegate
 
 - (void) configureCell: (GANSurveyOpenTextResultItemTVC *) cell AtIndex: (int) index{
-    
+    GANSurveyAnswerDataModel *answer = [self.modelSurvey.arrayAnswers objectAtIndex:index];
+    cell.labelAnswer.text = [answer.modelAnswerText getTextEN];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -51,7 +68,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 15;
+    return [self.modelSurvey.arrayAnswers count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

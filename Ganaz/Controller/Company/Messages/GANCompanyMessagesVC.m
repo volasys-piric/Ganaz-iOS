@@ -324,17 +324,19 @@
     // View Survey Results
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"View Survey Results" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         if (survey.enumType == GANENUM_SURVEYTYPE_CHOICESINGLE) {
+            [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
             [survey requestGetAnswersWithCallback:^(int status) {
-                dispatch_async(dispatch_get_main_queue(), ^{
+                [GANGlobalVCManager hideHudProgressWithCallback:^{
                     [self gotoSurveyChoicesResultVCAtSurveyIndex:indexSurvey];
-                });
+                }];
             }];
         }
         else if (survey.enumType == GANENUM_SURVEYTYPE_OPENTEXT) {
+            [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
             [survey requestGetAnswersWithCallback:^(int status) {
-                dispatch_async(dispatch_get_main_queue(), ^{
+                [GANGlobalVCManager hideHudProgressWithCallback:^{
                     [self gotoSurveyOpenTextResultVCAtSurveyIndex:indexSurvey];
-                });
+                }];
             }];
         }
     }]];

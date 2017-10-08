@@ -64,12 +64,16 @@
     
     if (self.isEditable == YES) {
         self.buttonSubmit.hidden = NO;
+        self.textviewAnswer.userInteractionEnabled = YES;
+        self.textviewAnswer.editable = YES;
     }
     else {
         self.buttonSubmit.hidden = YES;
         self.textviewAnswer.userInteractionEnabled = NO;
+        self.textviewAnswer.editable = NO;
     }
     
+    self.viewAnswer.layer.cornerRadius = 3;
     self.buttonSubmit.layer.cornerRadius = 3;
 }
 

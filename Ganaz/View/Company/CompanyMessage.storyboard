@@ -850,6 +850,24 @@
                                             <outlet property="delegate" destination="v7C-s5-211" id="eyH-50-nDd"/>
                                         </connections>
                                     </tableView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qOe-cb-u6v" userLabel="View - No Result">
+                                        <rect key="frame" x="0.0" y="267" width="375" height="69"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No result available" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k2b-T9-oLR">
+                                                <rect key="frame" x="30" y="20" width="315" height="29"/>
+                                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="24"/>
+                                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="k2b-T9-oLR" secondAttribute="bottom" constant="20" id="6Qs-R2-535"/>
+                                            <constraint firstAttribute="trailing" secondItem="k2b-T9-oLR" secondAttribute="trailing" constant="30" id="E7G-zT-aae"/>
+                                            <constraint firstItem="k2b-T9-oLR" firstAttribute="leading" secondItem="qOe-cb-u6v" secondAttribute="leading" constant="30" id="EVM-hl-4ds"/>
+                                            <constraint firstItem="k2b-T9-oLR" firstAttribute="top" secondItem="qOe-cb-u6v" secondAttribute="top" constant="20" id="wbV-52-6fM"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -860,6 +878,9 @@
                                     <constraint firstItem="n3p-YF-JpE" firstAttribute="top" secondItem="FZT-lC-RXh" secondAttribute="top" constant="30" id="UY3-f0-t3g"/>
                                     <constraint firstItem="bHV-yi-e2A" firstAttribute="top" secondItem="n3p-YF-JpE" secondAttribute="bottom" constant="20" id="UbW-2B-EoE"/>
                                     <constraint firstItem="n3p-YF-JpE" firstAttribute="leading" secondItem="FZT-lC-RXh" secondAttribute="leading" constant="20" id="XdV-tH-cJL"/>
+                                    <constraint firstItem="qOe-cb-u6v" firstAttribute="width" secondItem="FZT-lC-RXh" secondAttribute="width" id="ab3-PF-b0B"/>
+                                    <constraint firstItem="qOe-cb-u6v" firstAttribute="centerY" secondItem="FZT-lC-RXh" secondAttribute="centerY" id="kmu-t5-RqF"/>
+                                    <constraint firstItem="qOe-cb-u6v" firstAttribute="centerX" secondItem="FZT-lC-RXh" secondAttribute="centerX" id="qa6-Uz-VfZ"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -875,6 +896,7 @@
                     <connections>
                         <outlet property="labelQuestion" destination="n3p-YF-JpE" id="nK3-vp-NOc"/>
                         <outlet property="tableview" destination="bHV-yi-e2A" id="0Y6-Em-eFw"/>
+                        <outlet property="viewNoResult" destination="qOe-cb-u6v" id="dvG-dl-mE3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iGa-dQ-n2Q" userLabel="First Responder" sceneMemberID="firstResponder"/>

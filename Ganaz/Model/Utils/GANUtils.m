@@ -195,7 +195,7 @@
 
 + (GANENUM_SURVEYTYPE) getSurveyTypeFromString: (NSString *) szType{
     if ([szType caseInsensitiveCompare:@"choice-single"] == NSOrderedSame) return GANENUM_SURVEYTYPE_CHOICESINGLE;
-    if ([szType caseInsensitiveCompare:@"open-text"] == NSOrderedSame) return GANENUM_SURVEYTYPE_CHOICESINGLE;
+    if ([szType caseInsensitiveCompare:@"open-text"] == NSOrderedSame) return GANENUM_SURVEYTYPE_OPENTEXT;
     return GANENUM_SURVEYTYPE_CHOICESINGLE;
 }
 

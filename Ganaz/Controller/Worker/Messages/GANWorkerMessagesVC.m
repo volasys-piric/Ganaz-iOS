@@ -279,7 +279,7 @@
                 [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
             }
             else {
-                GANSurveyDataModel *survey = [message getSurvey];
+                GANSurveyDataModel *survey = [managerCache.arraySurvey objectAtIndex:index];
                 [GANGlobalVCManager hideHudProgressWithCallback:^{
                     if (survey.enumType == GANENUM_SURVEYTYPE_CHOICESINGLE) {
                         [self gotoWorkerSurveyChoicesVCAtSurveyIndex:index];
@@ -457,7 +457,13 @@
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER){
             cell.lblTitle.text = @"Survey Answer";
-            cell.lblMessage.text = [message getContentsES];
+            cell.lblMessage.text = @"You answered survey.";
+            
+            [managerCache requestGetIndexForSurveyBySurveyId:message.szSurveyId Callback:^(int index) {
+                if (index != -1){
+                    cell.lblTitle.text = [[managerCache.arraySurvey objectAtIndex:index].modelQuestion getTextES];
+                }
+            }];
         }
     }
     else {
