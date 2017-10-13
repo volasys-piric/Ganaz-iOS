@@ -26,11 +26,8 @@ PODS:
   - IQKeyboardManager (5.0.3)
   - Mixpanel (3.2.1)
   - OneSignal (2.5.4)
-  - PNChart (0.8.9):
-    - UICountingLabel (~> 1.2.0)
   - SVProgressHUD (2.2.1)
   - SVPullToRefresh (0.4.1)
-  - UICountingLabel (1.2.0)
   - UIView+Shake (1.4.0)
 
 DEPENDENCIES:
@@ -42,7 +39,6 @@ DEPENDENCIES:
   - IQKeyboardManager
   - Mixpanel
   - OneSignal
-  - PNChart
   - SVProgressHUD
   - SVPullToRefresh
   - UIView+Shake
@@ -56,12 +52,10 @@ SPEC CHECKSUMS:
   IQKeyboardManager: dc5b18b47e5170e4d150bb86dbee8c8a2fc48997
   Mixpanel: a88b1db0a1e381f9d37a1756aa37a9c670d22f61
   OneSignal: da994bcf6a2efbdceaf71e389e1d05245c562899
-  PNChart: 84774d225c2126ded6c93d4dbe6ae98c3a73c2d2
   SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
-  UICountingLabel: 1db4e7d023e1762171eb226d6dff47a7a84f27aa
   UIView+Shake: 055ad67721de1f74d29c0a1d464697e505dfc62f
 
-PODFILE CHECKSUM: bd1ae5ee2f1d0708c6c625541cf4c1c1cc479962
+PODFILE CHECKSUM: 9b5963ea8d7aadb2dada6ac8441ee8322567dda1
 
 COCOAPODS: 1.3.1

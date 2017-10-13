@@ -10,7 +10,7 @@
 #import "GANSurveyManager.h"
 #import "GANSurveyChoiceSingleResultLegendItemTVC.h"
 
-#import <PNChart.h>
+#import "GANPieChart.h"
 #import "UIColor+GANColor.h"
 
 @interface GANCompanySurveyChoicesResultVC () <UITableViewDelegate, UITableViewDataSource>
@@ -123,16 +123,16 @@
         for (int i = 0; i < [self.arrayValues count]; i++){
             UIColor *color = [self.arrayColors objectAtIndex:i];
             NSString *desc = [self.arrayChoiceTexts objectAtIndex:i];
-            [items addObject:[PNPieChartDataItem dataItemWithValue:[[self.arrayValues objectAtIndex:i] intValue] color:color description:desc]];
+            [items addObject:[GANPieChartDataItem dataItemWithValue:[[self.arrayValues objectAtIndex:i] intValue] color:color description:desc]];
         }
         
         CGRect rect = self.viewGraph.frame;
-        PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(0, 0, rect.size.width, rect.size.height) items:items];
+        GANPieChart *pieChart = [[GANPieChart alloc] initWithFrame:CGRectMake(0, 0, rect.size.width, rect.size.height) items:items];
         pieChart.descriptionTextColor = [UIColor GANSurveyTextColor];
         pieChart.descriptionTextFont  = [UIFont fontWithName:@"Avenir-Medium" size:14.0];
         pieChart.showOnlyValues = YES;
         pieChart.showAbsoluteValues = YES;
-//        pieChart.outlineColor = [UIColor GANSurveyBorderColor];
+        pieChart.outlineColor = [UIColor GANSurveyBorderColor];
         pieChart.shouldHighlightSectorOnTouch = NO;
         
         // Override PNPieChart.m > recompute to set innerCircleRadius
