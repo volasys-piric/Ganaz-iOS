@@ -533,6 +533,9 @@
     if([message hasLocationInfo] == YES) {
         cell.locationCenter = [[CLLocation alloc]initWithLatitude:message.locationInfo.fLatitude longitude:message.locationInfo.fLongitude];
     }
+    else {
+        cell.locationCenter = nil;
+    }
     
     BOOL didRead = !([message amIReceiver] && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -554,11 +557,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    GANMessageDataModel *message = [self.arrMessages objectAtIndex:indexPath.row];
-    if([message hasLocationInfo]) {
-        return 260;//UITableViewAutomaticDimension;
-    }
-    return 72;
+    return UITableViewAutomaticDimension;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

@@ -115,9 +115,13 @@
     if(self.locationCenter != nil) {
         [self buildMapView];
         self.imgMap.hidden = NO;
+        self.constraintMapHeight.constant = 200;
+        [self.contentView layoutIfNeeded];
     }
     else {
         self.imgMap.hidden = YES;
+        self.constraintMapHeight.constant = 0;
+        [self.contentView layoutIfNeeded];
     }
 }
 

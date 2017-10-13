@@ -1761,6 +1761,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Mensajes" id="A3E-Yy-iYv"/>
                     <connections>
+                        <outlet property="IQLayoutGuideConstraint" destination="IrQ-9Q-H1m" id="aY7-BX-UE5"/>
                         <outlet property="btnAutoTranslate" destination="XsE-sW-5PL" id="sJw-zy-lyp"/>
                         <outlet property="btnReply" destination="OlT-Gj-Qpi" id="hvf-Eb-Tmi"/>
                         <outlet property="constraintPopupPanelBottomSpace" destination="FsR-NJ-T58" id="V4F-S7-htC"/>

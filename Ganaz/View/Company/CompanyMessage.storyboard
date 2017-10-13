@@ -243,19 +243,19 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sabrina, Juan" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UWD-gH-g3T" userLabel="Label - Receivers">
-                                                        <rect key="frame" x="58" y="30" width="297" height="119"/>
+                                                        <rect key="frame" x="58" y="30" width="297" height="18"/>
                                                         <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bxA-d2-kkU" userLabel="View - Question Panel">
-                                                        <rect key="frame" x="20" y="161" width="335" height="44"/>
+                                                        <rect key="frame" x="20" y="60" width="335" height="44"/>
                                                         <subviews>
                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter question here..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="weX-Mb-akj" userLabel="Text Field - Question">
                                                                 <rect key="frame" x="12" y="0.0" width="311" height="44"/>
                                                                 <color key="textColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits"/>
+                                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="organization-title"/>
                                                             </textField>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
@@ -268,7 +268,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D4h-yy-2Ro" userLabel="View - Choice 1">
-                                                        <rect key="frame" x="20" y="225" width="335" height="44"/>
+                                                        <rect key="frame" x="20" y="124" width="335" height="44"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DZJ-9c-jqc" userLabel="Label - No">
                                                                 <rect key="frame" x="0.0" y="0.0" width="16" height="44"/>
@@ -286,7 +286,7 @@
                                                                         <rect key="frame" x="12" y="0.0" width="287" height="44"/>
                                                                         <color key="textColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
-                                                                        <textInputTraits key="textInputTraits"/>
+                                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="yes" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                                     </textField>
                                                                 </subviews>
                                                                 <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
@@ -310,7 +310,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a2W-8Z-1uC" userLabel="View - Choice 2">
-                                                        <rect key="frame" x="20.5" y="281" width="335" height="44"/>
+                                                        <rect key="frame" x="20.5" y="180" width="335" height="44"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Csz-vn-20b" userLabel="Label - No">
                                                                 <rect key="frame" x="0.0" y="0.0" width="16" height="44"/>
@@ -328,7 +328,7 @@
                                                                         <rect key="frame" x="12" y="0.0" width="287" height="44"/>
                                                                         <color key="textColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
-                                                                        <textInputTraits key="textInputTraits"/>
+                                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="yes" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                                     </textField>
                                                                 </subviews>
                                                                 <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
@@ -352,7 +352,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ScX-Ny-Dv1" userLabel="View - Choice 3">
-                                                        <rect key="frame" x="20.5" y="333" width="335" height="44"/>
+                                                        <rect key="frame" x="20.5" y="232" width="335" height="44"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r7S-uL-fQa" userLabel="Label - No">
                                                                 <rect key="frame" x="0.0" y="0.0" width="16" height="44"/>
@@ -370,7 +370,7 @@
                                                                         <rect key="frame" x="12" y="0.0" width="287" height="44"/>
                                                                         <color key="textColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
-                                                                        <textInputTraits key="textInputTraits"/>
+                                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="yes" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                                     </textField>
                                                                 </subviews>
                                                                 <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
@@ -394,7 +394,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AEz-Pg-Wan" userLabel="View - Choice 4">
-                                                        <rect key="frame" x="20.5" y="385" width="335" height="44"/>
+                                                        <rect key="frame" x="20.5" y="284" width="335" height="44"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cvy-2d-ITl" userLabel="Label - No">
                                                                 <rect key="frame" x="0.0" y="0.0" width="16" height="44"/>
@@ -412,7 +412,7 @@
                                                                         <rect key="frame" x="12" y="0.0" width="287" height="44"/>
                                                                         <color key="textColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
-                                                                        <textInputTraits key="textInputTraits"/>
+                                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="yes" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                                     </textField>
                                                                 </subviews>
                                                                 <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
@@ -436,7 +436,7 @@
                                                         </constraints>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PpT-is-TA4" userLabel="Button - Translate">
-                                                        <rect key="frame" x="20" y="459" width="198" height="24"/>
+                                                        <rect key="frame" x="20" y="358" width="198" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="yKk-d1-Wp2"/>
                                                         </constraints>
@@ -475,7 +475,7 @@
                                                     <constraint firstItem="PpT-is-TA4" firstAttribute="top" secondItem="AEz-Pg-Wan" secondAttribute="bottom" constant="30" id="BIQ-3A-3oS"/>
                                                     <constraint firstItem="PpT-is-TA4" firstAttribute="leading" secondItem="AEz-Pg-Wan" secondAttribute="leading" id="GQe-Dn-2CA"/>
                                                     <constraint firstItem="D4h-yy-2Ro" firstAttribute="centerX" secondItem="bxA-d2-kkU" secondAttribute="centerX" id="Ls4-JP-Vp8"/>
-                                                    <constraint firstItem="9hY-Ie-Ojo" firstAttribute="top" secondItem="PpT-is-TA4" secondAttribute="bottom" priority="900" constant="30" id="SyN-jY-xHq"/>
+                                                    <constraint firstItem="9hY-Ie-Ojo" firstAttribute="top" relation="greaterThanOrEqual" secondItem="PpT-is-TA4" secondAttribute="bottom" constant="30" id="SyN-jY-xHq"/>
                                                     <constraint firstItem="a2W-8Z-1uC" firstAttribute="top" secondItem="D4h-yy-2Ro" secondAttribute="bottom" constant="12" id="TCo-cx-om2"/>
                                                     <constraint firstItem="9hY-Ie-Ojo" firstAttribute="centerX" secondItem="bxA-d2-kkU" secondAttribute="centerX" id="UUu-Hj-D7G"/>
                                                     <constraint firstItem="a2W-8Z-1uC" firstAttribute="height" secondItem="D4h-yy-2Ro" secondAttribute="height" id="WW9-O4-T0E"/>
@@ -510,7 +510,7 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="ZS2-KJ-uuZ" secondAttribute="trailing" id="JrF-W5-EU1"/>
                                     <constraint firstItem="ZS2-KJ-uuZ" firstAttribute="top" secondItem="tbe-6N-NYA" secondAttribute="top" id="ame-ml-KSJ"/>
-                                    <constraint firstItem="C8R-M1-w61" firstAttribute="height" relation="greaterThanOrEqual" secondItem="tbe-6N-NYA" secondAttribute="height" id="b0D-jY-RyQ"/>
+                                    <constraint firstItem="C8R-M1-w61" firstAttribute="height" secondItem="tbe-6N-NYA" secondAttribute="height" priority="900" id="b0D-jY-RyQ"/>
                                     <constraint firstItem="ZS2-KJ-uuZ" firstAttribute="leading" secondItem="tbe-6N-NYA" secondAttribute="leading" id="clN-vX-qlT"/>
                                     <constraint firstItem="C8R-M1-w61" firstAttribute="width" secondItem="tbe-6N-NYA" secondAttribute="width" id="mMC-30-aya"/>
                                     <constraint firstAttribute="bottom" secondItem="ZS2-KJ-uuZ" secondAttribute="bottom" id="xjk-5H-giX"/>

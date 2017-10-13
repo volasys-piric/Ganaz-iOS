@@ -429,8 +429,9 @@
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
-            cell.lblTitle.text = @"Suggest Friend";                   // Job application
-            cell.lblMessage.text = @"Nueva solicitud de trabajo";           // New job inquiry
+            // Suggest Friend
+            cell.lblTitle.text = @"Amigo sugerido";                           // Job application
+            cell.lblMessage.text = @"Nueva solicitud de trabajo";             // New job inquiry
             
             [managerCache requestGetCompanyDetailsByCompanyId:message.szReceiverCompanyId Callback:^(int indexCompany) {
                 if (indexCompany == -1) {
@@ -456,8 +457,9 @@
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER){
-            cell.lblTitle.text = @"Survey Answer";
-            cell.lblMessage.text = @"You answered survey.";
+            cell.lblTitle.text = @"Encuesta";
+            // You answered survey.
+            cell.lblMessage.text = @"Usted contestó la encuesta.";
             
             [managerCache requestGetIndexForSurveyBySurveyId:message.szSurveyId Callback:^(int index) {
                 if (index != -1){
@@ -505,7 +507,8 @@
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE ||
                  message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT){
-            cell.lblTitle.text = @"Survey";
+            // Survey
+            cell.lblTitle.text = @"Encuesta";
             cell.lblMessage.text = [message getContentsES];
             
             [managerCache requestGetCompanyDetailsByCompanyId:message.szSenderCompanyId Callback:^(int indexCompany) {
@@ -519,6 +522,9 @@
     
     if([message hasLocationInfo] == YES) {
         cell.locationCenter = [[CLLocation alloc]initWithLatitude:message.locationInfo.fLatitude longitude:message.locationInfo.fLongitude];
+    }
+    else {
+        cell.locationCenter = nil;
     }
     
     BOOL didRead = !([message amIReceiver] && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW);
@@ -541,12 +547,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    GANMessageDataModel *message = [self.arrMessages objectAtIndex:indexPath.row];
-    if([message hasLocationInfo]) {
-        return 260;
-    }
-    return 70;
-//    return UITableViewAutomaticDimension;
+    return UITableViewAutomaticDimension;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
