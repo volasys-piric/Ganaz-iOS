@@ -123,6 +123,8 @@
         self.constraintMapHeight.constant = 0;
         [self.contentView layoutIfNeeded];
     }
+    
+    self.lblMessage.enabledTextCheckingTypes = NSTextCheckingTypePhoneNumber;
 }
 
 #pragma mark - GoogleMaps

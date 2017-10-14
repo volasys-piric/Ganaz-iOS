@@ -24,7 +24,7 @@
 #import "GANGenericFunctionManager.h"
 #import "GANAppManager.h"
 
-@interface GANWorkerMessagesVC () <UITableViewDelegate, UITableViewDataSource>
+@interface GANWorkerMessagesVC () <UITableViewDelegate, UITableViewDataSource, TTTAttributedLabelDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (strong, nonatomic) NSMutableArray *arrMessages;
@@ -240,6 +240,21 @@
 }
 
 #pragma mark - Biz Logic
+
+- (void) callPhoneNumber: (NSString *) phoneNumber{
+    phoneNumber = [GANGenericFunctionManager beautifyPhoneNumber:phoneNumber CountryCode:@"US"];
+    
+    [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:[NSString stringWithFormat:@"Do you want to call %@?", phoneNumber] ButtonYes:@"Yes" ButtonNo:@"NO" CallbackYes:^{
+        NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",[GANGenericFunctionManager stripNonnumericsFromNSString:phoneNumber]]];
+        
+        if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
+            [[UIApplication sharedApplication] openURL:phoneUrl];
+        }
+        else{
+            [GANGlobalVCManager showHudErrorWithMessage:@"Your device does not support phone calls" DismissAfter:-1 Callback:nil];
+        }
+    } CallbackNo:nil];
+}
 
 - (void) showActionSheetForMessageAtIndex: (int) index{
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
@@ -520,6 +535,8 @@
         }
     }
     
+    cell.lblMessage.delegate = self;
+    
     if([message hasLocationInfo] == YES) {
         cell.locationCenter = [[CLLocation alloc]initWithLatitude:message.locationInfo.fLatitude longitude:message.locationInfo.fLongitude];
     }
@@ -590,6 +607,12 @@
     else if ([[notification name] isEqualToString:GANLOCALNOTIFICATION_CONTENTS_TRANSLATED]){
         [self.tableview reloadData];
     }
+}
+
+#pragma mark - TTTAttributedLabelDelegate
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber{
+    [self callPhoneNumber:phoneNumber];
 }
 
 @end

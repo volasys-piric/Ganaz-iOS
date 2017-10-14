@@ -27,7 +27,7 @@
 #import "GANGlobalVCManager.h"
 
 
-@interface GANCompanyMessagesVC () <UITableViewDelegate, UITableViewDataSource>
+@interface GANCompanyMessagesVC () <UITableViewDelegate, UITableViewDataSource, TTTAttributedLabelDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (weak, nonatomic) IBOutlet UIButton *btnSendMessage;
@@ -220,6 +220,21 @@
 - (void) callSuggestedFriendAtIndex: (int) indexMessage{
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:indexMessage];
     NSString *phoneNumber = [message getPhoneNumberForSuggestFriend];
+    [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:[NSString stringWithFormat:@"Do you want to call %@?", phoneNumber] ButtonYes:@"Yes" ButtonNo:@"NO" CallbackYes:^{
+        NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",[GANGenericFunctionManager stripNonnumericsFromNSString:phoneNumber]]];
+        
+        if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
+            [[UIApplication sharedApplication] openURL:phoneUrl];
+        }
+        else{
+            [GANGlobalVCManager showHudErrorWithMessage:@"Your device does not support phone calls" DismissAfter:-1 Callback:nil];
+        }
+    } CallbackNo:nil];
+}
+
+- (void) callPhoneNumber: (NSString *) phoneNumber{
+    phoneNumber = [GANGenericFunctionManager beautifyPhoneNumber:phoneNumber CountryCode:@"US"];
+    
     [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:[NSString stringWithFormat:@"Do you want to call %@?", phoneNumber] ButtonYes:@"Yes" ButtonNo:@"NO" CallbackYes:^{
         NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",[GANGenericFunctionManager stripNonnumericsFromNSString:phoneNumber]]];
         
@@ -537,6 +552,8 @@
         cell.locationCenter = nil;
     }
     
+    cell.lblMessage.delegate = self;
+    
     BOOL didRead = !([message amIReceiver] && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell refreshViewsWithType:message.enumType DidRead:didRead DidSend:amISender];
@@ -610,6 +627,12 @@
         [self buildMessageList];
         [self updateReadStatusIfNeeded];
     }
+}
+
+#pragma mark - TTTAttributedLabelDelegate
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber{
+    [self callPhoneNumber:phoneNumber];
 }
 
 @end

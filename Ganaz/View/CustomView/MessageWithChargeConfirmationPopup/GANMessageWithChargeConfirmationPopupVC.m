@@ -57,7 +57,7 @@
 }
 
 - (void) setDescriptionWithCount: (NSInteger) count{
-    self.labelDescription.text = [NSString stringWithFormat:@"%d of your workers are not using Ganaz so this message will cost $%.02f\n to send", (int) count, count * 0.05];
+    self.labelDescription.text = [NSString stringWithFormat:@"%d of your workers are not using Ganaz so this message will cost $%.02f to send", (int) count, count * 0.05];
 }
 
 - (IBAction)onButtonnWrapperClick:(id)sender {

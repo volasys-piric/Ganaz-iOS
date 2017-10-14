@@ -173,11 +173,11 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         GANMessageWithChargeConfirmationPopupVC *vc = [[GANMessageWithChargeConfirmationPopupVC alloc] initWithNibName:@"GANMessageWithChargeConfirmationPopupVC" bundle:nil];
         vc.delegate = self;
-        [vc setDescriptionWithCount:count];
         [vc setTransitioningDelegate:self.transController];
         vc.view.backgroundColor = [UIColor clearColor];
         vc.modalPresentationStyle = UIModalPresentationCustom;
         [self presentViewController:vc animated:YES completion:nil];
+        [vc setDescriptionWithCount:count];
     });
 }
 

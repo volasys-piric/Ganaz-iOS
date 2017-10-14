@@ -185,7 +185,9 @@
         
         [alertController addAction:actionCancel];
     }
-    [vc presentViewController:alertController animated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [vc presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 #pragma mark - Badge

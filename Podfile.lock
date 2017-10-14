@@ -28,6 +28,7 @@ PODS:
   - OneSignal (2.5.4)
   - SVProgressHUD (2.2.1)
   - SVPullToRefresh (0.4.1)
+  - TTTAttributedLabel (2.0.0)
   - UIView+Shake (1.4.0)
 
 DEPENDENCIES:
@@ -41,6 +42,7 @@ DEPENDENCIES:
   - OneSignal
   - SVProgressHUD
   - SVPullToRefresh
+  - TTTAttributedLabel
   - UIView+Shake
 
 SPEC CHECKSUMS:
@@ -54,8 +56,9 @@ SPEC CHECKSUMS:
   OneSignal: da994bcf6a2efbdceaf71e389e1d05245c562899
   SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
+  TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
   UIView+Shake: 055ad67721de1f74d29c0a1d464697e505dfc62f
 
-PODFILE CHECKSUM: 9b5963ea8d7aadb2dada6ac8441ee8322567dda1
+PODFILE CHECKSUM: e214daa96f0af789fbb9ae7af80a8d832616c355
 
 COCOAPODS: 1.3.1

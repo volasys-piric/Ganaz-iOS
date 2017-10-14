@@ -115,6 +115,9 @@
 
 + (NSString *) beautifyPhoneNumber: (NSString *) localNumber CountryCode: (NSString *) countryCode{
     localNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:localNumber];
+    if (localNumber.length == 11 & [localNumber hasPrefix:@"1"] == YES) {
+        localNumber = [localNumber substringFromIndex:1];
+    }
     
     NSString *szPattern = @"(xxx) xxx-xxxx";
     int nMaxLength = (int) szPattern.length;
