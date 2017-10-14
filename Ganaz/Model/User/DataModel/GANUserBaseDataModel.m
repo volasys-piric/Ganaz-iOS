@@ -75,7 +75,13 @@
 }
 
 - (NSString *) getValidUsername{
-    return [self.modelPhone getBeautifiedPhoneNumber];
+    if (self.enumType == GANENUM_USER_TYPE_COMPANY_ADMIN || self.enumType == GANENUM_USER_TYPE_COMPANY_REGULAR){
+        return [self getFullName];
+    }
+    else if (self.enumType == GANENUM_USER_TYPE_WORKER || self.enumType == GANENUM_USER_TYPE_ONBOARDING_WORKER){
+        return [self.modelPhone getBeautifiedPhoneNumber];
+    }
+    return @"";
 }
 
 @end

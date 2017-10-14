@@ -13,9 +13,9 @@
 
 @property (weak, nonatomic) IBOutlet UIView *viewContents;
 @property (weak, nonatomic) IBOutlet UILabel *lblDescription;
-@property (weak, nonatomic) IBOutlet UIButton *btnCancel;
-@property (weak, nonatomic) IBOutlet UIButton *btnInviteWorker;
-@property (weak, nonatomic) IBOutlet UIButton *btnCommunicateText;
+@property (weak, nonatomic) IBOutlet UIButton *buttonCancel;
+@property (weak, nonatomic) IBOutlet UIButton *buttonInviteWorker;
+@property (weak, nonatomic) IBOutlet UIButton *buttonCommunicateText;
 
 @end
 
@@ -33,14 +33,14 @@
     self.viewContents.layer.borderWidth     = 1;
     self.viewContents.layer.borderColor     = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
     
-    self.btnCancel.layer.cornerRadius       = 3;
-    self.btnCancel.clipsToBounds            = YES;
+    self.buttonCancel.layer.cornerRadius       = 3;
+    self.buttonCancel.clipsToBounds            = YES;
     
-    self.btnInviteWorker.layer.cornerRadius = 3;
-    self.btnInviteWorker.clipsToBounds      = YES;
+    self.buttonInviteWorker.layer.cornerRadius = 3;
+    self.buttonInviteWorker.clipsToBounds      = YES;
     
-    self.btnCommunicateText.layer.cornerRadius = 3;
-    self.btnCommunicateText.clipsToBounds      = YES;
+    self.buttonCommunicateText.layer.cornerRadius = 3;
+    self.buttonCommunicateText.clipsToBounds      = YES;
 }
 
 - (void) closeDialog{
@@ -60,25 +60,29 @@
     [self closeDialog];
 }
 
-- (IBAction)onInviteWorkerstoGanaz:(id)sender {
-    if(self.delegate && [self.delegate respondsToSelector:@selector(InviteWorkertoGanaz)]) {
-        [self.delegate InviteWorkertoGanaz];
+- (IBAction)onButtonInviteClick:(id)sender {
+    if(self.delegate && [self.delegate respondsToSelector:@selector(companyInviteWorkerPopupDidInviteWorker:)]) {
+        [self.delegate companyInviteWorkerPopupDidInviteWorker:self];
     }
     
     [self.view endEditing:YES];
     [self closeDialog];
 }
 
-- (IBAction)onCommunicateWithWorkers:(id)sender {
-    if(self.delegate && [self.delegate respondsToSelector:@selector(CommunicateWithWorkers)]) {
-        [self.delegate CommunicateWithWorkers];
+- (IBAction)onButtonCommunicateClick:(id)sender {
+    if(self.delegate && [self.delegate respondsToSelector:@selector(companyInviteWorkerPopupDidCommunicateWithWorker:)]) {
+        [self.delegate companyInviteWorkerPopupDidCommunicateWithWorker:self];
     }
     
     [self.view endEditing:YES];
     [self closeDialog];
 }
 
-- (IBAction)onGoback:(id)sender {
+- (IBAction)onButtonCancel:(id)sender {
+    if(self.delegate && [self.delegate respondsToSelector:@selector(companyInviteWorkerPopupDidCancel:)]) {
+        [self.delegate companyInviteWorkerPopupDidCancel:self];
+    }
+    
     [self.view endEditing:YES];
     [self closeDialog];
 }

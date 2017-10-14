@@ -8,19 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
+@class GANInviteWorkerPopupVC;
+
 @protocol GANInviteWorkerPopupVCDelegate <NSObject>
 
-- (void) InviteWorkertoGanaz;
-- (void) CommunicateWithWorkers;
+@optional
+
+- (void) companyInviteWorkerPopupDidInviteWorker: (GANInviteWorkerPopupVC *) popup;
+- (void) companyInviteWorkerPopupDidCommunicateWithWorker: (GANInviteWorkerPopupVC *) popup;
+- (void) companyInviteWorkerPopupDidCancel: (GANInviteWorkerPopupVC *) popup;
 
 @end
 
 @interface GANInviteWorkerPopupVC : UIViewController
 
-@property (atomic, assign) NSInteger nIndex;
 @property (nonatomic, weak) id<GANInviteWorkerPopupVCDelegate> delegate;
 
 - (void) setDescription:(NSString *) szName;
-
 
 @end

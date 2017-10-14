@@ -418,8 +418,7 @@
                         <outlet property="btnInvite" destination="0FG-eR-oCV" id="wW8-dg-NSf"/>
                         <outlet property="lblDescription" destination="j4F-wf-ufa" id="a50-84-ciS"/>
                         <outlet property="lblNote" destination="gQn-Jc-Qae" id="4W3-iP-lR8"/>
-                        <outlet property="lblSuggested" destination="Vi7-F5-G5k" id="Axi-od-owf"/>
-                        <outlet property="lblTitle" destination="hL1-TQ-UV6" id="1xY-ED-JD5"/>
+                        <outlet property="lblTitle" destination="Vi7-F5-G5k" id="OjJ-hQ-uq1"/>
                         <outlet property="tableview" destination="DbU-yY-MoP" id="g9V-Uf-HPk"/>
                         <outlet property="txtPhone" destination="E82-ZN-buc" id="kmF-nK-QKT"/>
                         <outlet property="viewPhone" destination="wvp-F3-6tJ" id="nmK-XL-n0n"/>

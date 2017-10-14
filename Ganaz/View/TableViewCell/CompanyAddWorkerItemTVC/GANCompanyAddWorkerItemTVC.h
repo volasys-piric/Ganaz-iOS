@@ -8,20 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
+@class GANCompanyAddWorkerItemTVC;
+
 @protocol GANCompanyAddWorkerItemTVCDelegate <NSObject>
 
-- (void) onAddWorker:(NSInteger)nIndex;
+- (void) companyAddWorkerTableViewCellDidAddClick: (GANCompanyAddWorkerItemTVC *) cell;
 
 @end
 
 @interface GANCompanyAddWorkerItemTVC : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
-@property (weak, nonatomic) IBOutlet UILabel *lblName;
-@property (weak, nonatomic) IBOutlet UILabel *lblPhoneNumber;
-@property (weak, nonatomic) IBOutlet UIButton *btnAdd;
+@property (weak, nonatomic) IBOutlet UILabel *labelName;
+@property (weak, nonatomic) IBOutlet UILabel *labelPhoneNumber;
+@property (weak, nonatomic) IBOutlet UIButton *buttonAdd;
+@property (weak, nonatomic) IBOutlet UILabel *labelNameOnly;
 
-@property (atomic, assign) NSInteger nIndex;
+@property (atomic, assign) int indexCell;
 @property (weak, nonatomic) id<GANCompanyAddWorkerItemTVCDelegate> delegate;
 
 @end

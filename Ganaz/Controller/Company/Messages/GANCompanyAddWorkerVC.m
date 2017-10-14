@@ -28,10 +28,12 @@ typedef enum _ENUM_FOUNDSTATUS{
     GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND
 } GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS;
 
+typedef enum _ENUM_SEARCHRESULTITEMTYPE{
+    GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE_PHONEBOOKCONTACT,
+    GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE_WORKER,
+}GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE;
+
 @interface GANCompanyAddWorkerVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, GANCompanyAddWorkerItemTVCDelegate, GANInviteWorkerPopupVCDelegate>
-{
-    NSInteger nSelectedIndex;
-}
 
 @property (weak, nonatomic) IBOutlet UILabel *lblDescription;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
@@ -42,12 +44,12 @@ typedef enum _ENUM_FOUNDSTATUS{
 @property (weak, nonatomic) IBOutlet UIButton *btnInvite;
 @property (weak, nonatomic) IBOutlet UILabel *lblNote;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
-@property (weak, nonatomic) IBOutlet UILabel *lblSuggested;
 
 @property (strong, nonatomic) NSMutableArray *arrWorkersFound;
-//@property (strong, nonatomic) NSMutableArray *arrInvitedWorkers;
 
 @property (assign, atomic) GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS enumStatus;
+@property (assign, atomic) GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE enumSearchResultItemType;
+@property (assign, atomic) int indexSelectedSearchResultItem;
 
 @property (strong, nonatomic) GANFadeTransitionDelegate *transController;
 
@@ -72,8 +74,8 @@ typedef enum _ENUM_FOUNDSTATUS{
     self.transController = [[GANFadeTransitionDelegate alloc] init];
     
     self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE;
+    self.enumSearchResultItemType = GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE_PHONEBOOKCONTACT;
     self.arrWorkersFound = [[NSMutableArray alloc] init];
-//    self.arrInvitedWorkers = [[NSMutableArray alloc] init];
     
     self.lblDescription.text = self.szDescription;
     
@@ -98,8 +100,7 @@ typedef enum _ENUM_FOUNDSTATUS{
 - (void) refreshViews{
     if (self.enumStatus == GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE){
         self.tableview.hidden = NO;
-        self.lblSuggested.hidden = NO;
-        self.lblTitle.text = @"Type a name or phone number";
+        self.lblTitle.text = @"Suggested:";
         self.lblNote.text = @"If you have a large number of workers to add, you can send Ganaz a list of those workers at info@ganazapp.com and we’ll happily add them for you.";
         self.btnInvite.hidden = YES;
         self.btnAdd.hidden = NO;
@@ -108,18 +109,20 @@ typedef enum _ENUM_FOUNDSTATUS{
         self.tableview.hidden = NO;
         self.lblTitle.text = @"Worker(s) found";
         self.lblNote.text = @"";
-        self.lblSuggested.hidden = NO;
         self.btnInvite.hidden = YES;
         self.btnAdd.hidden = NO;
     }
     else if (self.enumStatus == GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND){
         self.tableview.hidden = YES;
-        self.lblTitle.text = @"Worker not found";
+        self.lblTitle.text = @"";
         self.lblNote.text = @"Note: any worker you invite to Ganaz will receive recruiting messages exclusively from you for 12 months unless they otherwise opt-out";
-        self.lblSuggested.hidden = YES;
         self.btnInvite.hidden = NO;
         self.btnAdd.hidden = NO;
     }
+}
+
+- (void) shakeInvalidFields: (UIView *) viewContainer{
+    [viewContainer shake:6 withDelta:8 speed:0.07];
 }
 
 #pragma mark - Biz Logic
@@ -137,9 +140,8 @@ typedef enum _ENUM_FOUNDSTATUS{
 }
 
 - (void) buildFilteredArray{
-    
-//    [self.arrInvitedWorkers removeAllObjects];
     [self.arrWorkersFound removeAllObjects];
+    self.enumSearchResultItemType = GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE_PHONEBOOKCONTACT;
     
     GANPhonebookContactsManager *managerPhonebook = [GANPhonebookContactsManager sharedInstance];
     if (managerPhonebook.isContactsListBuilt == NO){
@@ -173,74 +175,39 @@ typedef enum _ENUM_FOUNDSTATUS{
     });
 }
 
-- (void) shakeInvalidFields: (UIView *) viewContainer{
-    [viewContainer shake:6 withDelta:8 speed:0.07];
+- (void) showDlgForInviteWorkerWithName:(NSString*) name{
+    GANInviteWorkerPopupVC *vc = [[GANInviteWorkerPopupVC alloc] initWithNibName:@"GANInviteWorkerPopupVC" bundle:nil];
+    vc.delegate = self;
+    vc.view.backgroundColor = [UIColor clearColor];
+    [vc setTransitioningDelegate:self.transController];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:vc animated:YES completion:nil];
+    
+    [vc setDescription:name];
 }
 
-- (void) searchWorkers:(BOOL) fromSeachField {
-    /*
-    if([self isInvitedUser:self.txtPhone.text])
-    {
-        [GANGlobalVCManager showHudErrorWithMessage:@"This user has already been added" DismissAfter:-1 Callback:nil];
-        return;
-    }*/
-    
-    NSString *szPhoneNumber = self.txtPhone.text;
-    NSString *szWorkerName = self.txtPhone.text;
-    
-    if(fromSeachField == NO) {
-        GANPhonebookContactDataModel *worker = [self.arrWorkersFound objectAtIndex:nSelectedIndex];
-        szPhoneNumber = worker.modelPhone.szLocalNumber;
-        szWorkerName = [worker getFullName];
-    } else {
-        if ([szPhoneNumber isEqualToString:@""]){
-            [self shakeInvalidFields:self.viewPhone];
-            return;
-        }
-        
-        szPhoneNumber = [GANGenericFunctionManager getValidPhoneNumber:szPhoneNumber];
-        if([szPhoneNumber isEqualToString:@""]) {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Please enter a valid phone number" DismissAfter:-1 Callback:nil];
-            return;
-        }
-    }
-    
+- (void) doSearchWorkerWithPhonebookContactAtIndex: (int) indexPhonebookContact{
+    GANPhonebookContactDataModel *worker = [self.arrWorkersFound objectAtIndex:indexPhonebookContact];
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    
-    [[GANCompanyManager sharedInstance] requestSearchNewWorkersByPhoneNumber:szPhoneNumber Callback:^(int status, NSArray *arrWorkers) {
+    [[GANCompanyManager sharedInstance] requestSearchNewWorkersByPhoneNumber:worker.modelPhone.szLocalNumber Callback:^(int status, NSArray *arrWorkers) {
         if (status == SUCCESS_WITH_NO_ERROR && arrWorkers != nil){
             int count = (int) [arrWorkers count];
             if (count == 0){
                 self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND;
-                if(fromSeachField) {
-                    [self refreshViews];
-                    [GANGlobalVCManager showHudInfoWithMessage:@"No new workers found" DismissAfter:-1 Callback:nil];
-                } else {
-                    [GANGlobalVCManager hideHudProgress];
-                    [self showPopupDialog:szWorkerName];
-                }
-            } else {
-                 if(fromSeachField) {
-                     [self buildSearchResultWithArray:arrWorkers];
-                     self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_FOUND;
-                     [self refreshViews];
-                     [GANGlobalVCManager showHudSuccessWithMessage:[NSString stringWithFormat:@"%d worker(s) found!", (int) [arrWorkers count]] DismissAfter:-1 Callback:nil];
-                 } else {
-                     [GANGlobalVCManager hideHudProgress];
-                     [self doAddMyWorkers:(NSArray<GANUserWorkerDataModel *> *) arrWorkers];
-                 }
+                [GANGlobalVCManager hideHudProgressWithCallback:^{
+                    [self showDlgForInviteWorkerWithName:[worker getFullName]];
+                }];
+            }
+            else {
+                [GANGlobalVCManager hideHudProgress];
+                [self doAddMyWorkers:(NSArray<GANUserWorkerDataModel *> *) arrWorkers];
             }
         }
         else if (status == ERROR_NOT_FOUND){
             self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND;
-            if(fromSeachField) {
-                [self refreshViews];
-                [GANGlobalVCManager showHudInfoWithMessage:@"No worker found!" DismissAfter:-1 Callback:nil];
-            } else {
-                [GANGlobalVCManager hideHudProgress];
-                [self showPopupDialog:szWorkerName];
-            }
-            
+            [GANGlobalVCManager hideHudProgressWithCallback:^{
+                [self showDlgForInviteWorkerWithName:[worker getFullName]];
+            }];
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
@@ -248,9 +215,51 @@ typedef enum _ENUM_FOUNDSTATUS{
     }];
 }
 
-- (void) buildSearchResultWithArray: (NSArray *) arr{
+- (void) doSearchWorkerWithSearchString: (NSString *) keyword{
+    // keyword = Phone number
+    NSString *szPhoneNumber = keyword;
+    
+    if ([szPhoneNumber isEqualToString:@""]){
+        [self shakeInvalidFields:self.viewPhone];
+        return;
+    }
+    
+    szPhoneNumber = [GANGenericFunctionManager getValidPhoneNumber:szPhoneNumber];
+    if([szPhoneNumber isEqualToString:@""]) {
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please enter a valid phone number" DismissAfter:-1 Callback:nil];
+        return;
+    }
+
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [[GANCompanyManager sharedInstance] requestSearchNewWorkersByPhoneNumber:keyword Callback:^(int status, NSArray *arrWorkers) {
+        if (status == SUCCESS_WITH_NO_ERROR && arrWorkers != nil){
+            int count = (int) [arrWorkers count];
+            if (count == 0){
+                self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND;
+                [self refreshViews];
+                [GANGlobalVCManager showHudInfoWithMessage:@"No new workers found" DismissAfter:-1 Callback:nil];
+            } else {
+                [self buildSearchResultWithArray:arrWorkers];
+                self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_FOUND;
+                self.enumSearchResultItemType = GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE_WORKER;
+                [self refreshViews];
+                [GANGlobalVCManager showHudSuccessWithMessage:[NSString stringWithFormat:@"%d worker(s) found!", (int) [arrWorkers count]] DismissAfter:-1 Callback:nil];
+            }
+        }
+        else if (status == ERROR_NOT_FOUND){
+            self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NOTFOUND;
+            [self refreshViews];
+            [GANGlobalVCManager showHudInfoWithMessage:@"No worker found!" DismissAfter:-1 Callback:nil];
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
+        }
+    }];
+}
+
+- (void) buildSearchResultWithArray: (NSArray *) results{
     [self.arrWorkersFound removeAllObjects];
-    [self.arrWorkersFound addObjectsFromArray:arr];
+    [self.arrWorkersFound addObjectsFromArray:results];
     
     [self.tableview reloadData];
 }
@@ -266,11 +275,6 @@ typedef enum _ENUM_FOUNDSTATUS{
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [[GANCompanyManager sharedInstance] requestAddMyWorkerWithUserIds:arrUserIds Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            /*for (int i = 0; i < (int) [arrWorkers count]; i++) {
-                GANUserWorkerDataModel *worker = [arrWorkers objectAtIndex:i];
-                [self.arrInvitedWorkers addObject:worker.modelPhone.szLocalNumber];
-            }*/
-            
             [GANGlobalVCManager showHudSuccessWithMessage:@"Worker has been added successfully" DismissAfter:-3 Callback:^{
                 [self.tableview reloadData];
             }];
@@ -282,15 +286,21 @@ typedef enum _ENUM_FOUNDSTATUS{
     GANACTIVITY_REPORT(@"Company - Add worker");
 }
 
-- (void) InviteMyWorker:(BOOL) bInviteOnly
-{
+- (void) doInviteWorker:(BOOL) isInviteOnly{
     NSString *szCompanyId = [GANUserManager getCompanyDataModel].szId;
     GANPhoneDataModel *phone = [[GANPhoneDataModel alloc] init];
-    if(nSelectedIndex < 0) {
+    if(self.indexSelectedSearchResultItem < 0) {
         phone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:self.txtPhone.text];
-    } else {
-        GANPhonebookContactDataModel *worker = [self.arrWorkersFound objectAtIndex:nSelectedIndex];
-        phone.szLocalNumber = worker.modelPhone.szLocalNumber;
+    }
+    else {
+        if (self.enumSearchResultItemType == GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE_WORKER){
+            GANUserWorkerDataModel *worker = [self.arrWorkersFound objectAtIndex:self.indexSelectedSearchResultItem];
+            phone.szLocalNumber = worker.modelPhone.szLocalNumber;
+        }
+        else if (self.enumSearchResultItemType == GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE_PHONEBOOKCONTACT){
+            GANPhonebookContactDataModel *phonebookContact = [self.arrWorkersFound objectAtIndex:self.indexSelectedSearchResultItem];
+            phone.szLocalNumber = phonebookContact.modelPhone.szLocalNumber;
+        }
     }
     
     if([[GANCompanyManager sharedInstance] checkUserInMyworkerList:phone.szLocalNumber]) {
@@ -300,14 +310,13 @@ typedef enum _ENUM_FOUNDSTATUS{
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
-    [[GANCompanyManager sharedInstance] requestSendInvite:phone CompanyId:szCompanyId inviteOnly:bInviteOnly Callback:^(int status) {
+    [[GANCompanyManager sharedInstance] requestSendInvite:phone CompanyId:szCompanyId inviteOnly:isInviteOnly Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
-//            [self.arrInvitedWorkers addObject:phone.szLocalNumber];
-            if(bInviteOnly)
+            if(isInviteOnly)
                 [GANGlobalVCManager showHudSuccessWithMessage:@"An invitation will be sent shortly via SMS" DismissAfter:-1 Callback:nil];
             else {
                 [GANGlobalVCManager showHudSuccessWithMessage:@"Worker has been added successfully" DismissAfter:-3 Callback:^{
-                    [self getMyWorkerList];
+                    [self refreshMyWorkerList];
                 }];
             }
         }
@@ -318,7 +327,7 @@ typedef enum _ENUM_FOUNDSTATUS{
     GANACTIVITY_REPORT(@"Company - Send invite");
 }
 
-- (void) getMyWorkerList {
+- (void) refreshMyWorkerList {
     [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:^(int status) {
         if(status == SUCCESS_WITH_NO_ERROR) {
             [self.tableview reloadData];
@@ -331,7 +340,7 @@ typedef enum _ENUM_FOUNDSTATUS{
 
 - (IBAction)onBtnSearchClick:(id)sender {
     [self.view endEditing:YES];
-    [self searchWorkers: YES];
+    [self doSearchWorkerWithSearchString:self.txtPhone.text];
 }
 
 - (IBAction)onBtnContinueClick:(id)sender {
@@ -354,32 +363,36 @@ typedef enum _ENUM_FOUNDSTATUS{
 - (IBAction)onBtnInviteClick:(id)sender {
     [self.view endEditing:YES];
 
-    nSelectedIndex = -1;
+    self.indexSelectedSearchResultItem = -1;
     
     GANPhoneDataModel *phone = [[GANPhoneDataModel alloc] init];
     [phone setLocalNumber:self.txtPhone.text];
     
-    [self showPopupDialog: [phone getBeautifiedPhoneNumber]];
+    [self showDlgForInviteWorkerWithName:[phone getBeautifiedPhoneNumber]];
 }
-/*
-- (BOOL) isInvitedUser:(NSString*)szPhoneNumber {
-    for(int i = 0; i < self.arrInvitedWorkers.count; i ++) {
-        NSString *szUserPhone = [self.arrInvitedWorkers objectAtIndex:i];
-        if([szUserPhone isEqualToString:szPhoneNumber])
-            return YES;
-    }
-    return NO;
-}*/
 
 #pragma mark - UITableView Delegate
 
 - (void) configureCell: (GANCompanyAddWorkerItemTVC *) cell AtIndex: (int) index{
-    GANUserWorkerDataModel *worker = [self.arrWorkersFound objectAtIndex:index];
-    cell.lblName.text = [worker getFullName];
-    cell.lblPhoneNumber.text = [worker.modelPhone getBeautifiedPhoneNumber];
-    cell.containerView.layer.cornerRadius = 4;
+    if (self.enumSearchResultItemType == GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE_PHONEBOOKCONTACT){
+        GANPhonebookContactDataModel *phonebookContact = [self.arrWorkersFound objectAtIndex:index];
+        cell.labelName.text = [phonebookContact getFullName];
+        cell.labelPhoneNumber.text = [phonebookContact.modelPhone getBeautifiedPhoneNumber];
+        
+        cell.labelName.hidden = NO;
+        cell.labelPhoneNumber.hidden = NO;
+        cell.labelNameOnly.hidden = YES;
+    }
+    else if (self.enumSearchResultItemType == GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE_WORKER){
+        GANUserWorkerDataModel *worker = [self.arrWorkersFound objectAtIndex:index];
+        cell.labelNameOnly.text = [worker getValidUsername];
+
+        cell.labelName.hidden = YES;
+        cell.labelPhoneNumber.hidden = YES;
+        cell.labelNameOnly.hidden = NO;
+    }
+    cell.indexCell = index;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.nIndex = index;
     cell.delegate = self;
 }
 
@@ -406,50 +419,45 @@ typedef enum _ENUM_FOUNDSTATUS{
 }
 
 #pragma mark - GANCompanySuggestWorkersItemTVCDelegate
-- (void)onAddWorker:(NSInteger)nIndex {
-    
-    if(self.enumStatus == GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_FOUND) {
-        GANUserWorkerDataModel *worker = [self.arrWorkersFound objectAtIndex:nIndex];
+
+- (void)companyAddWorkerTableViewCellDidAddClick:(GANCompanyAddWorkerItemTVC *)cell{
+    int index = cell.indexCell;
+    if (self.enumSearchResultItemType == GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE_WORKER){
+        GANUserWorkerDataModel *worker = [self.arrWorkersFound objectAtIndex:index];
         [self doAddMyWorkers:@[worker]];
-    } else {
-        nSelectedIndex = nIndex;
-        [self searchWorkers:NO];
+    }
+    else if (self.enumSearchResultItemType == GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE_PHONEBOOKCONTACT){
+        self.indexSelectedSearchResultItem = index;
+        [self doSearchWorkerWithPhonebookContactAtIndex:index];
     }
 }
 
 #pragma mark - GANInviteWorkerPopupVCDelegate
-- (void) showPopupDialog:(NSString*) szWorkerName {
-    
-    GANInviteWorkerPopupVC *vc = [[GANInviteWorkerPopupVC alloc] initWithNibName:@"GANInviteWorkerPopupVC" bundle:nil];
-    
-    vc.delegate = self;
 
-    vc.view.backgroundColor = [UIColor clearColor];
-    
-    [vc setTransitioningDelegate:self.transController];
-    vc.modalPresentationStyle = UIModalPresentationCustom;
-    [self presentViewController:vc animated:YES completion:^{
-        
-    }];
-    
-    [vc setDescription:szWorkerName];
+- (void) companyInviteWorkerPopupDidInviteWorker:(GANInviteWorkerPopupVC *)popup{
+    [self doInviteWorker:YES];
 }
 
-- (void) InviteWorkertoGanaz {
-    [self InviteMyWorker:YES];
+- (void) companyInviteWorkerPopupDidCommunicateWithWorker:(GANInviteWorkerPopupVC *)popup{
+    [self doInviteWorker:NO];
 }
 
-- (void) CommunicateWithWorkers {
-    [self InviteMyWorker:NO];
+- (void) companyInviteWorkerPopupDidCancel:(GANInviteWorkerPopupVC *)popup{
+    
 }
 
 #pragma mark - UITextFieldDelegate
--(BOOL)textFieldShouldReturn:(UITextField *)textField {
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
 }
 
 - (IBAction)onSeachTextFieldChanged:(id)sender {
     [self buildFilteredArray];
+    
+    self.enumStatus = GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE;
+    [self refreshViews];
 }
+
 @end
