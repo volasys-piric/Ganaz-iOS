@@ -24,6 +24,7 @@
 #import "GANGenericFunctionManager.h"
 #import "Global.h"
 #import "GANAppManager.h"
+#import "UIColor+GANColor.h"
 
 #define NON_SELECTED -1
 
@@ -40,6 +41,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtMiles;
 @property (weak, nonatomic) IBOutlet UIButton *btnShareJob;
 @property (weak, nonatomic) IBOutlet UIButton *btnAddWorker;
+@property (weak, nonatomic) IBOutlet UIButton *buttonSelectAll;
 
 @property (strong, nonatomic) GANFadeTransitionDelegate *transController;
 
@@ -99,6 +101,13 @@
     self.viewBroadcastPanel.layer.cornerRadius = 3;
     self.btnShareJob.layer.cornerRadius = 3;
     self.btnAddWorker.layer.cornerRadius = 3;
+    self.buttonSelectAll.layer.cornerRadius = 3;
+    
+    self.btnShareJob.clipsToBounds = YES;
+    self.btnAddWorker.clipsToBounds = YES;
+    self.buttonSelectAll.clipsToBounds = YES;
+    
+    self.btnAddWorker.backgroundColor = [UIColor GANThemeGreenColor];
     
     GANJobManager *managerJob = [GANJobManager sharedInstance];
     GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:self.nJobIndex];
@@ -115,6 +124,55 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableviewWorkers reloadData];
+        [self refreshSelectAllButton];
+    });
+}
+
+- (void) refreshSelectAllButton{
+    if ([self.arrWorkerSelected count] == 0) {
+        self.buttonSelectAll.hidden = YES;
+        return;
+    }
+    
+    self.buttonSelectAll.hidden = NO;
+    int count = [self getSelectedCount];
+    if (count == (int) [self.arrWorkerSelected count]) {
+        // All selected
+        [self.buttonSelectAll setTitle:@"Deselect\rworkers" forState:UIControlStateNormal];
+        self.buttonSelectAll.backgroundColor = [UIColor GANThemeMainColor];
+    }
+    else {
+        [self.buttonSelectAll setTitle:@"Select all\rworkers" forState:UIControlStateNormal];
+        self.buttonSelectAll.backgroundColor = [UIColor GANThemeGreenColor];
+    }
+}
+
+- (int) getSelectedCount{
+    int count = 0;
+    for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++) {
+        if ([[self.arrWorkerSelected objectAtIndex:i] boolValue] == YES) count++;
+    }
+    return count;
+}
+
+- (void) doSelectAll{
+    int count = [self getSelectedCount];
+    if (count == (int) [self.arrWorkerSelected count]) {
+        // Deselect
+        for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
+            [self.arrWorkerSelected replaceObjectAtIndex:i withObject:@(NO)];
+        }
+    }
+    else {
+        // Select all
+        for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
+            [self.arrWorkerSelected replaceObjectAtIndex:i withObject:@(YES)];
+        }
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableviewWorkers reloadData];
+        [self refreshSelectAllButton];
     });
 }
 
@@ -140,7 +198,12 @@
     
     NSString *sz = self.txtMiles.text;
     if (sz.length > 0){
-        fBroadcast = [GANGenericFunctionManager refineFloat:sz DefaultValue:-1];
+        fBroadcast = [GANGenericFunctionManager refineFloat:sz DefaultValue:0];
+    }
+    
+    if ([arrReRecruitUserIds count] == 0 && fBroadcast < 0.01){
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please select workers or set broadcast radius." DismissAfter:-1 Callback:nil];
+        return;
     }
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
@@ -402,6 +465,11 @@
 - (IBAction)onBtnAddWorkerClick:(id)sender {
     [self.view endEditing:YES];
     [self gotoAddWorkerVC];
+}
+
+- (IBAction)onButtonSelectAllClick:(id)sender {
+    [self.view endEditing:YES];
+    [self doSelectAll];
 }
 
 #pragma mark -NSNotification

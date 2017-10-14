@@ -21,6 +21,7 @@
 
 #import "GANGlobalVCManager.h"
 #import "GANAppManager.h"
+#import "UIColor+GANColor.h"
 
 #define NON_SELECTED -1
 
@@ -33,6 +34,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *btnContinue;
 @property (weak, nonatomic) IBOutlet UIButton *btnAddWorker;
+@property (weak, nonatomic) IBOutlet UIButton *buttonSelectAll;
 
 @property (strong, nonatomic) NSMutableArray *arrWorkerSelected;
 @property (assign, atomic) BOOL isPopupShowing;
@@ -93,9 +95,13 @@
 - (void) refreshViews{
     self.btnContinue.layer.cornerRadius = 3;
     self.btnAddWorker.layer.cornerRadius = 3;
-
+    self.buttonSelectAll.layer.cornerRadius = 3;
+    
     self.btnContinue.clipsToBounds = YES;
     self.btnAddWorker.clipsToBounds = YES;
+    self.buttonSelectAll.clipsToBounds = YES;
+    
+    self.btnAddWorker.backgroundColor = [UIColor GANThemeGreenColor];
 }
 
 - (void) gotoAddWorkerVC{
@@ -119,6 +125,55 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableview reloadData];
+        [self refreshSelectAllButton];
+    });
+}
+
+- (void) refreshSelectAllButton{
+    if ([self.arrWorkerSelected count] == 0) {
+        self.buttonSelectAll.hidden = YES;
+        return;
+    }
+    
+    self.buttonSelectAll.hidden = NO;
+    int count = [self getSelectedCount];
+    if (count == (int) [self.arrWorkerSelected count]) {
+        // All selected
+        [self.buttonSelectAll setTitle:@"Deselect\rworkers" forState:UIControlStateNormal];
+        self.buttonSelectAll.backgroundColor = [UIColor GANThemeMainColor];
+    }
+    else {
+        [self.buttonSelectAll setTitle:@"Select all\rworkers" forState:UIControlStateNormal];
+        self.buttonSelectAll.backgroundColor = [UIColor GANThemeGreenColor];
+    }
+}
+
+- (int) getSelectedCount{
+    int count = 0;
+    for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++) {
+        if ([[self.arrWorkerSelected objectAtIndex:i] boolValue] == YES) count++;
+    }
+    return count;
+}
+
+- (void) doSelectAll{
+    int count = [self getSelectedCount];
+    if (count == (int) [self.arrWorkerSelected count]) {
+        // Deselect
+        for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
+            [self.arrWorkerSelected replaceObjectAtIndex:i withObject:@(NO)];
+        }
+    }
+    else {
+        // Select all
+        for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
+            [self.arrWorkerSelected replaceObjectAtIndex:i withObject:@(YES)];
+        }
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableview reloadData];
+        [self refreshSelectAllButton];
     });
 }
 
@@ -366,6 +421,11 @@
 - (IBAction)onBtnAddWorkerClick:(id)sender {
     [self.view endEditing:YES];
     [self gotoAddWorkerVC];
+}
+
+- (IBAction)onButtonSelectAllClick:(id)sender {
+    [self.view endEditing:YES];
+    [self doSelectAll];
 }
 
 #pragma mark -NSNotification

@@ -120,17 +120,38 @@
                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lgd-pG-LBX" userLabel="Button - Add Workers">
-                                        <rect key="frame" x="255" y="174" width="100" height="40"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="VYe-o6-NQM" userLabel="Button - Select All">
+                                        <rect key="frame" x="187" y="174" width="80" height="40"/>
+                                        <color key="backgroundColor" red="0.40000000000000002" green="0.70588235290000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="13"/>
+                                        <state key="normal" title="Select all workers">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="titleLabel.textAlignment">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="onButtonSelectAllClick:" destination="xhP-wj-MJD" eventType="touchUpInside" id="x4G-6n-usk"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="lgd-pG-LBX" userLabel="Button - Add Workers">
+                                        <rect key="frame" x="275" y="174" width="80" height="40"/>
                                         <color key="backgroundColor" red="0.40000000000000002" green="0.70588235290000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="FcZ-5w-ayM"/>
-                                            <constraint firstAttribute="width" constant="100" id="mD5-MJ-eLY"/>
+                                            <constraint firstAttribute="width" constant="80" id="mD5-MJ-eLY"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
-                                        <state key="normal" title="Add workers">
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="13"/>
+                                        <state key="normal" title="Add workers">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="titleLabel.textAlignment">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="onBtnAddWorkerClick:" destination="xhP-wj-MJD" eventType="touchUpInside" id="XE2-HK-hSm"/>
                                         </connections>
@@ -165,6 +186,7 @@
                                     <constraint firstAttribute="trailing" secondItem="8AH-sq-jmQ" secondAttribute="trailing" constant="20" id="B7d-OC-1bc"/>
                                     <constraint firstAttribute="trailing" secondItem="cv1-Mc-NR5" secondAttribute="trailing" constant="20" id="GX1-RY-uOx"/>
                                     <constraint firstAttribute="trailing" secondItem="IKm-Zb-1fu" secondAttribute="trailing" constant="20" id="HOE-tQ-xUh"/>
+                                    <constraint firstItem="VYe-o6-NQM" firstAttribute="centerY" secondItem="lgd-pG-LBX" secondAttribute="centerY" id="KXW-Ig-HJE"/>
                                     <constraint firstItem="FMX-ef-poV" firstAttribute="top" secondItem="qqC-wY-A4h" secondAttribute="bottom" constant="8" id="Oah-JS-rky"/>
                                     <constraint firstItem="FMX-ef-poV" firstAttribute="leading" secondItem="RHA-LX-5vQ" secondAttribute="leading" constant="20" id="VLb-0r-X6Q"/>
                                     <constraint firstItem="qqC-wY-A4h" firstAttribute="top" secondItem="cv1-Mc-NR5" secondAttribute="bottom" constant="20" id="VMZ-eH-VD1"/>
@@ -175,6 +197,8 @@
                                     <constraint firstAttribute="bottom" secondItem="8AH-sq-jmQ" secondAttribute="bottom" constant="20" id="e7T-KO-MLj"/>
                                     <constraint firstItem="IKm-Zb-1fu" firstAttribute="leading" secondItem="RHA-LX-5vQ" secondAttribute="leading" constant="20" id="gkE-zX-DSU"/>
                                     <constraint firstAttribute="trailing" secondItem="lgd-pG-LBX" secondAttribute="trailing" constant="20" id="gmk-c8-KtG"/>
+                                    <constraint firstItem="VYe-o6-NQM" firstAttribute="width" secondItem="lgd-pG-LBX" secondAttribute="width" id="hhB-h0-RhG"/>
+                                    <constraint firstItem="VYe-o6-NQM" firstAttribute="height" secondItem="lgd-pG-LBX" secondAttribute="height" id="iQS-gs-OqK"/>
                                     <constraint firstItem="8AH-sq-jmQ" firstAttribute="width" secondItem="IKm-Zb-1fu" secondAttribute="width" id="it8-MI-GMu"/>
                                     <constraint firstItem="qqC-wY-A4h" firstAttribute="leading" secondItem="RHA-LX-5vQ" secondAttribute="leading" constant="20" id="qCI-gF-awd"/>
                                     <constraint firstItem="bBc-MQ-gJq" firstAttribute="leading" secondItem="FMX-ef-poV" secondAttribute="trailing" constant="8" id="rNC-Zz-g8P"/>
@@ -182,6 +206,7 @@
                                     <constraint firstItem="zNe-PU-mpq" firstAttribute="width" secondItem="RHA-LX-5vQ" secondAttribute="width" id="uFg-2u-99D"/>
                                     <constraint firstItem="cv1-Mc-NR5" firstAttribute="leading" secondItem="RHA-LX-5vQ" secondAttribute="leading" constant="20" id="vIB-tB-mAc"/>
                                     <constraint firstItem="zNe-PU-mpq" firstAttribute="centerX" secondItem="RHA-LX-5vQ" secondAttribute="centerX" id="wGS-tp-Bhw"/>
+                                    <constraint firstItem="lgd-pG-LBX" firstAttribute="leading" secondItem="VYe-o6-NQM" secondAttribute="trailing" constant="8" id="xZ8-c8-Lm2"/>
                                     <constraint firstItem="bBc-MQ-gJq" firstAttribute="centerY" secondItem="FMX-ef-poV" secondAttribute="centerY" id="xrx-9s-m0H"/>
                                 </constraints>
                             </view>
@@ -198,6 +223,7 @@
                     <connections>
                         <outlet property="btnAddWorker" destination="lgd-pG-LBX" id="gFT-BV-6r7"/>
                         <outlet property="btnShareJob" destination="8AH-sq-jmQ" id="xN5-hl-JCT"/>
+                        <outlet property="buttonSelectAll" destination="VYe-o6-NQM" id="seQ-Nr-eO0"/>
                         <outlet property="lblJobTitle" destination="cv1-Mc-NR5" id="BEM-Uu-rnj"/>
                         <outlet property="tableviewWorkers" destination="IKm-Zb-1fu" id="1VF-x5-4M5"/>
                         <outlet property="txtMiles" destination="xBO-Yl-UZg" id="80T-kj-RVo"/>
@@ -214,7 +240,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="iJU-eR-HVA" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Jobs" image="tab-list" id="PZV-ec-WC1"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="oC6-jv-mUH">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -427,17 +453,38 @@
                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZFR-4Q-Jph" userLabel="Button - Add Workers">
-                                        <rect key="frame" x="255" y="20" width="100" height="40"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Pdc-L4-AEz" userLabel="Button - Select All">
+                                        <rect key="frame" x="183" y="20" width="80" height="40"/>
+                                        <color key="backgroundColor" red="0.40000000000000002" green="0.70588235290000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="13"/>
+                                        <state key="normal" title="Select all workers">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="titleLabel.textAlignment">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="onButtonSelectAllClick:" destination="wtC-Rh-Nrq" eventType="touchUpInside" id="AOK-9s-3la"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ZFR-4Q-Jph" userLabel="Button - Add Workers">
+                                        <rect key="frame" x="275" y="20" width="80" height="40"/>
                                         <color key="backgroundColor" red="0.40000000000000002" green="0.70588235294117641" blue="0.12549019607843137" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="DSc-ul-7eB"/>
-                                            <constraint firstAttribute="width" constant="100" id="In5-3m-gSY"/>
+                                            <constraint firstAttribute="width" constant="80" id="In5-3m-gSY"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="14"/>
-                                        <state key="normal" title="Add workers">
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="13"/>
+                                        <state key="normal" title="Add workers">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="titleLabel.textAlignment">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="onBtnAddWorkerClick:" destination="wtC-Rh-Nrq" eventType="touchUpInside" id="0zF-JL-tzi"/>
                                         </connections>
@@ -466,19 +513,23 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="ZFR-4Q-Jph" firstAttribute="leading" secondItem="Pdc-L4-AEz" secondAttribute="trailing" constant="12" id="0rp-sL-enc"/>
                                     <constraint firstAttribute="bottom" secondItem="5hM-Fo-yap" secondAttribute="bottom" constant="20" id="15w-pR-pV7"/>
                                     <constraint firstItem="5hM-Fo-yap" firstAttribute="width" secondItem="7Wa-bL-uw4" secondAttribute="width" id="1dO-56-qcf"/>
                                     <constraint firstItem="7Wa-bL-uw4" firstAttribute="leading" secondItem="S8G-oe-yRu" secondAttribute="leading" constant="20" id="Bfe-2R-pAI"/>
                                     <constraint firstItem="5hM-Fo-yap" firstAttribute="leading" secondItem="S8G-oe-yRu" secondAttribute="leading" constant="20" id="CDz-R6-FTd"/>
                                     <constraint firstItem="FE8-w2-Vh2" firstAttribute="top" secondItem="7Wa-bL-uw4" secondAttribute="bottom" constant="24" id="OcN-9X-nSe"/>
+                                    <constraint firstItem="Pdc-L4-AEz" firstAttribute="height" secondItem="ZFR-4Q-Jph" secondAttribute="height" id="Ods-yQ-Olu"/>
                                     <constraint firstItem="5hM-Fo-yap" firstAttribute="top" secondItem="FE8-w2-Vh2" secondAttribute="bottom" constant="8" id="Swg-41-VLn"/>
                                     <constraint firstAttribute="trailing" secondItem="7Wa-bL-uw4" secondAttribute="trailing" constant="20" id="XNM-O9-ghN"/>
                                     <constraint firstItem="7Wa-bL-uw4" firstAttribute="centerY" secondItem="ZFR-4Q-Jph" secondAttribute="centerY" id="bli-Ia-YtH"/>
                                     <constraint firstItem="ZFR-4Q-Jph" firstAttribute="top" secondItem="S8G-oe-yRu" secondAttribute="top" constant="20" id="d9U-IN-K67"/>
+                                    <constraint firstItem="Pdc-L4-AEz" firstAttribute="width" secondItem="ZFR-4Q-Jph" secondAttribute="width" id="fgA-iQ-NWG"/>
                                     <constraint firstItem="FE8-w2-Vh2" firstAttribute="centerX" secondItem="7Wa-bL-uw4" secondAttribute="centerX" id="g3g-Pv-Kh7"/>
                                     <constraint firstAttribute="trailing" secondItem="5hM-Fo-yap" secondAttribute="trailing" constant="20" id="gZD-zM-8d8"/>
                                     <constraint firstAttribute="trailing" secondItem="ZFR-4Q-Jph" secondAttribute="trailing" constant="20" id="mTl-Gr-sEG"/>
                                     <constraint firstItem="FE8-w2-Vh2" firstAttribute="width" secondItem="7Wa-bL-uw4" secondAttribute="width" id="mnO-A9-geZ"/>
+                                    <constraint firstItem="Pdc-L4-AEz" firstAttribute="centerY" secondItem="ZFR-4Q-Jph" secondAttribute="centerY" id="yI8-D8-viB"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -494,6 +545,7 @@
                     <connections>
                         <outlet property="btnAddWorker" destination="ZFR-4Q-Jph" id="pE7-wo-IS3"/>
                         <outlet property="btnContinue" destination="5hM-Fo-yap" id="gKj-ew-IBi"/>
+                        <outlet property="buttonSelectAll" destination="Pdc-L4-AEz" id="rGG-lM-hB2"/>
                         <outlet property="tableview" destination="FE8-w2-Vh2" id="7gI-os-mA2"/>
                         <segue destination="Db0-vm-j2k" kind="show" identifier="SEGUE_FROM_COMPANY_MESSAGES_CHOOSEWORKER_TO_ADD" id="tfm-ek-6QP"/>
                     </connections>
@@ -1011,7 +1063,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uTe-3a-X90" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Messages" image="tab-message" id="HiR-VK-JAF"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="ZES-Oq-N2i">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -1035,10 +1087,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w5f-ed-RXO" userLabel="View - Main Container">
-                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="68" width="375" height="550"/>
                                 <subviews>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1oX-eJ-ceX" userLabel="Button - Sign out">
-                                        <rect key="frame" x="20" y="464" width="335" height="60"/>
+                                        <rect key="frame" x="20" y="460" width="335" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="ZeK-A0-F0U"/>
                                         </constraints>
@@ -1051,7 +1103,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OOe-QU-j7b" userLabel="Button - ToS">
-                                        <rect key="frame" x="20" y="384" width="335" height="60"/>
+                                        <rect key="frame" x="20" y="380" width="335" height="60"/>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
                                         <state key="normal" title="Terms and Policies">
                                             <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -1061,7 +1113,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kb8-vE-dr2" userLabel="Button - Manage Roles">
-                                        <rect key="frame" x="20" y="304" width="335" height="60"/>
+                                        <rect key="frame" x="20" y="300" width="335" height="60"/>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
                                         <state key="normal" title="Manage company roles">
                                             <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -1120,10 +1172,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dxi-3H-Ofa" userLabel="View - Main Container">
-                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="68" width="375" height="550"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fb3-Kb-ry3">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="550"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S1t-Qa-mlJ" userLabel="View - Content View">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="287.5"/>
@@ -1210,7 +1262,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KRB-R9-5dL" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Settings" image="tab-settings" id="1OE-FK-kTO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="973-Uq-eLR">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -1227,7 +1279,7 @@
                 <navigationController id="Oaj-tt-ZXe" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" image="tab-home" id="LmR-s0-GYg"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="OhS-BJ-3Fl">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -1251,7 +1303,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What would you like to do?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y8j-QM-s8O">
-                                <rect key="frame" x="42" y="86" width="292.5" height="28"/>
+                                <rect key="frame" x="41.5" y="86" width="292.5" height="28"/>
                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="24"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -2487,7 +2539,7 @@ your job post with?</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yn1-g2-Vkx" userLabel="View - Main Container">
-                                <rect key="frame" x="0.0" y="64" width="375" height="510"/>
+                                <rect key="frame" x="0.0" y="68" width="375" height="506"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Working sites (5)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pnx-yN-eTx" userLabel="Label - Title">
                                         <rect key="frame" x="20" y="30" width="335" height="20"/>
@@ -2499,7 +2551,7 @@ your job post with?</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5rg-xz-0Gd">
-                                        <rect key="frame" x="20" y="74" width="335" height="436"/>
+                                        <rect key="frame" x="20" y="74" width="335" height="432"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="dataSource" destination="pdF-q7-r6q" id="8rn-pd-bp9"/>
