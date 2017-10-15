@@ -92,6 +92,7 @@
             [GANGlobalVCManager showHudSuccessWithMessage:@"Your answer is posted successfully." DismissAfter:-1 Callback:^{
                 [self refreshMessagesList];
             }];
+            GANACTIVITY_REPORT(@"Worker - survey answered");
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error" DismissAfter:-1 Callback:nil];

@@ -16,6 +16,7 @@
 #import "GANMessageManager.h"
 
 #import "Global.h"
+#import "GANAppManager.h"
 
 #define GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER      @"Enter question here..."
 
@@ -126,6 +127,7 @@
             [GANGlobalVCManager showHudSuccessWithMessage:@"Your survey is posted successfully." DismissAfter:-1 Callback:^{
                 [self refreshMessagesList];
             }];
+            GANACTIVITY_REPORT(@"Company - Post survey");
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error" DismissAfter:-1 Callback:nil];

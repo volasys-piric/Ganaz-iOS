@@ -249,6 +249,7 @@
         
         if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
             [[UIApplication sharedApplication] openURL:phoneUrl];
+            GANACTIVITY_REPORT(@"Worker - Call phone");
         }
         else{
             [GANGlobalVCManager showHudErrorWithMessage:@"Your device does not support phone calls" DismissAfter:-1 Callback:nil];

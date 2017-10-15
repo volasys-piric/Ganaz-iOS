@@ -103,15 +103,31 @@
 
 - (void) initializeManagersAfterLogin{
     GANUserManager *managerUser = [GANUserManager sharedInstance];
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    [mixpanel identify:managerUser.modelUser.szId];
+    
     if ([managerUser isCompanyUser] == YES){
         [[GANJobManager sharedInstance] requestMyJobListWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetCompanyUsersWithCallback:nil];
         [[GANSurveyManager sharedInstance] requestGetSurveyListWithCallback:nil];
+        
+        [mixpanel.people set:@{@"user_type": [GANUtils getStringFromUserType:managerUser.modelUser.enumType],
+                               @"email": managerUser.modelUser.szEmail,
+                               @"phone": [managerUser.modelUser.modelPhone getBeautifiedPhoneNumber],
+                               @"firstname": managerUser.modelUser.szFirstName,
+                               @"lastname": managerUser.modelUser.szLastName,
+                               @"company_name": [[GANUserManager getCompanyDataModel].modelName getTextEN],
+                               @"company_id": [GANUserManager getCompanyDataModel].szId,
+                               }];
     }
     else {
         [[GANJobManager sharedInstance] requestGetMyApplicationsWithCallback:nil];
         [[GANSurveyManager sharedInstance] requestGetSurveyAnswerListByResponderId:managerUser.modelUser.szId Callback:nil];
+        
+        [mixpanel.people set:@{@"user_type": [GANUtils getStringFromUserType:managerUser.modelUser.enumType],
+                               @"phone": [managerUser.modelUser.modelPhone getBeautifiedPhoneNumber],
+                               }];
     }
     [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
     [[GANReviewManager sharedInstance] requestGetReviewsListWithCallback:nil];
@@ -119,6 +135,8 @@
     [CrashlyticsKit setUserIdentifier:managerUser.modelUser.szId];
     [CrashlyticsKit setUserEmail:managerUser.modelUser.szEmail];
     [CrashlyticsKit setUserName:[managerUser.modelUser.modelPhone getBeautifiedPhoneNumber]];
+    
+    GANACTIVITY_REPORT(@"User logged in");
 }
 
 - (void) initializeManagersAfterLogout{
@@ -171,12 +189,6 @@
             self.szLatestVersion = [GANGenericFunctionManager refineNSString:[dictIOS objectForKey:@"latest_version"]];
             self.szLatestBuild = [GANGenericFunctionManager refineNSString:[dictIOS objectForKey:@"latest_build"]];
 
-            // Test Code
-//            self.szLatestVersion = @"1.3";
-//            self.szLatestBuild = @"1300";
-//            self.config.szFrontendMinVersion = @"1.3";
-//            self.config.szFrontendMinBuild = @"1300";
-            
             [self checkAppUpdates];
             
             [self initializeManagersAfterAppConfig];

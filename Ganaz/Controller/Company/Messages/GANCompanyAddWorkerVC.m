@@ -324,7 +324,7 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
         }
     }];
-    GANACTIVITY_REPORT(@"Company - Send invite");
+    GANACTIVITY_REPORT(@"Company - Send invitation");
 }
 
 - (void) refreshMyWorkerList {

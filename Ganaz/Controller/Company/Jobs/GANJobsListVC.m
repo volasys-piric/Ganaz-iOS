@@ -208,7 +208,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     nSelectedIndex = (int) indexPath.row;
-    [self showPopupDialog];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self showPopupDialog];
+    });
 }
 
 #pragma mark - UIButton Delegate

@@ -325,6 +325,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableview reloadData];
             });
+            GANACTIVITY_REPORT(@"Company - Change worker nickname");
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
@@ -364,6 +365,7 @@
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"An invitation will be sent shortly via SMS" DismissAfter:-1 Callback:nil];
             [self getMyWorkerList];
+            GANACTIVITY_REPORT(@"Company - Send invitation");
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
@@ -397,6 +399,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableview reloadData];
             });
+            GANACTIVITY_REPORT(@"Company - Change worker nickname");
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];

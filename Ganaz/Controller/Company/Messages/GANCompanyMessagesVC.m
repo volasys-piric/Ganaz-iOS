@@ -225,6 +225,7 @@
         
         if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
             [[UIApplication sharedApplication] openURL:phoneUrl];
+            GANACTIVITY_REPORT(@"Company - Call phone");
         }
         else{
             [GANGlobalVCManager showHudErrorWithMessage:@"Your device does not support phone calls" DismissAfter:-1 Callback:nil];
@@ -240,43 +241,13 @@
         
         if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
             [[UIApplication sharedApplication] openURL:phoneUrl];
+            GANACTIVITY_REPORT(@"Company - Call phone");
         }
         else{
             [GANGlobalVCManager showHudErrorWithMessage:@"Your device does not support phone calls" DismissAfter:-1 Callback:nil];
         }
     } CallbackNo:nil];
 }
-
-/*
-- (void) replyMessageAtIndex: (int) index{
-    self.indexMessageForReply = index;
-    self.lblReplyTitle.text = @"Reply";
-    
-    GANCacheManager *managerCache = [GANCacheManager sharedInstance];
-    GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
-    
-    NSString *szUserId = @"";
-    if ([message amISender] == YES){
-        szUserId = message.szReceiverUserId;
-    }
-    else {
-        szUserId = message.szSenderUserId;
-    }
-    [managerCache requestGetIndexForUserByUserId:szUserId Callback:^(int index) {
-        
-        if(index == -1)
-            return;
-        
-        GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
-        GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
-        [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
-            self.lblReplyTitle.text = [NSString stringWithFormat:@"Reply to %@", displayName];
-        }];
-    }];
-    
-    [self animateToShowPopup];
-}
-*/
 
 - (void) doReplyMessage{
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:self.indexMessageForReply];
