@@ -214,6 +214,8 @@
 }
 
 - (void) prepareGotoJobDetailsAtIndex: (int) index{
+    GANLOG(@"Job item clicked at index = %d", index);
+    
     GANJobDataModel *job = [[GANJobManager sharedInstance].arrJobsSearchResult objectAtIndex:index];
     [self gotoJobDetailsVCWithJobId:job.szId CompanyId:job.szCompanyId];
     
@@ -258,6 +260,8 @@
             
             [self.navigationController pushViewController:vc animated:YES];
             self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+            
+            GANLOG(@"Go to job details {Job Id = %@}", jobId);
         }];
     }];
 }
@@ -306,8 +310,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     int index = (int) indexPath.row;
-    
-//    [self prepareGotoCompanyDetailsAtIndex:index];
     [self prepareGotoJobDetailsAtIndex:index];
 }
 

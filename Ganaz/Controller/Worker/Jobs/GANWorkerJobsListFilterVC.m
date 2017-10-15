@@ -141,11 +141,12 @@
     
     if (self.dateFrom == nil){
         [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_WORKER_JOBSEARCH_FILTER_UPDATED object:nil userInfo:@{@"distance": self.txtDistance.text}];
-
+        GANLOG(@"Job search {distance = %@}", self.txtDistance.text);
     }
     else {
         [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_WORKER_JOBSEARCH_FILTER_UPDATED object:nil userInfo:@{@"distance": self.txtDistance.text,
                                                                                                                                               @"date_from": self.dateFrom}];
+        GANLOG(@"Job search {distance = %@, date from = %@}", self.txtDistance.text, self.dateFrom);
     }
     [self.navigationController popViewControllerAnimated:YES];
     GANACTIVITY_REPORT(@"Worker - Filter job");

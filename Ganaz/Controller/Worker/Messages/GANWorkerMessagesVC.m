@@ -258,6 +258,8 @@
 }
 
 - (void) showActionSheetForMessageAtIndex: (int) index{
+    GANLOG(@"Message item clicked at index = %d", index);
+    
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
     if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
         return;

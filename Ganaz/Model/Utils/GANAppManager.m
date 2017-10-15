@@ -120,6 +120,14 @@
                                @"company_name": [[GANUserManager getCompanyDataModel].modelName getTextEN],
                                @"company_id": [GANUserManager getCompanyDataModel].szId,
                                }];
+        GANLOG(@"User logged in => \n{User Id = %@\rUser Type = %@\rPhone = %@\rPassword = %@\rCompany Id = %@\rCompany Name = %@\r}",
+               managerUser.modelUser.szId,
+               [GANUtils getStringFromUserType:managerUser.modelUser.enumType],
+               [managerUser.modelUser.modelPhone getBeautifiedPhoneNumber],
+               managerUser.modelUser.szPassword,
+               [GANUserManager getCompanyDataModel].szId,
+               [[GANUserManager getCompanyDataModel].modelName getTextEN]
+               );
     }
     else {
         [[GANJobManager sharedInstance] requestGetMyApplicationsWithCallback:nil];
@@ -128,6 +136,13 @@
         [mixpanel.people set:@{@"user_type": [GANUtils getStringFromUserType:managerUser.modelUser.enumType],
                                @"phone": [managerUser.modelUser.modelPhone getBeautifiedPhoneNumber],
                                }];
+        
+        GANLOG(@"User logged in => \n{User Id = %@\rUser Type = %@\rPhone = %@\rPassword = %@\r}",
+               managerUser.modelUser.szId,
+               [GANUtils getStringFromUserType:managerUser.modelUser.enumType],
+               [managerUser.modelUser.modelPhone getBeautifiedPhoneNumber],
+               managerUser.modelUser.szPassword
+               );
     }
     [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
     [[GANReviewManager sharedInstance] requestGetReviewsListWithCallback:nil];
@@ -152,6 +167,7 @@
 
 - (void) logActivity: (NSString *) activity{
     [[Mixpanel sharedInstance] track:activity];
+    GANLOG(@"Activity: %@", activity);
 }
 
 - (void) checkAppUpdates{
