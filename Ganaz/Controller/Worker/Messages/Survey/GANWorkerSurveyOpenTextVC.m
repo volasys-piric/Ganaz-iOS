@@ -12,6 +12,7 @@
 #import "GANWorkerMessagesVC.h"
 #import "GANGlobalVCManager.h"
 #import "Global.h"
+#import "GANAppManager.h"
 
 @interface GANWorkerSurveyOpenTextVC ()
 
