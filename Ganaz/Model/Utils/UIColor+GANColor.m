@@ -46,15 +46,15 @@
 }
 
 + (UIColor *) GANSurveyColor2{
-    return [UIColor colorWithRed:100 / 255.0 green:179 / 255.0 blue:31 / 255.0 alpha:0.8];
+    return [UIColor colorWithRed:100 / 255.0 green:179 / 255.0 blue:31 / 255.0 alpha:0.67];
 }
 
 + (UIColor *) GANSurveyColor3 {
-    return [UIColor colorWithRed:100 / 255.0 green:179 / 255.0 blue:31 / 255.0 alpha:0.6];
+    return [UIColor colorWithRed:100 / 255.0 green:179 / 255.0 blue:31 / 255.0 alpha:0.33];
 }
 
 + (UIColor *) GANSurveyColor4 {
-    return [UIColor colorWithRed:100 / 255.0 green:179 / 255.0 blue:31 / 255.0 alpha:0.4];
+    return [UIColor colorWithRed:100 / 255.0 green:179 / 255.0 blue:31 / 255.0 alpha:0.0];
 }
 
 + (UIColor *) GANSurveyTextColor {

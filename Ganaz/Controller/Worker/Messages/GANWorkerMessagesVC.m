@@ -468,7 +468,8 @@
                     int indexJob = [company getIndexForJob:message.szJobId];
                     if (indexJob != -1){
                         GANJobDataModel *job = [company.arrJobs objectAtIndex:indexJob];
-                        cell.lblMessage.text = [NSString stringWithFormat:@"Suggest Friend %@ for %@",[message getPhoneNumberForSuggestFriend], [job getTitleES]];       // Job application:
+                        // Suggest Friend {phone number} for {job title}
+                        cell.lblMessage.text = [NSString stringWithFormat:@"Sugerir amigo %@ para %@",[message getPhoneNumberForSuggestFriend], [job getTitleES]];       // Suggest Friend:
                     }
                     else {
                         cell.lblMessage.text = @"No se encontró el trabajo";    // Job not found

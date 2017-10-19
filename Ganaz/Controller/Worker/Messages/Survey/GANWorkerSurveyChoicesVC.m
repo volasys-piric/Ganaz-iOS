@@ -134,7 +134,8 @@
 
 - (void) refreshMessagesList{
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
-    [GANGlobalVCManager showHudProgressWithMessage:@"Loading messages..."];
+    // Loading messages...
+    [GANGlobalVCManager showHudProgressWithMessage:@"Cargando mensajes..."];
     [managerMessage requestGetMessageListWithCallback:^(int status) {
         [GANGlobalVCManager hideHudProgressWithCallback:^{
             [self gotoMessagesVC];

@@ -133,7 +133,9 @@
         [[GANJobManager sharedInstance] requestGetMyApplicationsWithCallback:nil];
         [[GANSurveyManager sharedInstance] requestGetSurveyAnswerListByResponderId:managerUser.modelUser.szId Callback:nil];
         
-        [mixpanel.people set:@{@"user_type": [GANUtils getStringFromUserType:managerUser.modelUser.enumType],
+        [mixpanel.people set:@{@"$first_name": [managerUser.modelUser.modelPhone getBeautifiedPhoneNumber],
+                               @"$last_name": @"",
+                               @"user_type": [GANUtils getStringFromUserType:managerUser.modelUser.enumType],
                                @"$phone": [managerUser.modelUser.modelPhone getBeautifiedPhoneNumber],
                                }];
         

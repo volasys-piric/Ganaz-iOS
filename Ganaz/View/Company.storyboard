@@ -5,7 +5,7 @@
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -1301,7 +1301,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What would you like to do?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y8j-QM-s8O">
-                                <rect key="frame" x="42" y="86" width="292.5" height="28"/>
+                                <rect key="frame" x="41.5" y="86" width="292.5" height="28"/>
                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="24"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -2696,31 +2696,27 @@ your job post with?</string>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xb6-tF-eZD" userLabel="View - ContainterView">
                                 <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="QtU-A8-vp5">
-                                        <rect key="frame" x="16" y="30" width="343" height="93.5"/>
-                                        <string key="text">Let’s be sure your best workers
-come back next season by
-keeping communication lines
-open</string>
-                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="20"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Let’s be sure your best workers come back next season by sending them a message or surveying them about their experience" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="QtU-A8-vp5">
+                                        <rect key="frame" x="30" y="30" width="315" height="84"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="18"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="biX-rn-k2f">
-                                        <rect key="frame" x="20" y="143.5" width="335" height="60"/>
+                                        <rect key="frame" x="20" y="134" width="335" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="rkf-GD-QmQ"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
-                                        <state key="normal" title="Send a message" backgroundImage="button-background">
+                                        <state key="normal" title="Send message or survey" backgroundImage="button-background">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="onSendMessage:" destination="GF3-Kr-U3U" eventType="touchUpInside" id="Wu6-A4-yxq"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For example, thank them for a great season, ask what improvements they’d like to see next year." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o1N-kf-vYG">
-                                        <rect key="frame" x="16" y="223.5" width="343" height="35"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For example, thank them for a great season, ask them about their experience, or inform them about next season." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o1N-kf-vYG">
+                                        <rect key="frame" x="30" y="214" width="315" height="52.5"/>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -2728,10 +2724,10 @@ open</string>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="QtU-A8-vp5" secondAttribute="trailing" constant="16" id="70h-K8-Ud6"/>
+                                    <constraint firstAttribute="trailing" secondItem="QtU-A8-vp5" secondAttribute="trailing" constant="30" id="70h-K8-Ud6"/>
                                     <constraint firstItem="biX-rn-k2f" firstAttribute="leading" secondItem="Xb6-tF-eZD" secondAttribute="leading" constant="20" id="Fn9-La-cYz"/>
                                     <constraint firstItem="biX-rn-k2f" firstAttribute="top" secondItem="QtU-A8-vp5" secondAttribute="bottom" constant="20" id="Nbq-XZ-L8m"/>
-                                    <constraint firstItem="QtU-A8-vp5" firstAttribute="leading" secondItem="Xb6-tF-eZD" secondAttribute="leading" constant="16" id="POI-jP-dF8"/>
+                                    <constraint firstItem="QtU-A8-vp5" firstAttribute="leading" secondItem="Xb6-tF-eZD" secondAttribute="leading" constant="30" id="POI-jP-dF8"/>
                                     <constraint firstItem="QtU-A8-vp5" firstAttribute="top" secondItem="Xb6-tF-eZD" secondAttribute="top" constant="30" id="QkU-OZ-OXW"/>
                                     <constraint firstAttribute="trailing" secondItem="biX-rn-k2f" secondAttribute="trailing" constant="20" id="ZUe-2T-M4S"/>
                                     <constraint firstItem="o1N-kf-vYG" firstAttribute="width" secondItem="QtU-A8-vp5" secondAttribute="width" id="kgF-SW-xDA"/>
