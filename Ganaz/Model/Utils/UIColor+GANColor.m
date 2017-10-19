@@ -42,19 +42,19 @@
 // Survey
 
 + (UIColor *) GANSurveyColor1 {
-    return [UIColor colorWithRed:139 / 255.0 green:161 / 255.0 blue:86 / 255.0 alpha:1.0];
+    return [UIColor colorWithRed:100 / 255.0 green:179 / 255.0 blue:31 / 255.0 alpha:1.0];
 }
 
 + (UIColor *) GANSurveyColor2{
-    return [UIColor colorWithRed:162 / 255.0 green:187 / 255.0 blue:102 / 255.0 alpha:1.0];
+    return [UIColor colorWithRed:100 / 255.0 green:179 / 255.0 blue:31 / 255.0 alpha:0.8];
 }
 
 + (UIColor *) GANSurveyColor3 {
-    return [UIColor colorWithRed:187 / 255.0 green:206 / 255.0 blue:149 / 255.0 alpha:1.0];
+    return [UIColor colorWithRed:100 / 255.0 green:179 / 255.0 blue:31 / 255.0 alpha:0.6];
 }
 
 + (UIColor *) GANSurveyColor4 {
-    return [UIColor colorWithRed:214 / 255.0 green:225 / 255.0 blue:196 / 255.0 alpha:1.0];
+    return [UIColor colorWithRed:100 / 255.0 green:179 / 255.0 blue:31 / 255.0 alpha:0.4];
 }
 
 + (UIColor *) GANSurveyTextColor {
@@ -62,7 +62,8 @@
 }
 
 + (UIColor *) GANSurveyBorderColor {
-    return [UIColor colorWithRed:137 / 255.0 green:158 / 255.0 blue:87 / 255.0 alpha:1.0];
+    return [UIColor colorWithRed:100 / 255.0 green:179 / 255.0 blue:31 / 255.0 alpha:1.0];
+//    return [UIColor colorWithRed:137 / 255.0 green:158 / 255.0 blue:87 / 255.0 alpha:1.0];
 }
 
 @end

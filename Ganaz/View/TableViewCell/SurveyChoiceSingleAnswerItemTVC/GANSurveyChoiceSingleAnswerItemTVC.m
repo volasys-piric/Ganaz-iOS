@@ -23,16 +23,16 @@
 }
 
 - (void) refreshViews{
-    self.viewContent.backgroundColor = [UIColor clearColor];
-    self.viewContent.layer.borderColor = [UIColor GANThemeMainColor].CGColor;
     self.viewContent.layer.borderWidth = 1;
     self.viewContent.layer.cornerRadius = 3;
 
-    if (self.isSelected == YES){
-        [self.imageCheck setImage:[UIImage imageNamed:@"icon-checked"]];
+    if (self.isSelected == NO){
+        self.viewContent.backgroundColor = [UIColor clearColor];
+        self.viewContent.layer.borderColor = [UIColor GANThemeMainColor].CGColor;
     }
     else {
-        [self.imageCheck setImage:[UIImage imageNamed:@"icon-unchecked"]];
+        self.viewContent.backgroundColor = [UIColor GANThemeGreenColor];
+        self.viewContent.layer.borderColor = [UIColor clearColor].CGColor;
     }
 }
 

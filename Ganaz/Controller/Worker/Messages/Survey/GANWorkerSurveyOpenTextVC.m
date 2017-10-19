@@ -83,27 +83,31 @@
 - (void) doSubmitAnswer {
     NSString *szText = self.textviewAnswer.text;
     if (szText.length == 0) {
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please select answer" DismissAfter:-1 Callback:nil];
+        // Please enter your answer
+        [GANGlobalVCManager showHudErrorWithMessage:@"Por favor, escribe su respuesta" DismissAfter:-1 Callback:nil];
         return;
     }
     
-    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    // Please wait...
+    [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     [[GANSurveyManager sharedInstance] requestSubmitSurveyOpenTextAnswerBySurveyId:self.modelSurvey.szId Text:szText Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR) {
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Your answer is posted successfully." DismissAfter:-1 Callback:^{
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Gracias por responder a esta encuesta." DismissAfter:-1 Callback:^{
                 [self refreshMessagesList];
             }];
             GANACTIVITY_REPORT(@"Worker - survey answered");
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error" DismissAfter:-1 Callback:nil];
+            // Sorry, we've encountered an error.
+            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error" DismissAfter:-1 Callback:nil];
         }
     }];
 }
 
 - (void) refreshMessagesList{
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
-    [GANGlobalVCManager showHudProgressWithMessage:@"Loading messages..."];
+    // Loading messages...
+    [GANGlobalVCManager showHudProgressWithMessage:@"Cargando mensajes..."];
     [managerMessage requestGetMessageListWithCallback:^(int status) {
         [GANGlobalVCManager hideHudProgressWithCallback:^{
             [self gotoMessagesVC];

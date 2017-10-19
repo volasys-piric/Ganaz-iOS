@@ -152,6 +152,8 @@
     for (int i = 0; i < (int) [managerMessage.arrMessages count]; i++){
         GANMessageDataModel *message = [managerMessage.arrMessages objectAtIndex:i];
         if ([message amIReceiver] == NO && [message amISender] == NO) continue;
+        if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) continue;
+        
         [self.arrMessages addObject:message];
     }
     
@@ -555,7 +557,7 @@
     if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
         [self callSuggestedFriendAtIndex:index];
     }
-    if ([message isSurveyMessage] == YES){
+    else if ([message isSurveyMessage] == YES){
         [self showActionSheetForSurveyAtIndex:index];
     }
     else {

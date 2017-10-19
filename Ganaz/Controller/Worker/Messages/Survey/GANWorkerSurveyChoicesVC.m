@@ -111,20 +111,23 @@
     }
     
     if (indexSelected == -1) {
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please select answer" DismissAfter:-1 Callback:nil];
+        // Please choose your answer
+        [GANGlobalVCManager showHudErrorWithMessage:@"Por favor, escoge su respuesta" DismissAfter:-1 Callback:nil];
         return;
     }
     
-    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    // Please wait...
+    [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     [[GANSurveyManager sharedInstance] requestSubmitSurveyChoiceAnswerBySurveyId:self.modelSurvey.szId ChoiceIndex:indexSelected Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR) {
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Your answer is posted successfully." DismissAfter:-1 Callback:^{
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Gracias por responder a esta encuesta." DismissAfter:-1 Callback:^{
                 [self refreshMessagesList];
             }];
             GANACTIVITY_REPORT(@"Worker - survey answered");
         }
         else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error" DismissAfter:-1 Callback:nil];
+            // Sorry, we've encountered an error.
+            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error" DismissAfter:-1 Callback:nil];
         }
     }];
 }

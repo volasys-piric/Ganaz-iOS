@@ -113,10 +113,10 @@
         [[GANSurveyManager sharedInstance] requestGetSurveyListWithCallback:nil];
         
         [mixpanel.people set:@{@"user_type": [GANUtils getStringFromUserType:managerUser.modelUser.enumType],
-                               @"email": managerUser.modelUser.szEmail,
-                               @"phone": [managerUser.modelUser.modelPhone getBeautifiedPhoneNumber],
-                               @"firstname": managerUser.modelUser.szFirstName,
-                               @"lastname": managerUser.modelUser.szLastName,
+                               @"$email": managerUser.modelUser.szEmail,
+                               @"$phone": [managerUser.modelUser.modelPhone getBeautifiedPhoneNumber],
+                               @"$first_name": managerUser.modelUser.szFirstName,
+                               @"$last_name": managerUser.modelUser.szLastName,
                                @"company_name": [[GANUserManager getCompanyDataModel].modelName getTextEN],
                                @"company_id": [GANUserManager getCompanyDataModel].szId,
                                }];
@@ -134,7 +134,7 @@
         [[GANSurveyManager sharedInstance] requestGetSurveyAnswerListByResponderId:managerUser.modelUser.szId Callback:nil];
         
         [mixpanel.people set:@{@"user_type": [GANUtils getStringFromUserType:managerUser.modelUser.enumType],
-                               @"phone": [managerUser.modelUser.modelPhone getBeautifiedPhoneNumber],
+                               @"$phone": [managerUser.modelUser.modelPhone getBeautifiedPhoneNumber],
                                }];
         
         GANLOG(@"User logged in => \n{User Id = %@\rUser Type = %@\rPhone = %@\rPassword = %@\r}",

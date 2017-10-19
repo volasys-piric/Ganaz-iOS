@@ -169,7 +169,7 @@
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [managerSurvey requestCreateSurveyWithType:GANENUM_SURVEYTYPE_CHOICESINGLE Question:szQuestion Choices:@[szAnswer1, szAnswer2, szAnswer3, szAnswer4] Receivers:arrayReceiversUserRef PhoneNumbers:nil MeataData:nil AutoTranslate:self.isAutoTranslate Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR) {
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Your survey is posted successfully." DismissAfter:-1 Callback:^{
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Survey has been posted successfully." DismissAfter:-1 Callback:^{
                 [self refreshMessagesList];
             }];
             GANACTIVITY_REPORT(@"Company - Post survey");

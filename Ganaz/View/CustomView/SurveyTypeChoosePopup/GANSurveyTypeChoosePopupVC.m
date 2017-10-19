@@ -44,8 +44,6 @@
     
     self.buttonOpenText.layer.cornerRadius = 3;
     self.buttonOpenText.clipsToBounds = YES;
-    self.buttonOpenText.layer.borderWidth = 1;
-    self.buttonOpenText.layer.borderColor = [UIColor GANThemeMainColor].CGColor;
 }
 
 - (void) closeDialog{
