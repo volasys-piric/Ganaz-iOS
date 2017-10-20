@@ -174,7 +174,7 @@
         [self.textviewDescription setEditable:YES];
     }
     else {
-        GANCompanyDataModel *company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
+        GANCompanyDataModel *company = [[GANCacheManager sharedInstance].arrayCompanies objectAtIndex:self.indexCompany];
         self.txtCompanyName.text = [company getBusinessNameEN];
         self.textviewDescription.text = [company getDescriptionEN];
         self.txtZipcode.text = company.modelAddress.szZipcode;
@@ -295,7 +295,7 @@
         }];
     }
     else {
-        GANCompanyDataModel *company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
+        GANCompanyDataModel *company = [[GANCacheManager sharedInstance].arrayCompanies objectAtIndex:self.indexCompany];
         [self doCreateCompanyUserWithCompany:company UserType:GANENUM_USER_TYPE_COMPANY_REGULAR];
     }
 }

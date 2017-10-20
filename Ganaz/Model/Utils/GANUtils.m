@@ -110,6 +110,10 @@
     if ([szType caseInsensitiveCompare:@"application"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_APPLICATION;
     if ([szType caseInsensitiveCompare:@"suggest"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SUGGEST;
     if ([szType caseInsensitiveCompare:@"recruit"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_RECRUIT;
+    if ([szType caseInsensitiveCompare:@"survey-choice-single"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE;
+    if ([szType caseInsensitiveCompare:@"survey-open-text"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT;
+    if ([szType caseInsensitiveCompare:@"survey-answer"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_ANSWER;
+    
     return GANENUM_MESSAGE_TYPE_MESSAGE;
 }
 
@@ -118,6 +122,10 @@
     if (type == GANENUM_MESSAGE_TYPE_SUGGEST) return @"suggest";
     if (type == GANENUM_MESSAGE_TYPE_APPLICATION) return @"application";
     if (type == GANENUM_MESSAGE_TYPE_RECRUIT) return @"recruit";
+    if (type == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE) return @"survey-choice-single";
+    if (type == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT) return @"survey-open-text";
+    if (type == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) return @"survey-answer";
+    
     return @"message";
 }
 
@@ -183,6 +191,23 @@
     return @"demo";
 }
 
+// Survey
+
++ (GANENUM_SURVEYTYPE) getSurveyTypeFromString: (NSString *) szType{
+    if ([szType caseInsensitiveCompare:@"choice-single"] == NSOrderedSame) return GANENUM_SURVEYTYPE_CHOICESINGLE;
+    if ([szType caseInsensitiveCompare:@"open-text"] == NSOrderedSame) return GANENUM_SURVEYTYPE_OPENTEXT;
+    return GANENUM_SURVEYTYPE_CHOICESINGLE;
+}
+
++ (NSString *) getStringFromSurveyType: (GANENUM_SURVEYTYPE) type{
+    if (type == GANENUM_SURVEYTYPE_CHOICESINGLE) return @"choice-single";
+    if (type == GANENUM_SURVEYTYPE_OPENTEXT) return @"open-text";
+    return @"choice-single";
+}
+
+//
+
+
 + (GANENUM_APPCONFIG_SERVERSTATUS) getAppConfigServerStatusFromString: (NSString *) szStatus{
     if ([szStatus caseInsensitiveCompare:@"running"] == NSOrderedSame) return GANENUM_APPCONFIG_SERVERSTATUS_RUNNING;
     if ([szStatus caseInsensitiveCompare:@"maintenance"] == NSOrderedSame) return GANENUM_APPCONFIG_SERVERSTATUS_MAINTENANCE;
@@ -237,6 +262,51 @@
         
     } failure:^(int status, NSDictionary *error) {
         if (callback) callback(ERROR_UNKNOWN, @"");
+    }];
+}
+
++ (void) requestTranslateEsMultipleTexts: (NSArray <NSString *>*) texts
+                               Translate: (BOOL) shouldTranslate
+                                Callback:(void (^)(int, NSArray <GANTransContentsDataModel *> *))callback {
+    NSMutableArray <GANTransContentsDataModel *> *arrayTransContents = [[NSMutableArray alloc] init];
+    for (int i = 0; i < (int) [texts count]; i++) {
+        NSString *text = [texts objectAtIndex:i];
+        GANTransContentsDataModel *transContents = [[GANTransContentsDataModel alloc] init];
+        transContents.szTextEN = text;
+        transContents.szTextES = text;
+        [arrayTransContents addObject:transContents];
+    }
+    
+    if (shouldTranslate == NO) {
+        if (callback) callback(SUCCESS_WITH_NO_ERROR, arrayTransContents);
+        return;
+    }
+    
+    NSString *szUrl = [GANUrlManager getEndpointForGoogleTranslate];
+//    NSDictionary *params = @{@"key": GOOGLE_TRANSLATE_API_KEY,
+//                             @"source": @"en",
+//                             @"target": @"es",
+//                             @"q": texts,
+//                             };
+    
+    szUrl = [NSString stringWithFormat:@"%@?key=%@&source=en&target=es", szUrl, [GANGenericFunctionManager urlEncode:GOOGLE_TRANSLATE_API_KEY]];
+    for (int i = 0; i < (int) [texts count]; i++) {
+        szUrl = [NSString stringWithFormat:@"%@&q=%@", szUrl, [GANGenericFunctionManager urlEncode:[texts objectAtIndex:i]]];
+    }
+    
+    [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:NO parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSArray *arrTransTexts = [[responseObject objectForKey:@"data"] objectForKey:@"translations"];
+        if ([arrTransTexts isKindOfClass:[NSArray class]] == YES && [arrTransTexts count] > 0) {
+            for (int i = 0; i < [arrTransTexts count]; i++) {
+                NSDictionary *dictTransText = [arrTransTexts objectAtIndex:i];
+                GANTransContentsDataModel *transContents = [arrayTransContents objectAtIndex:i];
+                transContents.szTextES = [GANGenericFunctionManager refineNSString:[dictTransText objectForKey:@"translatedText"]];
+            }
+        }
+        if (callback) callback(SUCCESS_WITH_NO_ERROR, arrayTransContents);
+        
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(ERROR_UNKNOWN, arrayTransContents);
     }];
 }
 

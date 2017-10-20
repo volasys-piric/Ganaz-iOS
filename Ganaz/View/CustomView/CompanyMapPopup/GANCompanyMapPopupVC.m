@@ -12,10 +12,11 @@
 #import "GANGenericFunctionManager.h"
 
 @interface GANCompanyMapPopupVC ()<GMSMapViewDelegate, UIGestureRecognizerDelegate>
+
 @property (weak, nonatomic) IBOutlet UIView *viewContents;
-@property (strong, nonatomic) IBOutlet UIView *viewMap;
-@property (strong, nonatomic) IBOutlet UIButton *btnCancel;
-@property (strong, nonatomic) IBOutlet UIButton *btnSelect;
+@property (weak, nonatomic) IBOutlet UIView *viewMap;
+@property (weak, nonatomic) IBOutlet UIButton *btnCancel;
+@property (weak, nonatomic) IBOutlet UIButton *btnSelect;
 
 @property (strong, nonatomic) GMSMapView *mapView;
 @property (strong, nonatomic) CLLocation *locationCenter;

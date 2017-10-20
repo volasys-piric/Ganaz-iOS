@@ -14,7 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblCompany;
 @property (weak, nonatomic) IBOutlet UILabel *lblPrice;
-@property (strong, nonatomic) IBOutlet UILabel *lblUnit;
-@property (strong, nonatomic) IBOutlet UILabel *lblPriceNA;
+@property (weak, nonatomic) IBOutlet UILabel *lblUnit;
+@property (weak, nonatomic) IBOutlet UILabel *lblPriceNA;
 
 @end

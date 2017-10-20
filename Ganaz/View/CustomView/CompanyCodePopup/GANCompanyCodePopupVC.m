@@ -46,7 +46,7 @@
         self.txtCode.text = @"";
     }
     else {
-        GANCompanyDataModel *company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:self.indexCompany];
+        GANCompanyDataModel *company = [[GANCacheManager sharedInstance].arrayCompanies objectAtIndex:self.indexCompany];
         self.txtCode.text = company.szCode;
     }
 }

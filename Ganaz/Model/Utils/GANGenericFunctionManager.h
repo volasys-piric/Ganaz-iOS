@@ -46,5 +46,6 @@
 
 + (NSString *) getJSONStringRepresentation: (id) object;
 + (id) getObjectFromJSONStringRepresentation: (NSString *) sz;
++ (NSString *) urlEncode: (NSString *) originalString;
 
 @end

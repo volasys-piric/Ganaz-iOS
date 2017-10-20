@@ -17,11 +17,14 @@
 #import "GANCacheManager.h"
 #import "GANGlobalVCManager.h"
 #import "GANWorkerJobDetailsVC.h"
+#import "GANWorkerSurveyChoicesVC.h"
+#import "GANWorkerSurveyOpenTextVC.h"
+
 #import "Global.h"
 #import "GANGenericFunctionManager.h"
 #import "GANAppManager.h"
 
-@interface GANWorkerMessagesVC () <UITableViewDelegate, UITableViewDataSource>
+@interface GANWorkerMessagesVC () <UITableViewDelegate, UITableViewDataSource, TTTAttributedLabelDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (strong, nonatomic) NSMutableArray *arrMessages;
@@ -167,7 +170,7 @@
             return;
         }
         
-        GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
+        GANCompanyDataModel *company = [managerCache.arrayCompanies objectAtIndex:indexCompany];
         [company requestJobsListWithJobId:jobId Callback:^(int status) {
             [GANGlobalVCManager hideHudProgress];
             if (status != SUCCESS_WITH_NO_ERROR){
@@ -238,7 +241,27 @@
 
 #pragma mark - Biz Logic
 
+- (void) callPhoneNumber: (NSString *) phoneNumber{
+    phoneNumber = [GANGenericFunctionManager beautifyPhoneNumber:phoneNumber CountryCode:@"US"];
+    
+    // Title: Confirmation, Message: Do you want to call %@?
+    [GANGlobalVCManager promptWithVC:self Title:@"Confirmación" Message:[NSString stringWithFormat:@"Quieres llamar a %@?", phoneNumber] ButtonYes:@"Yes" ButtonNo:@"NO" CallbackYes:^{
+        NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",[GANGenericFunctionManager stripNonnumericsFromNSString:phoneNumber]]];
+        
+        if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
+            [[UIApplication sharedApplication] openURL:phoneUrl];
+            GANACTIVITY_REPORT(@"Worker - Call phone");
+        }
+        else{
+            // Your device does not support phone calls
+            [GANGlobalVCManager showHudErrorWithMessage:@"Tu dispositivo no es compatible con llamadas telefónicas" DismissAfter:-1 Callback:nil];
+        }
+    } CallbackNo:nil];
+}
+
 - (void) showActionSheetForMessageAtIndex: (int) index{
+    GANLOG(@"Message item clicked at index = %d", index);
+    
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
     if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
         return;
@@ -266,6 +289,28 @@
         // Present action sheet.
         [self presentViewController:actionSheet animated:YES completion:nil];
     }
+    else if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE ||
+             message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT ||
+             message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) {
+        GANCacheManager *managerCache = [GANCacheManager sharedInstance];
+        [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+        [managerCache requestGetIndexForSurveyBySurveyId:message.szSurveyId Callback:^(int index) {
+            if (index == -1){
+                [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
+            }
+            else {
+                GANSurveyDataModel *survey = [managerCache.arraySurvey objectAtIndex:index];
+                [GANGlobalVCManager hideHudProgressWithCallback:^{
+                    if (survey.enumType == GANENUM_SURVEYTYPE_CHOICESINGLE) {
+                        [self gotoWorkerSurveyChoicesVCAtSurveyIndex:index];
+                    }
+                    else if (survey.enumType == GANENUM_SURVEYTYPE_OPENTEXT) {
+                        [self gotoWorkerSurveyOpenTextVCAtSurveyIndex:index];
+                    }
+                }];
+            }
+        }];
+    }
 }
 
 - (void) gotoMessageDetailsAtIndex: (int) index{
@@ -277,6 +322,26 @@
         [self gotoJobDetailsVCWithJobId:message.szJobId CompanyId:message.szSenderCompanyId];
     }
     GANACTIVITY_REPORT(@"Worker - Go to job details from Message item");
+}
+
+- (void) gotoWorkerSurveyChoicesVCAtSurveyIndex: (int) indexSurvey{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"WorkerMessage" bundle:nil];
+    GANWorkerSurveyChoicesVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_SURVEY_CHOICESINGLE"];
+    vc.indexSurvey = indexSurvey;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Worker - Go to Survey Details from Message");
+}
+
+- (void) gotoWorkerSurveyOpenTextVCAtSurveyIndex: (int) indexSurvey{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"WorkerMessage" bundle:nil];
+    GANWorkerSurveyOpenTextVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_SURVEY_OPENTEXT"];
+    vc.indexSurvey = indexSurvey;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Worker - Go to Survey Details from Message");
 }
 
 - (void) replyMessageAtIndex: (int) index{
@@ -297,7 +362,7 @@
     }
     [managerCache requestGetCompanyDetailsByCompanyId:szCompanyId Callback:^(int indexCompany) {
         if (indexCompany != -1){
-            GANCompanyDataModel *company = [[GANCacheManager sharedInstance].arrCompanies objectAtIndex:indexCompany];
+            GANCompanyDataModel *company = [[GANCacheManager sharedInstance].arrayCompanies objectAtIndex:indexCompany];
             // Reply to
             self.lblReplyTitle.text = [NSString stringWithFormat:@"Responder a %@", [company getBusinessNameES]];
         }
@@ -351,7 +416,7 @@
             cell.lblMessage.text = [message getContentsES];
             [managerCache requestGetCompanyDetailsByCompanyId:message.szReceiverCompanyId Callback:^(int indexCompany) {
                 if (indexCompany != -1){
-                    GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
+                    GANCompanyDataModel *company = [managerCache.arrayCompanies objectAtIndex:indexCompany];
                     cell.lblTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
                 }
             }];
@@ -365,7 +430,7 @@
                     return;
                 }
                 
-                GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
+                GANCompanyDataModel *company = [managerCache.arrayCompanies objectAtIndex:indexCompany];
                 cell.lblTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
                 
                 [company requestJobsListWithJobId:message.szJobId Callback:^(int status) {
@@ -384,15 +449,16 @@
             }];
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
-            cell.lblTitle.text = @"Suggest Friend";                   // Job application
-            cell.lblMessage.text = @"Nueva solicitud de trabajo";           // New job inquiry
+            // Suggest Friend
+            cell.lblTitle.text = @"Amigo sugerido";                           // Job application
+            cell.lblMessage.text = @"Nueva solicitud de trabajo";             // New job inquiry
             
             [managerCache requestGetCompanyDetailsByCompanyId:message.szReceiverCompanyId Callback:^(int indexCompany) {
                 if (indexCompany == -1) {
                     return;
                 }
                 
-                GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
+                GANCompanyDataModel *company = [managerCache.arrayCompanies objectAtIndex:indexCompany];
                 cell.lblTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
                 
                 [company requestJobsListWithJobId:message.szJobId Callback:^(int status) {
@@ -402,12 +468,24 @@
                     int indexJob = [company getIndexForJob:message.szJobId];
                     if (indexJob != -1){
                         GANJobDataModel *job = [company.arrJobs objectAtIndex:indexJob];
-                        cell.lblMessage.text = [NSString stringWithFormat:@"Suggest Friend %@ for %@",[message getPhoneNumberForSuggestFriend], [job getTitleES]];       // Job application:
+                        // Suggest Friend {phone number} for {job title}
+                        cell.lblMessage.text = [NSString stringWithFormat:@"Sugerir amigo %@ para %@",[message getPhoneNumberForSuggestFriend], [job getTitleES]];       // Suggest Friend:
                     }
                     else {
                         cell.lblMessage.text = @"No se encontró el trabajo";    // Job not found
                     }
                 }];
+            }];
+        }
+        else if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER){
+            cell.lblTitle.text = @"Encuesta";
+            // You answered survey.
+            cell.lblMessage.text = @"Usted contestó la encuesta.";
+            
+            [managerCache requestGetIndexForSurveyBySurveyId:message.szSurveyId Callback:^(int index) {
+                if (index != -1){
+                    cell.lblTitle.text = [[managerCache.arraySurvey objectAtIndex:index].modelQuestion getTextES];
+                }
             }];
         }
     }
@@ -417,7 +495,7 @@
             cell.lblMessage.text = [message getContentsES];
             [managerCache requestGetCompanyDetailsByCompanyId:message.szSenderCompanyId Callback:^(int indexCompany) {
                 if (index != -1){
-                    GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
+                    GANCompanyDataModel *company = [managerCache.arrayCompanies objectAtIndex:indexCompany];
                     cell.lblTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
                 }
             }];
@@ -430,7 +508,7 @@
                     return;
                 }
                 
-                GANCompanyDataModel *company = [managerCache.arrCompanies objectAtIndex:indexCompany];
+                GANCompanyDataModel *company = [managerCache.arrayCompanies objectAtIndex:indexCompany];
                 cell.lblTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
 
                 [company requestJobsListWithJobId:message.szJobId Callback:^(int status) {
@@ -448,10 +526,28 @@
                 }];
             }];
         }
+        else if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE ||
+                 message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT){
+            // Survey
+            cell.lblTitle.text = @"Encuesta";
+            cell.lblMessage.text = [message getContentsES];
+            
+            [managerCache requestGetCompanyDetailsByCompanyId:message.szSenderCompanyId Callback:^(int indexCompany) {
+                if (index != -1){
+                    GANCompanyDataModel *company = [managerCache.arrayCompanies objectAtIndex:indexCompany];
+                    cell.lblTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
+                }
+            }];
+        }
     }
+    
+    cell.lblMessage.delegate = self;
     
     if([message hasLocationInfo] == YES) {
         cell.locationCenter = [[CLLocation alloc]initWithLatitude:message.locationInfo.fLatitude longitude:message.locationInfo.fLongitude];
+    }
+    else {
+        cell.locationCenter = nil;
     }
     
     BOOL didRead = !([message amIReceiver] && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW);
@@ -474,12 +570,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    GANMessageDataModel *message = [self.arrMessages objectAtIndex:indexPath.row];
-    if([message hasLocationInfo]) {
-        return 260;
-    }
-    return 70;
-//    return UITableViewAutomaticDimension;
+    return UITableViewAutomaticDimension;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -522,6 +613,12 @@
     else if ([[notification name] isEqualToString:GANLOCALNOTIFICATION_CONTENTS_TRANSLATED]){
         [self.tableview reloadData];
     }
+}
+
+#pragma mark - TTTAttributedLabelDelegate
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber{
+    [self callPhoneNumber:phoneNumber];
 }
 
 @end

@@ -94,7 +94,7 @@
         GANCacheManager *managerCache = [GANCacheManager sharedInstance];
         [managerCache requestGetIndexForUserByUserId:userId Callback:^(int index) {
             if (index != -1) {
-                GANUserBaseDataModel *user = [managerCache.arrUsers objectAtIndex:index];
+                GANUserBaseDataModel *user = [managerCache.arrayUsers objectAtIndex:index];
                 if (callback) callback([user getValidUsername]);
             }
             else {

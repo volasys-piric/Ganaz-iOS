@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFUIDisplay-Medium.otf">
+            <string>SFUIDisplay-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" indentationWidth="10" reuseIdentifier="TVC_SURVEY_CHOICESINGLERESULTLEGENDITEM" id="DiU-aS-luS" customClass="GANSurveyChoiceSingleResultLegendItemTVC">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DiU-aS-luS" id="J7d-GC-ruK">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qp5-lc-TZ1" userLabel="View - Choice 1">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H80-LU-LXK" userLabel="Label - Dot">
+                                <rect key="frame" x="12" y="16" width="12" height="12"/>
+                                <color key="backgroundColor" red="0.50588235290000005" green="0.71764705880000002" blue="0.1019607843" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="12" id="ZFu-Wq-ymu"/>
+                                    <constraint firstAttribute="width" secondItem="H80-LU-LXK" secondAttribute="height" multiplier="1:1" id="cJa-5H-wcT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Very likely" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SAP-ZC-LUB" userLabel="Label - Answer">
+                                <rect key="frame" x="32" y="4" width="343" height="35.5"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="SAP-ZC-LUB" firstAttribute="leading" secondItem="H80-LU-LXK" secondAttribute="trailing" constant="8" id="1CX-ge-e99"/>
+                            <constraint firstItem="H80-LU-LXK" firstAttribute="centerY" secondItem="qp5-lc-TZ1" secondAttribute="centerY" id="4f2-e9-SXc"/>
+                            <constraint firstAttribute="bottom" secondItem="SAP-ZC-LUB" secondAttribute="bottom" constant="4" id="J4c-0T-u81"/>
+                            <constraint firstItem="SAP-ZC-LUB" firstAttribute="top" secondItem="qp5-lc-TZ1" secondAttribute="top" constant="4" id="QHl-L7-ZX4"/>
+                            <constraint firstItem="H80-LU-LXK" firstAttribute="leading" secondItem="qp5-lc-TZ1" secondAttribute="leading" constant="12" id="Vo7-fs-oJ2"/>
+                            <constraint firstAttribute="trailing" secondItem="SAP-ZC-LUB" secondAttribute="trailing" id="gvF-Zi-Gvw"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="qp5-lc-TZ1" firstAttribute="leading" secondItem="J7d-GC-ruK" secondAttribute="leading" id="3aL-5i-IlP"/>
+                    <constraint firstAttribute="trailing" secondItem="qp5-lc-TZ1" secondAttribute="trailing" id="Dqt-6B-CEM"/>
+                    <constraint firstAttribute="bottom" secondItem="qp5-lc-TZ1" secondAttribute="bottom" id="gFQ-kx-EXO"/>
+                    <constraint firstItem="qp5-lc-TZ1" firstAttribute="top" secondItem="J7d-GC-ruK" secondAttribute="top" id="gUd-sA-gKk"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="labelAnswer" destination="SAP-ZC-LUB" id="kyY-cQ-8cn"/>
+                <outlet property="labelDot" destination="H80-LU-LXK" id="5tp-Lm-JSE"/>
+            </connections>
+            <point key="canvasLocation" x="102" y="82"/>
+        </tableViewCell>
+    </objects>
+</document>

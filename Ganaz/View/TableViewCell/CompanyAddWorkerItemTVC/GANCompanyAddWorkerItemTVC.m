@@ -14,8 +14,9 @@
     [super awakeFromNib];
     // Initialization code
     
-    self.btnAdd.layer.cornerRadius = 3.f;
-    self.btnAdd.clipsToBounds = YES;
+    self.containerView.layer.cornerRadius = 4;
+    self.buttonAdd.layer.cornerRadius = 3;
+    self.buttonAdd.clipsToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -24,9 +25,9 @@
     // Configure the view for the selected state
 }
 
-- (IBAction)onAdd:(id)sender {
-    if(self.delegate && [self.delegate respondsToSelector:@selector(onAddWorker:)]) {
-        [self.delegate onAddWorker:self.nIndex];
+- (IBAction)onButtonAddClick:(id)sender {
+    if(self.delegate && [self.delegate respondsToSelector:@selector(companyAddWorkerTableViewCellDidAddClick:)]) {
+        [self.delegate companyAddWorkerTableViewCellDidAddClick:self];
     }
 }
 

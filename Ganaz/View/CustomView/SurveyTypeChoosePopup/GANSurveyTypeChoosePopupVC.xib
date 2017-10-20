@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFUIDisplay-Bold.otf">
+            <string>SFUIDisplay-Bold</string>
+        </array>
+        <array key="SFUIDisplay-Medium.otf">
+            <string>SFUIDisplay-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GANSurveyTypeChoosePopupVC">
+            <connections>
+                <outlet property="buttonChoiceSingle" destination="JId-6A-E8P" id="Tco-Hu-f3G"/>
+                <outlet property="buttonOpenText" destination="ksu-4e-VBV" id="PkO-WB-vTs"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Dfk-Rh-nX3"/>
+                <outlet property="viewContents" destination="Gh0-0c-Tr7" id="UZp-Z8-rR9"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FKI-dW-TzW" userLabel="View - Main Container">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oOx-GE-zu8" userLabel="Button - Wrapper">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="onBtnWrapperClick:" destination="-1" eventType="touchUpInside" id="4gQ-nG-6Et"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gh0-0c-Tr7" userLabel="View - Content View">
+                            <rect key="frame" x="38" y="205" width="300" height="256"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What kind of question would you like to ask?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rBb-fw-v9h" userLabel="Label - Title">
+                                    <rect key="frame" x="20" y="40" width="260" height="48"/>
+                                    <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="20"/>
+                                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JId-6A-E8P" userLabel="Button - Choice Single">
+                                    <rect key="frame" x="40" y="118" width="220" height="44"/>
+                                    <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="TYe-nG-kio"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                    <state key="normal" title="Multiple Choice">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="onButtonChoiceSingleClick:" destination="-1" eventType="touchUpInside" id="Xez-Sd-ojn"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ksu-4e-VBV" userLabel="Button - Open Text">
+                                    <rect key="frame" x="40" y="182" width="220" height="44"/>
+                                    <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                    <state key="normal" title="Open Ended">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="onButtonOpenTextClick:" destination="-1" eventType="touchUpInside" id="Tkq-Gp-UbK"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="JId-6A-E8P" firstAttribute="top" secondItem="rBb-fw-v9h" secondAttribute="bottom" constant="30" id="1n6-Rx-grm"/>
+                                <constraint firstAttribute="trailing" secondItem="rBb-fw-v9h" secondAttribute="trailing" constant="20" id="714-HJ-t1F"/>
+                                <constraint firstAttribute="trailing" secondItem="JId-6A-E8P" secondAttribute="trailing" constant="40" id="7S5-ir-5ej"/>
+                                <constraint firstItem="JId-6A-E8P" firstAttribute="leading" secondItem="Gh0-0c-Tr7" secondAttribute="leading" constant="40" id="7cG-tI-VPr"/>
+                                <constraint firstItem="ksu-4e-VBV" firstAttribute="width" secondItem="JId-6A-E8P" secondAttribute="width" id="A7d-Zg-afq"/>
+                                <constraint firstItem="rBb-fw-v9h" firstAttribute="top" secondItem="Gh0-0c-Tr7" secondAttribute="top" constant="40" id="DLJ-dW-dgm"/>
+                                <constraint firstAttribute="bottom" secondItem="ksu-4e-VBV" secondAttribute="bottom" constant="30" id="E6q-aD-NU3"/>
+                                <constraint firstItem="ksu-4e-VBV" firstAttribute="height" secondItem="JId-6A-E8P" secondAttribute="height" id="IDh-fj-UhN"/>
+                                <constraint firstItem="ksu-4e-VBV" firstAttribute="top" secondItem="JId-6A-E8P" secondAttribute="bottom" constant="20" id="Z2i-LK-50w"/>
+                                <constraint firstItem="ksu-4e-VBV" firstAttribute="centerX" secondItem="JId-6A-E8P" secondAttribute="centerX" id="mf4-Ff-3n8"/>
+                                <constraint firstItem="rBb-fw-v9h" firstAttribute="leading" secondItem="Gh0-0c-Tr7" secondAttribute="leading" constant="20" id="qRM-Os-HWi"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="Gh0-0c-Tr7" firstAttribute="centerY" secondItem="FKI-dW-TzW" secondAttribute="centerY" id="5rF-M6-BEU"/>
+                        <constraint firstItem="Gh0-0c-Tr7" firstAttribute="centerX" secondItem="FKI-dW-TzW" secondAttribute="centerX" id="7EE-rY-CtN"/>
+                        <constraint firstItem="oOx-GE-zu8" firstAttribute="centerY" secondItem="FKI-dW-TzW" secondAttribute="centerY" id="AZ3-51-200"/>
+                        <constraint firstItem="oOx-GE-zu8" firstAttribute="width" secondItem="FKI-dW-TzW" secondAttribute="width" id="PDG-hT-Gym"/>
+                        <constraint firstItem="Gh0-0c-Tr7" firstAttribute="width" secondItem="FKI-dW-TzW" secondAttribute="width" multiplier="0.8" id="jEQ-Cm-o86"/>
+                        <constraint firstItem="oOx-GE-zu8" firstAttribute="height" secondItem="FKI-dW-TzW" secondAttribute="height" id="pC2-K2-GKh"/>
+                        <constraint firstItem="oOx-GE-zu8" firstAttribute="centerX" secondItem="FKI-dW-TzW" secondAttribute="centerX" id="wva-Ue-Xev"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="FKI-dW-TzW" secondAttribute="trailing" id="Cgw-Ug-gxM"/>
+                <constraint firstAttribute="bottom" secondItem="FKI-dW-TzW" secondAttribute="bottom" id="NM3-il-Qby"/>
+                <constraint firstItem="FKI-dW-TzW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="yGH-EH-f2A"/>
+                <constraint firstItem="FKI-dW-TzW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="zWP-Gb-fHi"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

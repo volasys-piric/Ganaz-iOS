@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -50,6 +50,12 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0CB-LY-UQu" userLabel="Label - Name Only">
+                                <rect key="frame" x="16.5" y="0.0" width="257" height="62.5"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xaD-0d-tbJ" userLabel="Label - Separator">
                                 <rect key="frame" x="12" y="61.5" width="363" height="1"/>
                                 <color key="backgroundColor" red="0.91764705879999997" green="0.91372549020000005" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -60,7 +66,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ak1-Sx-0xz">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ak1-Sx-0xz" userLabel="Button - Add">
                                 <rect key="frame" x="293" y="11" width="74" height="40"/>
                                 <color key="backgroundColor" red="0.54078203439999994" green="0.76722258330000004" blue="0.34336894750000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -72,7 +78,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="onAdd:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="OcF-w1-96P"/>
+                                    <action selector="onButtonAddClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="a8b-YV-oXw"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -82,9 +88,13 @@
                             <constraint firstItem="Ak1-Sx-0xz" firstAttribute="centerY" secondItem="trL-ho-iic" secondAttribute="centerY" id="6EX-JU-yRs"/>
                             <constraint firstItem="x7X-xA-Icp" firstAttribute="leading" secondItem="O00-Xb-5zw" secondAttribute="leading" id="ChW-mq-5GA"/>
                             <constraint firstAttribute="trailing" secondItem="xaD-0d-tbJ" secondAttribute="trailing" id="I74-j7-gfc"/>
+                            <constraint firstItem="0CB-LY-UQu" firstAttribute="height" secondItem="trL-ho-iic" secondAttribute="height" id="LoN-ye-DE5"/>
                             <constraint firstItem="x7X-xA-Icp" firstAttribute="width" secondItem="O00-Xb-5zw" secondAttribute="width" id="Qbu-wv-SUM"/>
                             <constraint firstItem="xaD-0d-tbJ" firstAttribute="leading" secondItem="trL-ho-iic" secondAttribute="leading" constant="12" id="Z7z-5E-g08"/>
                             <constraint firstItem="x7X-xA-Icp" firstAttribute="top" secondItem="O00-Xb-5zw" secondAttribute="bottom" constant="3" id="fGR-qB-2UE"/>
+                            <constraint firstItem="0CB-LY-UQu" firstAttribute="centerX" secondItem="O00-Xb-5zw" secondAttribute="centerX" id="g2H-Pi-fRY"/>
+                            <constraint firstItem="0CB-LY-UQu" firstAttribute="centerY" secondItem="trL-ho-iic" secondAttribute="centerY" id="g2x-GN-0ro"/>
+                            <constraint firstItem="0CB-LY-UQu" firstAttribute="width" secondItem="O00-Xb-5zw" secondAttribute="width" id="hv4-h2-YgL"/>
                             <constraint firstItem="O00-Xb-5zw" firstAttribute="top" secondItem="trL-ho-iic" secondAttribute="top" constant="8" id="rU3-g4-UkO"/>
                             <constraint firstAttribute="trailing" secondItem="Ak1-Sx-0xz" secondAttribute="trailing" constant="8" id="rrQ-FZ-Tyu"/>
                             <constraint firstAttribute="bottom" secondItem="xaD-0d-tbJ" secondAttribute="bottom" id="u4S-At-Eab"/>
@@ -101,10 +111,11 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="btnAdd" destination="Ak1-Sx-0xz" id="4d5-P2-rAE"/>
+                <outlet property="buttonAdd" destination="Ak1-Sx-0xz" id="w5i-6c-TWy"/>
                 <outlet property="containerView" destination="trL-ho-iic" id="WkK-9a-ZhT"/>
-                <outlet property="lblName" destination="O00-Xb-5zw" id="hfF-6P-EBB"/>
-                <outlet property="lblPhoneNumber" destination="x7X-xA-Icp" id="hVr-sl-XDM"/>
+                <outlet property="labelName" destination="O00-Xb-5zw" id="Prc-YX-eNJ"/>
+                <outlet property="labelNameOnly" destination="0CB-LY-UQu" id="2Qk-dS-f6J"/>
+                <outlet property="labelPhoneNumber" destination="x7X-xA-Icp" id="8xz-HT-cOf"/>
             </connections>
         </tableViewCell>
     </objects>

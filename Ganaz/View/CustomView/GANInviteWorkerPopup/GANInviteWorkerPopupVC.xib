@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,9 +18,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GANInviteWorkerPopupVC">
             <connections>
-                <outlet property="btnCancel" destination="avU-dP-CUR" id="SZ8-ff-8vL"/>
-                <outlet property="btnCommunicateText" destination="sBA-vj-uH7" id="XuX-YM-hWj"/>
-                <outlet property="btnInviteWorker" destination="XVX-Pn-y80" id="vQ9-bA-31R"/>
+                <outlet property="buttonCancel" destination="avU-dP-CUR" id="f3w-Ib-aWo"/>
+                <outlet property="buttonCommunicateText" destination="sBA-vj-uH7" id="Lqu-Js-1Pp"/>
+                <outlet property="buttonInviteWorker" destination="XVX-Pn-y80" id="lBC-u2-nAc"/>
                 <outlet property="lblDescription" destination="dKC-aj-qIu" id="U9O-k3-D84"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="viewContents" destination="NYd-iD-PxA" id="u4l-hR-E3j"/>
@@ -65,7 +65,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5C4-Yq-EW5" userLabel="View - Action Panel">
                                     <rect key="frame" x="0.0" y="74.5" width="300" height="205.5"/>
                                     <subviews>
-                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XVX-Pn-y80" userLabel="button-invite">
+                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XVX-Pn-y80" userLabel="Button - Invite">
                                             <rect key="frame" x="50.5" y="21.5" width="198.5" height="44.5"/>
                                             <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
@@ -76,18 +76,18 @@
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
-                                                <action selector="onInviteWorkerstoGanaz:" destination="-1" eventType="touchUpInside" id="RIq-FY-O74"/>
+                                                <action selector="onButtonInviteClick:" destination="-1" eventType="touchUpInside" id="Vd5-9b-g2l"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sBA-vj-uH7">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sBA-vj-uH7" userLabel="Button - Communicate">
                                             <rect key="frame" x="50.5" y="81" width="198.5" height="44.5"/>
-                                            <color key="backgroundColor" red="0.39215686274509803" green="0.70196078431372544" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
                                             <state key="normal" title="Communicate via text">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
-                                                <action selector="onCommunicateWithWorkers:" destination="-1" eventType="touchUpInside" id="Heb-Ec-QbD"/>
+                                                <action selector="onButtonCommunicateClick:" destination="-1" eventType="touchUpInside" id="Jtr-5g-JSH"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="avU-dP-CUR" userLabel="Button - Go back">
@@ -98,7 +98,7 @@
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
-                                                <action selector="onGoback:" destination="-1" eventType="touchUpInside" id="Irp-an-Wn5"/>
+                                                <action selector="onButtonCancel:" destination="-1" eventType="touchUpInside" id="0vL-aq-vnG"/>
                                             </connections>
                                         </button>
                                     </subviews>

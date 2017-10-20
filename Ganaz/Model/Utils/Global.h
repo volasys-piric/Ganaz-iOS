@@ -11,9 +11,6 @@
 
 #import <Crashlytics/Crashlytics.h>
 
-#define GANLOG( s, ... ) CLS_LOG( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
-#define GANACTIVITY_REPORT(s) [[GANAppManager sharedInstance] logActivity: (s) ] 
-
 #warning This should be removed before submission!
 #define GANENVIRONMENT_DEMO
 
@@ -27,11 +24,15 @@
 #define GANURL_BASEURL                              @"http://35.166.132.188:8000/api/v1"
 #define MIXPANEL_PROJECTTOKEN                       @"d1bee23a670fbbe63a19373daba332b0"
 
+#define GANLOG( s, ... ) NSLog( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
+
 #elif   defined(GANENVIRONMENT_DEMO)
 
 #define ONESIGNAL_APPID                             @"37c1d731-1cbd-40cf-9ba3-3936174602e1"
 #define GANURL_BASEURL                              @"http://34.210.63.91:8000/api/v1"
 #define MIXPANEL_PROJECTTOKEN                       @"3f0f41f4cfc0c55f1762ef08f7692b86"
+
+#define GANLOG( s, ... ) CLS_LOG( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
 
 #else
 
@@ -39,7 +40,13 @@
 #define GANURL_BASEURL                              @"http://35.165.121.74:8000/api/v1"
 #define MIXPANEL_PROJECTTOKEN                       @"50fffae37bad52c48cf0e691f36cd1a4"
 
+#define GANLOG( s, ... ) CLS_LOG( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
+
 #endif
+
+
+#define GANACTIVITY_REPORT(s) [[GANAppManager sharedInstance] logActivity: (s) ]
+
 
 #define GANURL_APPSTORE                             @"itms://itunes.apple.com/us/app/apple-store/id1230180278?mt=8"
 
@@ -111,6 +118,10 @@
 #define GANLOCALNOTIFICATION_CONTENTS_TRANSLATED                        @"GANLOCALNOTIFICATION_CONTENTS_TRANSLATED"
 #define GANLOCALNOTIFICATION_MEMBERSHIPPLAN_LIST_UPDATED                @"GANLOCALNOTIFICATION_MEMBERSHIPPLAN_LIST_UPDATED"
 #define GANLOCALNOTIFICATION_MEMBERSHIPPLAN_LIST_UPDATE_FAILED          @"GANLOCALNOTIFICATION_MEMBERSHIPPLAN_LIST_UPDATE_FAILED"
+#define GANLOCALNOTIFICATION_COMPANY_SURVEYLIST_UPDATED                 @"GANLOCALNOTIFICATION_COMPANY_SURVEYLIST_UPDATED"
+#define GANLOCALNOTIFICATION_COMPANY_SURVEYLIST_UPDATEFAILED            @"GANLOCALNOTIFICATION_COMPANY_SURVEYLIST_UPDATEFAILED"
+#define GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATED           @"GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATED"
+#define GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATEFAILED      @"GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATEFAILED"
 
 #define LOCALSTORAGE_PREFIX                                             @"GANAZLOCALSTORAGE_"
 #define LOCALSTORAGE_USER_LOGIN                                         @"USER_LOGIN"

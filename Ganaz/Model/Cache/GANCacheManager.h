@@ -10,11 +10,14 @@
 #import "GANUserManager.h"
 #import "GANJobDataModel.h"
 #import "GANCompanyDataModel.h"
+#import "GANSurveyManager.h"
 
 @interface GANCacheManager : NSObject
 
-@property (strong, nonatomic) NSMutableArray<GANUserBaseDataModel *> *arrUsers;
-@property (strong, nonatomic) NSMutableArray<GANCompanyDataModel *> *arrCompanies;
+@property (strong, nonatomic) NSMutableArray <GANUserBaseDataModel *> *arrayUsers;
+@property (strong, nonatomic) NSMutableArray <GANCompanyDataModel *> *arrayCompanies;
+@property (strong, nonatomic) NSMutableArray <GANSurveyDataModel *> *arraySurvey;
+@property (strong, nonatomic) NSMutableArray <GANSurveyAnswerDataModel *> *arraySurveyAnswers;
 
 + (instancetype) sharedInstance;
 - (void) initializeManager;
@@ -38,5 +41,18 @@
 #pragma mark - Job
 
 - (GANJobDataModel *) getJobByJobId: (NSString *) jobId;
+
+#pragma mark - Survey
+
+- (int) getIndexForSurveyWithSurveyId: (NSString *) surveyId;
+- (int) addSurveyIfNeeded: (GANSurveyDataModel *) surveyNew;
+- (void) requestGetIndexForSurveyBySurveyId: (NSString *) surveyId Callback: (void (^) (int index)) callback;
+
+#pragma mark - Survey Answers
+
+- (int) getIndexForSurveyAnswerWithAnswerId: (NSString *) answerId;
+- (int) addSurveyAnswerIfNeeded: (GANSurveyAnswerDataModel *) answerNew;
+- (void) requestGetIndexForSurveyAnswerByAnswerId: (NSString *) answerId Callback: (void (^) (int index)) callback;
+- (int) getIndexForSurveyAnswerWithSurveyId: (NSString *) surveyId ResponderUserId: (NSString *) userId;
 
 @end

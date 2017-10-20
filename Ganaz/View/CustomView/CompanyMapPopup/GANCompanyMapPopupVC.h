@@ -17,6 +17,6 @@
 @end
 
 @interface GANCompanyMapPopupVC : UIViewController
-@property (nonatomic, strong) id<GANCompanyMapPopupVCDelegate> delegate;
+@property (nonatomic, weak) id<GANCompanyMapPopupVCDelegate> delegate;
 
 @end

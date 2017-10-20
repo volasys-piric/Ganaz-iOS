@@ -11,8 +11,7 @@
 #import "GANCompanyAddWorkerVC.h"
 #import "GANMyWorkerNickNameEditPopupVC.h"
 #import "GANOnboardingWorkerNickNamePopupVC.h"
-#import "GANCompanyMapPopupVC.h"
-#import "GANConformMessagePopupVC.h"
+#import "GANCompanyMessageComposerVC.h"
 
 #import "GANCompanyManager.h"
 #import "GANCacheManager.h"
@@ -22,27 +21,20 @@
 
 #import "GANGlobalVCManager.h"
 #import "GANAppManager.h"
+#import "UIColor+GANColor.h"
 
 #define NON_SELECTED -1
 
-@interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANOnboardingWorkerNickNamePopupVCDelegate, GANWorkerItemTVCDelegate, GANCompanyMapPopupVCDelegate, GANConformMessagePopupVCDelegate>
+@interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANOnboardingWorkerNickNamePopupVCDelegate, GANWorkerItemTVCDelegate>
 {
     NSInteger nSelectedIndex;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 
-@property (weak, nonatomic) IBOutlet UIView *viewPopupWrapper;
-@property (weak, nonatomic) IBOutlet UIView *viewPopupPanel;
-@property (weak, nonatomic) IBOutlet UIView *viewMessage;
-@property (weak, nonatomic) IBOutlet UIButton *btnAutoTranslate;
-@property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 @property (weak, nonatomic) IBOutlet UIButton *btnContinue;
 @property (weak, nonatomic) IBOutlet UIButton *btnAddWorker;
-@property (strong, nonatomic) IBOutlet UIButton *btnMap;
-@property (strong, nonatomic) IBOutlet UIImageView *imgMapIcon;
-@property (weak, nonatomic) IBOutlet UITextView *textview;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintPopupPanelBottomSpace;
+@property (weak, nonatomic) IBOutlet UIButton *buttonSelectAll;
 
 @property (strong, nonatomic) NSMutableArray *arrWorkerSelected;
 @property (assign, atomic) BOOL isPopupShowing;
@@ -102,23 +94,14 @@
 
 - (void) refreshViews{
     self.btnContinue.layer.cornerRadius = 3;
-    self.btnSubmit.layer.cornerRadius = 3;
-    self.viewMessage.layer.cornerRadius = 3;
     self.btnAddWorker.layer.cornerRadius = 3;
-    [self refreshAutoTranslateView];
-}
-
-- (void) refreshPopupView{
-    self.viewPopupWrapper.hidden = !self.isPopupShowing;
-}
-
-- (void) refreshAutoTranslateView{
-    if (self.isAutoTranslate == YES){
-        [self.btnAutoTranslate setImage:[UIImage imageNamed:@"icon-checked"] forState:UIControlStateNormal];
-    }
-    else {
-        [self.btnAutoTranslate setImage:[UIImage imageNamed:@"icon-unchecked"] forState:UIControlStateNormal];
-    }
+    self.buttonSelectAll.layer.cornerRadius = 3;
+    
+    self.btnContinue.clipsToBounds = YES;
+    self.btnAddWorker.clipsToBounds = YES;
+    self.buttonSelectAll.clipsToBounds = YES;
+    
+    self.btnAddWorker.backgroundColor = [UIColor GANThemeGreenColor];
 }
 
 - (void) gotoAddWorkerVC{
@@ -142,51 +125,78 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableview reloadData];
+        [self refreshSelectAllButton];
+    });
+}
+
+- (void) refreshSelectAllButton{
+    if ([self.arrWorkerSelected count] == 0) {
+        self.buttonSelectAll.hidden = YES;
+        return;
+    }
+    
+    self.buttonSelectAll.hidden = NO;
+    int count = [self getSelectedCount];
+    if (count == (int) [self.arrWorkerSelected count]) {
+        // All selected
+        [self.buttonSelectAll setTitle:@"Deselect\rworkers" forState:UIControlStateNormal];
+        self.buttonSelectAll.backgroundColor = [UIColor GANThemeMainColor];
+    }
+    else {
+        [self.buttonSelectAll setTitle:@"Select all\rworkers" forState:UIControlStateNormal];
+        self.buttonSelectAll.backgroundColor = [UIColor GANThemeGreenColor];
+    }
+}
+
+- (int) getSelectedCount{
+    int count = 0;
+    for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++) {
+        if ([[self.arrWorkerSelected objectAtIndex:i] boolValue] == YES) count++;
+    }
+    return count;
+}
+
+- (void) doSelectAll{
+    int count = [self getSelectedCount];
+    if (count == (int) [self.arrWorkerSelected count]) {
+        // Deselect
+        for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
+            [self.arrWorkerSelected replaceObjectAtIndex:i withObject:@(NO)];
+        }
+    }
+    else {
+        // Select all
+        for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
+            [self.arrWorkerSelected replaceObjectAtIndex:i withObject:@(YES)];
+        }
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableview reloadData];
+        [self refreshSelectAllButton];
     });
 }
 
 #pragma mark - UI Stuff
 
-- (void) animateToShowPopup{
-    if (self.isPopupShowing == YES) return;
-    self.isPopupShowing = YES;
+- (void) gotoMessageComposerVC{
+    NSMutableArray *arrReceivers = [[NSMutableArray alloc] init];
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     
-    // Animate to show
-    int height = (int) self.viewPopupPanel.frame.size.height;
-    
-    self.viewPopupWrapper.hidden = NO;
-    self.viewPopupWrapper.alpha = 0;
-    self.constraintPopupPanelBottomSpace.constant = -height;
-    [self.viewPopupWrapper layoutIfNeeded];
-    
-    [UIView animateWithDuration:0.25 animations:^{
-        self.constraintPopupPanelBottomSpace.constant = 0;
-        self.viewPopupWrapper.alpha = 1;
-        [self.viewPopupWrapper layoutIfNeeded];
-    }];
-}
-
-- (void) animateToHidePopup{
-    if (self.isPopupShowing == NO) return;
-    
-    self.isPopupShowing = NO;
-    int height = (int) self.viewPopupPanel.frame.size.height;
-    
-    self.constraintPopupPanelBottomSpace.constant = 0;
-    self.viewPopupWrapper.alpha = 1;
-    [self.viewPopupWrapper layoutIfNeeded];
-    
-    self.textview.text = @"";
-    
-    [UIView animateWithDuration:0.25 animations:^{
-        self.constraintPopupPanelBottomSpace.constant = -height;
-        self.viewPopupWrapper.alpha = 0;
-        [self.viewPopupWrapper layoutIfNeeded];
-    } completion:^(BOOL finished) {
-        if (finished == YES){
-            self.viewPopupWrapper.hidden = YES;
+    for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
+        if ([[self.arrWorkerSelected objectAtIndex:i] boolValue] == YES){
+            GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:i];
+            [arrReceivers addObject:myWorker];
         }
-    }];
+    }
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+    GANCompanyMessageComposerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_COMPOSER"];
+    vc.arrayReceivers = arrReceivers;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to MessageComposer from Messages");
 }
 
 #pragma mark - Biz Logic
@@ -196,87 +206,6 @@
         if ([[self.arrWorkerSelected objectAtIndex:i] boolValue] == YES) return YES;
     }
     return NO;
-}
-
-- (void) checkOnboardingWorker {
-    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
-    
-    NSInteger nOnboardingWorkerCount = 0;
-    for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
-        if ([[self.arrWorkerSelected objectAtIndex:i] boolValue] == YES){
-            GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:i];
-            if(myWorker.modelWorker.enumType == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
-                nOnboardingWorkerCount++;
-            }
-        }
-    }
-    
-    if(nOnboardingWorkerCount == 0) {
-        [self doSendMessage];
-    } else {
-        [self showSendMessagePopup:nOnboardingWorkerCount];
-    }
-}
-
-- (void) doSendMessage{
-    NSString *szMessage = self.textview.text;
-    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    
-    NSMutableArray *arrReceivers = [[NSMutableArray alloc] init];
-    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
-    
-    for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
-        if ([[self.arrWorkerSelected objectAtIndex:i] boolValue] == YES){
-            GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:i];
-            [arrReceivers addObject:@{@"user_id": myWorker.szWorkerUserId,
-                                      @"company_id": @""}];
-        }
-    }
-    
-    NSDictionary *metaData;
-    if(self.mapData) {
-        metaData = @{@"map" : [self.mapData serializeToMetaDataDictionary]};
-    }
-    
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage MetaData:metaData AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
-        if (status == SUCCESS_WITH_NO_ERROR){
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Message sent!" DismissAfter:-1 Callback:^{
-                [self.navigationController popViewControllerAnimated:YES];
-            }];
-        }
-        else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
-        }
-    }];
-    GANACTIVITY_REPORT(@"Company - Send message");
-}
-
-- (void) showSendMessagePopup:(NSInteger) nCount {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        GANConformMessagePopupVC *vc = [[GANConformMessagePopupVC alloc] initWithNibName:@"GANConformMessagePopupVC" bundle:nil];
-        vc.delegate = self;
-        [vc setTransitioningDelegate:self.transController];
-        vc.view.backgroundColor = [UIColor clearColor];
-        vc.modalPresentationStyle = UIModalPresentationCustom;
-        [self presentViewController:vc animated:YES completion:^{
-            
-        }];
-        [vc setDescription:nCount];
-    });
-}
-
-#pragma mark - GANConformMessagePopupVCDelegate
-
-- (void) didClickSend {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self doSendMessage];
-    });
-}
-
-- (void) didClickCancel {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self animateToHidePopup];
-    });
 }
 
 #pragma mark - UITableViewDelegate
@@ -396,6 +325,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableview reloadData];
             });
+            GANACTIVITY_REPORT(@"Company - Change worker nickname");
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
@@ -435,6 +365,7 @@
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"An invitation will be sent shortly via SMS" DismissAfter:-1 Callback:nil];
             [self getMyWorkerList];
+            GANACTIVITY_REPORT(@"Company - Send invitation");
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
@@ -468,6 +399,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableview reloadData];
             });
+            GANACTIVITY_REPORT(@"Company - Change worker nickname");
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
@@ -484,7 +416,9 @@
         [GANGlobalVCManager showHudErrorWithMessage:@"Please select the worker(s) you want to message" DismissAfter:-1 Callback:nil];
         return;
     }
-    [self animateToShowPopup];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self gotoMessageComposerVC];
+    });
 }
 
 - (IBAction)onBtnAddWorkerClick:(id)sender {
@@ -492,44 +426,9 @@
     [self gotoAddWorkerVC];
 }
 
-- (IBAction)onBtnTranslateClick:(id)sender {
+- (IBAction)onButtonSelectAllClick:(id)sender {
     [self.view endEditing:YES];
-    self.isAutoTranslate = !self.isAutoTranslate;
-    [self refreshAutoTranslateView];
-}
-
-- (IBAction)onBtnSubmitClick:(id)sender {
-    [self.view endEditing:YES];
-    NSString *sz = self.textview.text;
-    if (sz.length == 0){
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please enter a message to send" DismissAfter:-1 Callback:nil];
-        return;
-    }
-
-    [self checkOnboardingWorker];
-}
-
-- (IBAction)onBtnPopupWrapperClick:(id)sender {
-    [self.view endEditing:YES];
-    [self animateToHidePopup];
-}
-
-- (IBAction)onBtnMap:(id)sender {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        GANCompanyMapPopupVC *vc = [[GANCompanyMapPopupVC alloc] initWithNibName:@"GANCompanyMapPopupVC" bundle:nil];
-        vc.delegate = self;
-        vc.view.backgroundColor = [UIColor clearColor];
-        [vc setTransitioningDelegate:self.transController];
-        vc.modalPresentationStyle = UIModalPresentationCustom;
-        [self presentViewController:vc animated:YES completion:nil];
-    });
-}
-
-#pragma mark - GANCompanyMapPopupVCDelegate
-- (void) submitLocation:(GANLocationDataModel *)location {
-    self.mapData = location;
-    self.imgMapIcon.image = [UIImage imageNamed:@"map_pin-green"];
-    [self.btnMap.titleLabel setTextColor:GANUICOLOR_THEMECOLOR_GREEN];
+    [self doSelectAll];
 }
 
 #pragma mark -NSNotification

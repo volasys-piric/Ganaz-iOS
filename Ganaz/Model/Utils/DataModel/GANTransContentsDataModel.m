@@ -26,6 +26,8 @@
 
 - (void) setWithDictionary:(NSDictionary *)dict{
     [self initialize];
+    if (dict == nil) return;
+    
     self.szTextEN = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"en"]];
     self.szTextES = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"es"]];
 }
