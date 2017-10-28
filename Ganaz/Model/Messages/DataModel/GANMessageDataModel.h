@@ -10,18 +10,24 @@
 #import "GANSurveyDataModel.h"
 #import "GANUtils.h"
 
+@interface GANMessageReceiverDataModel : GANUserRefDataModel
+
+@property (assign, atomic) GANENUM_MESSAGE_STATUS enumStatus;
+
+- (instancetype) init;
+- (void) setWithDictionary: (NSDictionary *) dict;
+- (NSDictionary *) serializeToDictionary;
+
+@end
+
 @interface GANMessageDataModel : NSObject
 
 @property (strong, nonatomic) NSString *szId;
 @property (strong, nonatomic) NSString *szJobId;
 @property (assign, atomic) GANENUM_MESSAGE_TYPE enumType;
-@property (assign, atomic) GANENUM_MESSAGE_STATUS enumStatus;
 
-@property (strong, nonatomic) NSString *szSenderUserId;
-@property (strong, nonatomic) NSString *szSenderCompanyId;
-
-@property (strong, nonatomic) NSString *szReceiverUserId;
-@property (strong, nonatomic) NSString *szReceiverCompanyId;
+@property (strong, nonatomic) GANUserRefDataModel *modelSender;
+@property (strong, nonatomic) NSMutableArray<GANMessageReceiverDataModel *> *arrayReceivers;
 
 @property (strong, nonatomic) GANTransContentsDataModel *modelContents;
 @property (assign, atomic) BOOL isAutoTranslate;
@@ -41,6 +47,8 @@
 - (NSString *) getContentsEN;
 - (NSString *) getContentsES;
 - (NSString *) getPhoneNumberForSuggestFriend;
+- (GANMessageReceiverDataModel *) getPrimaryReceiver;
+- (GANMessageReceiverDataModel *) getReceiverMyself;
 
 // Message with Location
 

@@ -4,8 +4,8 @@
         "production": {
             "status": "running",
             "base_url": "http://35.165.121.74:8000",
-            "backend_version": "1.5",
-            "backend_build": "1500",
+            "backend_version": "1.6",
+            "backend_build": "1600",
             "frontend_min_version": "1.5",
             "frontend_min_build": "1500",
             "onesignal_appid": "160b5387-8178-46e2-b194-ad193dc5efac",
@@ -14,8 +14,8 @@
         "demo": {
             "status": "running",
             "base_url": "http://34.210.63.91:8000",
-            "backend_version": "1.5",
-            "backend_build": "1500",
+            "backend_version": "1.6",
+            "backend_build": "1600",
             "frontend_min_version": "1.5",
             "frontend_min_build": "1500",
             "onesignal_appid": "37c1d731-1cbd-40cf-9ba3-3936174602e1",
@@ -24,8 +24,8 @@
         "staging": {
             "status": "running",
             "base_url": "http://35.166.132.188:8000",
-            "backend_version": "1.5",
-            "backend_build": "1500",
+            "backend_version": "1.6",
+            "backend_build": "1600",
             "frontend_min_version": "1.5",
             "frontend_min_build": "1500",
             "onesignal_appid": "ade7e4b5-b439-4d82-9bb2-c040372c1f14",
@@ -33,19 +33,19 @@
         },
         "frontend": {
             "ios": {
-                "latest_version": "1.5",
-                "latest_build": "1510",
-                "updated_on": "2017-09-28"
+                "latest_version": "1.6",
+                "latest_build": "1604",
+                "updated_on": "2017-10-23"
             },
             "android": {
-                "latest_version": "1.5",
-                "latest_build": "1510",
-                "updated_on": "2017-09-28"
+                "latest_version": "1.6",
+                "latest_build": "1605",
+                "updated_on": "2017-10-23"
             },
             "web": {
-                "latest_version": "1.5",
-                "latest_build": "1500",
-                "updated_on": "2017-09-28"
+                "latest_version": "1.6",
+                "latest_build": "1600",
+                "updated_on": "2017-10-23"
             }
         }
     }

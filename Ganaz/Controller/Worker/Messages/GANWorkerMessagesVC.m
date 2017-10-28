@@ -316,10 +316,10 @@
 - (void) gotoMessageDetailsAtIndex: (int) index{
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
     if ([message amISender] == YES){
-        [self gotoJobDetailsVCWithJobId:message.szJobId CompanyId:message.szReceiverCompanyId];
+        [self gotoJobDetailsVCWithJobId:message.szJobId CompanyId:[message getPrimaryReceiver].szCompanyId];
     }
     else {
-        [self gotoJobDetailsVCWithJobId:message.szJobId CompanyId:message.szSenderCompanyId];
+        [self gotoJobDetailsVCWithJobId:message.szJobId CompanyId:message.modelSender.szCompanyId];
     }
     GANACTIVITY_REPORT(@"Worker - Go to job details from Message item");
 }
@@ -355,10 +355,10 @@
     
     NSString *szCompanyId = @"";
     if ([message amISender] == YES){
-        szCompanyId = message.szReceiverCompanyId;
+        szCompanyId = [message getPrimaryReceiver].szCompanyId;
     }
     else {
-        szCompanyId = message.szSenderCompanyId;
+        szCompanyId = message.modelSender.szCompanyId;
     }
     [managerCache requestGetCompanyDetailsByCompanyId:szCompanyId Callback:^(int indexCompany) {
         if (indexCompany != -1){
@@ -376,10 +376,10 @@
     NSArray *arrReceivers;
     
     if ([message amISender] == YES){
-        arrReceivers = @[@{@"user_id": message.szReceiverUserId, @"company_id": message.szReceiverCompanyId}];
+        arrReceivers = @[@{@"user_id": [message getPrimaryReceiver].szUserId, @"company_id": [message getPrimaryReceiver].szCompanyId}];
     }
     else {
-        arrReceivers = @[@{@"user_id": message.szSenderUserId, @"company_id": message.szSenderCompanyId}];
+        arrReceivers = @[@{@"user_id": message.modelSender.szUserId, @"company_id": message.modelSender.szCompanyId}];
     }
     
     NSString *szMessage = self.textview.text;
@@ -407,14 +407,19 @@
 - (void) configureCell: (GANMessageItemTVC *) cell AtIndex: (int) index{
     GANCacheManager *managerCache = [GANCacheManager sharedInstance];
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
-
+    
     cell.lblDateTime.text = [GANGenericFunctionManager getBeautifiedPastTime:message.dateSent];
     BOOL amISender = [message amISender];
+    BOOL didRead = YES;
+    
     if (amISender == YES){
+        didRead = YES;
+        GANMessageReceiverDataModel *receiverPrimary = [message getPrimaryReceiver];
+        
         if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE){
             cell.lblTitle.text = @"Mensaje enviado";       // Message sent
             cell.lblMessage.text = [message getContentsES];
-            [managerCache requestGetCompanyDetailsByCompanyId:message.szReceiverCompanyId Callback:^(int indexCompany) {
+            [managerCache requestGetCompanyDetailsByCompanyId:receiverPrimary.szCompanyId Callback:^(int indexCompany) {
                 if (indexCompany != -1){
                     GANCompanyDataModel *company = [managerCache.arrayCompanies objectAtIndex:indexCompany];
                     cell.lblTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
@@ -425,7 +430,7 @@
             cell.lblTitle.text = @"Solicitud de trabajo";                   // Job application
             cell.lblMessage.text = @"Nueva solicitud de trabajo";           // New job inquiry
             
-            [managerCache requestGetCompanyDetailsByCompanyId:message.szReceiverCompanyId Callback:^(int indexCompany) {
+            [managerCache requestGetCompanyDetailsByCompanyId:receiverPrimary.szCompanyId Callback:^(int indexCompany) {
                 if (indexCompany == -1) {
                     return;
                 }
@@ -453,7 +458,7 @@
             cell.lblTitle.text = @"Amigo sugerido";                           // Job application
             cell.lblMessage.text = @"Nueva solicitud de trabajo";             // New job inquiry
             
-            [managerCache requestGetCompanyDetailsByCompanyId:message.szReceiverCompanyId Callback:^(int indexCompany) {
+            [managerCache requestGetCompanyDetailsByCompanyId:receiverPrimary.szCompanyId Callback:^(int indexCompany) {
                 if (indexCompany == -1) {
                     return;
                 }
@@ -490,10 +495,13 @@
         }
     }
     else {
+        GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
+        didRead = (receiver != nil && receiver.enumStatus != GANENUM_MESSAGE_STATUS_NEW);
+
         if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE){
             cell.lblTitle.text = @"Mensaje recibido";           // Message received
             cell.lblMessage.text = [message getContentsES];
-            [managerCache requestGetCompanyDetailsByCompanyId:message.szSenderCompanyId Callback:^(int indexCompany) {
+            [managerCache requestGetCompanyDetailsByCompanyId:message.modelSender.szCompanyId Callback:^(int indexCompany) {
                 if (index != -1){
                     GANCompanyDataModel *company = [managerCache.arrayCompanies objectAtIndex:indexCompany];
                     cell.lblTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
@@ -503,7 +511,7 @@
         else if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT){
             cell.lblTitle.text = @"Reclutado";              // Recruited
             cell.lblMessage.text = @"Reclutado";            // Recruited
-            [managerCache requestGetCompanyDetailsByCompanyId:message.szSenderCompanyId Callback:^(int indexCompany) {
+            [managerCache requestGetCompanyDetailsByCompanyId:message.modelSender.szCompanyId Callback:^(int indexCompany) {
                 if (indexCompany == -1) {
                     return;
                 }
@@ -532,7 +540,7 @@
             cell.lblTitle.text = @"Encuesta";
             cell.lblMessage.text = [message getContentsES];
             
-            [managerCache requestGetCompanyDetailsByCompanyId:message.szSenderCompanyId Callback:^(int indexCompany) {
+            [managerCache requestGetCompanyDetailsByCompanyId:message.modelSender.szCompanyId Callback:^(int indexCompany) {
                 if (index != -1){
                     GANCompanyDataModel *company = [managerCache.arrayCompanies objectAtIndex:indexCompany];
                     cell.lblTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
@@ -549,8 +557,7 @@
     else {
         cell.locationCenter = nil;
     }
-    
-    BOOL didRead = !([message amIReceiver] && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW);
+
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell refreshViewsWithType:message.enumType DidRead:didRead DidSend:amISender];
 }

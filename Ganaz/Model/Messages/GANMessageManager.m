@@ -62,7 +62,8 @@
     int count = 0;
     for (int i = 0; i < (int) [self.arrMessages count]; i++){
         GANMessageDataModel *message = [self.arrMessages objectAtIndex:i];
-        if ([message amIReceiver] == YES && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW) count++;
+        GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
+        if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) count++;
     }
     return count;
 }
@@ -187,7 +188,8 @@
     NSMutableArray *arrMessageIds = [[NSMutableArray alloc] init];
     for (int i = 0; i < (int) [self.arrMessages count]; i++){
         GANMessageDataModel *message = [self.arrMessages objectAtIndex:i];
-        if ([message amIReceiver] == YES && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW){
+        GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
+        if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) {
             [arrMessageIds addObject:message.szId];
         }
     }
@@ -209,7 +211,10 @@
                 if (index == -1) continue;
                 
                 GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
-                message.enumStatus = GANENUM_MESSAGE_STATUS_READ;
+                GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
+                if (receiver != nil) {
+                    receiver.enumStatus = GANENUM_MESSAGE_STATUS_READ;
+                }
             }
             
             [GANGlobalVCManager updateMessageBadge];

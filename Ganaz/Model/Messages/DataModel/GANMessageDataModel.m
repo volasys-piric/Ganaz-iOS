@@ -12,6 +12,35 @@
 #import "GANGenericFunctionManager.h"
 #import "Global.h"
 
+@implementation GANMessageReceiverDataModel
+
+- (instancetype) init{
+    self = [super init];
+    if (self){
+        [self initialize];
+    }
+    return self;
+}
+
+- (void) initialize{
+    self.szUserId = @"";
+    self.szCompanyId = @"";
+    self.enumStatus = GANENUM_MESSAGE_STATUS_READ;
+}
+
+- (void) setWithDictionary:(NSDictionary *)dict{
+    [super setWithDictionary:dict];
+    self.enumStatus = [GANUtils getMessageStatusFromString:[GANGenericFunctionManager refineNSString:[dict objectForKey:@"status"]]];
+}
+
+- (NSDictionary *) serializeToDictionary{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super serializeToDictionary]];
+    [dict setObject:[GANUtils getStringFromMessageStatus:self.enumStatus] forKey:@"status"];
+    return dict;
+}
+
+@end
+
 @implementation GANMessageDataModel
 
 - (instancetype) init{
@@ -26,12 +55,9 @@
     self.szId = @"";
     self.szJobId = @"";
     self.enumType = GANENUM_MESSAGE_TYPE_MESSAGE;
-    self.enumStatus = GANENUM_MESSAGE_STATUS_READ;
-    
-    self.szSenderUserId = @"";
-    self.szSenderCompanyId = @"";
-    self.szReceiverUserId = @"";
-    self.szReceiverCompanyId = @"";
+
+    self.modelSender = [[GANUserRefDataModel alloc] init];
+    self.arrayReceivers = [[NSMutableArray alloc] init];
     
     self.modelContents = [[GANTransContentsDataModel alloc] init];
     self.isAutoTranslate = NO;
@@ -46,14 +72,27 @@
     self.szId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"_id"]];
     self.szJobId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"job_id"]];
     self.enumType = [GANUtils getMessageTypeFromString:[GANGenericFunctionManager refineNSString:[dict objectForKey:@"type"]]];
-    self.enumStatus = [GANUtils getMessageStatusFromString:[GANGenericFunctionManager refineNSString:[dict objectForKey:@"status"]]];
     
     NSDictionary *dictSender = [dict objectForKey:@"sender"];
     NSDictionary *dictReceiver = [dict objectForKey:@"receiver"];
-    self.szSenderUserId = [GANGenericFunctionManager refineNSString:[dictSender objectForKey:@"user_id"]];
-    self.szSenderCompanyId = [GANGenericFunctionManager refineNSString:[dictSender objectForKey:@"company_id"]];
-    self.szReceiverUserId = [GANGenericFunctionManager refineNSString:[dictReceiver objectForKey:@"user_id"]];
-    self.szReceiverCompanyId = [GANGenericFunctionManager refineNSString:[dictReceiver objectForKey:@"company_id"]];
+    [self.modelSender setWithDictionary:dictSender];
+
+    [self.arrayReceivers removeAllObjects];
+    NSArray *arrayReceivers = [dict objectForKey:@"receivers"];
+    if (arrayReceivers != nil && [arrayReceivers isKindOfClass:[NSArray class]] == YES) {
+        for (int i = 0; i < (int) [arrayReceivers count]; i++) {
+            NSDictionary *d = [arrayReceivers objectAtIndex:i];
+            GANMessageReceiverDataModel *receiver = [[GANMessageReceiverDataModel alloc] init];
+            [receiver setWithDictionary:d];
+            [self.arrayReceivers addObject:receiver];
+        }
+    }
+    else if (dictReceiver != nil && [dictReceiver isKindOfClass:[NSNull class]] == NO){
+        GANMessageReceiverDataModel *receiver = [[GANMessageReceiverDataModel alloc] init];
+        [receiver setWithDictionary:dictReceiver];
+        receiver.enumStatus = [GANUtils getMessageStatusFromString:[GANGenericFunctionManager refineNSString:[dict objectForKey:@"status"]]];
+        [self.arrayReceivers addObject:receiver];
+    }
     
     NSDictionary *dictContents = [dict objectForKey:@"message"];
     [self.modelContents setWithDictionary:dictContents];
@@ -77,14 +116,13 @@
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:self.szJobId forKey:@"job_id"];
     [dict setObject:[GANUtils getStringFromMessageType:self.enumType] forKey:@"type"];
-    [dict setObject:[GANUtils getStringFromMessageStatus:self.enumStatus] forKey:@"status"];
+    [dict setObject:[self.modelSender serializeToDictionary] forKey:@"sender"];
     
-    [dict setObject:@{@"user_id": self.szSenderUserId,
-                      @"company_id": self.szSenderCompanyId}
-             forKey:@"sender"];
-    [dict setObject:@{@"user_id": self.szReceiverUserId,
-                      @"company_id": self.szReceiverCompanyId}
-             forKey:@"receiver"];
+    NSMutableArray *arrayReceivers = [[NSMutableArray alloc] init];
+    for (int i = 0; i < (int) [self.arrayReceivers count]; i++) {
+        GANMessageReceiverDataModel *receiver = [self.arrayReceivers objectAtIndex:i];
+        [arrayReceivers addObject:[receiver serializeToDictionary]];
+    }
     
     [dict setObject:[self.modelContents serializeToDictionary] forKey:@"message"];
     [dict setObject:(self.isAutoTranslate == YES) ? @"true": @"false" forKey:@"auto_translate"];
@@ -99,25 +137,17 @@
     NSString *szCompanyId = @"";
     if ([[GANUserManager sharedInstance] isCompanyUser]){
         szCompanyId = [GANUserManager getCompanyDataModel].szId;
-        return ([self.szSenderCompanyId isEqualToString:szCompanyId] == YES);
+        return ([self.modelSender.szCompanyId isEqualToString:szCompanyId] == YES);
     }
     else{
-        return ([self.szSenderUserId isEqualToString:szUserId] == YES);
+        return ([self.modelSender.szUserId isEqualToString:szUserId] == YES);
     }
     return NO;
 }
 
 - (BOOL) amIReceiver{
-    NSString *szUserId = [GANUserManager sharedInstance].modelUser.szId;
-    NSString *szCompanyId = @"";
-    if ([[GANUserManager sharedInstance] isCompanyUser]){
-        szCompanyId = [GANUserManager getCompanyDataModel].szId;
-        return ([self.szReceiverCompanyId isEqualToString:szCompanyId] == YES);
-    }
-    else{
-        return ([self.szReceiverUserId isEqualToString:szUserId] == YES);
-    }
-    return NO;
+    if ([self getReceiverMyself] == nil) return NO;
+    return YES;
 }
 
 - (NSString *) getContentsEN{
@@ -135,6 +165,34 @@
     if (sz.length == 0) return @"";
     sz = [GANGenericFunctionManager stripNonnumericsFromNSString:sz];
     return [GANGenericFunctionManager beautifyPhoneNumber:sz CountryCode:@"1"];
+}
+
+- (GANMessageReceiverDataModel *) getPrimaryReceiver{
+    if ([self.arrayReceivers count] == 0) return nil;
+    return [self.arrayReceivers objectAtIndex:0];
+}
+
+- (GANMessageReceiverDataModel *) getReceiverMyself{
+    // Extract receiver object of current user if the current user is receiver.
+    
+    if ([self.arrayReceivers count] == 0) return nil;
+    
+    NSString *szUserId = [GANUserManager sharedInstance].modelUser.szId;
+    NSString *szCompanyId = @"";
+    if ([[GANUserManager sharedInstance] isCompanyUser]){
+        szCompanyId = [GANUserManager getCompanyDataModel].szId;
+        for (int i = 0; i < (int) [self.arrayReceivers count]; i++) {
+            GANMessageReceiverDataModel *receiver = [self.arrayReceivers objectAtIndex:i];
+            if ([receiver.szCompanyId isEqualToString:szCompanyId] == YES) return receiver;
+        }
+    }
+    else{
+        for (int i = 0; i < (int) [self.arrayReceivers count]; i++) {
+            GANMessageReceiverDataModel *receiver = [self.arrayReceivers objectAtIndex:i];
+            if ([receiver.szUserId isEqualToString:szUserId] == YES) return receiver;
+        }
+    }
+    return nil;
 }
 
 // Message with Location

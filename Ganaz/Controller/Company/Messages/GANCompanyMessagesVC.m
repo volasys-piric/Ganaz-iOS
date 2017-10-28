@@ -252,6 +252,7 @@
 }
 
 - (void) doReplyMessage{
+    /*
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:self.indexMessageForReply];
     NSArray *arrReceivers;
     
@@ -275,12 +276,14 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
         }
     }];
+     */
     GANACTIVITY_REPORT(@"Company - Reply message");
 }
 
 // MARK: ActionSheet for Survey
 
 - (void) showActionSheetForSurveyAtIndex: (int) index{
+    /*
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
     if ([message isSurveyMessage] == NO){
         return;
@@ -340,9 +343,11 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self presentViewController:actionSheet animated:YES completion:nil];
     });
+     */
 }
 
 - (void) replyMessageAtIndex: (int) index{
+    /*
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
     
     NSString *szUserId = @"";
@@ -358,6 +363,7 @@
     if (indexMyWorker == -1) return;
     
     [self gotoMessageComposerVCAtMyWorkerIndex:indexMyWorker];
+     */
 }
 
 - (void) gotoMessageComposerVCAtMyWorkerIndex: (int) indexMyWorker{
@@ -393,6 +399,7 @@
 #pragma mark - UITableView Delegate
 
 - (void) configureCell: (GANMessageItemTVC *) cell AtIndex: (int) index{
+    /*
     GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     GANCacheManager *managerCache = [GANCacheManager sharedInstance];
     GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
@@ -530,6 +537,7 @@
     BOOL didRead = !([message amIReceiver] && message.enumStatus == GANENUM_MESSAGE_STATUS_NEW);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell refreshViewsWithType:message.enumType DidRead:didRead DidSend:amISender];
+     */
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
