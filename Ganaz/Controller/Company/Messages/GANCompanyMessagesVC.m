@@ -46,7 +46,7 @@
 @property (assign, atomic) int indexMessageForReply;
 @property (assign, atomic) BOOL isVCVisible;
 
-@property (strong, nonatomic) NSMutableArray *arrMessages;
+@property (strong, nonatomic) NSMutableArray *arrayMessages;
 
 @end
 
@@ -65,7 +65,7 @@
     self.isVCVisible = NO;
     self.isPopupShowing = NO;
     self.isAutoTranslate = NO;
-    self.arrMessages = [[NSMutableArray alloc] init];
+    self.arrayMessages = [[NSMutableArray alloc] init];
     
     [self buildMessageList];
     [self registerTableViewCellFromNib];
@@ -147,17 +147,17 @@
     [GANGlobalVCManager updateMessageBadge];
     
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
-    [self.arrMessages removeAllObjects];
+    [self.arrayMessages removeAllObjects];
     
-    for (int i = 0; i < (int) [managerMessage.arrMessages count]; i++){
-        GANMessageDataModel *message = [managerMessage.arrMessages objectAtIndex:i];
+    for (int i = 0; i < (int) [managerMessage.arrayMessages count]; i++){
+        GANMessageDataModel *message = [managerMessage.arrayMessages objectAtIndex:i];
         if ([message amIReceiver] == NO && [message amISender] == NO) continue;
         if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) continue;
         
-        [self.arrMessages addObject:message];
+        [self.arrayMessages addObject:message];
     }
     
-    [self.arrMessages sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+    [self.arrayMessages sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         GANMessageDataModel *msg1 = obj1;
         GANMessageDataModel *msg2 = obj2;
         return [msg2.dateSent compare:msg1.dateSent];
@@ -220,7 +220,7 @@
 #pragma mark - Biz Logic
 
 - (void) callSuggestedFriendAtIndex: (int) indexMessage{
-    GANMessageDataModel *message = [self.arrMessages objectAtIndex:indexMessage];
+    GANMessageDataModel *message = [self.arrayMessages objectAtIndex:indexMessage];
     NSString *phoneNumber = [message getPhoneNumberForSuggestFriend];
     [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:[NSString stringWithFormat:@"Do you want to call %@?", phoneNumber] ButtonYes:@"Yes" ButtonNo:@"NO" CallbackYes:^{
         NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",[GANGenericFunctionManager stripNonnumericsFromNSString:phoneNumber]]];
@@ -545,7 +545,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [self.arrMessages count];
+    return [self.arrayMessages count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -560,7 +560,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     int index = (int) indexPath.row;
-    GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
+    GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
     
     if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
         [self callSuggestedFriendAtIndex:index];

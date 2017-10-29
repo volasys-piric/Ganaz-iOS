@@ -35,15 +35,15 @@
 }
 
 - (void) initializeManager{
-    self.arrMessages = [[NSMutableArray alloc] init];
+    self.arrayMessages = [[NSMutableArray alloc] init];
     self.arrayThreads = [[NSMutableArray alloc] init];
     self.isLoading = NO;
     self.nUnreadMessages = 0;
 }
 
 - (int) getIndexForMessageWithId: (NSString *) messageId{
-    for (int i = 0; i < (int) [self.arrMessages count]; i++){
-        GANMessageDataModel *message = [self.arrMessages objectAtIndex:i];
+    for (int i = 0; i < (int) [self.arrayMessages count]; i++){
+        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
         if ([message.szId isEqualToString:messageId] == YES) return i;
     }
     return -1;
@@ -51,11 +51,11 @@
 
 - (BOOL) addMessageIfNeeded: (GANMessageDataModel *) newMessage{
     if (newMessage == nil) return NO;
-    for (int i = 0; i < (int) [self.arrMessages count]; i++){
-        GANMessageDataModel *message = [self.arrMessages objectAtIndex:i];
+    for (int i = 0; i < (int) [self.arrayMessages count]; i++){
+        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
         if ([message.szId isEqualToString:newMessage.szId] == YES) return NO;
     }
-    [self.arrMessages addObject:newMessage];
+    [self.arrayMessages addObject:newMessage];
     [self addMessageToThread:newMessage];
     return YES;
 }
@@ -78,8 +78,8 @@
 
 - (int) getUnreadMessageCount{
     int count = 0;
-    for (int i = 0; i < (int) [self.arrMessages count]; i++){
-        GANMessageDataModel *message = [self.arrMessages objectAtIndex:i];
+    for (int i = 0; i < (int) [self.arrayMessages count]; i++){
+        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
         GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
         if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) count++;
     }
@@ -106,11 +106,11 @@
         NSDictionary *dict = responseObject;
         BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
         if (success){
-            NSArray *arrMessages = [dict objectForKey:@"messages"];
-            [self.arrMessages removeAllObjects];
+            NSArray *arrayMessages = [dict objectForKey:@"messages"];
+            [self.arrayMessages removeAllObjects];
             
-            for (int i = 0; i < (int) [arrMessages count]; i++){
-                NSDictionary *dictMessage = [arrMessages objectAtIndex:i];
+            for (int i = 0; i < (int) [arrayMessages count]; i++){
+                NSDictionary *dictMessage = [arrayMessages objectAtIndex:i];
                 GANMessageDataModel *message = [[GANMessageDataModel alloc] init];
                 [message setWithDictionary:dictMessage];
                 [self addMessageIfNeeded:message];
@@ -178,9 +178,9 @@
             NSDictionary *dict = responseObject;
             BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
             if (success){
-                NSArray *arrMessages = [dict objectForKey:@"messages"];
-                for (int i = 0; i < (int) [arrMessages count]; i++){
-                    NSDictionary *dictMessage = [arrMessages objectAtIndex:i];
+                NSArray *arrayMessages = [dict objectForKey:@"messages"];
+                for (int i = 0; i < (int) [arrayMessages count]; i++){
+                    NSDictionary *dictMessage = [arrayMessages objectAtIndex:i];
                     GANMessageDataModel *message = [[GANMessageDataModel alloc] init];
                     [message setWithDictionary:dictMessage];
                     [self addMessageIfNeeded:message];
@@ -204,8 +204,8 @@
 
 - (void) requestMarkAsReadAllMessagesWithCallback: (void (^) (int status)) callback{
     NSMutableArray *arrMessageIds = [[NSMutableArray alloc] init];
-    for (int i = 0; i < (int) [self.arrMessages count]; i++){
-        GANMessageDataModel *message = [self.arrMessages objectAtIndex:i];
+    for (int i = 0; i < (int) [self.arrayMessages count]; i++){
+        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
         GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
         if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) {
             [arrMessageIds addObject:message.szId];
@@ -228,7 +228,7 @@
                 int index = [self getIndexForMessageWithId:messageId];
                 if (index == -1) continue;
                 
-                GANMessageDataModel *message = [self.arrMessages objectAtIndex:index];
+                GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
                 GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
                 if (receiver != nil) {
                     receiver.enumStatus = GANENUM_MESSAGE_STATUS_READ;

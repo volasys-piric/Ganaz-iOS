@@ -12,7 +12,7 @@
 
 @interface GANMessageManager : NSObject
 
-@property (strong, nonatomic) NSMutableArray *arrMessages;
+@property (strong, nonatomic) NSMutableArray *arrayMessages;
 @property (strong, nonatomic) NSMutableArray <GANMessageThreadDataModel *> *arrayThreads;
 
 @property (assign, atomic) BOOL isLoading;
