@@ -117,13 +117,41 @@
     for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
         GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
         int nMessages = (int) [thread.arrayMessages count];
+        
+        BOOL foundMessage = NO;         // Message, Application, Suggest
+        BOOL foundRecruit = NO;         // Recruit
+        BOOL foundSurvey = NO;          // Survey
+        
         for (int j = nMessages - 1; j >= 0; j--) {
             GANMessageDataModel *message = [thread.arrayMessages objectAtIndex:j];
             if ([message amIReceiver] == NO && [message amISender] == NO) continue;
             if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) continue;
             
-            [self.arrayMessages addObject:message];
-            break;
+            if (foundMessage == NO) {
+                if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE ||
+                    message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION ||
+                    message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST) {
+                    foundMessage = YES;
+                    [self.arrayMessages addObject:message];
+                }
+            }
+            
+            if (foundRecruit == NO) {
+                if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT) {
+                    foundRecruit = YES;
+                    [self.arrayMessages addObject:message];
+                }
+            }
+            
+            if (foundSurvey == NO) {
+                if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT ||
+                    message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE) {
+                    foundSurvey = YES;
+                    [self.arrayMessages addObject:message];
+                }
+            }
+            
+            if (foundMessage == YES && foundRecruit == YES && foundSurvey == YES) break;
         }
     }
     
@@ -177,13 +205,16 @@
         
         else if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT){
             cell.labelTitle.text = @"Recruiting";
-            cell.labelMessage.text = [NSString stringWithFormat:@"Sent to %d worker(s)", nReceivers];
-            
             int indexJob = [managerJob getIndexForMyJobsByJobId:message.szJobId];
             if (indexJob != -1){
                 GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:indexJob];
                 cell.labelTitle.text = [NSString stringWithFormat:@"Recruiting: %@", [job getTitleEN]];
             }
+
+            cell.labelMessage.text = [NSString stringWithFormat:@"Sent to %d worker(s)", nReceivers];            
+            [message requestGetBeautifiedReceiversAbbrWithCallback:^(NSString *beautifiedName) {
+                cell.labelMessage.text = [NSString stringWithFormat:@"Sent to %@", beautifiedName];
+            }];
         }
 
         else if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE ||
