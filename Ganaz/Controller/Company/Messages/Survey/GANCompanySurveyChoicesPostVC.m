@@ -9,7 +9,7 @@
 #import "GANCompanySurveyChoicesPostVC.h"
 #import "GANFadeTransitionDelegate.h"
 #import "GANMessageWithChargeConfirmationPopupVC.h"
-#import "GANCompanyMessagesVC.h"
+#import "GANCompanyMessageListVC.h"
 #import "GANSurveyManager.h"
 #import "GANMessageManager.h"
 
@@ -195,7 +195,7 @@
     NSArray <UIViewController *> *arrayVCs = nav.viewControllers;
     for (int i = 0; i < (int) [arrayVCs count]; i++) {
         UIViewController *vc = [arrayVCs objectAtIndex:i];
-        if ([vc isKindOfClass:[GANCompanyMessagesVC class]] == YES) {
+        if ([vc isKindOfClass:[GANCompanyMessageListVC class]] == YES) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.navigationController popToViewController:vc animated:YES];
             });
@@ -204,7 +204,7 @@
     }
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES"];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES_LIST"];
     [self.navigationController setViewControllers:@[vc] animated:YES];
 }
 

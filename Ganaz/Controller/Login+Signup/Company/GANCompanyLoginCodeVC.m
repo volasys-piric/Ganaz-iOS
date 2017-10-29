@@ -189,7 +189,7 @@
                 }
             }
             
-            UIViewController *vcMessage = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES"];
+            UIViewController *vcMessage = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES_LIST"];
             [arrNewVCs insertObject:vcMessage atIndex:0];
             
             for (int i = 0; i < (int)([arrNewVCs count]); i++){

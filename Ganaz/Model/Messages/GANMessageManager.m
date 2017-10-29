@@ -36,6 +36,7 @@
 
 - (void) initializeManager{
     self.arrMessages = [[NSMutableArray alloc] init];
+    self.arrayThreads = [[NSMutableArray alloc] init];
     self.isLoading = NO;
     self.nUnreadMessages = 0;
 }
@@ -55,7 +56,24 @@
         if ([message.szId isEqualToString:newMessage.szId] == YES) return NO;
     }
     [self.arrMessages addObject:newMessage];
+    [self addMessageToThread:newMessage];
     return YES;
+}
+
+- (void) addMessageToThread: (GANMessageDataModel *) newMessage{
+    if (newMessage == nil) return;
+    for (int i = 0; i < (int) [self.arrayThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [self.arrayThreads objectAtIndex:i];
+        if ([thread isSameThread:newMessage] == YES) {
+            [thread addMessageIfNeeded:newMessage];
+            return;
+        }
+    }
+    
+    // Create new thread && add message
+    GANMessageThreadDataModel *newThread = [[GANMessageThreadDataModel alloc] init];
+    [newThread addMessageIfNeeded:newMessage];
+    [self.arrayThreads addObject:newThread];
 }
 
 - (int) getUnreadMessageCount{
@@ -95,7 +113,7 @@
                 NSDictionary *dictMessage = [arrMessages objectAtIndex:i];
                 GANMessageDataModel *message = [[GANMessageDataModel alloc] init];
                 [message setWithDictionary:dictMessage];
-                [self.arrMessages addObject:message];
+                [self addMessageIfNeeded:message];
             }
             [GANGlobalVCManager updateMessageBadge];
             

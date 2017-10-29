@@ -7,11 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GANMessageThreadDataModel.h"
 #import "GANUtils.h"
 
 @interface GANMessageManager : NSObject
 
 @property (strong, nonatomic) NSMutableArray *arrMessages;
+@property (strong, nonatomic) NSMutableArray <GANMessageThreadDataModel *> *arrayThreads;
+
 @property (assign, atomic) BOOL isLoading;
 
 @property (assign, atomic) int nUnreadMessages;

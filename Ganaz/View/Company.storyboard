@@ -1053,7 +1053,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="riQ-En-rAj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="137" y="1949"/>
+            <point key="canvasLocation" x="-134" y="1949"/>
         </scene>
         <!--Messages-->
         <scene sceneID="ABT-Z2-EIK">
@@ -1065,7 +1065,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="lnn-Vq-PJ3" kind="relationship" relationship="rootViewController" id="qYp-U5-V7k"/>
+                        <segue destination="Uvm-eU-BSK" kind="relationship" relationship="rootViewController" id="s1Z-Oz-0TI"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P3G-YN-Kqs" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1301,7 +1301,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What would you like to do?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y8j-QM-s8O">
-                                <rect key="frame" x="41.5" y="86" width="292.5" height="28"/>
+                                <rect key="frame" x="42" y="86" width="292.5" height="28"/>
                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="24"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -2752,6 +2752,59 @@ your job post with?</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gQ5-Xy-DYM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2618" y="4382"/>
+        </scene>
+        <!--Messages-->
+        <scene sceneID="d0m-TN-Y7r">
+            <objects>
+                <viewController storyboardIdentifier="STORYBOARD_COMPANY_MESSAGE_LIST" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Uvm-eU-BSK" customClass="GANCompanyMessageListVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="R7p-Nd-SCz"/>
+                        <viewControllerLayoutGuide type="bottom" id="5uk-bu-DWF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="El0-Mq-iYG">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="edX-Wv-ijK" userLabel="View - Main Container">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Rou-2b-m3u">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="Uvm-eU-BSK" id="6YM-gu-feE"/>
+                                            <outlet property="delegate" destination="Uvm-eU-BSK" id="ceN-vX-iH6"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Rou-2b-m3u" secondAttribute="bottom" id="5Rm-YP-Jri"/>
+                                    <constraint firstItem="Rou-2b-m3u" firstAttribute="leading" secondItem="edX-Wv-ijK" secondAttribute="leading" id="GMJ-Vx-12v"/>
+                                    <constraint firstItem="Rou-2b-m3u" firstAttribute="top" secondItem="edX-Wv-ijK" secondAttribute="top" id="Puc-hw-n0w"/>
+                                    <constraint firstAttribute="trailing" secondItem="Rou-2b-m3u" secondAttribute="trailing" id="TeS-Gd-iZx"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="edX-Wv-ijK" secondAttribute="trailing" id="0cv-Xi-uZ5"/>
+                            <constraint firstItem="edX-Wv-ijK" firstAttribute="top" secondItem="R7p-Nd-SCz" secondAttribute="bottom" id="3fc-1i-fuJ"/>
+                            <constraint firstItem="edX-Wv-ijK" firstAttribute="leading" secondItem="El0-Mq-iYG" secondAttribute="leading" id="FVI-IK-iLy"/>
+                            <constraint firstItem="5uk-bu-DWF" firstAttribute="top" secondItem="edX-Wv-ijK" secondAttribute="bottom" id="eaG-nJ-5v0"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Messages" id="nNm-Q3-yEr">
+                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="wTu-I6-Bw0"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableview" destination="Rou-2b-m3u" id="WuB-8z-oam"/>
+                        <segue destination="lnn-Vq-PJ3" kind="show" id="NdI-lZ-JUD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="U3f-Zo-43P" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="428" y="1949"/>
         </scene>
     </scenes>
     <resources>

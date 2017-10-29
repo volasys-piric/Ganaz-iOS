@@ -46,9 +46,12 @@
 
 - (NSString *) getContentsEN;
 - (NSString *) getContentsES;
+- (int) getReceiversCount;
 - (NSString *) getPhoneNumberForSuggestFriend;
 - (GANMessageReceiverDataModel *) getPrimaryReceiver;
 - (GANMessageReceiverDataModel *) getReceiverMyself;
+
+- (void) requestGetBeautifiedReceiversAbbrWithCallback: (void (^)(NSString *beautifiedName)) callback;
 
 // Message with Location
 
