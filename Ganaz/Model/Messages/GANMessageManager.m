@@ -107,7 +107,7 @@
         BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
         if (success){
             NSArray *arrayMessages = [dict objectForKey:@"messages"];
-            [self.arrayMessages removeAllObjects];
+//            [self.arrayMessages removeAllObjects];
             
             for (int i = 0; i < (int) [arrayMessages count]; i++){
                 NSDictionary *dictMessage = [arrayMessages objectAtIndex:i];

@@ -35,6 +35,25 @@
             </objects>
             <point key="canvasLocation" x="-854" y="224"/>
         </scene>
+        <!--Group Message-->
+        <scene sceneID="eZB-xN-AUx">
+            <objects>
+                <viewController id="ciB-8v-SrN" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Fwz-h1-4Jr"/>
+                        <viewControllerLayoutGuide type="bottom" id="lyC-BK-qxJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="2CQ-d8-4d8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Group Message" id="kI0-7s-05o"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="McZ-kb-RMh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="918" y="-565"/>
+        </scene>
         <!--Compose message-->
         <scene sceneID="px9-y2-jAa">
             <objects>
@@ -206,6 +225,7 @@
                         <segue destination="2Ed-tF-uXc" kind="show" id="j8z-di-Qqq"/>
                         <segue destination="v7C-s5-211" kind="show" id="plb-sY-XT4"/>
                         <segue destination="xna-q7-iua" kind="show" id="IXc-0g-t8r"/>
+                        <segue destination="ciB-8v-SrN" kind="show" id="lZI-69-VIX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sCH-nn-Wzt" userLabel="First Responder" sceneMemberID="firstResponder"/>
