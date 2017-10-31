@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFUIDisplay-Medium.otf">
+            <string>SFUIDisplay-Medium</string>
+        </array>
+        <array key="SFUIDisplay-Regular.otf">
+            <string>SFUIDisplay-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TVC_MESSAGEITEM_YOU" rowHeight="306" id="efz-Y3-Uib" customClass="GANMessageItemYouTVC">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="306"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="efz-Y3-Uib" id="xlV-h1-V1S">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="305.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tHh-Pi-b7x">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="305.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30mins ago" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zYw-Hj-Q2n" userLabel="Label - Timestamp">
+                                <rect key="frame" x="16" y="8" width="343" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="EFS-jL-sqk"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="12"/>
+                                <color key="textColor" red="0.35294117650000001" green="0.35294117650000001" blue="0.35294117650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsG-dL-lMD" userLabel="Label - Background">
+                                <rect key="frame" x="12" y="31" width="192.5" height="74.5"/>
+                                <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="999" verticalHuggingPriority="999" horizontalCompressionResistancePriority="999" verticalCompressionResistancePriority="999" text="Message Contents Message Contents This is Message Contents" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FHk-oo-gj1" userLabel="Label - Message">
+                                <rect key="frame" x="28" y="43" width="160.5" height="50.5"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zAD-vq-eec" userLabel="Image - Map">
+                                <rect key="frame" x="12" y="113.5" width="262.5" height="184"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="999" constant="180" id="sya-uz-k5S"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="zAD-vq-eec" firstAttribute="leading" secondItem="jsG-dL-lMD" secondAttribute="leading" id="3VV-w6-1ZS"/>
+                            <constraint firstItem="zAD-vq-eec" firstAttribute="top" secondItem="jsG-dL-lMD" secondAttribute="bottom" constant="8" id="3dS-lk-MIx"/>
+                            <constraint firstItem="jsG-dL-lMD" firstAttribute="leading" secondItem="zYw-Hj-Q2n" secondAttribute="leading" constant="-4" id="61M-AP-mPy"/>
+                            <constraint firstItem="FHk-oo-gj1" firstAttribute="bottom" secondItem="jsG-dL-lMD" secondAttribute="bottom" constant="-12" id="6f9-Nz-qld"/>
+                            <constraint firstItem="FHk-oo-gj1" firstAttribute="width" relation="lessThanOrEqual" secondItem="tHh-Pi-b7x" secondAttribute="width" multiplier="0.65" id="7OO-UL-MLG"/>
+                            <constraint firstItem="FHk-oo-gj1" firstAttribute="trailing" secondItem="jsG-dL-lMD" secondAttribute="trailing" constant="-16" id="9vN-LT-2Di"/>
+                            <constraint firstItem="zYw-Hj-Q2n" firstAttribute="leading" secondItem="tHh-Pi-b7x" secondAttribute="leading" constant="16" id="NhX-qt-2kN"/>
+                            <constraint firstAttribute="bottom" secondItem="zAD-vq-eec" secondAttribute="bottom" constant="8" id="Pj3-7K-xei"/>
+                            <constraint firstItem="zYw-Hj-Q2n" firstAttribute="top" secondItem="tHh-Pi-b7x" secondAttribute="top" constant="8" id="SR5-N9-vy8"/>
+                            <constraint firstAttribute="trailing" secondItem="zYw-Hj-Q2n" secondAttribute="trailing" constant="16" id="bRg-89-Vbg"/>
+                            <constraint firstItem="jsG-dL-lMD" firstAttribute="top" secondItem="zYw-Hj-Q2n" secondAttribute="bottom" constant="3" id="eg0-wn-X8f"/>
+                            <constraint firstItem="zAD-vq-eec" firstAttribute="width" secondItem="tHh-Pi-b7x" secondAttribute="width" multiplier="0.7" id="h4R-ng-LNZ"/>
+                            <constraint firstItem="FHk-oo-gj1" firstAttribute="leading" secondItem="jsG-dL-lMD" secondAttribute="leading" constant="16" id="rUp-eb-bMc"/>
+                            <constraint firstItem="FHk-oo-gj1" firstAttribute="top" secondItem="jsG-dL-lMD" secondAttribute="top" constant="12" id="xg0-a7-JZ6"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="tHh-Pi-b7x" firstAttribute="leading" secondItem="xlV-h1-V1S" secondAttribute="leading" id="DM9-6U-ygq"/>
+                    <constraint firstAttribute="bottom" secondItem="tHh-Pi-b7x" secondAttribute="bottom" id="KJS-es-EP6"/>
+                    <constraint firstItem="tHh-Pi-b7x" firstAttribute="top" secondItem="xlV-h1-V1S" secondAttribute="top" id="cd7-sp-dUj"/>
+                    <constraint firstAttribute="trailing" secondItem="tHh-Pi-b7x" secondAttribute="trailing" id="dTe-XL-nnL"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="constraintImageMapBottomSpacing" destination="Pj3-7K-xei" id="GzK-Lh-eKu"/>
+                <outlet property="constraintImageMapHeight" destination="sya-uz-k5S" id="nqk-KD-cxb"/>
+                <outlet property="imageMap" destination="zAD-vq-eec" id="nyO-XZ-VYw"/>
+                <outlet property="labelBackground" destination="jsG-dL-lMD" id="cQG-AD-QgI"/>
+                <outlet property="labelMessage" destination="FHk-oo-gj1" id="dRa-Fq-ef2"/>
+                <outlet property="labelTimestamp" destination="zYw-Hj-Q2n" id="SHY-IZ-zAv"/>
+            </connections>
+            <point key="canvasLocation" x="-44.5" y="0.0"/>
+        </tableViewCell>
+    </objects>
+</document>

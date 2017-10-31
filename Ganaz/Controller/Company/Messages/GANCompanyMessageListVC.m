@@ -8,6 +8,7 @@
 
 #import "GANCompanyMessageListVC.h"
 #import "GANMessageListItemTVC.h"
+#import "GANCompanyMessageThreadVC.h"
 
 #import "GANMessageManager.h"
 #import "GANMessageDataModel.h"
@@ -164,12 +165,38 @@
     [self.tableview reloadData];
 }
 
-- (void) gotoSendMessageVC{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES_CHOOSEWORKER"];
-    [self.navigationController pushViewController:vc animated:YES];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    GANACTIVITY_REPORT(@"Company - Go to send message from Messages");
+- (void) gotoMessageThreadVCAtIndex: (int) index{
+    GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
+    NSString *messageId = message.szId;
+    GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
+    int indexThread = -1;
+    for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
+        if ([thread existsMessageWithMessageId:messageId] == YES) {
+            indexThread = i;
+            break;
+        }
+    }
+    if (indexThread == -1) return;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+        GANCompanyMessageThreadVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_THREAD"];
+        vc.indexThread = indexThread;
+        [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    });
+    GANACTIVITY_REPORT(@"Company - Go to message thread from Messages");
+}
+
+- (void) gotoChooseWorkersVC{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES_CHOOSEWORKER"];
+        [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        GANACTIVITY_REPORT(@"Company - Go to send message from Messages");
+    });
 }
 
 #pragma mark - UITableView Delegate
@@ -264,7 +291,7 @@
             }
         }
         else if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
-            cell.labelTitle.text = @"New job inquiry";
+            cell.labelTitle.text = @"Suggest";
             cell.labelMessage.text = [message getContentsEN];
             
             [managerCache requestGetIndexForUserByUserId:message.modelSender.szUserId Callback:^(int index) {
@@ -320,20 +347,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    /*
-    int index = (int) indexPath.row;
-    GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
-    
-    if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
-        [self callSuggestedFriendAtIndex:index];
-    }
-    else if ([message isSurveyMessage] == YES){
-        [self showActionSheetForSurveyAtIndex:index];
-    }
-    else {
-        [self replyMessageAtIndex:index];
-    }
-     */
+    [self gotoMessageThreadVCAtIndex:(int) indexPath.row];
+}
+
+#pragma mark - UIButton Event Listeners
+
+- (IBAction)onButtonNewMessageClick:(id)sender {
+    [self gotoChooseWorkersVC];
 }
 
 #pragma mark -NSNotification

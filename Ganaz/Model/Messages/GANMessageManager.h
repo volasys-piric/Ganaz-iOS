@@ -28,6 +28,7 @@
 
 - (void) requestGetMessageListWithCallback: (void (^) (int status)) callback;
 - (void) requestMarkAsReadAllMessagesWithCallback: (void (^) (int status)) callback;
+- (void) requestMarkAsReadWithThreadIndex: (int) indexThread Callback: (void (^) (int status)) callback;
 - (void) requestSendMessageWithJobId: (NSString *) jobId
                                 Type: (GANENUM_MESSAGE_TYPE) type
                            Receivers: (NSArray *) receivers

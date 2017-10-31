@@ -33,7 +33,7 @@
 
 - (void) refreshViewsWithType: (GANENUM_MESSAGE_TYPE) type DidRead: (BOOL) didRead DidSend: (BOOL) didSend{
     self.labelAvatar.layer.cornerRadius = 18;
-    UIColor *colorMain = (didRead == YES) ? UICOLOR_MESSAGEITEM_BLACK : UICOLOR_MESSAGEITEM_GREEN;
+    UIColor *colorMain = (didRead == YES || didSend == YES) ? UICOLOR_MESSAGEITEM_BLACK : UICOLOR_MESSAGEITEM_GREEN;
     if (type == GANENUM_MESSAGE_TYPE_MESSAGE ||
         type == GANENUM_MESSAGE_TYPE_APPLICATION ||
         type == GANENUM_MESSAGE_TYPE_SUGGEST){

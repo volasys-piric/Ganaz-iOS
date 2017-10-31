@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,10 +20,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GANOnboardingWorkerNickNamePopupVC">
             <connections>
-                <outlet property="btnCancel" destination="2Ur-Fl-s95" id="wUH-ca-buN"/>
-                <outlet property="btnDone" destination="QhH-pg-ZBO" id="4od-0C-PEu"/>
-                <outlet property="lblTitle" destination="NDa-iA-Zx3" id="mtz-Re-FeT"/>
-                <outlet property="txtNickName" destination="Qjb-BF-cj1" id="Fii-ui-yuh"/>
+                <outlet property="buttonCancel" destination="2Ur-Fl-s95" id="S7Z-CL-qgr"/>
+                <outlet property="buttonDone" destination="QhH-pg-ZBO" id="Maw-9I-hUO"/>
+                <outlet property="labelTitle" destination="NDa-iA-Zx3" id="lOl-7c-XlO"/>
+                <outlet property="textfieldNickname" destination="Qjb-BF-cj1" id="Ozd-JF-1ee"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="viewContents" destination="qrY-l1-M1h" id="W6R-u0-bjo"/>
                 <outlet property="viewTextField" destination="Vsj-vO-L2p" id="k6q-gO-65x"/>
@@ -41,7 +41,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             <state key="normal" title="Button"/>
                             <connections>
-                                <action selector="onBtnWrapperClick:" destination="-1" eventType="touchUpInside" id="qUa-CI-as7"/>
+                                <action selector="onButtonWrapperClick:" destination="-1" eventType="touchUpInside" id="bLe-X3-tfk"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qrY-l1-M1h" userLabel="View - Content View">
@@ -114,7 +114,7 @@
                                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                             </state>
                                             <connections>
-                                                <action selector="onCancel:" destination="-1" eventType="touchUpInside" id="YJY-fk-L6m"/>
+                                                <action selector="onButtonCancelClick:" destination="-1" eventType="touchUpInside" id="B7d-FP-Gm4"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QhH-pg-ZBO">
@@ -128,7 +128,7 @@
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
-                                                <action selector="onSetMyWorkNickName:" destination="-1" eventType="touchUpInside" id="NMO-fh-y6B"/>
+                                                <action selector="onButtonDoneClick:" destination="-1" eventType="touchUpInside" id="7Lv-6O-34D"/>
                                             </connections>
                                         </button>
                                     </subviews>

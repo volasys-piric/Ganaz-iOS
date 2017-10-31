@@ -10,13 +10,17 @@
 
 @protocol GANMyWorkerNickNameEditPopupVCDelegate <NSObject>
 
-- (void) setMyWorkerNickName:(NSString*)szNickName index:(NSInteger) nIndex;
+@optional
+
+- (void) nicknameEditPopupDidUpdateWithNickname: (NSString *) nickname;
+- (void) nicknameEditPopupDidCancel;
 
 @end
 
 @interface GANMyWorkerNickNameEditPopupVC : UIViewController
-@property (atomic, assign) NSInteger nIndex;
-@property (weak, nonatomic) IBOutlet UITextField *txtNickName;
+
+@property (weak, nonatomic) IBOutlet UITextField *textfieldNickname;
+
 @property (nonatomic, weak) id<GANMyWorkerNickNameEditPopupVCDelegate> delegate;
 
 - (void) setTitle:(NSString*) phoneNumber;

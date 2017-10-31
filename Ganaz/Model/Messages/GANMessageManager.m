@@ -203,15 +203,32 @@
 }
 
 - (void) requestMarkAsReadAllMessagesWithCallback: (void (^) (int status)) callback{
-    NSMutableArray *arrMessageIds = [[NSMutableArray alloc] init];
+    NSMutableArray *arrayMessageIds = [[NSMutableArray alloc] init];
     for (int i = 0; i < (int) [self.arrayMessages count]; i++){
         GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
         GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
         if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) {
-            [arrMessageIds addObject:message.szId];
+            [arrayMessageIds addObject:message.szId];
         }
     }
-    [self requestMarkAsRead:arrMessageIds Callback:callback];
+    if ([arrayMessageIds count] == 0) {
+        if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        return;
+    }
+    
+    [self requestMarkAsRead:arrayMessageIds Callback:callback];
+}
+
+- (void) requestMarkAsReadWithThreadIndex: (int) indexThread Callback: (void (^) (int status)) callback {
+    NSArray *arrayMessageIds = [[NSMutableArray alloc] init];
+    GANMessageThreadDataModel *thread = [self.arrayThreads objectAtIndex:indexThread];
+    arrayMessageIds = [thread getMessageIdsForStatusUpdateMyself];
+    if ([arrayMessageIds count] == 0) {
+        if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        return;
+    }
+    
+    [self requestMarkAsRead:arrayMessageIds Callback:callback];
 }
 
 - (void) requestMarkAsRead: (NSArray *) arrMessageIds Callback: (void (^) (int status)) callback{

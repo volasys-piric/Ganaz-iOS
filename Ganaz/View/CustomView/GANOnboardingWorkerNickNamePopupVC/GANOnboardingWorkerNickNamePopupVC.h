@@ -10,14 +10,17 @@
 
 @protocol GANOnboardingWorkerNickNamePopupVCDelegate <NSObject>
 
-- (void) setOnboardingWorkerNickName:(NSString*)szNickName index:(NSInteger) nIndex;
+@optional
+
+- (void) onboardingNicknameEditPopupDidUpdateWithNickname: (NSString *) nickname;
+- (void) onboardingNicknameEditPopupDidCancel;
 
 @end
 
 @interface GANOnboardingWorkerNickNamePopupVC : UIViewController
 
-@property (atomic, assign) NSInteger nIndex;
-@property (weak, nonatomic) IBOutlet UITextField *txtNickName;
+@property (weak, nonatomic) IBOutlet UITextField *textfieldNickname;
+
 @property (nonatomic, weak) id<GANOnboardingWorkerNickNamePopupVCDelegate> delegate;
 
 - (void) setTitle:(NSString*) phoneNumber;

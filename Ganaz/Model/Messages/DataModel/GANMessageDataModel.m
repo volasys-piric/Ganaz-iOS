@@ -126,6 +126,7 @@
         [arrayReceivers addObject:[receiver serializeToDictionary]];
     }
     
+    [dict setObject:arrayReceivers forKey:@"receivers"];
     [dict setObject:[self.modelContents serializeToDictionary] forKey:@"message"];
     [dict setObject:(self.isAutoTranslate == YES) ? @"true": @"false" forKey:@"auto_translate"];
     if (self.dictMetadata != nil){

@@ -26,22 +26,26 @@
 #define NON_SELECTED -1
 
 @interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANOnboardingWorkerNickNamePopupVCDelegate, GANWorkerItemTVCDelegate>
-{
-    NSInteger nSelectedIndex;
-}
 
+@property (weak, nonatomic) IBOutlet UIView *viewSearch;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
+@property (weak, nonatomic) IBOutlet UITextField *textfieldSearch;
 
-@property (weak, nonatomic) IBOutlet UIButton *btnContinue;
-@property (weak, nonatomic) IBOutlet UIButton *btnAddWorker;
+@property (weak, nonatomic) IBOutlet UIButton *buttonSendMessage;
+@property (weak, nonatomic) IBOutlet UIButton *buttonSendSurvey;
+
+@property (weak, nonatomic) IBOutlet UIButton *buttonAddWorker;
 @property (weak, nonatomic) IBOutlet UIButton *buttonSelectAll;
 
-@property (strong, nonatomic) NSMutableArray *arrWorkerSelected;
+@property (strong, nonatomic) NSMutableArray *arrayWorkersSelected;
+@property (strong, nonatomic) NSMutableArray *arrayMyWorkers;
+
 @property (assign, atomic) BOOL isPopupShowing;
 @property (assign, atomic) BOOL isAutoTranslate;
 
 @property (strong, nonatomic) GANFadeTransitionDelegate *transController;
 @property (strong, nonatomic) GANLocationDataModel *mapData;
+@property (assign, atomic) int indexSelected;
 
 @end
 
@@ -58,7 +62,7 @@
     self.isAutoTranslate = NO;
     self.transController = [[GANFadeTransitionDelegate alloc] init];
     
-    nSelectedIndex = NON_SELECTED;
+    self.indexSelected = NON_SELECTED;
     
     [self registerTableViewCellFromNib];
     [self refreshViews];
@@ -72,7 +76,7 @@
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self buildWorkerList];
+    [self buildFilteredArray];
 }
 
 - (void) dealloc{
@@ -93,15 +97,26 @@
 }
 
 - (void) refreshViews{
-    self.btnContinue.layer.cornerRadius = 3;
-    self.btnAddWorker.layer.cornerRadius = 3;
+    self.buttonSendMessage.layer.cornerRadius = 3;
+    self.buttonSendSurvey.layer.cornerRadius = 3;
+    self.buttonAddWorker.layer.cornerRadius = 3;
     self.buttonSelectAll.layer.cornerRadius = 3;
     
-    self.btnContinue.clipsToBounds = YES;
-    self.btnAddWorker.clipsToBounds = YES;
+    self.buttonSendMessage.clipsToBounds = YES;
+    self.buttonSendSurvey.clipsToBounds = YES;
+    self.buttonAddWorker.clipsToBounds = YES;
     self.buttonSelectAll.clipsToBounds = YES;
     
-    self.btnAddWorker.backgroundColor = [UIColor GANThemeGreenColor];
+    self.buttonSendSurvey.layer.borderColor = [UIColor GANThemeMainColor].CGColor;
+    self.buttonSendSurvey.layer.borderWidth = 1;
+    [self.buttonSendSurvey setTitleColor:[UIColor GANThemeMainColor] forState:UIControlStateNormal];
+    
+    self.viewSearch.layer.borderColor = [UIColor GANThemeGreenColor].CGColor;
+    self.viewSearch.layer.borderWidth = 1;
+    self.viewSearch.layer.cornerRadius = 10;
+    self.viewSearch.clipsToBounds = YES;
+    
+    self.buttonAddWorker.backgroundColor = [UIColor GANThemeGreenColor];
 }
 
 - (void) gotoAddWorkerVC{
@@ -115,12 +130,34 @@
     GANACTIVITY_REPORT(@"Company - Go to add-worker from Message");
 }
 
-- (void) buildWorkerList{
-    self.arrWorkerSelected = [[NSMutableArray alloc] init];
+- (void) buildFilteredArray{
+    self.arrayMyWorkers = [[NSMutableArray alloc] init];
+
     GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    NSString *keyword = [self.textfieldSearch.text lowercaseString];
+    keyword = [keyword stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
     
-    for (int i = 0; i < (int)[managerCompany.arrMyWorkers count]; i++){
-        [self.arrWorkerSelected addObject:@(NO)];
+    if (keyword.length == 0){
+        [self.arrayMyWorkers addObjectsFromArray:managerCompany.arrMyWorkers];
+        [self buildWorkerList];
+        return;
+    }
+    
+    for (int i = 0; i < (int) [managerCompany.arrMyWorkers count]; i++) {
+        GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:i];
+        NSString *sz = [NSString stringWithFormat:@"%@ %@ %@", [myWorker getDisplayName], myWorker.modelWorker.modelPhone.szLocalNumber, [myWorker.modelWorker.modelPhone getBeautifiedPhoneNumber]];
+        sz = [sz lowercaseString];
+        if ([sz rangeOfString:keyword].location != NSNotFound){
+            [self.arrayMyWorkers addObject:myWorker];
+        }
+    }
+    [self buildWorkerList];
+}
+
+- (void) buildWorkerList{
+    self.arrayWorkersSelected = [[NSMutableArray alloc] init];
+    for (int i = 0; i < (int)[self.arrayMyWorkers count]; i++){
+        [self.arrayWorkersSelected addObject:@(NO)];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -130,14 +167,14 @@
 }
 
 - (void) refreshSelectAllButton{
-    if ([self.arrWorkerSelected count] == 0) {
+    if ([self.arrayWorkersSelected count] == 0) {
         self.buttonSelectAll.hidden = YES;
         return;
     }
     
     self.buttonSelectAll.hidden = NO;
     int count = [self getSelectedCount];
-    if (count == (int) [self.arrWorkerSelected count]) {
+    if (count == (int) [self.arrayWorkersSelected count]) {
         // All selected
         [self.buttonSelectAll setTitle:@"Deselect\rworkers" forState:UIControlStateNormal];
         self.buttonSelectAll.backgroundColor = [UIColor GANThemeMainColor];
@@ -150,24 +187,24 @@
 
 - (int) getSelectedCount{
     int count = 0;
-    for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++) {
-        if ([[self.arrWorkerSelected objectAtIndex:i] boolValue] == YES) count++;
+    for (int i = 0; i < (int) [self.arrayWorkersSelected count]; i++) {
+        if ([[self.arrayWorkersSelected objectAtIndex:i] boolValue] == YES) count++;
     }
     return count;
 }
 
 - (void) doSelectAll{
     int count = [self getSelectedCount];
-    if (count == (int) [self.arrWorkerSelected count]) {
+    if (count == (int) [self.arrayWorkersSelected count]) {
         // Deselect
-        for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
-            [self.arrWorkerSelected replaceObjectAtIndex:i withObject:@(NO)];
+        for (int i = 0; i < (int) [self.arrayWorkersSelected count]; i++){
+            [self.arrayWorkersSelected replaceObjectAtIndex:i withObject:@(NO)];
         }
     }
     else {
         // Select all
-        for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
-            [self.arrWorkerSelected replaceObjectAtIndex:i withObject:@(YES)];
+        for (int i = 0; i < (int) [self.arrayWorkersSelected count]; i++){
+            [self.arrayWorkersSelected replaceObjectAtIndex:i withObject:@(YES)];
         }
     }
     
@@ -180,6 +217,7 @@
 #pragma mark - UI Stuff
 
 - (void) gotoMessageComposerVC{
+    /*
     NSMutableArray *arrReceivers = [[NSMutableArray alloc] init];
     GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     
@@ -197,13 +235,14 @@
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     GANACTIVITY_REPORT(@"Company - Go to MessageComposer from Messages");
+     */
 }
 
 #pragma mark - Biz Logic
 
 - (BOOL) isWorkerSelected{
-    for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
-        if ([[self.arrWorkerSelected objectAtIndex:i] boolValue] == YES) return YES;
+    for (int i = 0; i < (int) [self.arrayWorkersSelected count]; i++){
+        if ([[self.arrayWorkersSelected objectAtIndex:i] boolValue] == YES) return YES;
     }
     return NO;
 }
@@ -211,7 +250,7 @@
 #pragma mark - UITableViewDelegate
 
 - (void) configureCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
-    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:index];
+    GANMyWorkerDataModel *myWorker = [self.arrayMyWorkers objectAtIndex:index];
     cell.lblWorkerId.text = [myWorker getDisplayName];
     cell.delegate = self;
     cell.nIndex = index;
@@ -225,7 +264,7 @@
     cell.viewContainer.layer.cornerRadius = 4;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    BOOL isSelected = [[self.arrWorkerSelected objectAtIndex:index] boolValue];
+    BOOL isSelected = [[self.arrayWorkersSelected objectAtIndex:index] boolValue];
     [cell setItemSelected:isSelected];
 }
 
@@ -234,7 +273,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [[GANCompanyManager sharedInstance].arrMyWorkers count];
+    return [self.arrayMyWorkers count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -249,16 +288,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     int index = (int) indexPath.row;
-    BOOL isSelected = [[self.arrWorkerSelected objectAtIndex:index] boolValue];
-    [self.arrWorkerSelected replaceObjectAtIndex:index withObject:@(!isSelected)];
+    BOOL isSelected = [[self.arrayWorkersSelected objectAtIndex:index] boolValue];
+    [self.arrayWorkersSelected replaceObjectAtIndex:index withObject:@(!isSelected)];
     [self.tableview reloadData];
 }
 
 - (void) changeMyWorkerNickName: (NSInteger) index{
+    GANMyWorkerDataModel *myWorker = [self.arrayMyWorkers objectAtIndex:index];
     dispatch_async(dispatch_get_main_queue(), ^{
-        
-        GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:index];
-        
         
         if(myWorker.modelWorker.enumType == GANENUM_USER_TYPE_ONBOARDING_WORKER){
             GANOnboardingWorkerNickNamePopupVC *vc = [[GANOnboardingWorkerNickNamePopupVC alloc] initWithNibName:@"GANOnboardingWorkerNickNamePopupVC" bundle:nil];
@@ -271,11 +308,11 @@
                 
             }];
             
-            vc.nIndex = index;
             [vc setTitle:[myWorker.modelWorker.modelPhone getBeautifiedPhoneNumber]];
             if(![myWorker.szNickname isEqualToString:@""] || myWorker.szNickname != nil)
-                vc.txtNickName.text = myWorker.szNickname;
-        } else {
+                vc.textfieldNickname.text = myWorker.szNickname;
+        }
+        else {
             GANMyWorkerNickNameEditPopupVC *vc = [[GANMyWorkerNickNameEditPopupVC alloc] initWithNibName:@"GANMyWorkerNickNameEditPopupVC" bundle:nil];
             vc.delegate = self;
             
@@ -286,22 +323,22 @@
                 
             }];
             
-            vc.nIndex = index;
             [vc setTitle:[myWorker.modelWorker.modelPhone getBeautifiedPhoneNumber]];
             if(![myWorker.szNickname isEqualToString:@""] || myWorker.szNickname != nil)
-                vc.txtNickName.text = myWorker.szNickname;
+                vc.textfieldNickname.text = myWorker.szNickname;
         }        
         
     });
 }
 
 #pragma mark - GANWorkerITEMTVCDelegate
+
 - (void) setWorkerNickName:(NSInteger)nIndex {
-    nSelectedIndex = nIndex;
+    self.indexSelected = (int) nIndex;
     
     GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
     if(myWorker.modelWorker.enumType == GANENUM_USER_TYPE_WORKER) {
-        [self changeMyWorkerNickName:nSelectedIndex];
+        [self changeMyWorkerNickName:self.indexSelected];
         return;
     }
     
@@ -312,38 +349,16 @@
     [popup showInView:self.view];
 }
 
-- (void) setOnboardingWorkerNickName:(NSString*)szNickName index:(NSInteger) nIndex {
-    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
-    myWorker.szNickname = szNickName;
-    
-    //Add NickName
-    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
-    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:szNickName Callback:^(int status) {
-        if (status == SUCCESS_WITH_NO_ERROR) {
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Worker's alias has been updated" DismissAfter:-1 Callback:nil];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableview reloadData];
-            });
-            GANACTIVITY_REPORT(@"Company - Change worker nickname");
-        }
-        else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
-        }
-        nSelectedIndex = NON_SELECTED;
-    }];
-}
-
 - (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     switch (popup.tag) {
         case 0: {
             switch (buttonIndex) {
                 case 0:
-                    [self resendInvite:nSelectedIndex];
+                    [self resendInvite:self.indexSelected];
                     break;
                 case 1:
-                    [self changeMyWorkerNickName:nSelectedIndex];
+                    [self changeMyWorkerNickName:self.indexSelected];
                     break;
                 default:
                     break;
@@ -357,7 +372,7 @@
 
 - (void) resendInvite:(NSInteger) nIndex {
     NSString *szCompanyId = [GANUserManager getCompanyDataModel].szId;
-    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
+    GANMyWorkerDataModel *myWorker = [self.arrayMyWorkers objectAtIndex:self.indexSelected];
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
@@ -370,7 +385,7 @@
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
         }
-        nSelectedIndex = NON_SELECTED;
+        self.indexSelected = NON_SELECTED;
     }];
     GANACTIVITY_REPORT(@"Company - Send invite");
 }
@@ -378,7 +393,7 @@
 - (void) getMyWorkerList {
     [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:^(int status) {
         if(status == SUCCESS_WITH_NO_ERROR) {
-            [self buildWorkerList];
+            [self buildFilteredArray];
         } else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
         }
@@ -386,14 +401,15 @@
 }
 
 #pragma mark - GANMyWorkerNickNameEditPopupVCDelegate
-- (void) setMyWorkerNickName:(NSString*)szNickName index:(NSInteger) nIndex {
-    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
-    myWorker.szNickname = szNickName;
+
+- (void) nicknameEditPopupDidUpdateWithNickname:(NSString *)nickname {
+    GANMyWorkerDataModel *myWorker = [self.arrayMyWorkers objectAtIndex:self.indexSelected];
+    myWorker.szNickname = nickname;
     
     //Add NickName
     GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:szNickName Callback:^(int status) {
+    [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:nickname Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR) {
             [GANGlobalVCManager showHudSuccessWithMessage:@"Worker's alias has been updated" DismissAfter:-1 Callback:nil];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -404,13 +420,35 @@
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
         }
-        nSelectedIndex = NON_SELECTED;
+        self.indexSelected = NON_SELECTED;
+    }];
+}
+
+- (void) onboardingNicknameEditPopupDidUpdateWithNickname:(NSString *)nickname {
+    GANMyWorkerDataModel *myWorker = [self.arrayMyWorkers objectAtIndex:self.indexSelected];
+    myWorker.szNickname = nickname;
+    
+    //Add NickName
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:nickname Callback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR) {
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Worker's alias has been updated" DismissAfter:-1 Callback:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableview reloadData];
+            });
+            GANACTIVITY_REPORT(@"Company - Change worker nickname");
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
+        }
+        self.indexSelected = NON_SELECTED;
     }];
 }
 
 #pragma mark - UIButton Delegate
 
-- (IBAction)onBtnContinueClick:(id)sender {
+- (IBAction)onButtonSendMessageClick:(id)sender {
     [self.view endEditing:YES];
     if ([self isWorkerSelected] == NO){
         [GANGlobalVCManager showHudErrorWithMessage:@"Please select the worker(s) you want to message" DismissAfter:-1 Callback:nil];
@@ -421,7 +459,18 @@
     });
 }
 
-- (IBAction)onBtnAddWorkerClick:(id)sender {
+- (IBAction)onButtonSendSurveyClick:(id)sender {
+    [self.view endEditing:YES];
+    if ([self isWorkerSelected] == NO){
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please select the worker(s) you want to message" DismissAfter:-1 Callback:nil];
+        return;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self gotoMessageComposerVC];
+    });
+}
+
+- (IBAction)onButtonAddWorkerClick:(id)sender {
     [self.view endEditing:YES];
     [self gotoAddWorkerVC];
 }
@@ -431,12 +480,18 @@
     [self doSelectAll];
 }
 
+#pragma mark - UITextField Delegate
+
+- (IBAction)onTextfieldSearchChanged:(id)sender {
+    [self buildFilteredArray];
+}
+
 #pragma mark -NSNotification
 
 - (void) onLocalNotificationReceived:(NSNotification *) notification{
     if (([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATED]) ||
              ([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATEFAILED])){
-        [self buildWorkerList];
+        [self buildFilteredArray];
     }
 }
 

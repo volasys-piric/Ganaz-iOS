@@ -102,4 +102,34 @@
     return NO;
 }
 
+- (BOOL) existsMessageWithMessageId: (NSString *) messageId {
+    for (int i = 0; i < (int) [self.arrayMessages count]; i++) {
+        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
+        if ([message.szId isEqualToString:messageId] == YES) return YES;
+    }
+    return NO;
+}
+
+- (NSMutableArray <NSString *> *) getMessageIdsForStatusUpdateMyself{
+    NSMutableArray <NSString *> *arrayMessageIds = [[NSMutableArray alloc] init];
+    for (int i = 0; i < (int) [self.arrayMessages count]; i++){
+        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
+        GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
+        if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) {
+            [arrayMessageIds addObject:message.szId];
+        }
+    }
+    return arrayMessageIds;
+}
+
+- (int) getUnreadMessageCount{
+    int count = 0;
+    for (int i = 0; i < (int) [self.arrayMessages count]; i++){
+        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
+        GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
+        if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) count++;
+    }
+    return count;
+}
+
 @end

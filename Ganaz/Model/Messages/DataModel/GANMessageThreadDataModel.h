@@ -17,5 +17,8 @@
 - (BOOL) addMessageIfNeeded: (GANMessageDataModel *) newMessage;
 - (GANMessageDataModel *) getLatestMessage;
 - (BOOL) isSameThread: (GANMessageDataModel *) message;
+- (BOOL) existsMessageWithMessageId: (NSString *) messageId;
+- (NSMutableArray <NSString *> *) getMessageIdsForStatusUpdateMyself;
+- (int) getUnreadMessageCount;
 
 @end
