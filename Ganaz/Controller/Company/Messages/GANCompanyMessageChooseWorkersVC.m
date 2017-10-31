@@ -11,7 +11,10 @@
 #import "GANCompanyAddWorkerVC.h"
 #import "GANMyWorkerNickNameEditPopupVC.h"
 #import "GANOnboardingWorkerNickNamePopupVC.h"
-#import "GANCompanyMessageComposerVC.h"
+#import "GANCompanyMessageThreadVC.h"
+#import "GANSurveyTypeChoosePopupVC.h"
+#import "GANCompanySurveyChoicesPostVC.h"
+#import "GANCompanySurveyOpenTextPostVC.h"
 
 #import "GANCompanyManager.h"
 #import "GANCacheManager.h"
@@ -25,7 +28,7 @@
 
 #define NON_SELECTED -1
 
-@interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANOnboardingWorkerNickNamePopupVCDelegate, GANWorkerItemTVCDelegate>
+@interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANOnboardingWorkerNickNamePopupVCDelegate, GANWorkerItemTVCDelegate, GANSurveyTypeChoosePopupDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewSearch;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
@@ -214,28 +217,85 @@
     });
 }
 
-#pragma mark - UI Stuff
+#pragma mark - Logic
 
-- (void) gotoMessageComposerVC{
-    /*
-    NSMutableArray *arrReceivers = [[NSMutableArray alloc] init];
-    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+- (NSMutableArray <GANUserRefDataModel *> *) buildMutableReceiversArrayForSelectedWorkers {
+    NSMutableArray <GANUserRefDataModel *> *arrayReceivers = [[NSMutableArray alloc] init];
     
-    for (int i = 0; i < (int) [self.arrWorkerSelected count]; i++){
-        if ([[self.arrWorkerSelected objectAtIndex:i] boolValue] == YES){
-            GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:i];
-            [arrReceivers addObject:myWorker];
+    for (int i = 0; i < (int) [self.arrayWorkersSelected count]; i++){
+        if ([[self.arrayWorkersSelected objectAtIndex:i] boolValue] == YES){
+            GANMyWorkerDataModel *myWorker = [self.arrayMyWorkers objectAtIndex:i];
+            GANUserRefDataModel *userRef = [[GANUserRefDataModel alloc] init];
+            userRef.szCompanyId = @"";
+            userRef.szUserId = myWorker.szWorkerUserId;
+            [arrayReceivers addObject:userRef];
         }
     }
     
+    return arrayReceivers;
+}
+
+- (void) gotoMessageThreadVC{
+    NSMutableArray <GANUserRefDataModel *> *arrayReceivers = [self buildMutableReceiversArrayForSelectedWorkers];
+    
+    GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
+    int indexThread = [managerMessage getIndexForMessageThreadWithReceivers:arrayReceivers];
+    if (indexThread == -1 && [arrayReceivers count] == 1) {
+        indexThread = [managerMessage getIndexForMessageThreadWithSender:[arrayReceivers firstObject]];
+    }
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
-    GANCompanyMessageComposerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_COMPOSER"];
-    vc.arrayReceivers = arrReceivers;
+    GANCompanyMessageThreadVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_THREAD"];
+    
+    if (indexThread != -1) {
+        vc.indexThread = indexThread;
+    }
+    else {
+        vc.indexThread = -1;
+        vc.arrayReceivers = arrayReceivers;
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    });
+    
+    GANACTIVITY_REPORT(@"Company - Go to MessageComposer from Messages");
+}
+
+- (void) showSurveyTypeChooseDlg {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        GANSurveyTypeChoosePopupVC *vc = [[GANSurveyTypeChoosePopupVC alloc] initWithNibName:@"GANSurveyTypeChoosePopupVC" bundle:nil];
+        vc.delegate = self;
+        [vc setTransitioningDelegate:self.transController];
+        vc.view.backgroundColor = [UIColor clearColor];
+        vc.modalPresentationStyle = UIModalPresentationCustom;
+        [self presentViewController:vc animated:YES completion:nil];
+    });
+}
+
+- (void) gotoSurveyChoicesPostVC{
+    NSMutableArray <GANUserRefDataModel *> *arrayReceivers = [self buildMutableReceiversArrayForSelectedWorkers];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+    GANCompanySurveyChoicesPostVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SURVEY_CHOICESPOST"];
+    vc.arrayReceivers = arrayReceivers;
     
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    GANACTIVITY_REPORT(@"Company - Go to MessageComposer from Messages");
-     */
+    GANACTIVITY_REPORT(@"Company - Go to Survey from Message");
+}
+
+- (void) gotoSurveyOpenTextPostVC{
+    NSMutableArray <GANUserRefDataModel *> *arrayReceivers = [self buildMutableReceiversArrayForSelectedWorkers];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+    GANCompanySurveyOpenTextPostVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SURVEY_OPENTEXTPOST"];
+    vc.arrayReceivers = arrayReceivers;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to Survey from Message");
 }
 
 #pragma mark - Biz Logic
@@ -454,9 +514,7 @@
         [GANGlobalVCManager showHudErrorWithMessage:@"Please select the worker(s) you want to message" DismissAfter:-1 Callback:nil];
         return;
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self gotoMessageComposerVC];
-    });
+    [self gotoMessageThreadVC];
 }
 
 - (IBAction)onButtonSendSurveyClick:(id)sender {
@@ -465,9 +523,7 @@
         [GANGlobalVCManager showHudErrorWithMessage:@"Please select the worker(s) you want to message" DismissAfter:-1 Callback:nil];
         return;
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self gotoMessageComposerVC];
-    });
+    [self showSurveyTypeChooseDlg];
 }
 
 - (IBAction)onButtonAddWorkerClick:(id)sender {
@@ -493,6 +549,24 @@
              ([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATEFAILED])){
         [self buildFilteredArray];
     }
+}
+
+#pragma mark - GANSurveyTypeChoosePopupVC Delegate
+
+- (void)surveyTypeChoosePopupDidChoiceSingleClick:(GANSurveyTypeChoosePopupVC *)popup {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self gotoSurveyChoicesPostVC];
+    });
+}
+
+- (void)surveyTypeChoosePopupDidOpenTextClick:(GANSurveyTypeChoosePopupVC *)popup {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self gotoSurveyOpenTextPostVC];
+    });
+}
+
+- (void)surveyTypeChoosePopupDidCancelClick:(GANSurveyTypeChoosePopupVC *)popup {
+    
 }
 
 @end

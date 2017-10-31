@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GANMessageDataModel.h"
 
 @interface GANCompanyMessageThreadVC : UIViewController
 
-@property (assign, atomic) int indexThread;
+@property (assign, atomic) int indexThread;     // indexThread = -1 if it's new
+@property (strong, nonatomic) NSMutableArray <GANUserRefDataModel *> *arrayReceivers;       // referenced from outside only when indexThread = -1
 
 @end

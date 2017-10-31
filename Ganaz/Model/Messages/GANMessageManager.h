@@ -22,6 +22,9 @@
 + (instancetype) sharedInstance;
 - (void) initializeManager;
 
+- (int) getIndexForMessageThreadWithReceivers: (NSArray <GANUserRefDataModel *> *) arrayReceivers;
+- (int) getIndexForMessageThreadWithSender: (GANUserRefDataModel *) sender;
+
 - (int) getUnreadMessageCount;
 
 #pragma mark - Request

@@ -11,12 +11,15 @@
 #import "GANMessageItemYouTVC.h"
 #import "GANCompanyMapPopupVC.h"
 #import "GANMessageWithChargeConfirmationPopupVC.h"
+#import "GANCompanySurveyChoicesResultVC.h"
+#import "GANCompanySurveyOpenTextResultVC.h"
 #import "GANFadeTransitionDelegate.h"
 
 #import "GANCompanyManager.h"
 #import "GANMessageManager.h"
 #import "GANJobManager.h"
 #import "GANAppManager.h"
+#import "GANSurveyManager.h"
 
 #import "Global.h"
 #import "UIColor+GANColor.h"
@@ -34,8 +37,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldInput;
 
+@property (strong, nonatomic) GANMessageThreadDataModel *modelThread;
 @property (strong, nonatomic) NSMutableArray <GANMessageDataModel *> *arrayMessages;
-@property (strong, nonatomic) NSArray<GANMessageReceiverDataModel *> *arrayReceivers;
 
 @property (assign, atomic) float fIQKeyboardDistance;
 @property (assign, atomic) BOOL isVCVisible;
@@ -73,13 +76,35 @@
 
     [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(refreshTableview) userInfo:nil repeats:YES];
 
-    GANMessageThreadDataModel *thread = [[GANMessageManager sharedInstance].arrayThreads objectAtIndex:self.indexThread];
-    GANMessageDataModel *message = [thread getLatestMessage];
-    self.arrayReceivers = message.arrayReceivers;
     self.navigationItem.title = @"Message";
-    [message requestGetBeautifiedReceiversAbbrWithCallback:^(NSString *beautifiedName) {
-        self.navigationItem.title = beautifiedName;
-    }];
+    if (self.indexThread == -1) {
+        // It's new message thread.
+        self.modelThread = [[GANMessageThreadDataModel alloc] init];
+        GANUserRefDataModel *user = [self.arrayReceivers firstObject];
+        
+        if (user != nil) {
+            int indexMyWorker = [[GANCompanyManager sharedInstance] getIndexForMyWorkersWithUserId:user.szUserId];
+            if (indexMyWorker != -1) {
+                GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:indexMyWorker];
+                NSString *title = [myWorker getDisplayName];
+                
+                if ([self.arrayReceivers count] > 1) {
+                    title = [NSString stringWithFormat:@"%@, ...+%d", title, (int) [self.arrayReceivers count] - 1];
+                }
+                self.navigationItem.title = @"Message";
+            }
+        }
+    }
+    else {
+        self.arrayReceivers = [[NSMutableArray alloc] init];
+        self.modelThread = [[GANMessageManager sharedInstance].arrayThreads objectAtIndex:self.indexThread];
+        GANMessageDataModel *message = [self.modelThread getLatestMessage];
+        [self.arrayReceivers addObjectsFromArray:message.arrayReceivers];
+
+        [message requestGetBeautifiedReceiversAbbrWithCallback:^(NSString *beautifiedName) {
+            self.navigationItem.title = beautifiedName;
+        }];
+    }
     
     [self refreshViews];
 }
@@ -159,9 +184,9 @@
 
 - (void) updateReadStatusIfNeeded{
     if (self.isVCVisible == NO) return;
-    GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
-    GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:self.indexThread];
-    if ([thread getUnreadMessageCount] > 0){
+    if ([self.modelThread.arrayMessages count] == 0) return;
+    
+    if ([self.modelThread getUnreadMessageCount] > 0){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [[GANMessageManager sharedInstance] requestMarkAsReadWithThreadIndex:self.indexThread Callback:nil];
         });
@@ -171,12 +196,10 @@
 - (void) buildMessageList{
     [GANGlobalVCManager updateMessageBadge];
     
-    GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
-    GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:self.indexThread];
     [self.arrayMessages removeAllObjects];
     
-    for (int i = 0; i < (int) [thread.arrayMessages count]; i++){
-        GANMessageDataModel *message = [thread.arrayMessages objectAtIndex:i];
+    for (int i = 0; i < (int) [self.modelThread.arrayMessages count]; i++){
+        GANMessageDataModel *message = [self.modelThread.arrayMessages objectAtIndex:i];
         if ([message amIReceiver] == NO && [message amISender] == NO) continue;
         if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) continue;
         
@@ -228,7 +251,7 @@
     GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     
     for (int i = 0; i < (int) [self.arrayReceivers count]; i++) {
-        GANMessageReceiverDataModel *receiver = [self.arrayReceivers objectAtIndex:i];
+        GANUserRefDataModel *receiver = [self.arrayReceivers objectAtIndex:i];
         int indexMyWorker = [managerCompany getIndexForMyWorkersWithUserId:receiver.szUserId];
         if (indexMyWorker == -1) continue;
         GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:indexMyWorker];
@@ -250,7 +273,7 @@
     
     NSMutableArray *arrReceivers = [[NSMutableArray alloc] init];
     for (int i = 0; i < (int) [self.arrayReceivers count]; i++) {
-        GANMessageReceiverDataModel *receiver = [self.arrayReceivers objectAtIndex:i];
+        GANUserRefDataModel *receiver = [self.arrayReceivers objectAtIndex:i];
         [arrReceivers addObject:@{@"user_id": receiver.szUserId,
                                   @"company_id": receiver.szCompanyId}];
     }
@@ -260,9 +283,25 @@
         dictMetaData = @{@"map" : [self.modelLocation serializeToMetaDataDictionary]};
     }
     
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage MetaData:dictMetaData AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
+    GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
+    [managerMessage requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage MetaData:dictMetaData AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"Message sent!" DismissAfter:-1 Callback:^{
+                if (self.indexThread == -1) {
+                    // Lookup for the newly created thread...
+                    int indexThread = [managerMessage getIndexForMessageThreadWithReceivers:self.arrayReceivers];
+                    if (indexThread == -1 && [self.arrayReceivers count] == 1) {
+                        indexThread = [managerMessage getIndexForMessageThreadWithSender:[self.arrayReceivers firstObject]];
+                    }
+                    
+                    if (indexThread != -1) {
+                        self.indexThread = indexThread;
+                        self.modelThread = [[GANMessageManager sharedInstance].arrayThreads objectAtIndex:self.indexThread];
+                        GANMessageDataModel *message = [self.modelThread getLatestMessage];
+                        [self.arrayReceivers addObjectsFromArray:message.arrayReceivers];
+                    }
+                }
+                
                 [self buildMessageList];
                 self.modelLocation = nil;
                 [self refreshMapIcon];
@@ -286,6 +325,67 @@
         [self presentViewController:vc animated:YES completion:nil];
         [vc setDescriptionWithCount:count];
     });
+}
+
+- (void) callPhoneNumber: (NSString *) phoneNumber{
+    phoneNumber = [GANGenericFunctionManager beautifyPhoneNumber:phoneNumber CountryCode:@"US"];
+    
+    [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:[NSString stringWithFormat:@"Do you want to call %@?", phoneNumber] ButtonYes:@"Yes" ButtonNo:@"NO" CallbackYes:^{
+        NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",[GANGenericFunctionManager stripNonnumericsFromNSString:phoneNumber]]];
+        
+        if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
+            [[UIApplication sharedApplication] openURL:phoneUrl];
+            GANACTIVITY_REPORT(@"Company - Call phone");
+        }
+        else{
+            [GANGlobalVCManager showHudErrorWithMessage:@"Your device does not support phone calls" DismissAfter:-1 Callback:nil];
+        }
+    } CallbackNo:nil];
+}
+
+- (void) gotoSurveyDetailsAtIndex: (int) index {
+    GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
+    if ([message isSurveyMessage] == NO){
+        return;
+    }
+    
+    GANSurveyManager *managerSurvey = [GANSurveyManager sharedInstance];
+    int indexSurvey = [managerSurvey getIndexForSurveyWithSurveyId:message.szSurveyId];
+    if (indexSurvey == -1) return;
+    GANSurveyDataModel *survey = [managerSurvey.arraySurveys objectAtIndex:indexSurvey];
+    
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [survey requestGetAnswersWithCallback:^(int status) {
+        [GANGlobalVCManager hideHudProgressWithCallback:^{
+            if (survey.enumType == GANENUM_SURVEYTYPE_CHOICESINGLE) {
+                [self gotoSurveyChoicesResultVCAtSurveyIndex:indexSurvey];
+            }
+            else if (survey.enumType == GANENUM_SURVEYTYPE_OPENTEXT) {
+                [self gotoSurveyOpenTextResultVCAtSurveyIndex:indexSurvey];
+            }
+        }];
+    }];
+
+}
+
+- (void) gotoSurveyChoicesResultVCAtSurveyIndex: (int) indexSurvey{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+    GANCompanySurveyChoicesResultVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SURVEY_CHOICESRESULT"];
+    vc.indexSurvey = indexSurvey;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to Survey Results from Message");
+}
+
+- (void) gotoSurveyOpenTextResultVCAtSurveyIndex: (int) indexSurvey{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+    GANCompanySurveyOpenTextResultVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SURVEY_OPENTEXTRESULT"];
+    vc.indexSurvey = indexSurvey;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to Survey Results from Message");
 }
 
 #pragma mark - UITableView Delegate
@@ -394,6 +494,19 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return UITableViewAutomaticDimension;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    int index = (int) indexPath.row;
+    GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
+    
+    if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST){
+        NSString *phoneNumber = [message getPhoneNumberForSuggestFriend];
+        [self callPhoneNumber:phoneNumber];
+    }
+    else if ([message isSurveyMessage] == YES){
+        [self gotoSurveyDetailsAtIndex:index];
+    }
 }
 
 #pragma mark - UIButton Event Listeners

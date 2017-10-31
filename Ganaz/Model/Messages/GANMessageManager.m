@@ -49,6 +49,61 @@
     return -1;
 }
 
+- (int) getIndexForMessageThreadWithReceivers: (NSArray <GANUserRefDataModel *> *) arrayReceivers {
+    // Create temporary message, and compare...
+    GANMessageDataModel *messageTemp = [[GANMessageDataModel alloc] init];
+    for (int i = 0; i < (int) [arrayReceivers count]; i++) {
+        GANUserRefDataModel *receiverUserRef = [arrayReceivers objectAtIndex:i];
+        GANMessageReceiverDataModel *receiverTemp = [[GANMessageReceiverDataModel alloc] init];
+        receiverTemp.szCompanyId = receiverUserRef.szCompanyId;
+        receiverTemp.szUserId = receiverUserRef.szUserId;
+        [messageTemp.arrayReceivers addObject:receiverTemp];
+    }
+    
+    // Set myself as "sender"
+    GANUserManager *managerUser = [GANUserManager sharedInstance];
+    if ([managerUser isCompanyUser] == YES) {
+        messageTemp.modelSender.szCompanyId = [GANUserManager getUserCompanyDataModel].szCompanyId;
+        messageTemp.modelSender.szUserId = managerUser.modelUser.szId;
+    }
+    else {
+        messageTemp.modelSender.szCompanyId = @"";
+        messageTemp.modelSender.szUserId = managerUser.modelUser.szId;
+    }
+    
+    for (int i = 0; i < (int) [self.arrayThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [self.arrayThreads objectAtIndex:i];
+        if ([thread isSameThread:messageTemp] == YES) return i;
+    }
+    return -1;
+}
+
+- (int) getIndexForMessageThreadWithSender: (GANUserRefDataModel *) sender{
+    // Create temporary message, and compare...
+    GANMessageDataModel *messageTemp = [[GANMessageDataModel alloc] init];
+    messageTemp.modelSender = sender;
+    
+    // Set myself as "receiver"
+    GANUserManager *managerUser = [GANUserManager sharedInstance];
+    GANMessageReceiverDataModel *receiver = [[GANMessageReceiverDataModel alloc] init];
+    
+    if ([managerUser isCompanyUser] == YES) {
+        receiver.szCompanyId = [GANUserManager getUserCompanyDataModel].szCompanyId;
+        receiver.szUserId = managerUser.modelUser.szId;
+    }
+    else {
+        receiver.szCompanyId = @"";
+        receiver.szUserId = managerUser.modelUser.szId;
+    }
+    [messageTemp.arrayReceivers addObject:receiver];
+    
+    for (int i = 0; i < (int) [self.arrayThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [self.arrayThreads objectAtIndex:i];
+        if ([thread isSameThread:messageTemp] == YES) return i;
+    }
+    return -1;
+}
+
 - (BOOL) addMessageIfNeeded: (GANMessageDataModel *) newMessage{
     if (newMessage == nil) return NO;
     for (int i = 0; i < (int) [self.arrayMessages count]; i++){

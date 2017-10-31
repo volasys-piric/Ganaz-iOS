@@ -85,7 +85,7 @@
                                                     <action selector="onButtonSendClick:" destination="ciB-8v-SrN" eventType="touchUpInside" id="Oqe-sX-Bui"/>
                                                 </connections>
                                             </button>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="ABC" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HAd-Oz-vz5" userLabel="Text Field - Input">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Type here..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HAd-Oz-vz5" userLabel="Text Field - Input">
                                                 <rect key="frame" x="8" y="0.0" width="294" height="30"/>
                                                 <color key="textColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="14"/>
