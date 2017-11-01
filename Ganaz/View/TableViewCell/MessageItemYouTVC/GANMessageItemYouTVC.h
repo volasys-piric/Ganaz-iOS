@@ -19,6 +19,13 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintImageMapHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintImageMapBottomSpacing;
 
+/*
+ This "index" is mainly used in Worker > MessageThreadVC, where cell contents are updated by async call to server (to get company details, job details, etc).
+ When updating in the return of async call, the celll might have been already initiated for another message item, which means, it might overwrite with old data.
+ 
+ Please check GANWorkerMessageThreadVC.m > configureCell methods...
+ */
+@property (assign, atomic) int index;
 @property (strong, nonatomic) CLLocation *locationMap;
 
 - (void) showMapWithLatitude: (float) latitude Longitude: (float) longitude;

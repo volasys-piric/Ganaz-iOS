@@ -129,6 +129,8 @@
 		83AC85541E70B83C005B9422 /* GANUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AC85531E70B83C005B9422 /* GANUserManager.m */; };
 		83AC85591E718CAE005B9422 /* GANJobDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AC85581E718CAE005B9422 /* GANJobDataModel.m */; };
 		83AC855C1E71D447005B9422 /* GANJobManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AC855B1E71D447005B9422 /* GANJobManager.m */; };
+		83B23F7E1FA99EB200664F03 /* GANWorkerMessageListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B23F7D1FA99EB200664F03 /* GANWorkerMessageListVC.m */; };
+		83B23F811FA99EE400664F03 /* GANWorkerMessageThreadVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B23F801FA99EE400664F03 /* GANWorkerMessageThreadVC.m */; };
 		83CA210C1E57EF7800C0D787 /* GANAppManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CA210B1E57EF7800C0D787 /* GANAppManager.m */; };
 		83CA210F1E57F04E00C0D787 /* GANGenericFunctionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CA210E1E57F04E00C0D787 /* GANGenericFunctionManager.m */; };
 		83CA21121E57F05800C0D787 /* GANErrorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CA21111E57F05800C0D787 /* GANErrorManager.m */; };
@@ -407,6 +409,10 @@
 		83AC85581E718CAE005B9422 /* GANJobDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANJobDataModel.m; path = Model/Job/DataModel/GANJobDataModel.m; sourceTree = "<group>"; };
 		83AC855A1E71D447005B9422 /* GANJobManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANJobManager.h; path = Model/Job/GANJobManager.h; sourceTree = "<group>"; };
 		83AC855B1E71D447005B9422 /* GANJobManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANJobManager.m; path = Model/Job/GANJobManager.m; sourceTree = "<group>"; };
+		83B23F7C1FA99EB200664F03 /* GANWorkerMessageListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GANWorkerMessageListVC.h; path = Controller/Worker/Messages/GANWorkerMessageListVC.h; sourceTree = "<group>"; };
+		83B23F7D1FA99EB200664F03 /* GANWorkerMessageListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GANWorkerMessageListVC.m; path = Controller/Worker/Messages/GANWorkerMessageListVC.m; sourceTree = "<group>"; };
+		83B23F7F1FA99EE400664F03 /* GANWorkerMessageThreadVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GANWorkerMessageThreadVC.h; path = Controller/Worker/Messages/GANWorkerMessageThreadVC.h; sourceTree = "<group>"; };
+		83B23F801FA99EE400664F03 /* GANWorkerMessageThreadVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GANWorkerMessageThreadVC.m; path = Controller/Worker/Messages/GANWorkerMessageThreadVC.m; sourceTree = "<group>"; };
 		83CA210A1E57EF7800C0D787 /* GANAppManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANAppManager.h; path = Model/Utils/GANAppManager.h; sourceTree = "<group>"; };
 		83CA210B1E57EF7800C0D787 /* GANAppManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANAppManager.m; path = Model/Utils/GANAppManager.m; sourceTree = "<group>"; };
 		83CA210D1E57F04E00C0D787 /* GANGenericFunctionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANGenericFunctionManager.h; path = Model/Utils/GANGenericFunctionManager.h; sourceTree = "<group>"; };
@@ -1397,6 +1403,10 @@
 				833CB8821F884FD7006693FF /* Survey */,
 				83CB26441E63052300C2D8C7 /* GANWorkerMessagesVC.h */,
 				83CB26451E63052300C2D8C7 /* GANWorkerMessagesVC.m */,
+				83B23F7C1FA99EB200664F03 /* GANWorkerMessageListVC.h */,
+				83B23F7D1FA99EB200664F03 /* GANWorkerMessageListVC.m */,
+				83B23F7F1FA99EE400664F03 /* GANWorkerMessageThreadVC.h */,
+				83B23F801FA99EE400664F03 /* GANWorkerMessageThreadVC.m */,
 			);
 			name = Messages;
 			sourceTree = "<group>";
@@ -1831,6 +1841,7 @@
 				9FAF4B561F6822A10002D33D /* GANWorkerItemTVC.m in Sources */,
 				83E3229B1F12089A002DA8CB /* GANWorkerLoginPhoneVC.m in Sources */,
 				83CA21301E5BE48600C0D787 /* GANJobItemTVC.m in Sources */,
+				83B23F7E1FA99EB200664F03 /* GANWorkerMessageListVC.m in Sources */,
 				836DBC371F1AD17500CCD6AA /* GANWorkerJobApplyVC.m in Sources */,
 				834F01E41E83C90B00D58989 /* GANMainLoadingVC.m in Sources */,
 				833CB86A1F857114006693FF /* GANUserRefDataModel.m in Sources */,
@@ -1908,6 +1919,7 @@
 				834A87D01EE10A2800EB6E51 /* GANCompanyUserItemTVC.m in Sources */,
 				9FE57D891F3085B5002BCAFE /* GANCompanySuggestWorkersItemTVC.m in Sources */,
 				838AAC1D1E578A9E006CC33D /* main.m in Sources */,
+				83B23F811FA99EE400664F03 /* GANWorkerMessageThreadVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

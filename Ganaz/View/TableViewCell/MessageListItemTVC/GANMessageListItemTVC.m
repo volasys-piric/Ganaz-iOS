@@ -7,6 +7,7 @@
 //
 
 #import "GANMessageListItemTVC.h"
+#import "GANUserManager.h"
 #import "Global.h"
 
 #import "GANGenericFunctionManager.h"
@@ -34,17 +35,29 @@
 - (void) refreshViewsWithType: (GANENUM_MESSAGE_TYPE) type DidRead: (BOOL) didRead DidSend: (BOOL) didSend{
     self.labelAvatar.layer.cornerRadius = 18;
     UIColor *colorMain = (didRead == YES || didSend == YES) ? UICOLOR_MESSAGEITEM_BLACK : UICOLOR_MESSAGEITEM_GREEN;
+    BOOL isES = ![[GANUserManager sharedInstance] isCompanyUser];
+    
     if (type == GANENUM_MESSAGE_TYPE_MESSAGE ||
         type == GANENUM_MESSAGE_TYPE_APPLICATION ||
         type == GANENUM_MESSAGE_TYPE_SUGGEST){
-        self.labelAvatar.text = @"MSG";
+        if (isES == YES) {
+            self.labelAvatar.text = @"MSJ";
+        }
+        else {
+            self.labelAvatar.text = @"MSG";
+        }
         self.labelAvatar.backgroundColor = [UIColor clearColor];
         self.labelAvatar.textColor = colorMain;
         self.labelAvatar.layer.borderWidth = 1;
         self.labelAvatar.layer.borderColor = colorMain.CGColor;
     }
     else if (type == GANENUM_MESSAGE_TYPE_RECRUIT) {
-        self.labelAvatar.text = @"JOB";
+        if (isES == YES) {
+            self.labelAvatar.text = @"TRA";
+        }
+        else {
+            self.labelAvatar.text = @"JOB";
+        }
         self.labelAvatar.backgroundColor = colorMain;
         self.labelAvatar.textColor = UICOLOR_MESSAGEITEM_WHITE;
         self.labelAvatar.layer.borderWidth = 0;
@@ -52,7 +65,13 @@
     else if (type == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE ||
              type == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT ||
              type == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) {
-        self.labelAvatar.text = @"SUR";
+        
+        if (isES == YES) {
+            self.labelAvatar.text = @"ENC";
+        }
+        else {
+            self.labelAvatar.text = @"SUR";
+        }
         self.labelAvatar.backgroundColor = colorMain;
         self.labelAvatar.textColor = UICOLOR_MESSAGEITEM_WHITE;
         self.labelAvatar.layer.borderWidth = 0;

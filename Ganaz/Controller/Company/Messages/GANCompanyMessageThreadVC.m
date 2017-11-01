@@ -305,7 +305,8 @@
                 [self buildMessageList];
                 self.modelLocation = nil;
                 [self refreshMapIcon];
-
+                
+                self.textfieldInput.text = @"";
             }];
         }
         else {

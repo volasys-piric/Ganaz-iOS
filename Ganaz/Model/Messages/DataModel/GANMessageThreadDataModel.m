@@ -7,6 +7,7 @@
 //
 
 #import "GANMessageThreadDataModel.h"
+#import "GANUserManager.h"
 
 @implementation GANMessageThreadDataModel
 
@@ -53,51 +54,93 @@
     GANMessageDataModel *messageLatest = [self getLatestMessage];
     if (messageLatest == nil) return NO;
     
-    // It's same thread in the following 2 cases...
-    // [Case 1] Sender1 == Sender2 && Receiver1 == Receiver2
-    // [Case 2] Sender1 == Receivers2 && Sender2 == Receivers1
-    
-    // [Case 1]
-    if ([messageLatest.modelSender isSameUser:message.modelSender] == YES) {
-        if ([messageLatest.arrayReceivers count] != [message.arrayReceivers count]) {
-            return NO;
-        }
+    if ([[GANUserManager sharedInstance] isCompanyUser] == YES) {
+        // It's same thread in the following 2 cases... (A: Company, B, C: Worker)
+        // [Case 1] Sender1 == Sender2 && Receivers1 == Receivers2       Ex: (A->B,C, A->B,C) || (B->A, B-A)
+        // [Case 2] Sender1 == Receivers2 && Sender2 == Receivers1     Ex: (A->B, B->A)
         
-        BOOL isSame = YES;
-        for (int i = 0; i < (int) [messageLatest.arrayReceivers count]; i++) {
-            GANMessageReceiverDataModel *receiver1 = [messageLatest.arrayReceivers objectAtIndex:i];
-            BOOL found = NO;
-            for (int j = 0; j < (int) [message.arrayReceivers count]; j++) {
-                GANMessageReceiverDataModel *receiver2 = [message.arrayReceivers objectAtIndex:j];
-                if ([receiver1 isSameUser:receiver2] == YES) {
-                    found = YES;
+        // Attention! A->B,C && B->A are not same thread in Company section...
+        
+        // [Case 1]
+        if ([messageLatest.modelSender isSameUser:message.modelSender] == YES) {
+            if ([messageLatest.arrayReceivers count] != [message.arrayReceivers count]) {
+                return NO;
+            }
+            
+            BOOL isSame = YES;
+            for (int i = 0; i < (int) [messageLatest.arrayReceivers count]; i++) {
+                GANMessageReceiverDataModel *receiver1 = [messageLatest.arrayReceivers objectAtIndex:i];
+                BOOL found = NO;
+                for (int j = 0; j < (int) [message.arrayReceivers count]; j++) {
+                    GANMessageReceiverDataModel *receiver2 = [message.arrayReceivers objectAtIndex:j];
+                    if ([receiver1 isSameUser:receiver2] == YES) {
+                        found = YES;
+                        break;
+                    }
+                }
+                
+                if (found == NO) {
+                    isSame = NO;
                     break;
                 }
             }
             
-            if (found == NO) {
-                isSame = NO;
-                break;
+            if (isSame == NO) {
+                return NO;
             }
+            
+            return YES;
         }
         
-        if (isSame == NO) {
+        // [Case 2]
+        if ([messageLatest.arrayReceivers count] != 1) return NO;
+        if ([message.arrayReceivers count] != 1) return NO;
+        
+        GANMessageReceiverDataModel *receiver1 = [messageLatest getPrimaryReceiver];
+        GANMessageReceiverDataModel *receiver2 = [message getPrimaryReceiver];
+        
+        if ([messageLatest.modelSender isSameUser:receiver2] == YES &&
+            [message.modelSender isSameUser:receiver1] == YES) {
+            return YES;
+        }
+        return NO;
+    }
+    else {
+        // It's same thread in the following 4 cases...     (A: Company, B, C, D: Worker)
+        // [Case 1] (Message1.sender == Myself) && (Message2.sender == Myself)                                  Ex:  (B->A, B->A)
+        // [Case 2] (Message1.receivers INCLUDES myself) && (Message2.receivers INCLUDES myself)                Ex:  (A->B,C, A->B,D)
+        // [Case 3] (Message1.receivers INCLUDES myself) && (Message2.sender == Myself)                         Ex:  (A->B,C, B->A)
+        // [Case 4] (Message1.sender == Myself) && (Message2.receivers INCLUDES myself)                         Ex:  (B->A, A->B,C)
+        
+        // [Case 1]
+        if ([messageLatest amISender] == YES && [message amISender] == YES) {
+            if ([[messageLatest getPrimaryReceiver] isSameUser:[message getPrimaryReceiver]] == YES) {
+                return YES;
+            }
             return NO;
         }
-        
-        return YES;
-    }
-    
-    // [Case 2]
-    if ([messageLatest.arrayReceivers count] != 1) return NO;
-    if ([message.arrayReceivers count] != 1) return NO;
-    
-    GANMessageReceiverDataModel *receiver1 = [messageLatest getPrimaryReceiver];
-    GANMessageReceiverDataModel *receiver2 = [message getPrimaryReceiver];
-    
-    if ([messageLatest.modelSender isSameUser:receiver2] == YES &&
-        [message.modelSender isSameUser:receiver1] == YES) {
-        return YES;
+        // [Case 2]
+        else if ([messageLatest amISender] == NO && [message amISender] == NO){
+            if ([messageLatest.modelSender isSameUser:message.modelSender] == YES) {
+                return YES;
+            }
+            return NO;
+        }
+        // [Case 3]
+        else if ([messageLatest amISender] == NO && [message amISender] == YES){
+            if ([messageLatest.modelSender isSameUser:[message getPrimaryReceiver]] == YES) {
+                return YES;
+            }
+            return NO;
+        }
+        // [Case 4]
+        else if ([messageLatest amISender] == YES && [message amISender] == NO){
+            if ([[messageLatest getPrimaryReceiver] isSameUser:message.modelSender] == YES) {
+                return YES;
+            }
+            return NO;
+        }
+        return NO;
     }
     return NO;
 }
