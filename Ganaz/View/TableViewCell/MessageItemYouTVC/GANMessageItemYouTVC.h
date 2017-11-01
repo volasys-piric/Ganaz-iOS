@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface GANMessageItemYouTVC : UITableViewCell
 
@@ -17,6 +18,8 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintImageMapHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintImageMapBottomSpacing;
+
+@property (strong, nonatomic) CLLocation *locationMap;
 
 - (void) showMapWithLatitude: (float) latitude Longitude: (float) longitude;
 - (void) hideMap;

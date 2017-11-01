@@ -196,44 +196,36 @@
 
     UINavigationController *nav = self.navigationController;
     NSArray <UIViewController *> *arrayVCs = nav.viewControllers;
-    NSMutableArray <UIViewController *> *arrayNewVCs = [[NSMutableArray alloc] init];
     
-    BOOL isMessageListVCFound = NO;
-    BOOL isMessageThreadVCFound = NO;
+    GANCompanyMessageListVC *vcList = nil;
+    GANCompanyMessageThreadVC *vcThread = nil;
+    
     for (int i = 0; i < (int) [arrayVCs count]; i++) {
         UIViewController *vc = [arrayVCs objectAtIndex:i];
         if ([vc isKindOfClass:[GANCompanyMessageListVC class]] == YES) {
-            [arrayNewVCs insertObject:vc atIndex:0];
-            isMessageListVCFound = YES;
+            vcList = (GANCompanyMessageListVC *) vc;
         }
         
         if ([vc isKindOfClass:[GANCompanyMessageThreadVC class]] == YES) {
-            GANCompanyMessageThreadVC *vcThread = (GANCompanyMessageThreadVC *) vc;
-            vcThread.indexThread = indexThread;
-            vcThread.arrayReceivers = [[NSMutableArray alloc] initWithArray: self.arrayReceivers];
-
-            [arrayNewVCs addObject:vcThread];
-            isMessageThreadVCFound = YES;
+            vcThread = (GANCompanyMessageThreadVC *) vc;
         }
     }
     
-    if (isMessageListVCFound == NO) {
+    if (vcList == nil) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES_LIST"];
-        [arrayNewVCs insertObject:vc atIndex:0];
+        vcList = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES_LIST"];
     }
     
-    if (isMessageThreadVCFound == NO) {
+    if (vcThread == nil) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
-        GANCompanyMessageThreadVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_THREAD"];
-        
-        vc.indexThread = indexThread;
-        vc.arrayReceivers = [[NSMutableArray alloc] initWithArray: self.arrayReceivers];
-        [arrayNewVCs addObject:vc];
+        vcThread = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_THREAD"];
     }
+    
+    vcThread.indexThread = indexThread;
+    vcThread.arrayReceivers = [[NSMutableArray alloc] initWithArray: self.arrayReceivers];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.navigationController setViewControllers:arrayNewVCs animated:YES];
+        [self.navigationController setViewControllers:@[vcList, vcThread] animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     });
     

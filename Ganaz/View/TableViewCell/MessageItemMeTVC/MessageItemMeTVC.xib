@@ -58,6 +58,12 @@
                                     <constraint firstAttribute="height" priority="999" constant="180" id="iUe-uG-U2b"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g4r-G1-HeX" userLabel="Button - Map">
+                                <rect key="frame" x="100" y="113" width="262.5" height="184"/>
+                                <connections>
+                                    <action selector="onButtonMapClick:" destination="Rw1-7w-Kzf" eventType="touchUpInside" id="5KT-GN-HlE"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -67,14 +73,18 @@
                             <constraint firstItem="1m4-5h-q8i" firstAttribute="top" secondItem="Dap-WU-MkL" secondAttribute="bottom" constant="3" id="D5a-j2-m4h"/>
                             <constraint firstItem="1m4-5h-q8i" firstAttribute="trailing" secondItem="Dap-WU-MkL" secondAttribute="trailing" constant="4" id="I9j-b7-tr5"/>
                             <constraint firstAttribute="trailing" secondItem="Dap-WU-MkL" secondAttribute="trailing" constant="16" id="Nto-yc-TzJ"/>
+                            <constraint firstItem="g4r-G1-HeX" firstAttribute="centerY" secondItem="P0O-qi-zd9" secondAttribute="centerY" id="OmC-cH-cl7"/>
                             <constraint firstItem="968-2l-fxR" firstAttribute="trailing" secondItem="1m4-5h-q8i" secondAttribute="trailing" constant="-16" id="S6Y-tk-ter"/>
                             <constraint firstItem="968-2l-fxR" firstAttribute="width" relation="lessThanOrEqual" secondItem="Onm-vr-gid" secondAttribute="width" multiplier="0.65" id="aeh-ir-IKr"/>
                             <constraint firstItem="968-2l-fxR" firstAttribute="top" secondItem="1m4-5h-q8i" secondAttribute="top" constant="12" id="cIF-70-Lli"/>
                             <constraint firstItem="968-2l-fxR" firstAttribute="bottom" secondItem="1m4-5h-q8i" secondAttribute="bottom" constant="-12" id="d6C-ft-gLm"/>
                             <constraint firstItem="968-2l-fxR" firstAttribute="leading" secondItem="1m4-5h-q8i" secondAttribute="leading" constant="16" id="duD-Rb-sdz"/>
+                            <constraint firstItem="g4r-G1-HeX" firstAttribute="centerX" secondItem="P0O-qi-zd9" secondAttribute="centerX" id="ehl-hk-3b1"/>
                             <constraint firstItem="P0O-qi-zd9" firstAttribute="top" secondItem="1m4-5h-q8i" secondAttribute="bottom" constant="8" id="fF9-7H-aIf"/>
+                            <constraint firstItem="g4r-G1-HeX" firstAttribute="width" secondItem="P0O-qi-zd9" secondAttribute="width" id="mqG-lP-3kZ"/>
                             <constraint firstItem="P0O-qi-zd9" firstAttribute="width" secondItem="Onm-vr-gid" secondAttribute="width" multiplier="0.7" id="n5g-aQ-8G9"/>
                             <constraint firstItem="Dap-WU-MkL" firstAttribute="leading" secondItem="Onm-vr-gid" secondAttribute="leading" constant="16" id="tfg-2s-VIc"/>
+                            <constraint firstItem="g4r-G1-HeX" firstAttribute="height" secondItem="P0O-qi-zd9" secondAttribute="height" id="vw8-WN-tev"/>
                         </constraints>
                     </view>
                 </subviews>
