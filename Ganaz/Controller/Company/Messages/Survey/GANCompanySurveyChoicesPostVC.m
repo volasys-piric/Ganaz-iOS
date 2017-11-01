@@ -124,29 +124,30 @@
 
 - (BOOL) checkMandatoryFields {
     NSString *szQuestion = self.textfieldQuestion.text;
-    NSString *szAnswer1 = self.textfieldAnswer1.text;
-    NSString *szAnswer2 = self.textfieldAnswer2.text;
-    NSString *szAnswer3 = self.textfieldAnswer3.text;
-    NSString *szAnswer4 = self.textfieldAnswer4.text;
-    
+    NSString *szChoice1 = self.textfieldAnswer1.text;
+    NSString *szChoice2 = self.textfieldAnswer2.text;
+    NSString *szChoice3 = self.textfieldAnswer3.text;
+    NSString *szChoice4 = self.textfieldAnswer4.text;
+    int count = 4;
     if (szQuestion.length == 0){
-        [GANGlobalVCManager shakeView:self.viewQuestion InScrollView:self.scrollview];
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please input question." DismissAfter:-1 Callback:nil];
         return NO;
     }
-    if (szAnswer1.length == 0){
-        [GANGlobalVCManager shakeView:self.viewAnswer1 InScrollView:self.scrollview];
-        return NO;
+    if (szChoice1.length == 0){
+        count = count - 1;
     }
-    if (szAnswer2.length == 0){
-        [GANGlobalVCManager shakeView:self.viewAnswer1 InScrollView:self.scrollview];
-        return NO;
+    if (szChoice2.length == 0){
+        count = count - 1;
     }
-    if (szAnswer3.length == 0){
-        [GANGlobalVCManager shakeView:self.viewAnswer1 InScrollView:self.scrollview];
-        return NO;
+    if (szChoice3.length == 0){
+        count = count - 1;
     }
-    if (szAnswer4.length == 0){
-        [GANGlobalVCManager shakeView:self.viewAnswer1 InScrollView:self.scrollview];
+    if (szChoice4.length == 0){
+        count = count - 1;
+    }
+    
+    if (count < 2) {
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please input at least 2 choices." DismissAfter:-1 Callback:nil];
         return NO;
     }
     return YES;
@@ -156,15 +157,28 @@
     if ([self checkMandatoryFields] == NO) return;
     
     NSString *szQuestion = self.textfieldQuestion.text;
-    NSString *szAnswer1 = self.textfieldAnswer1.text;
-    NSString *szAnswer2 = self.textfieldAnswer2.text;
-    NSString *szAnswer3 = self.textfieldAnswer3.text;
-    NSString *szAnswer4 = self.textfieldAnswer4.text;
+    NSString *szChoice1 = self.textfieldAnswer1.text;
+    NSString *szChoice2 = self.textfieldAnswer2.text;
+    NSString *szChoice3 = self.textfieldAnswer3.text;
+    NSString *szChoice4 = self.textfieldAnswer4.text;
+    NSMutableArray *arrayChoices = [[NSMutableArray alloc] init];
+    if (szChoice1.length > 0){
+        [arrayChoices addObject:szChoice1];
+    }
+    if (szChoice2.length > 0){
+        [arrayChoices addObject:szChoice2];
+    }
+    if (szChoice3.length > 0){
+        [arrayChoices addObject:szChoice3];
+    }
+    if (szChoice4.length > 0){
+        [arrayChoices addObject:szChoice4];
+    }
 
     GANSurveyManager *managerSurvey = [GANSurveyManager sharedInstance];
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [managerSurvey requestCreateSurveyWithType:GANENUM_SURVEYTYPE_CHOICESINGLE Question:szQuestion Choices:@[szAnswer1, szAnswer2, szAnswer3, szAnswer4] Receivers:self.arrayReceivers PhoneNumbers:nil MeataData:nil AutoTranslate:self.isAutoTranslate Callback:^(int status) {
+    [managerSurvey requestCreateSurveyWithType:GANENUM_SURVEYTYPE_CHOICESINGLE Question:szQuestion Choices:arrayChoices Receivers:self.arrayReceivers PhoneNumbers:nil MeataData:nil AutoTranslate:self.isAutoTranslate Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR) {
             [GANGlobalVCManager showHudSuccessWithMessage:@"Survey has been posted successfully." DismissAfter:-1 Callback:^{
                 [self refreshMessagesList];
