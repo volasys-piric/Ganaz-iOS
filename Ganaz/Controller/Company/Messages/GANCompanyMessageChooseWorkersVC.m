@@ -256,7 +256,11 @@
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.navigationController pushViewController:vc animated:YES];
+        // Replace VC
+        NSMutableArray <UIViewController *> *arrayVCs = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+        [arrayVCs removeLastObject];
+        [arrayVCs addObject:vc];
+        [self.navigationController setViewControllers:arrayVCs animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     });
     

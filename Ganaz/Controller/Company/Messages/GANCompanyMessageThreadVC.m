@@ -20,6 +20,7 @@
 #import "GANJobManager.h"
 #import "GANAppManager.h"
 #import "GANSurveyManager.h"
+#import "GANCacheManager.h"
 
 #import "Global.h"
 #import "UIColor+GANColor.h"
@@ -36,6 +37,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldInput;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *barButtonCall;
 
 @property (strong, nonatomic) GANMessageThreadDataModel *modelThread;
 @property (strong, nonatomic) NSMutableArray <GANMessageDataModel *> *arrayMessages;
@@ -91,7 +93,7 @@
                 if ([self.arrayReceivers count] > 1) {
                     title = [NSString stringWithFormat:@"%@, ...+%d", title, (int) [self.arrayReceivers count] - 1];
                 }
-                self.navigationItem.title = @"Message";
+                self.navigationItem.title = title;
             }
         }
     }
@@ -99,11 +101,24 @@
         self.arrayReceivers = [[NSMutableArray alloc] init];
         self.modelThread = [[GANMessageManager sharedInstance].arrayThreads objectAtIndex:self.indexThread];
         GANMessageDataModel *message = [self.modelThread getLatestMessage];
-        [self.arrayReceivers addObjectsFromArray:message.arrayReceivers];
-
-        [message requestGetBeautifiedReceiversAbbrWithCallback:^(NSString *beautifiedName) {
-            self.navigationItem.title = beautifiedName;
-        }];
+        if ([message amISender] == YES) {
+            [self.arrayReceivers addObjectsFromArray:message.arrayReceivers];
+            [message requestGetBeautifiedReceiversAbbrWithCallback:^(NSString *beautifiedName) {
+                self.navigationItem.title = beautifiedName;
+            }];
+        }
+        else {
+            [self.arrayReceivers addObject:message.modelSender];
+            [[GANCompanyManager sharedInstance] getBestUserDisplayNameWithUserId:message.modelSender.szUserId Callback:^(NSString *displayName) {
+                self.navigationItem.title = displayName;
+            }];
+        }
+    }
+    
+    if ([self.arrayReceivers count] != 1) {
+        // Hide Call Button
+        [self.barButtonCall setEnabled:NO];
+        [self.barButtonCall setTintColor:[UIColor clearColor]];
     }
     
     [self refreshViews];
@@ -286,7 +301,8 @@
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     [managerMessage requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage MetaData:dictMetaData AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Message sent!" DismissAfter:-1 Callback:^{
+//            [GANGlobalVCManager showHudSuccessWithMessage:@"Message sent!" DismissAfter:-1 Callback:^{
+            [GANGlobalVCManager hideHudProgressWithCallback:^{
                 if (self.indexThread == -1) {
                     // Lookup for the newly created thread...
                     int indexThread = [managerMessage getIndexForMessageThreadWithReceivers:self.arrayReceivers];
@@ -526,6 +542,18 @@
 - (IBAction)onButtonSendClick:(id)sender {
     [self.view endEditing:YES];
     [self sendMessage];
+}
+
+- (IBAction)onButtonCallClick:(id)sender {
+    if ([self.arrayReceivers count] != 1) return;
+    GANCacheManager *managerCache = [GANCacheManager sharedInstance];
+    GANUserRefDataModel *userRef = [self.arrayReceivers firstObject];
+    
+    [managerCache requestGetIndexForUserByUserId:userRef.szUserId Callback:^(int index) {
+        if (index == -1) return;
+        GANUserBaseDataModel *user = [managerCache.arrayUsers objectAtIndex:index];
+        [self callPhoneNumber:user.modelPhone.szLocalNumber];
+    }];
 }
 
 #pragma mark - GANCompanyMapPopupVCDelegate

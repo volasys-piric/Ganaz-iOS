@@ -191,9 +191,16 @@
                             <constraint firstItem="Del-9T-8eV" firstAttribute="top" secondItem="Pzx-uD-X0O" secondAttribute="bottom" id="kgh-kO-4lf"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Group Message" id="kI0-7s-05o"/>
+                    <navigationItem key="navigationItem" title="Group Message" id="kI0-7s-05o">
+                        <barButtonItem key="rightBarButtonItem" image="menu-call" id="GTo-ks-dsb">
+                            <connections>
+                                <action selector="onButtonCallClick:" destination="ciB-8v-SrN" id="soy-zI-fsu"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="IQLayoutGuideConstraint" destination="GQN-2L-cK7" id="aAL-Gs-e0v"/>
+                        <outlet property="barButtonCall" destination="GTo-ks-dsb" id="NtR-Rw-jnA"/>
                         <outlet property="buttonAttachMap" destination="qRW-fd-E1p" id="thW-jL-GHV"/>
                         <outlet property="buttonTranslate" destination="ouK-1u-RK3" id="yof-Gu-cRs"/>
                         <outlet property="imageAttachMap" destination="xO7-kt-f23" id="DV3-Vv-FR8"/>
@@ -458,7 +465,7 @@
                                                                         <rect key="frame" x="12" y="0.0" width="287" height="44"/>
                                                                         <color key="textColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
-                                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="yes" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="yes" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                                     </textField>
                                                                 </subviews>
                                                                 <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
@@ -1080,6 +1087,7 @@
         <image name="button-background" width="512" height="10"/>
         <image name="icon-unchecked" width="20" height="20"/>
         <image name="map-pin" width="20" height="30"/>
+        <image name="menu-call" width="30" height="30"/>
         <image name="message-send" width="22" height="17"/>
     </resources>
 </document>

@@ -307,7 +307,7 @@
             [managerCache requestGetCompanyDetailsByCompanyId:message.modelSender.szCompanyId Callback:^(int indexCompany) {
                 // Check if cell is already re-initiated for new item
                 if (cell.index != indexCell) return;
-                if (index != -1){
+                if (indexCompany != -1){
                     GANCompanyDataModel *company = [managerCache.arrayCompanies objectAtIndex:indexCompany];
                     cell.labelTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
                 }
@@ -352,7 +352,7 @@
             [managerCache requestGetCompanyDetailsByCompanyId:message.modelSender.szCompanyId Callback:^(int indexCompany) {
                 // Check if cell is already re-initiated for new item
                 if (cell.index != indexCell) return;
-                if (index != -1){
+                if (indexCompany != -1){
                     GANCompanyDataModel *company = [managerCache.arrayCompanies objectAtIndex:indexCompany];
                     cell.labelTitle.text = [NSString stringWithFormat:@"%@", [company getBusinessNameES]];
                 }

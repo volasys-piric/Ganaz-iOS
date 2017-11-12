@@ -200,7 +200,8 @@
     [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage MetaData: nil AutoTranslate:NO FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             // Message is successfully sent!
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Éxito! Su mensaje ha sido enviado" DismissAfter:-1 Callback:^{
+            // ES: Éxito! Su mensaje ha sido enviado
+            [GANGlobalVCManager hideHudProgressWithCallback:^{
                 [self buildMessageList];
                 self.textfieldInput.text = @"";
             }];
@@ -327,6 +328,28 @@
 
 #pragma mark - UITableView Delegate
 
+- (void) refreshTableViewHeight{
+    /*
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableview beginUpdates];
+        [self.tableview endUpdates];
+    });
+     */
+}
+
+- (void) beautifyLabelText: (UILabel *) label Title: (NSString *) title Text: (NSString *) text {
+    NSMutableAttributedString *beautifiedText = [[NSMutableAttributedString alloc] initWithString:[NSString  stringWithFormat:@"%@%@" ,title, text]];
+    NSRange rangeTitle = NSMakeRange(0, title.length);
+    NSRange rangeText = NSMakeRange(title.length, text.length);
+    [beautifiedText addAttribute:NSFontAttributeName
+                           value:[UIFont fontWithName:@"SFUIDisplay-Bold" size:14]
+                           range:rangeTitle];
+    [beautifiedText addAttribute:NSFontAttributeName
+                           value:[UIFont fontWithName:@"SFUIDisplay-Regular" size:14]
+                           range:rangeText];
+    label.attributedText = beautifiedText;
+}
+
 - (void) configureCellYou: (GANMessageItemYouTVC *) cell AtIndex: (int) index{
     GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
     GANCacheManager *managerCache = [GANCacheManager sharedInstance];
@@ -336,10 +359,10 @@
     cell.index = indexCell;
     
     if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE) {
-        cell.labelMessage.text = [message getContentsES];
+        [self beautifyLabelText:cell.labelMessage Title:@"" Text:[message getContentsES]];
     }
     else if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT) {
-        cell.labelMessage.text = [NSString stringWithFormat:@"Reclutado: "];
+        [self beautifyLabelText:cell.labelMessage Title:@"Reclutado" Text:@""];
         
         [managerCache requestGetCompanyDetailsByCompanyId:message.modelSender.szCompanyId Callback:^(int indexCompany) {
             if (indexCompany == -1) {
@@ -356,17 +379,18 @@
                 int indexJob = [company getIndexForJob:message.szJobId];
                 if (indexJob != -1){
                     GANJobDataModel *job = [company.arrJobs objectAtIndex:indexJob];
-                    cell.labelMessage.text = [NSString stringWithFormat:@"Reclutado: %@", [job getTitleES]];        // Recruited:
+                    [self beautifyLabelText:cell.labelMessage Title:@"Reclutado: " Text:[job getTitleES]];      // Recruited:
                 }
                 else {
-                    cell.labelMessage.text = @"Reclutado: No se encontró el trabajo";            // Job not found
+                    [self beautifyLabelText:cell.labelMessage Title:@"Reclutado: " Text:@"No se encontró el trabajo"];      // Job not found
                 }
+                [self refreshTableViewHeight];
             }];
         }];
     }
     else if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE ||
              message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT) {
-        cell.labelMessage.text = [NSString stringWithFormat:@"Encuesta: Toca para responder de forma anónima"];
+        [self beautifyLabelText:cell.labelMessage Title:@"Encuesta: " Text:@"Toca para responder de forma anónima"];
         [managerCache requestGetIndexForSurveyBySurveyId:message.szSurveyId Callback:^(int index) {
             // Check if cell is already re-initiated for new item
             if (cell.index != indexCell) return;
@@ -374,12 +398,13 @@
             }
             else {
                 GANSurveyDataModel *survey = [managerCache.arraySurvey objectAtIndex:index];
-                cell.labelMessage.text = [NSString stringWithFormat:@"Encuesta: %@\rToca para responder de forma anónima.", [survey.modelQuestion getTextES]];
+                [self beautifyLabelText:cell.labelMessage Title:@"Encuesta: " Text:[NSString stringWithFormat:@"%@\rToca para responder de forma anónima.", [survey.modelQuestion getTextES]]];
             }
+            [self refreshTableViewHeight];
         }];
     }
     else {
-        cell.labelMessage.text = [message getContentsEN];
+        [self beautifyLabelText:cell.labelMessage Title:@"" Text:[message getContentsES]];
     }
     
     if ([message hasLocationInfo] == YES) {
@@ -399,11 +424,11 @@
     cell.index = indexCell;
     cell.labelTimestamp.text = [GANGenericFunctionManager getBeautifiedPastTime:message.dateSent];
     if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE) {
-        cell.labelMessage.text = [message getContentsEN];
+        [self beautifyLabelText:cell.labelMessage Title:@"" Text:[message getContentsES]];
     }
     else if (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION) {
         // Job application:
-        cell.labelMessage.text = [NSString stringWithFormat:@"Solicitud de trabajo: "];
+        [self beautifyLabelText:cell.labelMessage Title:@"Solicitud de trabajo: " Text:@"\r "];
         
         [managerCache requestGetCompanyDetailsByCompanyId:self.modelReceiver.szCompanyId Callback:^(int indexCompany) {
             if (indexCompany == -1) {
@@ -420,16 +445,17 @@
                 int indexJob = [company getIndexForJob:message.szJobId];
                 if (indexJob != -1){
                     GANJobDataModel *job = [company.arrJobs objectAtIndex:indexJob];
-                    cell.labelMessage.text = [NSString stringWithFormat:@"Solicitud de trabajo: %@", [job getTitleES]];       // Job application:
+                    [self beautifyLabelText:cell.labelMessage Title:@"Solicitud de trabajo: " Text:[job getTitleES]]; // Job application:
                 }
                 else {
-                    cell.labelMessage.text = @"Solicitud de trabajo: No se encontró el trabajo";    // Job not found
+                    [self beautifyLabelText:cell.labelMessage Title:@"Solicitud de trabajo: " Text:@"No se encontró el trabajo"]; // Job not found
                 }
+                [self refreshTableViewHeight];
             }];
         }];
     }
     else if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST) {
-        cell.labelMessage.text = [NSString stringWithFormat:@"Solicitud de trabajo: Sugerir amigo %@", [message getPhoneNumberForSuggestFriend]];
+        [self beautifyLabelText:cell.labelMessage Title:@"Solicitud de trabajo: " Text:[NSString stringWithFormat:@"Sugerir amigo %@", [message getPhoneNumberForSuggestFriend]]];
         [managerCache requestGetCompanyDetailsByCompanyId:self.modelReceiver.szCompanyId Callback:^(int indexCompany) {
             if (indexCompany == -1) {
                 return;
@@ -445,15 +471,17 @@
                 int indexJob = [company getIndexForJob:message.szJobId];
                 if (indexJob != -1){
                     GANJobDataModel *job = [company.arrJobs objectAtIndex:indexJob];
-                    cell.labelMessage.text = [NSString stringWithFormat:@"Solicitud de trabajo: Sugerir amigo %@ para %@", [message getPhoneNumberForSuggestFriend], [job getTitleES]];       // Job application:
+                    [self beautifyLabelText:cell.labelMessage Title:@"Solicitud de trabajo: " Text:[NSString stringWithFormat:@"Sugerir amigo %@ para %@", [message getPhoneNumberForSuggestFriend], [job getTitleES]]];   // Suggest friend
                 }
                 else {
-                    cell.labelMessage.text = @"Solicitud de trabajo: No se encontró el trabajo";    // Job not found
+                    [self beautifyLabelText:cell.labelMessage Title:@"Solicitud de trabajo: " Text:@"No se encontró el trabajo"]; // Job not found
                 }
+                [self refreshTableViewHeight];
             }];
         }];
     }
     else if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) {
+        [self beautifyLabelText:cell.labelMessage Title:@"" Text:@""];
         cell.labelMessage.text = [NSString stringWithFormat:@"Encuesta: Usted contestó la encuesta."];
         [managerCache requestGetIndexForSurveyBySurveyId:message.szSurveyId Callback:^(int index) {
             // Check if cell is already re-initiated for new item
@@ -462,12 +490,13 @@
             }
             else {
                 GANSurveyDataModel *survey = [managerCache.arraySurvey objectAtIndex:index];
-                cell.labelMessage.text = [NSString stringWithFormat:@"Encuesta: %@\rUsted contestó la encuesta.", [survey.modelQuestion getTextES]];
+                [self beautifyLabelText:cell.labelMessage Title:@"Encuesta: " Text:[NSString stringWithFormat:@"%@\rUsted contestó la encuesta.", [survey.modelQuestion getTextES]]];
             }
+            [self refreshTableViewHeight];
         }];
     }
     else {
-        cell.labelMessage.text = [message getContentsES];
+        [self beautifyLabelText:cell.labelMessage Title:@"" Text:[message getContentsES]];
     }
     
     if ([message hasLocationInfo] == YES) {
