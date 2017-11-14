@@ -197,7 +197,7 @@
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage MetaData: nil AutoTranslate:NO FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN Callback:^(int status) {
+    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage MetaData: nil AutoTranslate:YES FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             // Message is successfully sent!
             // ES: Éxito! Su mensaje ha sido enviado

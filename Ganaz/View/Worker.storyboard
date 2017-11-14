@@ -1616,7 +1616,7 @@
             </objects>
             <point key="canvasLocation" x="-892" y="663"/>
         </scene>
-        <!--Mesajes-->
+        <!--Mensajes-->
         <scene sceneID="xP6-dS-sNS">
             <objects>
                 <viewController storyboardIdentifier="STORYBOARD_WORKER_MESSAGE_LIST" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JYN-Vq-iXv" customClass="GANWorkerMessageListVC" sceneMemberID="viewController">
@@ -1657,7 +1657,7 @@
                             <constraint firstItem="uIx-Kz-ais" firstAttribute="leading" secondItem="e7C-2g-c9d" secondAttribute="leading" id="auW-DW-apg"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Mesajes" id="xNO-vP-y7i"/>
+                    <navigationItem key="navigationItem" title="Mensajes" id="xNO-vP-y7i"/>
                     <connections>
                         <outlet property="tableview" destination="rgj-ik-bbd" id="CqO-c0-gnk"/>
                         <segue destination="33H-1K-5sr" kind="show" id="Zkb-nN-6YJ"/>
