@@ -407,6 +407,19 @@
 
 #pragma mark - UITableView Delegate
 
+- (void) beautifyLabelText: (UILabel *) label Title: (NSString *) title Text: (NSString *) text {
+    NSMutableAttributedString *beautifiedText = [[NSMutableAttributedString alloc] initWithString:[NSString  stringWithFormat:@"%@%@" ,title, text]];
+    NSRange rangeTitle = NSMakeRange(0, title.length);
+    NSRange rangeText = NSMakeRange(title.length, text.length);
+    [beautifiedText addAttribute:NSFontAttributeName
+                           value:[UIFont fontWithName:@"SFUIDisplay-Bold" size:14]
+                           range:rangeTitle];
+    [beautifiedText addAttribute:NSFontAttributeName
+                           value:[UIFont fontWithName:@"SFUIDisplay-Regular" size:14]
+                           range:rangeText];
+    label.attributedText = beautifiedText;
+}
+
 - (void) configureCellMe: (GANMessageItemMeTVC *) cell AtIndex: (int) index{
     GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
     GANJobManager *managerJob = [GANJobManager sharedInstance];
@@ -419,20 +432,20 @@
         int indexJob = [managerJob getIndexForMyJobsByJobId:message.szJobId];
         if (indexJob != -1){
             GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:indexJob];
-            cell.labelMessage.text = [NSString stringWithFormat:@"[Recruit]\r\r%@", [job getTitleEN]];
+            [self beautifyLabelText:cell.labelMessage Title:@"Recruit\r" Text:[job getTitleEN]];
         }
         else {
-            cell.labelMessage.text = @"[Recruit]\r\rJob not found";
+            [self beautifyLabelText:cell.labelMessage Title:@"Recruit\r" Text:@"Job not found"];
         }
     }
     else if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE) {
-        cell.labelMessage.text = [NSString stringWithFormat:@"[Multiple Choice Survey]\r\r%@", [message getContentsEN]];
+        [self beautifyLabelText:cell.labelMessage Title:@"Multiple Choice Survery\r" Text:[message getContentsEN]];
     }
     else if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT) {
-        cell.labelMessage.text = [NSString stringWithFormat:@"[Open-Ended Survey]\r\r%@", [message getContentsEN]];
+        [self beautifyLabelText:cell.labelMessage Title:@"Open-Ended Survey\r" Text:[message getContentsEN]];
     }
     else {
-        cell.labelMessage.text = [message getContentsEN];
+        [self beautifyLabelText:cell.labelMessage Title:@"" Text:[message getContentsEN]];
     }
     
     if ([message hasLocationInfo] == YES) {
@@ -456,24 +469,24 @@
         int indexJob = [managerJob getIndexForMyJobsByJobId:message.szJobId];
         if (indexJob != -1){
             GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:indexJob];
-            cell.labelMessage.text = [NSString stringWithFormat:@"[Worker interested]\r\r%@", [job getTitleEN]];
+            [self beautifyLabelText:cell.labelMessage Title:@"Worker interested\r" Text:[job getTitleEN]];
         }
         else {
-            cell.labelMessage.text = @"[Worker interested]\r\rJob not found";
+            [self beautifyLabelText:cell.labelMessage Title:@"Worker interested\r" Text:@"Job not found"];
         }
     }
     else if (message.enumType == GANENUM_MESSAGE_TYPE_SUGGEST) {
         int indexJob = [managerJob getIndexForMyJobsByJobId:message.szJobId];
         if (indexJob != -1){
             GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:indexJob];
-            cell.labelMessage.text = [NSString stringWithFormat:@"[Worker suggested]\r\r%@ might be interested in %@", [message getPhoneNumberForSuggestFriend], [job getTitleEN]];
+            [self beautifyLabelText:cell.labelMessage Title:@"Worker suggested\r" Text:[NSString stringWithFormat:@"%@ might be interested in %@", [message getPhoneNumberForSuggestFriend], [job getTitleEN]]];
         }
         else {
-            cell.labelMessage.text = @"[Worker suggested]\r\rJob not found";
+            [self beautifyLabelText:cell.labelMessage Title:@"Worker suggested\r" Text:@"Job not found"];
         }
     }
     else {
-        cell.labelMessage.text = [message getContentsEN];
+        [self beautifyLabelText:cell.labelMessage Title:@"" Text:[message getContentsEN]];
     }
     
     if ([message hasLocationInfo] == YES) {

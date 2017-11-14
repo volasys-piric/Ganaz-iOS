@@ -118,16 +118,19 @@
     for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
         GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
         int nMessages = (int) [thread.arrayMessages count];
-        
+
+        /*
         BOOL foundMessage = NO;         // Message, Application, Suggest
         BOOL foundRecruit = NO;         // Recruit
         BOOL foundSurvey = NO;          // Survey
+        */
         
         for (int j = nMessages - 1; j >= 0; j--) {
             GANMessageDataModel *message = [thread.arrayMessages objectAtIndex:j];
             if ([message amIReceiver] == NO && [message amISender] == NO) continue;
             if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) continue;
-            
+        
+            /*
             if (foundMessage == NO) {
                 if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE ||
                     message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION ||
@@ -153,6 +156,10 @@
             }
             
             if (foundMessage == YES && foundRecruit == YES && foundSurvey == YES) break;
+             */
+            
+            [self.arrayMessages addObject:message];
+            break;
         }
     }
     

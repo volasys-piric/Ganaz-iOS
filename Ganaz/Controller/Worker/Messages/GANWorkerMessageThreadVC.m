@@ -63,7 +63,7 @@
     
     [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(refreshTableview) userInfo:nil repeats:YES];
     
-    self.navigationItem.title = @"Mesanjes";
+    self.navigationItem.title = @"Mensajes";
 
     self.modelThread = [[GANMessageManager sharedInstance].arrayThreads objectAtIndex:self.indexThread];
     GANMessageDataModel *message = [self.modelThread getLatestMessage];
@@ -359,10 +359,16 @@
     cell.index = indexCell;
     
     if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE) {
-        [self beautifyLabelText:cell.labelMessage Title:@"" Text:[message getContentsES]];
+        if ([message.arrayReceivers count] > 1) {
+            // Group message: Mensaje al grupo
+            [self beautifyLabelText:cell.labelMessage Title:@"Mensaje al grupo\r" Text:[message getContentsES]];
+        }
+        else {
+            [self beautifyLabelText:cell.labelMessage Title:@"" Text:[message getContentsES]];
+        }
     }
     else if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT) {
-        [self beautifyLabelText:cell.labelMessage Title:@"Reclutado" Text:@""];
+        [self beautifyLabelText:cell.labelMessage Title:@"Nuevo trabajo" Text:@""];
         
         [managerCache requestGetCompanyDetailsByCompanyId:message.modelSender.szCompanyId Callback:^(int indexCompany) {
             if (indexCompany == -1) {
@@ -379,10 +385,10 @@
                 int indexJob = [company getIndexForJob:message.szJobId];
                 if (indexJob != -1){
                     GANJobDataModel *job = [company.arrJobs objectAtIndex:indexJob];
-                    [self beautifyLabelText:cell.labelMessage Title:@"Reclutado: " Text:[job getTitleES]];      // Recruited:
+                    [self beautifyLabelText:cell.labelMessage Title:[NSString stringWithFormat:@"Nuevo trabajo: %@", [job getTitleES]] Text:@""];      // Recruited:
                 }
                 else {
-                    [self beautifyLabelText:cell.labelMessage Title:@"Reclutado: " Text:@"No se encontró el trabajo"];      // Job not found
+                    [self beautifyLabelText:cell.labelMessage Title:@"Nuevo trabajo: " Text:@"No se encontró el trabajo"];      // Job not found
                 }
                 [self refreshTableViewHeight];
             }];
@@ -398,7 +404,7 @@
             }
             else {
                 GANSurveyDataModel *survey = [managerCache.arraySurvey objectAtIndex:index];
-                [self beautifyLabelText:cell.labelMessage Title:@"Encuesta: " Text:[NSString stringWithFormat:@"%@\rToca para responder de forma anónima.", [survey.modelQuestion getTextES]]];
+                [self beautifyLabelText:cell.labelMessage Title:[NSString stringWithFormat:@"Encuesta: %@", [survey.modelQuestion getTextES]] Text:[NSString stringWithFormat:@"\rToca para responder de forma anónima."]];
             }
             [self refreshTableViewHeight];
         }];

@@ -1087,7 +1087,7 @@
         <image name="button-background" width="512" height="10"/>
         <image name="icon-unchecked" width="20" height="20"/>
         <image name="map-pin" width="20" height="30"/>
-        <image name="menu-call" width="30" height="30"/>
+        <image name="menu-call" width="25" height="25"/>
         <image name="message-send" width="22" height="17"/>
     </resources>
 </document>

@@ -9,6 +9,9 @@
 #import "GANCompanyMessageListVC.h"
 #import "GANMessageListItemTVC.h"
 #import "GANCompanyMessageThreadVC.h"
+#import "GANCompanySurveyChoicesResultVC.h"
+#import "GANCompanySurveyOpenTextResultVC.h"
+#import "GANJobsDetailsVC.h"
 
 #import "GANMessageManager.h"
 #import "GANMessageDataModel.h"
@@ -165,6 +168,8 @@
     [self.tableview reloadData];
 }
 
+#pragma mark - Navigation
+
 - (void) gotoMessageThreadVCAtIndex: (int) index{
     GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
     NSString *messageId = message.szId;
@@ -197,6 +202,68 @@
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         GANACTIVITY_REPORT(@"Company - Go to send message from Messages");
     });
+}
+
+- (void) gotoJobDetailsVCAtIndex: (int) index {
+    GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
+    GANJobManager *managerJob = [GANJobManager sharedInstance];
+    int indexJob = [managerJob getIndexForMyJobsByJobId:message.szJobId];
+    if (indexJob == -1){
+        return;
+    }
+    
+    [managerJob initializeOnboardingJobAtIndex:indexJob];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+    GANJobsDetailsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_JOBS_DETAILS"];
+    vc.indexJob = indexJob;
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to job details from job list");
+}
+
+- (void) gotoSurveyDetailsAtIndex: (int) index {
+    GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
+    if ([message isSurveyMessage] == NO){
+        return;
+    }
+    
+    GANSurveyManager *managerSurvey = [GANSurveyManager sharedInstance];
+    int indexSurvey = [managerSurvey getIndexForSurveyWithSurveyId:message.szSurveyId];
+    if (indexSurvey == -1) return;
+    GANSurveyDataModel *survey = [managerSurvey.arraySurveys objectAtIndex:indexSurvey];
+    
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [survey requestGetAnswersWithCallback:^(int status) {
+        [GANGlobalVCManager hideHudProgressWithCallback:^{
+            if (survey.enumType == GANENUM_SURVEYTYPE_CHOICESINGLE) {
+                [self gotoSurveyChoicesResultVCAtSurveyIndex:indexSurvey];
+            }
+            else if (survey.enumType == GANENUM_SURVEYTYPE_OPENTEXT) {
+                [self gotoSurveyOpenTextResultVCAtSurveyIndex:indexSurvey];
+            }
+        }];
+    }];
+    
+}
+
+- (void) gotoSurveyChoicesResultVCAtSurveyIndex: (int) indexSurvey{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+    GANCompanySurveyChoicesResultVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SURVEY_CHOICESRESULT"];
+    vc.indexSurvey = indexSurvey;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to Survey Results from Message");
+}
+
+- (void) gotoSurveyOpenTextResultVCAtSurveyIndex: (int) indexSurvey{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+    GANCompanySurveyOpenTextResultVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SURVEY_OPENTEXTRESULT"];
+    vc.indexSurvey = indexSurvey;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to Survey Results from Message");
 }
 
 #pragma mark - UITableView Delegate
@@ -347,7 +414,23 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self gotoMessageThreadVCAtIndex:(int) indexPath.row];
+    int index = (int) indexPath.row;
+    GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
+    
+    if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT) {
+        // Go to job details vc
+        [self gotoJobDetailsVCAtIndex:index];
+    }
+    else if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT ||
+             message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE) {
+        // Go to survey details vc
+        [self gotoSurveyDetailsAtIndex:index];
+    }
+    else {
+        // Go to message thread vc
+        [self gotoMessageThreadVCAtIndex:index];
+    }
+    
 }
 
 #pragma mark - UIButton Event Listeners
