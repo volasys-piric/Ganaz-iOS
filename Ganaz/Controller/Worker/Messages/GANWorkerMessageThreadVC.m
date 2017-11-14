@@ -181,6 +181,22 @@
 
 #pragma mark - Logic
 
+- (BOOL) shouldTranslateMessage{
+    // Check company's last message, and if it's translated, we need to translate worker's message.
+    int count = (int) [self.modelThread.arrayMessages count];
+    for (int i = count - 1; i >= 0; i--){
+        GANMessageDataModel *message = [self.modelThread.arrayMessages objectAtIndex:i];
+        if ([message amIReceiver] == YES) {
+            if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE ||
+                message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT ||
+                message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE) {
+                return message.isAutoTranslate;
+            }
+        }
+    }
+    return NO;
+}
+
 - (void) sendMessage{
     if (self.textfieldInput.text.length == 0) {
         [GANGlobalVCManager shakeView:self.viewInputWrapper];
@@ -194,10 +210,11 @@
     arrReceivers = @[@{@"user_id": self.modelReceiver.szUserId, @"company_id": self.modelReceiver.szCompanyId}];
     
     NSString *szMessage = self.textfieldInput.text;
+    BOOL shouldTranslate = [self shouldTranslateMessage];
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage MetaData: nil AutoTranslate:YES FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN Callback:^(int status) {
+    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage MetaData: nil AutoTranslate:shouldTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             // Message is successfully sent!
             // ES: Éxito! Su mensaje ha sido enviado
