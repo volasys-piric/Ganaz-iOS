@@ -209,6 +209,8 @@
 }
 
 - (void) buildMessageList{
+    // Should initialize AutoTranslate flag?
+    BOOL isFirstTimeLoading = ([self.arrayMessages count] == 0) ? YES : NO;
     [GANGlobalVCManager updateMessageBadge];
     
     [self.arrayMessages removeAllObjects];
@@ -226,6 +228,24 @@
         GANMessageDataModel *msg2 = obj2;
         return [msg1.dateSent compare:msg2.dateSent];
     }];
+    
+    // Initialize AutoTranslate flag
+    if (isFirstTimeLoading == YES) {
+        int count = (int) [self.arrayMessages count];
+        self.isAutoTranslate = YES;
+        for (int i = count - 1; i >= 0; i--) {
+            GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
+            if ([message amISender] == YES) {
+                if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE ||
+                    message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT ||
+                    message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE) {
+                    self.isAutoTranslate = message.isAutoTranslate;
+                    break;
+                }
+            }
+        }
+        [self refreshAutoTranslateView];
+    }
     
     [self refreshTableview];
 }

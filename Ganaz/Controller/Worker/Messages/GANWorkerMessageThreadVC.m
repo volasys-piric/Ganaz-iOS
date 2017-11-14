@@ -183,9 +183,9 @@
 
 - (BOOL) shouldTranslateMessage{
     // Check company's last message, and if it's translated, we need to translate worker's message.
-    int count = (int) [self.modelThread.arrayMessages count];
+    int count = (int) [self.arrayMessages count];
     for (int i = count - 1; i >= 0; i--){
-        GANMessageDataModel *message = [self.modelThread.arrayMessages objectAtIndex:i];
+        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
         if ([message amIReceiver] == YES) {
             if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE ||
                 message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT ||
