@@ -104,8 +104,16 @@
     return -1;
 }
 
-- (BOOL) addMessageIfNeeded: (GANMessageDataModel *) newMessage{
+- (BOOL) isValidMessage: (GANMessageDataModel *) newMessage{
     if (newMessage == nil) return NO;
+    if (newMessage.arrayReceivers == nil || [newMessage.arrayReceivers count] == 0) return NO;
+    if (newMessage.modelSender == nil) return NO;
+    if ([newMessage amISender] == NO && [newMessage amIReceiver] == NO) return NO;
+    return YES;
+}
+
+- (BOOL) addMessageIfNeeded: (GANMessageDataModel *) newMessage{
+    if ([self isValidMessage:newMessage] == NO) return NO;
     for (int i = 0; i < (int) [self.arrayMessages count]; i++){
         GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
         if ([message.szId isEqualToString:newMessage.szId] == YES) return NO;
@@ -116,7 +124,7 @@
 }
 
 - (void) addMessageToThread: (GANMessageDataModel *) newMessage{
-    if (newMessage == nil) return;
+    if ([self isValidMessage:newMessage] == NO) return;
     for (int i = 0; i < (int) [self.arrayThreads count]; i++) {
         GANMessageThreadDataModel *thread = [self.arrayThreads objectAtIndex:i];
         if ([thread isSameThread:newMessage] == YES) {

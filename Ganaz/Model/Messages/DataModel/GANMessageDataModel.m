@@ -92,7 +92,7 @@
     else if (dictReceiver != nil && [dictReceiver isKindOfClass:[NSNull class]] == NO){
         GANMessageReceiverDataModel *receiver = [[GANMessageReceiverDataModel alloc] init];
         [receiver setWithDictionary:dictReceiver];
-        receiver.enumStatus = [GANUtils getMessageStatusFromString:[GANGenericFunctionManager refineNSString:[dict objectForKey:@"status"]]];
+        receiver.enumStatus = GANENUM_MESSAGE_STATUS_READ; // [GANUtils getMessageStatusFromString:[GANGenericFunctionManager refineNSString:[dict objectForKey:@"status"]]];
         [self.arrayReceivers addObject:receiver];
     }
     
