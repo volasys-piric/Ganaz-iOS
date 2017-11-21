@@ -97,7 +97,8 @@
         [self.arrayChoiceTexts removeAllObjects];
         [self.arrayValues removeAllObjects];
         
-        for (int i = 0; i < 4; i++) {
+        int nChoices = (int) [survey.arrayChoices count];
+        for (int i = 0; i < nChoices; i++) {
             int count = [survey getCountForAnswersWithChoiceIndex:i];
             if (count > 0){
                 [self.arrayColors addObject:[arrayAllColors objectAtIndex:i]];

@@ -104,11 +104,13 @@
 #pragma mark - Utils
 
 - (BOOL) isCompanyUser{
+    if ([self isUserLoggedIn] == NO) return NO;
     return ((self.modelUser.enumType == GANENUM_USER_TYPE_COMPANY_REGULAR) ||
             (self.modelUser.enumType == GANENUM_USER_TYPE_COMPANY_ADMIN));
 }
 
 - (BOOL) isWorker{
+    if ([self isUserLoggedIn] == NO) return NO;
     return (self.modelUser.enumType == GANENUM_USER_TYPE_WORKER);
 }
 

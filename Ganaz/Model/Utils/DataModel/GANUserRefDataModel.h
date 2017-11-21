@@ -15,5 +15,7 @@
 
 - (void) setWithDictionary: (NSDictionary *) dict;
 - (NSDictionary *) serializeToDictionary;
+- (BOOL) isSameUser: (GANUserRefDataModel *) user;
 
 @end
+

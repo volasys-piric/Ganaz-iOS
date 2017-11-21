@@ -13,6 +13,9 @@
 @property (strong, nonatomic) GANLocationDataModel *modelLocation;
 @property (assign, atomic) BOOL isNewJobLock;
 
+@property (assign, atomic) BOOL isJobSearchLock;
+@property (strong, nonatomic) NSMutableArray <NSString *> *arrayJobSearchAllowedCompanyIds;
+
 - (instancetype) init;
 - (void) setWithDictionary: (NSDictionary *) dict;
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -19,10 +19,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GANMyWorkerNickNameEditPopupVC">
             <connections>
-                <outlet property="btnCancel" destination="eeS-H3-dsd" id="kcN-p5-J5Z"/>
-                <outlet property="btnDone" destination="olE-Qh-bc8" id="kK5-Ud-xyI"/>
-                <outlet property="lblTitle" destination="r2B-C3-OdM" id="y1g-nk-9X0"/>
-                <outlet property="txtNickName" destination="O5C-qv-UYa" id="Fen-Jj-V6Q"/>
+                <outlet property="buttonCancel" destination="eeS-H3-dsd" id="4O2-4J-2Nz"/>
+                <outlet property="buttonDone" destination="olE-Qh-bc8" id="Oj5-zN-vl1"/>
+                <outlet property="labelTitle" destination="r2B-C3-OdM" id="kHu-6d-18F"/>
+                <outlet property="textfieldNickname" destination="O5C-qv-UYa" id="TrL-X1-lOh"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="viewContents" destination="KIy-l9-cLU" id="Bb1-LM-Og7"/>
                 <outlet property="viewTextField" destination="rp6-0B-oim" id="vyP-nI-Hbu"/>
@@ -36,11 +36,11 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gmi-Xq-30t">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BOX-gB-Eks">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BOX-gB-Eks" userLabel="Button - Wrapper">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             <state key="normal" title="Button"/>
                             <connections>
-                                <action selector="onBtnWrapperClick:" destination="-1" eventType="touchUpInside" id="RY1-Kd-Fhh"/>
+                                <action selector="onButtonWrapperClick:" destination="-1" eventType="touchUpInside" id="bYP-Oy-QsD"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KIy-l9-cLU" userLabel="View - Content View">
@@ -49,7 +49,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BEN-p4-hAK">
                                     <rect key="frame" x="0.0" y="0.0" width="269" height="150"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r2B-C3-OdM">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r2B-C3-OdM" userLabel="Label - Title">
                                             <rect key="frame" x="17" y="15" width="234.5" height="65"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="65" id="2OP-Ic-tOi"/>
@@ -63,7 +63,7 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rp6-0B-oim">
                                             <rect key="frame" x="17" y="85" width="234.5" height="46"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter a name and/or a note here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="O5C-qv-UYa">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter a name and/or a note here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="O5C-qv-UYa" userLabel="Textfield - Nickname">
                                                     <rect key="frame" x="8" y="0.0" width="216.5" height="46"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
@@ -96,17 +96,17 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1UE-EW-GwX">
                                     <rect key="frame" x="0.0" y="150" width="269" height="80"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eeS-H3-dsd">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eeS-H3-dsd" userLabel="Button - Cancel">
                                             <rect key="frame" x="17" y="19" width="106.5" height="42"/>
                                             <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
                                             <state key="normal" title="Cancel">
                                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                             </state>
                                             <connections>
-                                                <action selector="onCancel:" destination="-1" eventType="touchUpInside" id="HRh-oK-1XA"/>
+                                                <action selector="onButtonCancelClick:" destination="-1" eventType="touchUpInside" id="khK-pI-EAS"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="olE-Qh-bc8">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="olE-Qh-bc8" userLabel="Button - Done">
                                             <rect key="frame" x="144.5" y="19" width="107" height="42"/>
                                             <color key="backgroundColor" red="0.54078203439999994" green="0.76722258330000004" blue="0.34336894750000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
@@ -117,7 +117,7 @@
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
-                                                <action selector="onSetMyWorkNickName:" destination="-1" eventType="touchUpInside" id="HrB-5q-ZmW"/>
+                                                <action selector="onButtonDoneClick:" destination="-1" eventType="touchUpInside" id="crf-4m-ilu"/>
                                             </connections>
                                         </button>
                                     </subviews>

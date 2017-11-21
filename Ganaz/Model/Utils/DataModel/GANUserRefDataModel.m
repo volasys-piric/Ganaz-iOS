@@ -53,4 +53,19 @@
     return YES;
 }
 
+- (BOOL) isSameUser: (GANUserRefDataModel *) user{
+    if ((self.szCompanyId.length == 0 && user.szCompanyId.length == 0) &&
+        ([self.szUserId isEqualToString:user.szUserId] == YES)) {
+        // Exactly same user
+        return YES;
+    }
+    
+    if ((self.szCompanyId.length > 0 && user.szCompanyId.length > 0) &&
+        ([self.szCompanyId isEqualToString:user.szCompanyId] == YES)) {
+        // Same company
+        return YES;
+    }
+    return NO;
+}
+
 @end

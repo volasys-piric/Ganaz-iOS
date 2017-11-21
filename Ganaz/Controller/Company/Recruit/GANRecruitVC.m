@@ -301,7 +301,6 @@
 - (void) changeMyWorkerNickName: (NSInteger) index{
     GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:index];
     
-    
     if(myWorker.modelWorker.enumType == GANENUM_USER_TYPE_ONBOARDING_WORKER){
         GANOnboardingWorkerNickNamePopupVC *vc = [[GANOnboardingWorkerNickNamePopupVC alloc] initWithNibName:@"GANOnboardingWorkerNickNamePopupVC" bundle:nil];
         vc.delegate = self;
@@ -313,11 +312,11 @@
             
         }];
         
-        vc.nIndex = index;
         [vc setTitle:[myWorker.modelWorker.modelPhone getBeautifiedPhoneNumber]];
         if(![myWorker.szNickname isEqualToString:@""] || myWorker.szNickname != nil)
-            vc.txtNickName.text = myWorker.szNickname;
-    } else {
+            vc.textfieldNickname.text = myWorker.szNickname;
+    }
+    else {
         GANMyWorkerNickNameEditPopupVC *vc = [[GANMyWorkerNickNameEditPopupVC alloc] initWithNibName:@"GANMyWorkerNickNameEditPopupVC" bundle:nil];
         vc.delegate = self;
         
@@ -327,15 +326,14 @@
         [self presentViewController:vc animated:YES completion:^{
             
         }];
-        
-        vc.nIndex = index;
         [vc setTitle:[myWorker.modelWorker.modelPhone getBeautifiedPhoneNumber]];
         if(![myWorker.szNickname isEqualToString:@""] || myWorker.szNickname != nil)
-            vc.txtNickName.text = myWorker.szNickname;
+            vc.textfieldNickname.text = myWorker.szNickname;
     }
 }
 
 #pragma mark - GANWorkerITEMTVCDelegate
+
 - (void) setWorkerNickName:(NSInteger)nIndex {
     
     nSelectedIndex = nIndex;
@@ -406,14 +404,15 @@
 }
 
 #pragma mark - GANMyWorkerNickNameEditPopupVCDelegate
-- (void) setMyWorkerNickName:(NSString*)szNickName index:(NSInteger) nIndex {
-    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
-    myWorker.szNickname = szNickName;
+
+- (void)nicknameEditPopupDidUpdateWithNickname:(NSString *)nickname {
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nSelectedIndex];
+    myWorker.szNickname = nickname;
     
     //Add NickName
     GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:szNickName Callback:^(int status) {
+    [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:nickname Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR) {
             [GANGlobalVCManager showHudSuccessWithMessage:@"Worker's alias has been updated" DismissAfter:-1 Callback:nil];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -427,14 +426,14 @@
     }];
 }
 
-- (void) setOnboardingWorkerNickName:(NSString*)szNickName index:(NSInteger) nIndex {
-    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
-    myWorker.szNickname = szNickName;
+- (void) onboardingNicknameEditPopupDidUpdateWithNickname:(NSString *)nickname {
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nSelectedIndex];
+    myWorker.szNickname = nickname;
     
     //Add NickName
     GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:szNickName Callback:^(int status) {
+    [managerCompany requestUpdateMyWorkerNicknameWithMyWorkerId:myWorker.szId Nickname:nickname Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR) {
             [GANGlobalVCManager showHudSuccessWithMessage:@"Worker's alias has been updated" DismissAfter:-1 Callback:nil];
             dispatch_async(dispatch_get_main_queue(), ^{

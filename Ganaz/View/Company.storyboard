@@ -485,24 +485,66 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="onBtnAddWorkerClick:" destination="wtC-Rh-Nrq" eventType="touchUpInside" id="0zF-JL-tzi"/>
+                                            <action selector="onButtonAddWorkerClick:" destination="wtC-Rh-Nrq" eventType="touchUpInside" id="P1C-tr-AI4"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5hM-Fo-yap" userLabel="Button - Continue">
-                                        <rect key="frame" x="20" y="474" width="335" height="60"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1HQ-VV-FvM" userLabel="View - Search">
+                                        <rect key="frame" x="20" y="68" width="335" height="44"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="3JC-5E-9sU" userLabel="Image - Search">
+                                                <rect key="frame" x="12" y="14" width="16" height="16"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="3JC-5E-9sU" secondAttribute="height" multiplier="1:1" id="0z2-Gw-Aet"/>
+                                                    <constraint firstAttribute="width" constant="16" id="AHN-HY-r8g"/>
+                                                </constraints>
+                                            </imageView>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hAj-QO-Rug" userLabel="Text Field - Search">
+                                                <rect key="frame" x="40" y="0.0" width="287" height="44"/>
+                                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                <connections>
+                                                    <action selector="onTextfieldSearchChanged:" destination="wtC-Rh-Nrq" eventType="editingChanged" id="vnZ-gn-5VX"/>
+                                                    <outlet property="delegate" destination="wtC-Rh-Nrq" id="3et-tX-vP8"/>
+                                                </connections>
+                                            </textField>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="z6g-zh-EXb"/>
+                                            <constraint firstItem="hAj-QO-Rug" firstAttribute="height" secondItem="1HQ-VV-FvM" secondAttribute="height" id="8DU-Lx-2rI"/>
+                                            <constraint firstItem="hAj-QO-Rug" firstAttribute="centerY" secondItem="1HQ-VV-FvM" secondAttribute="centerY" id="Jgj-YQ-bVb"/>
+                                            <constraint firstItem="3JC-5E-9sU" firstAttribute="leading" secondItem="1HQ-VV-FvM" secondAttribute="leading" constant="12" id="KbK-le-FaL"/>
+                                            <constraint firstAttribute="trailing" secondItem="hAj-QO-Rug" secondAttribute="trailing" constant="8" id="KeN-t7-ADV"/>
+                                            <constraint firstItem="3JC-5E-9sU" firstAttribute="centerY" secondItem="1HQ-VV-FvM" secondAttribute="centerY" id="M54-sn-v66"/>
+                                            <constraint firstItem="hAj-QO-Rug" firstAttribute="leading" secondItem="3JC-5E-9sU" secondAttribute="trailing" constant="12" id="NOH-L7-tLg"/>
+                                            <constraint firstAttribute="height" constant="44" id="vUL-ld-lA9"/>
                                         </constraints>
+                                    </view>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ywx-vs-gkp" userLabel="Button - Send Message">
+                                        <rect key="frame" x="162.5" y="484" width="192.5" height="50"/>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
-                                        <state key="normal" title="Continue" backgroundImage="button-background">
+                                        <state key="normal" title="Message" backgroundImage="button-background">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="onBtnContinueClick:" destination="wtC-Rh-Nrq" eventType="touchUpInside" id="Bgu-zf-wqz"/>
+                                            <action selector="onButtonSendMessageClick:" destination="wtC-Rh-Nrq" eventType="touchUpInside" id="ZIQ-Sh-YPx"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5hM-Fo-yap" userLabel="Button - Survey Workers">
+                                        <rect key="frame" x="20" y="484" width="134.5" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="z6g-zh-EXb"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="Survey">
+                                            <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonSendSurveyClick:" destination="wtC-Rh-Nrq" eventType="touchUpInside" id="ivs-oH-Vdq"/>
                                         </connections>
                                     </button>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FE8-w2-Vh2">
-                                        <rect key="frame" x="20" y="74" width="335" height="392"/>
+                                        <rect key="frame" x="20" y="124" width="335" height="352"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="dataSource" destination="wtC-Rh-Nrq" id="q7G-yb-g60"/>
@@ -514,17 +556,24 @@
                                 <constraints>
                                     <constraint firstItem="ZFR-4Q-Jph" firstAttribute="leading" secondItem="Pdc-L4-AEz" secondAttribute="trailing" constant="12" id="0rp-sL-enc"/>
                                     <constraint firstAttribute="bottom" secondItem="5hM-Fo-yap" secondAttribute="bottom" constant="20" id="15w-pR-pV7"/>
+                                    <constraint firstItem="1HQ-VV-FvM" firstAttribute="leading" secondItem="7Wa-bL-uw4" secondAttribute="leading" id="1fq-Ny-55n"/>
+                                    <constraint firstItem="Ywx-vs-gkp" firstAttribute="top" secondItem="FE8-w2-Vh2" secondAttribute="bottom" constant="8" id="2ft-8Z-sMl"/>
+                                    <constraint firstItem="5hM-Fo-yap" firstAttribute="width" secondItem="Ywx-vs-gkp" secondAttribute="width" multiplier="0.7" id="5Dz-1q-Aze"/>
+                                    <constraint firstItem="Ywx-vs-gkp" firstAttribute="centerY" secondItem="5hM-Fo-yap" secondAttribute="centerY" id="AzH-K3-jIY"/>
                                     <constraint firstItem="7Wa-bL-uw4" firstAttribute="leading" secondItem="S8G-oe-yRu" secondAttribute="leading" constant="20" id="Bfe-2R-pAI"/>
                                     <constraint firstItem="5hM-Fo-yap" firstAttribute="leading" secondItem="S8G-oe-yRu" secondAttribute="leading" constant="20" id="CDz-R6-FTd"/>
-                                    <constraint firstItem="FE8-w2-Vh2" firstAttribute="top" secondItem="7Wa-bL-uw4" secondAttribute="bottom" constant="24" id="OcN-9X-nSe"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ywx-vs-gkp" secondAttribute="trailing" constant="20" id="EXG-vt-P4h"/>
+                                    <constraint firstItem="Ywx-vs-gkp" firstAttribute="height" secondItem="5hM-Fo-yap" secondAttribute="height" id="Fud-sc-Ayw"/>
+                                    <constraint firstItem="1HQ-VV-FvM" firstAttribute="trailing" secondItem="ZFR-4Q-Jph" secondAttribute="trailing" id="MTs-4X-1vx"/>
                                     <constraint firstItem="Pdc-L4-AEz" firstAttribute="height" secondItem="ZFR-4Q-Jph" secondAttribute="height" id="Ods-yQ-Olu"/>
                                     <constraint firstAttribute="trailing" secondItem="FE8-w2-Vh2" secondAttribute="trailing" constant="20" id="QBp-rg-o36"/>
-                                    <constraint firstItem="5hM-Fo-yap" firstAttribute="top" secondItem="FE8-w2-Vh2" secondAttribute="bottom" constant="8" id="Swg-41-VLn"/>
                                     <constraint firstItem="FE8-w2-Vh2" firstAttribute="leading" secondItem="S8G-oe-yRu" secondAttribute="leading" constant="20" id="TnK-vT-0H4"/>
+                                    <constraint firstItem="FE8-w2-Vh2" firstAttribute="top" secondItem="1HQ-VV-FvM" secondAttribute="bottom" constant="12" id="VlM-sd-dDs"/>
+                                    <constraint firstItem="Ywx-vs-gkp" firstAttribute="leading" secondItem="5hM-Fo-yap" secondAttribute="trailing" constant="8" id="bBV-uW-t4F"/>
                                     <constraint firstItem="7Wa-bL-uw4" firstAttribute="centerY" secondItem="ZFR-4Q-Jph" secondAttribute="centerY" id="bli-Ia-YtH"/>
+                                    <constraint firstItem="1HQ-VV-FvM" firstAttribute="top" secondItem="ZFR-4Q-Jph" secondAttribute="bottom" constant="8" id="ceE-di-4vu"/>
                                     <constraint firstItem="ZFR-4Q-Jph" firstAttribute="top" secondItem="S8G-oe-yRu" secondAttribute="top" constant="20" id="d9U-IN-K67"/>
                                     <constraint firstItem="Pdc-L4-AEz" firstAttribute="width" secondItem="ZFR-4Q-Jph" secondAttribute="width" id="fgA-iQ-NWG"/>
-                                    <constraint firstAttribute="trailing" secondItem="5hM-Fo-yap" secondAttribute="trailing" constant="20" id="gZD-zM-8d8"/>
                                     <constraint firstItem="Pdc-L4-AEz" firstAttribute="leading" secondItem="7Wa-bL-uw4" secondAttribute="trailing" constant="3" id="klh-kV-tGs"/>
                                     <constraint firstAttribute="trailing" secondItem="ZFR-4Q-Jph" secondAttribute="trailing" constant="20" id="mTl-Gr-sEG"/>
                                     <constraint firstItem="Pdc-L4-AEz" firstAttribute="centerY" secondItem="ZFR-4Q-Jph" secondAttribute="centerY" id="yI8-D8-viB"/>
@@ -541,10 +590,13 @@
                     </view>
                     <navigationItem key="navigationItem" title="Choose workers" id="RFU-NE-cKm"/>
                     <connections>
-                        <outlet property="btnAddWorker" destination="ZFR-4Q-Jph" id="pE7-wo-IS3"/>
-                        <outlet property="btnContinue" destination="5hM-Fo-yap" id="gKj-ew-IBi"/>
+                        <outlet property="buttonAddWorker" destination="ZFR-4Q-Jph" id="PUH-KH-Pf9"/>
                         <outlet property="buttonSelectAll" destination="Pdc-L4-AEz" id="rGG-lM-hB2"/>
+                        <outlet property="buttonSendMessage" destination="Ywx-vs-gkp" id="hKp-4K-hA4"/>
+                        <outlet property="buttonSendSurvey" destination="5hM-Fo-yap" id="TBq-lC-RE0"/>
                         <outlet property="tableview" destination="FE8-w2-Vh2" id="7gI-os-mA2"/>
+                        <outlet property="textfieldSearch" destination="hAj-QO-Rug" id="18m-CK-3aT"/>
+                        <outlet property="viewSearch" destination="1HQ-VV-FvM" id="psS-SF-LLS"/>
                         <segue destination="Db0-vm-j2k" kind="show" identifier="SEGUE_FROM_COMPANY_MESSAGES_CHOOSEWORKER_TO_ADD" id="tfm-ek-6QP"/>
                     </connections>
                 </viewController>
@@ -1053,7 +1105,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="riQ-En-rAj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="137" y="1949"/>
+            <point key="canvasLocation" x="-134" y="1949"/>
         </scene>
         <!--Messages-->
         <scene sceneID="ABT-Z2-EIK">
@@ -1065,7 +1117,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="lnn-Vq-PJ3" kind="relationship" relationship="rootViewController" id="qYp-U5-V7k"/>
+                        <segue destination="Uvm-eU-BSK" kind="relationship" relationship="rootViewController" id="s1Z-Oz-0TI"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P3G-YN-Kqs" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2753,6 +2805,63 @@ your job post with?</string>
             </objects>
             <point key="canvasLocation" x="-2618" y="4382"/>
         </scene>
+        <!--Messages-->
+        <scene sceneID="d0m-TN-Y7r">
+            <objects>
+                <viewController storyboardIdentifier="STORYBOARD_COMPANY_MESSAGE_LIST" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Uvm-eU-BSK" customClass="GANCompanyMessageListVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="R7p-Nd-SCz"/>
+                        <viewControllerLayoutGuide type="bottom" id="5uk-bu-DWF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="El0-Mq-iYG">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="edX-Wv-ijK" userLabel="View - Main Container">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Rou-2b-m3u">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="Uvm-eU-BSK" id="6YM-gu-feE"/>
+                                            <outlet property="delegate" destination="Uvm-eU-BSK" id="ceN-vX-iH6"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Rou-2b-m3u" secondAttribute="bottom" id="5Rm-YP-Jri"/>
+                                    <constraint firstItem="Rou-2b-m3u" firstAttribute="leading" secondItem="edX-Wv-ijK" secondAttribute="leading" id="GMJ-Vx-12v"/>
+                                    <constraint firstItem="Rou-2b-m3u" firstAttribute="top" secondItem="edX-Wv-ijK" secondAttribute="top" id="Puc-hw-n0w"/>
+                                    <constraint firstAttribute="trailing" secondItem="Rou-2b-m3u" secondAttribute="trailing" id="TeS-Gd-iZx"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="edX-Wv-ijK" secondAttribute="trailing" id="0cv-Xi-uZ5"/>
+                            <constraint firstItem="edX-Wv-ijK" firstAttribute="top" secondItem="R7p-Nd-SCz" secondAttribute="bottom" id="3fc-1i-fuJ"/>
+                            <constraint firstItem="edX-Wv-ijK" firstAttribute="leading" secondItem="El0-Mq-iYG" secondAttribute="leading" id="FVI-IK-iLy"/>
+                            <constraint firstItem="5uk-bu-DWF" firstAttribute="top" secondItem="edX-Wv-ijK" secondAttribute="bottom" id="eaG-nJ-5v0"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Messages" id="nNm-Q3-yEr">
+                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="wTu-I6-Bw0">
+                            <connections>
+                                <action selector="onButtonNewMessageClick:" destination="Uvm-eU-BSK" id="xOm-Vl-v19"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableview" destination="Rou-2b-m3u" id="WuB-8z-oam"/>
+                        <segue destination="lnn-Vq-PJ3" kind="show" id="NdI-lZ-JUD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="U3f-Zo-43P" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="428" y="1949"/>
+        </scene>
     </scenes>
     <resources>
         <image name="button-background" width="512" height="10"/>
@@ -2763,6 +2872,7 @@ your job post with?</string>
         <image name="icon-unchecked" width="20" height="20"/>
         <image name="map-pin" width="20" height="30"/>
         <image name="map-pin-center" width="20" height="40"/>
+        <image name="search" width="14" height="14"/>
         <image name="tab-home" width="29" height="24"/>
         <image name="tab-list" width="40" height="40"/>
         <image name="tab-message" width="40" height="40"/>

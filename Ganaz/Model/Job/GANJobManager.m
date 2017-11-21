@@ -222,6 +222,12 @@
     if (date != nil){
         [params setObject:[GANGenericFunctionManager getNormalizedStringFromDate:date] forKey:@"date"];
     }
+    if ([[GANUserManager sharedInstance] isWorker] == YES) {
+        GANUserWorkerDataModel *user = [GANUserManager getUserWorkerDataModel];
+        if (user.isJobSearchLock == YES) {
+            [params setObject:@{@"allowed_company_ids": user.arrayJobSearchAllowedCompanyIds} forKey:@"job_search_lock"];
+        }
+    }
 
     [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:NO parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;

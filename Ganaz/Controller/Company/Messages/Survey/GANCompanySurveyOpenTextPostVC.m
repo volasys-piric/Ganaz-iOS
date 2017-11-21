@@ -9,7 +9,8 @@
 #import "GANCompanySurveyOpenTextPostVC.h"
 #import "GANFadeTransitionDelegate.h"
 #import "GANMessageWithChargeConfirmationPopupVC.h"
-#import "GANCompanyMessagesVC.h"
+#import "GANCompanyMessageListVC.h"
+#import "GANCompanyMessageThreadVC.h"
 #import "GANGlobalVCManager.h"
 
 #import "GANSurveyManager.h"
@@ -77,13 +78,18 @@
 - (void) refreshFields{
     NSString *szReceivers = @"";
     int count = MIN(3, (int) [self.arrayReceivers count]);
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    
     for (int i = 0; i < count; i++) {
-        GANMyWorkerDataModel *worker = [self.arrayReceivers objectAtIndex:i];
+        GANUserRefDataModel *userRef = [self.arrayReceivers objectAtIndex:i];
+        int indexMyWorker = [managerCompany getIndexForMyWorkersWithUserId:userRef.szUserId];
+        if (indexMyWorker == -1) continue;
+        GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:i];
         if (i == 0){
-            szReceivers = [worker getDisplayName];
+            szReceivers = [myWorker getDisplayName];
         }
         else {
-            szReceivers = [NSString stringWithFormat:@"%@, %@", szReceivers, [worker getDisplayName]];
+            szReceivers = [NSString stringWithFormat:@"%@, %@", szReceivers, [myWorker getDisplayName]];
         }
     }
     
@@ -110,19 +116,10 @@
     if ([self checkMandatoryFields] == NO) return;
     
     NSString *szQuestion = self.textviewQuestion.text;
-    
-    NSMutableArray <GANUserRefDataModel *> *arrayReceiversUserRef = [[NSMutableArray alloc] init];
-    for (int i = 0; i < (int) [self.arrayReceivers count]; i++) {
-        GANMyWorkerDataModel *worker = [self.arrayReceivers objectAtIndex:i];
-        GANUserRefDataModel *userRef = [[GANUserRefDataModel alloc] init];
-        userRef.szCompanyId = @"";
-        userRef.szUserId = worker.szWorkerUserId;
-        [arrayReceiversUserRef addObject:userRef];
-    }
     GANSurveyManager *managerSurvey = [GANSurveyManager sharedInstance];
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [managerSurvey requestCreateSurveyWithType:GANENUM_SURVEYTYPE_OPENTEXT Question:szQuestion Choices:nil Receivers:arrayReceiversUserRef PhoneNumbers:nil MeataData:nil AutoTranslate:self.isAutoTranslate Callback:^(int status) {
+    [managerSurvey requestCreateSurveyWithType:GANENUM_SURVEYTYPE_OPENTEXT Question:szQuestion Choices:nil Receivers:self.arrayReceivers PhoneNumbers:nil MeataData:nil AutoTranslate:self.isAutoTranslate Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR) {
             [GANGlobalVCManager showHudSuccessWithMessage:@"Survey has been posted successfully." DismissAfter:-1 Callback:^{
                 [self refreshMessagesList];
@@ -140,27 +137,54 @@
     [GANGlobalVCManager showHudProgressWithMessage:@"Loading messages..."];
     [managerMessage requestGetMessageListWithCallback:^(int status) {
         [GANGlobalVCManager hideHudProgressWithCallback:^{
-            [self gotoMessagesVC];
+            [self gotoMessageThreadVC];
         }];
     }];
 }
 
-- (void) gotoMessagesVC{
+- (void) gotoMessageThreadVC{
+    GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
+    int indexThread = [managerMessage getIndexForMessageThreadWithReceivers:self.arrayReceivers];
+    if (indexThread == -1 && [self.arrayReceivers count] == 1) {
+        indexThread = [managerMessage getIndexForMessageThreadWithSender:[self.arrayReceivers firstObject]];
+    }
+    
     UINavigationController *nav = self.navigationController;
     NSArray <UIViewController *> *arrayVCs = nav.viewControllers;
+    
+    GANCompanyMessageListVC *vcList = nil;
+    GANCompanyMessageThreadVC *vcThread = nil;
+    
     for (int i = 0; i < (int) [arrayVCs count]; i++) {
         UIViewController *vc = [arrayVCs objectAtIndex:i];
-        if ([vc isKindOfClass:[GANCompanyMessagesVC class]] == YES) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.navigationController popToViewController:vc animated:YES];
-            });
-            return;
+        if ([vc isKindOfClass:[GANCompanyMessageListVC class]] == YES) {
+            vcList = (GANCompanyMessageListVC *) vc;
+        }
+        
+        if ([vc isKindOfClass:[GANCompanyMessageThreadVC class]] == YES) {
+            vcThread = (GANCompanyMessageThreadVC *) vc;
         }
     }
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
-    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES"];
-    [self.navigationController setViewControllers:@[vc] animated:YES];
+    if (vcList == nil) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+        vcList = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES_LIST"];
+    }
+    
+    if (vcThread == nil) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+        vcThread = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_THREAD"];
+    }
+    
+    vcThread.indexThread = indexThread;
+    vcThread.arrayReceivers = [[NSMutableArray alloc] initWithArray: self.arrayReceivers];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController setViewControllers:@[vcList, vcThread] animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    });
+    
+    GANACTIVITY_REPORT(@"Company - Go to MessageThread from Survey");
 }
 
 #pragma mark - UIButton Event Listeners

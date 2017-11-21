@@ -9,7 +9,6 @@
 #import "GANWorkerSurveyOpenTextVC.h"
 #import "GANCacheManager.h"
 #import "GANMessageManager.h"
-#import "GANWorkerMessagesVC.h"
 #import "GANGlobalVCManager.h"
 #import "Global.h"
 #import "GANAppManager.h"
@@ -116,21 +115,7 @@
 }
 
 - (void) gotoMessagesVC{
-    UINavigationController *nav = self.navigationController;
-    NSArray <UIViewController *> *arrayVCs = nav.viewControllers;
-    for (int i = 0; i < (int) [arrayVCs count]; i++) {
-        UIViewController *vc = [arrayVCs objectAtIndex:i];
-        if ([vc isKindOfClass:[GANWorkerMessagesVC class]] == YES) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.navigationController popToViewController:vc animated:YES];
-            });
-            return;
-        }
-    }
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
-    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_MESSAGES"];
-    [self.navigationController setViewControllers:@[vc] animated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)onButtonSubmitClick:(id)sender {

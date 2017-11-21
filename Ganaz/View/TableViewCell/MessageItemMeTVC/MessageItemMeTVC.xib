@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFUIDisplay-Medium.otf">
+            <string>SFUIDisplay-Medium</string>
+        </array>
+        <array key="SFUIDisplay-Regular.otf">
+            <string>SFUIDisplay-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TVC_MESSAGEITEM_ME" rowHeight="306" id="Rw1-7w-Kzf" customClass="GANMessageItemMeTVC">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="306"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rw1-7w-Kzf" id="Wt2-9s-8Ce">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="305.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Onm-vr-gid">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="305.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30mins ago" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dap-WU-MkL" userLabel="Label - Timestamp">
+                                <rect key="frame" x="16" y="8" width="343" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="uOE-Z5-Dly"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="12"/>
+                                <color key="textColor" red="0.35294117650000001" green="0.35294117650000001" blue="0.35294117650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1m4-5h-q8i" userLabel="Label - Background">
+                                <rect key="frame" x="170.5" y="31" width="192.5" height="74.5"/>
+                                <color key="backgroundColor" red="0.3921568627" green="0.70196078429999997" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="999" verticalHuggingPriority="999" horizontalCompressionResistancePriority="999" verticalCompressionResistancePriority="999" text="Message Contents Message Contents This is Message Contents" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="968-2l-fxR" userLabel="Label - Message">
+                                <rect key="frame" x="186.5" y="43" width="160.5" height="50.5"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="P0O-qi-zd9" userLabel="Image - Map">
+                                <rect key="frame" x="100.5" y="113.5" width="262.5" height="184"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="999" constant="180" id="iUe-uG-U2b"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g4r-G1-HeX" userLabel="Button - Map">
+                                <rect key="frame" x="100" y="113" width="262.5" height="184"/>
+                                <connections>
+                                    <action selector="onButtonMapClick:" destination="Rw1-7w-Kzf" eventType="touchUpInside" id="5KT-GN-HlE"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Dap-WU-MkL" firstAttribute="top" secondItem="Onm-vr-gid" secondAttribute="top" constant="8" id="1iz-6w-lFE"/>
+                            <constraint firstItem="P0O-qi-zd9" firstAttribute="trailing" secondItem="1m4-5h-q8i" secondAttribute="trailing" id="1lx-1v-a5U"/>
+                            <constraint firstAttribute="bottom" secondItem="P0O-qi-zd9" secondAttribute="bottom" constant="8" id="9lZ-LE-4q9"/>
+                            <constraint firstItem="1m4-5h-q8i" firstAttribute="top" secondItem="Dap-WU-MkL" secondAttribute="bottom" constant="3" id="D5a-j2-m4h"/>
+                            <constraint firstItem="1m4-5h-q8i" firstAttribute="trailing" secondItem="Dap-WU-MkL" secondAttribute="trailing" constant="4" id="I9j-b7-tr5"/>
+                            <constraint firstAttribute="trailing" secondItem="Dap-WU-MkL" secondAttribute="trailing" constant="16" id="Nto-yc-TzJ"/>
+                            <constraint firstItem="g4r-G1-HeX" firstAttribute="centerY" secondItem="P0O-qi-zd9" secondAttribute="centerY" id="OmC-cH-cl7"/>
+                            <constraint firstItem="968-2l-fxR" firstAttribute="trailing" secondItem="1m4-5h-q8i" secondAttribute="trailing" constant="-16" id="S6Y-tk-ter"/>
+                            <constraint firstItem="968-2l-fxR" firstAttribute="width" relation="lessThanOrEqual" secondItem="Onm-vr-gid" secondAttribute="width" multiplier="0.65" id="aeh-ir-IKr"/>
+                            <constraint firstItem="968-2l-fxR" firstAttribute="top" secondItem="1m4-5h-q8i" secondAttribute="top" constant="12" id="cIF-70-Lli"/>
+                            <constraint firstItem="968-2l-fxR" firstAttribute="bottom" secondItem="1m4-5h-q8i" secondAttribute="bottom" constant="-12" id="d6C-ft-gLm"/>
+                            <constraint firstItem="968-2l-fxR" firstAttribute="leading" secondItem="1m4-5h-q8i" secondAttribute="leading" constant="16" id="duD-Rb-sdz"/>
+                            <constraint firstItem="g4r-G1-HeX" firstAttribute="centerX" secondItem="P0O-qi-zd9" secondAttribute="centerX" id="ehl-hk-3b1"/>
+                            <constraint firstItem="P0O-qi-zd9" firstAttribute="top" secondItem="1m4-5h-q8i" secondAttribute="bottom" constant="8" id="fF9-7H-aIf"/>
+                            <constraint firstItem="g4r-G1-HeX" firstAttribute="width" secondItem="P0O-qi-zd9" secondAttribute="width" id="mqG-lP-3kZ"/>
+                            <constraint firstItem="P0O-qi-zd9" firstAttribute="width" secondItem="Onm-vr-gid" secondAttribute="width" multiplier="0.7" id="n5g-aQ-8G9"/>
+                            <constraint firstItem="Dap-WU-MkL" firstAttribute="leading" secondItem="Onm-vr-gid" secondAttribute="leading" constant="16" id="tfg-2s-VIc"/>
+                            <constraint firstItem="g4r-G1-HeX" firstAttribute="height" secondItem="P0O-qi-zd9" secondAttribute="height" id="vw8-WN-tev"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Onm-vr-gid" secondAttribute="bottom" id="EE4-ra-0Xa"/>
+                    <constraint firstAttribute="trailing" secondItem="Onm-vr-gid" secondAttribute="trailing" id="TbL-Yc-Qoy"/>
+                    <constraint firstItem="Onm-vr-gid" firstAttribute="leading" secondItem="Wt2-9s-8Ce" secondAttribute="leading" id="oNS-q8-C24"/>
+                    <constraint firstItem="Onm-vr-gid" firstAttribute="top" secondItem="Wt2-9s-8Ce" secondAttribute="top" id="ygR-kJ-9yd"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="constraintImageMapBottomSpacing" destination="9lZ-LE-4q9" id="6fB-pY-bxY"/>
+                <outlet property="constraintImageMapHeight" destination="iUe-uG-U2b" id="ZKs-sW-tYq"/>
+                <outlet property="imageMap" destination="P0O-qi-zd9" id="B3J-Gp-kEW"/>
+                <outlet property="labelBackground" destination="1m4-5h-q8i" id="DKk-Wm-Hwt"/>
+                <outlet property="labelMessage" destination="968-2l-fxR" id="OdM-Y7-B5F"/>
+                <outlet property="labelTimestamp" destination="Dap-WU-MkL" id="bip-bJ-HgX"/>
+            </connections>
+            <point key="canvasLocation" x="-44.5" y="0.0"/>
+        </tableViewCell>
+    </objects>
+</document>

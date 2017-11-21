@@ -5,7 +5,7 @@
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -498,7 +498,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g2v-JE-Oxb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2585" y="2215"/>
+            <point key="canvasLocation" x="-2586" y="2308"/>
         </scene>
         <!--Lista de trabajos-->
         <scene sceneID="UTN-7k-8jv">
@@ -663,7 +663,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4OG-TR-cOH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1751" y="2216"/>
+            <point key="canvasLocation" x="-1751" y="2308"/>
         </scene>
         <!--Robinsons Orchards-->
         <scene sceneID="V0G-vh-TXY">
@@ -1505,7 +1505,7 @@
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1Dg-JD-lu7">
+                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1Dg-JD-lu7">
                                                         <rect key="frame" x="20" y="341" width="335" height="200"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <constraints>
@@ -1609,12 +1609,63 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="33H-1K-5sr" kind="relationship" relationship="rootViewController" id="SkY-rU-x1O"/>
+                        <segue destination="JYN-Vq-iXv" kind="relationship" relationship="rootViewController" id="mwr-es-oRo"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iA5-eh-gbK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-892" y="663"/>
+        </scene>
+        <!--Mensajes-->
+        <scene sceneID="xP6-dS-sNS">
+            <objects>
+                <viewController storyboardIdentifier="STORYBOARD_WORKER_MESSAGE_LIST" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JYN-Vq-iXv" customClass="GANWorkerMessageListVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NNi-vs-BFu"/>
+                        <viewControllerLayoutGuide type="bottom" id="ROF-7T-SxI"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="e7C-2g-c9d">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uIx-Kz-ais" userLabel="View - Main Container">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rgj-ik-bbd">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="JYN-Vq-iXv" id="gmD-Nl-Hci"/>
+                                            <outlet property="delegate" destination="JYN-Vq-iXv" id="CFV-ds-GHL"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="rgj-ik-bbd" firstAttribute="top" secondItem="uIx-Kz-ais" secondAttribute="top" id="6Wm-Bo-hcF"/>
+                                    <constraint firstItem="rgj-ik-bbd" firstAttribute="leading" secondItem="uIx-Kz-ais" secondAttribute="leading" id="CbV-19-peL"/>
+                                    <constraint firstAttribute="trailing" secondItem="rgj-ik-bbd" secondAttribute="trailing" id="QC3-VT-GmX"/>
+                                    <constraint firstAttribute="bottom" secondItem="rgj-ik-bbd" secondAttribute="bottom" id="vlC-dt-zGK"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="uIx-Kz-ais" firstAttribute="top" secondItem="NNi-vs-BFu" secondAttribute="bottom" id="4Vt-pe-veU"/>
+                            <constraint firstAttribute="trailing" secondItem="uIx-Kz-ais" secondAttribute="trailing" id="EHF-Xj-2fw"/>
+                            <constraint firstItem="ROF-7T-SxI" firstAttribute="top" secondItem="uIx-Kz-ais" secondAttribute="bottom" id="LKU-8r-0ex"/>
+                            <constraint firstItem="uIx-Kz-ais" firstAttribute="leading" secondItem="e7C-2g-c9d" secondAttribute="leading" id="auW-DW-apg"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Mensajes" id="xNO-vP-y7i"/>
+                    <connections>
+                        <outlet property="tableview" destination="rgj-ik-bbd" id="CqO-c0-gnk"/>
+                        <segue destination="33H-1K-5sr" kind="show" id="Zkb-nN-6YJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jnJ-jN-TRR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-894" y="1489"/>
         </scene>
         <!--Mensajes-->
         <scene sceneID="o3a-vm-qAi">
@@ -1775,7 +1826,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fds-7r-oxj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-893" y="1490"/>
+            <point key="canvasLocation" x="-892" y="2308"/>
         </scene>
     </scenes>
     <resources>

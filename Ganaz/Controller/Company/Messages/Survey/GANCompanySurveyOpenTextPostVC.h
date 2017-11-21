@@ -11,6 +11,6 @@
 
 @interface GANCompanySurveyOpenTextPostVC : UIViewController
 
-@property (strong, nonatomic) NSArray<GANMyWorkerDataModel *> *arrayReceivers;
+@property (strong, nonatomic) NSArray<GANUserRefDataModel *> *arrayReceivers;
 
 @end

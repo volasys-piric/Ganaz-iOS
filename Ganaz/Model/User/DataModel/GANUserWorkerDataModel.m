@@ -34,6 +34,9 @@
     self.szExternalId = @"";
     self.arrPlayerIds = [[NSMutableArray alloc] init];
     
+    self.isNewJobLock = NO;
+    self.isJobSearchLock = NO;
+    self.arrayJobSearchAllowedCompanyIds = [[NSMutableArray alloc] init];
     self.modelLocation = [[GANLocationDataModel alloc] init];
     
     GANLocationManager *managerLocation = [GANLocationManager sharedInstance];
@@ -49,15 +52,33 @@
     
     NSDictionary *dictWorker = [dict objectForKey:@"worker"];
     self.isNewJobLock = [GANGenericFunctionManager refineBool:[dictWorker objectForKey:@"is_newjob_lock"] DefaultValue:NO];
-    
+
     NSDictionary *dictLocation = [dictWorker objectForKey:@"location"];
     [self.modelLocation setWithDictionary:dictLocation];
+    
+    NSDictionary *dictJobSearchLock = [dictWorker objectForKey:@"job_search_lock"];
+    if (dictJobSearchLock != nil && [dictJobSearchLock isKindOfClass:[NSDictionary class]] == YES) {
+        self.isJobSearchLock = [GANGenericFunctionManager refineBool:[dictJobSearchLock objectForKey:@"lock"] DefaultValue:NO];
+        self.arrayJobSearchAllowedCompanyIds = [[NSMutableArray alloc] init];
+        
+        NSArray *arrayCompanyIds = [dictJobSearchLock objectForKey:@"allowed_company_ids"];
+        if (arrayCompanyIds != nil && [arrayCompanyIds isKindOfClass:[NSArray class]] == YES) {
+            for (int i = 0; i < (int) [arrayCompanyIds count]; i++) {
+                [self.arrayJobSearchAllowedCompanyIds addObject:[GANGenericFunctionManager refineNSString:[arrayCompanyIds objectAtIndex:i]]];
+            }
+        }
+    }
 }
 
 - (NSDictionary *) serializeToDictionary{
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super serializeToDictionary]];
-    [dict setObject:@{@"location": [self.modelLocation serializeToDictionary]} forKey:@"worker"];
-    [dict setObject:(self.isNewJobLock == YES) ? @"true" : @"false" forKey:@"is_newjob_lock"];
+    [dict setObject:@{@"location": [self.modelLocation serializeToDictionary],
+                      @"is_newjob_lock": (self.isNewJobLock == YES) ? @"true" : @"false",
+                      @"job_search_lock": @{
+                              @"lock": (self.isJobSearchLock == YES) ? @"true" : @"false",
+                              @"allowed_company_ids": self.arrayJobSearchAllowedCompanyIds,
+                              }
+                      } forKey:@"worker"];
     return dict;
 }
 

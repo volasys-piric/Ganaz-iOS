@@ -13,9 +13,9 @@
 @interface GANOnboardingWorkerNickNamePopupVC ()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewContents;
-@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
-@property (weak, nonatomic) IBOutlet UIButton *btnDone;
-@property (weak, nonatomic) IBOutlet UIButton *btnCancel;
+@property (weak, nonatomic) IBOutlet UILabel *labelTitle;
+@property (weak, nonatomic) IBOutlet UIButton *buttonDone;
+@property (weak, nonatomic) IBOutlet UIButton *buttonCancel;
 @property (weak, nonatomic) IBOutlet UIView *viewTextField;
 
 @end
@@ -26,7 +26,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.txtNickName.delegate = self;
+    self.textfieldNickname.delegate = self;
     
     [self refreshViews];
 }
@@ -38,12 +38,12 @@
     self.viewContents.layer.borderColor     = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
     self.viewTextField.layer.cornerRadius = 3;
     
-    self.btnDone.clipsToBounds        = YES;
-    self.btnDone.layer.cornerRadius   = 3;
-    self.btnCancel.clipsToBounds      = YES;
-    self.btnCancel.layer.cornerRadius = 3;
-    self.btnCancel.layer.borderColor  = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
-    self.btnCancel.layer.borderWidth  = 1;
+    self.buttonDone.clipsToBounds        = YES;
+    self.buttonDone.layer.cornerRadius   = 3;
+    self.buttonCancel.clipsToBounds      = YES;
+    self.buttonCancel.layer.cornerRadius = 3;
+    self.buttonCancel.layer.borderColor  = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
+    self.buttonCancel.layer.borderWidth  = 1;
 }
 
 - (void) closeDialog{
@@ -55,29 +55,32 @@
 }
 
 - (void) setTitle:(NSString*) phoneNumber {
-    self.lblTitle.text = [NSString stringWithFormat:@"Edit worker\n%@", phoneNumber];
+    self.labelTitle.text = [NSString stringWithFormat:@"Edit worker\n%@", phoneNumber];
 }
 
-- (IBAction)onBtnWrapperClick:(id)sender {
+- (IBAction)onButtonWrapperClick:(id)sender {
     [self.view endEditing:YES];
     [self closeDialog];
 }
 
-- (IBAction)onSetMyWorkNickName:(id)sender {
-    
-    NSString *szNickName = [GANGenericFunctionManager refineNSString:self.txtNickName.text];
+- (IBAction)onButtonDoneClick:(id)sender {
+    NSString *szNickName = [GANGenericFunctionManager refineNSString:self.textfieldNickname.text];
     
     [self.view endEditing:YES];
     [self closeDialog];
     
-    if(self.delegate && [self.delegate respondsToSelector:@selector(setOnboardingWorkerNickName:index:)]) {
-        [self.delegate setOnboardingWorkerNickName:szNickName index:self.nIndex];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(onboardingNicknameEditPopupDidUpdateWithNickname:)]) {
+        [self.delegate onboardingNicknameEditPopupDidUpdateWithNickname:szNickName];
     }
 }
 
-- (IBAction)onCancel:(id)sender {
+- (IBAction)onButtonCancelClick:(id)sender {
     [self.view endEditing:YES];
     [self closeDialog];
+
+    if(self.delegate && [self.delegate respondsToSelector:@selector(onboardingNicknameEditPopupDidCancel)]) {
+        [self.delegate onboardingNicknameEditPopupDidCancel];
+    }
 }
 
 #pragma mark - UITextFieldDelegate
