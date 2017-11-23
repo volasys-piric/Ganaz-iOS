@@ -21,4 +21,7 @@
 - (void) setWithDictionary: (NSDictionary *) dict;
 - (NSString *) getDisplayName;
 
+- (BOOL) isMemberWithCrewId: (NSString *) crewId;
+- (BOOL) isNonCrewMember;
+
 @end

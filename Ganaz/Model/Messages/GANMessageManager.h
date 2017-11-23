@@ -43,4 +43,9 @@
                           ToLanguage: (NSString *) toLanguage
                             Callback: (void (^) (int status)) callback;
 
+
+#pragma mark - Utils
+
+- (void) requestGetBeautifiedReceiversAbbrWithReceivers: (NSArray <GANUserRefDataModel *> *) arrayReceivers Callback: (void (^)(NSString *beautifiedName)) callback;
+
 @end

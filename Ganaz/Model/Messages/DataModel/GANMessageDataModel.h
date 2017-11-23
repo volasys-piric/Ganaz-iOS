@@ -51,8 +51,6 @@
 - (GANMessageReceiverDataModel *) getPrimaryReceiver;
 - (GANMessageReceiverDataModel *) getReceiverMyself;
 
-- (void) requestGetBeautifiedReceiversAbbrWithCallback: (void (^)(NSString *beautifiedName)) callback;
-
 // Message with Location
 
 - (BOOL) hasLocationInfo;

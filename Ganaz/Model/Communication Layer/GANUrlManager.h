@@ -53,6 +53,13 @@
 + (NSString *) getEndpointForApplyForJob;
 + (NSString *) getEndpointForSuggestFriendForJob;
 
+#pragma mark - Endpoint for Crews
+
++ (NSString *) getEndpointForGetCrewsList: (NSString *) companyId;
++ (NSString *) getEndpointForAddCrewWithCompanyId: (NSString *) companyId;
++ (NSString *) getEndpointForUpdateCrewWithCompanyId: (NSString *) companyId CrewId: (NSString *) crewId;
++ (NSString *) getEndpointForDeleteCrewWithCompanyId: (NSString *) companyId CrewId: (NSString *) crewId;
+
 #pragma mark - Endpoint for MyWorkers
 
 + (NSString *) getEndpointForGetMyWorkersWithCompanyId: (NSString *) companyId;

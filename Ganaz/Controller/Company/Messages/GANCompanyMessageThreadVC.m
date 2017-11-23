@@ -82,28 +82,18 @@
     if (self.indexThread == -1) {
         // It's new message thread.
         self.modelThread = [[GANMessageThreadDataModel alloc] init];
-        GANUserRefDataModel *user = [self.arrayReceivers firstObject];
-        
-        if (user != nil) {
-            int indexMyWorker = [[GANCompanyManager sharedInstance] getIndexForMyWorkersWithUserId:user.szUserId];
-            if (indexMyWorker != -1) {
-                GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:indexMyWorker];
-                NSString *title = [myWorker getDisplayName];
-                
-                if ([self.arrayReceivers count] > 1) {
-                    title = [NSString stringWithFormat:@"%@, ...+%d", title, (int) [self.arrayReceivers count] - 1];
-                }
-                self.navigationItem.title = title;
-            }
-        }
+        [[GANMessageManager sharedInstance] requestGetBeautifiedReceiversAbbrWithReceivers:self.arrayReceivers Callback:^(NSString *beautifiedName) {
+            self.navigationItem.title = beautifiedName;
+        }];
     }
     else {
         self.arrayReceivers = [[NSMutableArray alloc] init];
         self.modelThread = [[GANMessageManager sharedInstance].arrayThreads objectAtIndex:self.indexThread];
+        GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
         GANMessageDataModel *message = [self.modelThread getLatestMessage];
         if ([message amISender] == YES) {
             [self.arrayReceivers addObjectsFromArray:message.arrayReceivers];
-            [message requestGetBeautifiedReceiversAbbrWithCallback:^(NSString *beautifiedName) {
+            [managerMessage requestGetBeautifiedReceiversAbbrWithReceivers:message.arrayReceivers Callback:^(NSString *beautifiedName) {
                 self.navigationItem.title = beautifiedName;
             }];
         }

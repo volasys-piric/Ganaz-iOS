@@ -110,6 +110,7 @@
         [[GANJobManager sharedInstance] requestMyJobListWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetCompanyUsersWithCallback:nil];
+        [[GANCompanyManager sharedInstance] requestGetCrewsListWithCallback:nil];
         [[GANSurveyManager sharedInstance] requestGetSurveyListWithCallback:nil];
         
         [mixpanel.people set:@{@"user_type": [GANUtils getStringFromUserType:managerUser.modelUser.enumType],
