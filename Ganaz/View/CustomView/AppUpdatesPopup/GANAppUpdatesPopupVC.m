@@ -15,8 +15,9 @@
 
 @property (weak, nonatomic) IBOutlet UIView *viewContents;
 @property (weak, nonatomic) IBOutlet UILabel *lblDescription;
-@property (weak, nonatomic) IBOutlet UIButton *btnUpdate;
-@property (weak, nonatomic) IBOutlet UIButton *btnCancel;
+@property (weak, nonatomic) IBOutlet UIButton *buttonOptionalUpdate;
+@property (weak, nonatomic) IBOutlet UIButton *buttonOptionalCancel;
+@property (weak, nonatomic) IBOutlet UIButton *buttonForceUpdate;
 
 @end
 
@@ -42,25 +43,29 @@
     self.viewContents.layer.borderWidth = 1;
     self.viewContents.layer.borderColor = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
     
-    self.btnUpdate.clipsToBounds = YES;
-    self.btnUpdate.layer.cornerRadius = 3;
+    self.buttonOptionalUpdate.clipsToBounds = YES;
+    self.buttonOptionalUpdate.layer.cornerRadius = 3;
+    self.buttonForceUpdate.clipsToBounds = YES;
+    self.buttonForceUpdate.layer.cornerRadius = 3;
     
-    self.btnCancel.clipsToBounds = YES;
-    self.btnCancel.layer.cornerRadius = 3;
-    self.btnCancel.layer.borderWidth = 1;
-    self.btnCancel.layer.borderColor = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
+    self.buttonOptionalCancel.clipsToBounds = YES;
+    self.buttonOptionalCancel.layer.cornerRadius = 3;
+    self.buttonOptionalCancel.layer.borderWidth = 1;
+    self.buttonOptionalCancel.layer.borderColor = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
 }
 
 - (void) refreshFields{
     GANAppManager *managerApp = [GANAppManager sharedInstance];
     if (managerApp.enumAppUpdateType == GANENUM_APPCONFIG_APPUPDATETYPE_OPTIONAL){
-        [self.btnUpdate setTitle:NSLocalizedString(@"Update", @"") forState:UIControlStateNormal];
-        [self.btnCancel setTitle:NSLocalizedString(@"Later", @"") forState:UIControlStateNormal];
+        self.buttonForceUpdate.hidden = YES;
+        self.buttonOptionalUpdate.hidden = NO;
+        self.buttonOptionalCancel.hidden = NO;
         self.lblDescription.text = NSLocalizedString(@"A new version of Ganaz is available!\r\rPlease press update.", @"");
     }
     else if (managerApp.enumAppUpdateType == GANENUM_APPCONFIG_APPUPDATETYPE_MANDATORY){
-        [self.btnUpdate setTitle:NSLocalizedString(@"Update", @"") forState:UIControlStateNormal];
-        [self.btnCancel setTitle:NSLocalizedString(@"Exit", @"") forState:UIControlStateNormal];
+        self.buttonForceUpdate.hidden = NO;
+        self.buttonOptionalUpdate.hidden = YES;
+        self.buttonOptionalCancel.hidden = YES;
         self.lblDescription.text = NSLocalizedString(@"A new version of Ganaz is available!\rPlease press update to continue using Ganaz", @"");
     }
 }
