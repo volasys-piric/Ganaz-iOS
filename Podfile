@@ -19,6 +19,7 @@ target 'Ganaz' do
   pod 'Fabric'
   pod 'Crashlytics'
   pod 'TTTAttributedLabel'
+  pod 'UITextView+Placeholder', '~> 1.2'
   #pod 'PNChart'
   
 end
