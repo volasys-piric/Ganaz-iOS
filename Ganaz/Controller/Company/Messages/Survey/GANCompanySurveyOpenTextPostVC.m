@@ -76,28 +76,9 @@
 }
 
 - (void) refreshFields{
-    NSString *szReceivers = @"";
-    int count = MIN(3, (int) [self.arrayReceivers count]);
-    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
-    
-    for (int i = 0; i < count; i++) {
-        GANUserRefDataModel *userRef = [self.arrayReceivers objectAtIndex:i];
-        int indexMyWorker = [managerCompany getIndexForMyWorkersWithUserId:userRef.szUserId];
-        if (indexMyWorker == -1) continue;
-        GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:i];
-        if (i == 0){
-            szReceivers = [myWorker getDisplayName];
-        }
-        else {
-            szReceivers = [NSString stringWithFormat:@"%@, %@", szReceivers, [myWorker getDisplayName]];
-        }
-    }
-    
-    if (count < [self.arrayReceivers count]) {
-        szReceivers = [NSString stringWithFormat:@"%@... (+%d)", szReceivers, (int)([self.arrayReceivers count] - count)];
-    }
-    
-    self.labelReceivers.text = szReceivers;
+    [[GANMessageManager sharedInstance] requestGetBeautifiedReceiversAbbrWithReceivers:self.arrayReceivers Callback:^(NSString *beautifiedName) {
+        self.labelReceivers.text = beautifiedName;
+    }];
 }
 
 #pragma mark - Logic
