@@ -51,7 +51,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Pzx-uD-X0O">
-                                <rect key="frame" x="0.0" y="64" width="375" height="513"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="497"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="dataSource" destination="ciB-8v-SrN" id="OzT-Yv-R0y"/>
@@ -59,7 +59,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Del-9T-8eV" userLabel="View - Input Panel">
-                                <rect key="frame" x="0.0" y="577" width="375" height="90"/>
+                                <rect key="frame" x="0.0" y="561" width="375" height="106"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8kQ-cm-dQ4" userLabel="Label - Separator">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
@@ -72,10 +72,10 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FK5-xr-DDS" userLabel="View - Input Wrapper">
-                                        <rect key="frame" x="16" y="10" width="343" height="30"/>
+                                        <rect key="frame" x="16" y="10" width="343" height="46"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rUl-8k-p7O" userLabel="Button - Send">
-                                                <rect key="frame" x="305" y="0.0" width="30" height="30"/>
+                                                <rect key="frame" x="305" y="8" width="30" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="rUl-8k-p7O" secondAttribute="height" multiplier="1:1" id="K3M-qA-Lu0"/>
                                                     <constraint firstAttribute="width" constant="30" id="Ok9-kz-6lC"/>
@@ -85,26 +85,35 @@
                                                     <action selector="onButtonSendClick:" destination="ciB-8v-SrN" eventType="touchUpInside" id="Oqe-sX-Bui"/>
                                                 </connections>
                                             </button>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Type here..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HAd-Oz-vz5" userLabel="Text Field - Input">
-                                                <rect key="frame" x="8" y="0.0" width="294" height="30"/>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="9Hw-QA-PRR" userLabel="Text View - Input">
+                                                <rect key="frame" x="8" y="8" width="294" height="30"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="zx5-9e-8mN"/>
+                                                </constraints>
                                                 <color key="textColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                            </textField>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Type here..."/>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                        <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </textView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="6oq-d7-Mhe"/>
-                                            <constraint firstItem="rUl-8k-p7O" firstAttribute="leading" secondItem="HAd-Oz-vz5" secondAttribute="trailing" constant="3" id="CRu-eh-HFA"/>
-                                            <constraint firstItem="rUl-8k-p7O" firstAttribute="centerY" secondItem="FK5-xr-DDS" secondAttribute="centerY" id="GNp-zO-8Dk"/>
-                                            <constraint firstAttribute="bottom" secondItem="HAd-Oz-vz5" secondAttribute="bottom" id="Nuz-lG-Dsb"/>
-                                            <constraint firstItem="HAd-Oz-vz5" firstAttribute="top" secondItem="FK5-xr-DDS" secondAttribute="top" id="UYQ-dc-gkp"/>
-                                            <constraint firstItem="HAd-Oz-vz5" firstAttribute="leading" secondItem="FK5-xr-DDS" secondAttribute="leading" constant="8" id="dG4-xi-bWZ"/>
+                                            <constraint firstItem="rUl-8k-p7O" firstAttribute="centerY" secondItem="9Hw-QA-PRR" secondAttribute="centerY" id="FCR-4F-Gz7"/>
+                                            <constraint firstAttribute="bottom" secondItem="9Hw-QA-PRR" secondAttribute="bottom" constant="8" id="U2I-fG-48d"/>
+                                            <constraint firstItem="rUl-8k-p7O" firstAttribute="leading" secondItem="9Hw-QA-PRR" secondAttribute="trailing" constant="3" id="bPD-Pu-tZ8"/>
                                             <constraint firstAttribute="trailing" secondItem="rUl-8k-p7O" secondAttribute="trailing" constant="8" id="hdO-Z6-ovH"/>
+                                            <constraint firstItem="9Hw-QA-PRR" firstAttribute="leading" secondItem="FK5-xr-DDS" secondAttribute="leading" constant="8" id="vuM-tf-zk8"/>
+                                            <constraint firstItem="9Hw-QA-PRR" firstAttribute="top" secondItem="FK5-xr-DDS" secondAttribute="top" constant="8" id="wUI-s6-FX5"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zhK-Ak-q0l" userLabel="View - Control Box">
-                                        <rect key="frame" x="15.5" y="46" width="343" height="34"/>
+                                        <rect key="frame" x="15.5" y="62" width="343" height="34"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fDJ-nI-oby" userLabel="View - Map Panel">
                                                 <rect key="frame" x="3" y="1" width="50" height="32"/>
@@ -157,6 +166,7 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstAttribute="height" constant="34" id="0kY-AE-sUY"/>
                                             <constraint firstItem="fDJ-nI-oby" firstAttribute="centerY" secondItem="zhK-Ak-q0l" secondAttribute="centerY" id="T52-No-ymh"/>
                                             <constraint firstItem="fDJ-nI-oby" firstAttribute="leading" secondItem="zhK-Ak-q0l" secondAttribute="leading" constant="3" id="aO9-p1-9q5"/>
                                             <constraint firstItem="ouK-1u-RK3" firstAttribute="leading" secondItem="fDJ-nI-oby" secondAttribute="trailing" constant="20" id="m2n-ZK-EYb"/>
@@ -170,7 +180,6 @@
                                     <constraint firstAttribute="trailing" secondItem="8kQ-cm-dQ4" secondAttribute="trailing" id="7zP-YG-hyF"/>
                                     <constraint firstItem="zhK-Ak-q0l" firstAttribute="centerX" secondItem="FK5-xr-DDS" secondAttribute="centerX" id="F4i-YM-Tie"/>
                                     <constraint firstItem="8kQ-cm-dQ4" firstAttribute="leading" secondItem="Del-9T-8eV" secondAttribute="leading" id="GMx-pr-1wZ"/>
-                                    <constraint firstAttribute="height" constant="90" id="HKY-Ya-IRM"/>
                                     <constraint firstItem="zhK-Ak-q0l" firstAttribute="width" secondItem="FK5-xr-DDS" secondAttribute="width" id="NVJ-Vh-YR0"/>
                                     <constraint firstItem="FK5-xr-DDS" firstAttribute="top" secondItem="Del-9T-8eV" secondAttribute="top" constant="10" id="ZmE-Ow-qft"/>
                                     <constraint firstAttribute="trailing" secondItem="FK5-xr-DDS" secondAttribute="trailing" constant="16" id="i2i-jp-B7P"/>
@@ -203,9 +212,10 @@
                         <outlet property="barButtonCall" destination="GTo-ks-dsb" id="NtR-Rw-jnA"/>
                         <outlet property="buttonAttachMap" destination="qRW-fd-E1p" id="thW-jL-GHV"/>
                         <outlet property="buttonTranslate" destination="ouK-1u-RK3" id="yof-Gu-cRs"/>
+                        <outlet property="constraintTextViewInputHeight" destination="zx5-9e-8mN" id="xak-Bt-idt"/>
                         <outlet property="imageAttachMap" destination="xO7-kt-f23" id="DV3-Vv-FR8"/>
                         <outlet property="tableview" destination="Pzx-uD-X0O" id="T81-uN-XUg"/>
-                        <outlet property="textfieldInput" destination="HAd-Oz-vz5" id="4Tu-Gc-4jL"/>
+                        <outlet property="textviewInput" destination="9Hw-QA-PRR" id="ww4-L3-afw"/>
                         <outlet property="viewInputWrapper" destination="FK5-xr-DDS" id="wMX-sA-Bcw"/>
                     </connections>
                 </viewController>

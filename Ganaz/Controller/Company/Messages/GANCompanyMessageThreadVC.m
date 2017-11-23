@@ -28,7 +28,7 @@
 #import "GANGenericFunctionManager.h"
 #import <IQKeyboardManager.h>
 
-@interface GANCompanyMessageThreadVC () <UITableViewDelegate, UITableViewDataSource, GANCompanyMapPopupVCDelegate, GANMessageWithChargeConfirmationPopupDelegate>
+@interface GANCompanyMessageThreadVC () <UITableViewDelegate, UITableViewDataSource, GANCompanyMapPopupVCDelegate, GANMessageWithChargeConfirmationPopupDelegate, UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewInputWrapper;
 @property (weak, nonatomic) IBOutlet UIImageView *imageAttachMap;
@@ -36,8 +36,11 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonTranslate;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldInput;
+@property (weak, nonatomic) IBOutlet UITextView *textviewInput;
+
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *barButtonCall;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTextViewInputHeight;
 
 @property (strong, nonatomic) GANMessageThreadDataModel *modelThread;
 @property (strong, nonatomic) NSMutableArray <GANMessageDataModel *> *arrayMessages;
@@ -59,7 +62,8 @@
     self.automaticallyAdjustsScrollViewInsets = YES;
     self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.textfieldInput.inputAccessoryView = [[UIView alloc] init];
+    self.textviewInput.inputAccessoryView = [[UIView alloc] init];
+    self.textviewInput.delegate = self;
     
     self.isVCVisible = NO;
     self.isAutoTranslate = YES;
@@ -264,7 +268,7 @@
 }
 
 - (void) sendMessage{
-    if (self.textfieldInput.text.length == 0) {
+    if (self.textviewInput.text.length == 0) {
         [GANGlobalVCManager shakeView:self.viewInputWrapper];
         return;
     }
@@ -293,7 +297,7 @@
 }
 
 - (void) doSendMessage{
-    NSString *szMessage = self.textfieldInput.text;
+    NSString *szMessage = self.textviewInput.text;
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
     NSMutableArray *arrReceivers = [[NSMutableArray alloc] init];
@@ -332,7 +336,8 @@
                 self.modelLocation = nil;
                 [self refreshMapIcon];
                 
-                self.textfieldInput.text = @"";
+                self.textviewInput.text = @"";
+                [self updateTextViewInputHeight];
             }];
         }
         else {
@@ -605,6 +610,32 @@
         ([[notification name] isEqualToString:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATEFAILED])){
         [self buildMessageList];
         [self updateReadStatusIfNeeded];
+    }
+}
+
+#pragma mark - UITextView Delegate
+
+- (void) updateTextViewInputHeight {
+    int minTextViewHeight = 30;
+    int maxTextViewHeight = 120;
+    int height = (int) self.textviewInput.contentSize.height;
+    
+    if (height < minTextViewHeight + 5) { // min cap, + 5 to avoid tiny height difference at min height
+        height = minTextViewHeight;
+    }
+    if (height > maxTextViewHeight) { // max cap
+        height = maxTextViewHeight;
+    }
+    
+    if (height != self.constraintTextViewInputHeight.constant) { // set when height changed
+        self.constraintTextViewInputHeight.constant = height; // change the value of NSLayoutConstraint
+        [self.textviewInput setContentOffset:CGPointZero];
+    }
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+    if (textView == self.textviewInput) {
+        [self updateTextViewInputHeight];
     }
 }
 

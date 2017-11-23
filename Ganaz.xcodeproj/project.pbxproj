@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8304FCB41FC734ED00976516 /* GANUIAutoTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8304FCB31FC734ED00976516 /* GANUIAutoTextView.m */; };
 		83081AEF1E5DAB3D004E8E14 /* GANRecruitVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83081AEE1E5DAB3D004E8E14 /* GANRecruitVC.m */; };
 		83081AF21E5DC58D004E8E14 /* GANCompanyMessagesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83081AF11E5DC58D004E8E14 /* GANCompanyMessagesVC.m */; };
 		83081AFE1E5DCDB0004E8E14 /* GANCompanyMessageChooseWorkersVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 83081AFD1E5DCDB0004E8E14 /* GANCompanyMessageChooseWorkersVC.m */; };
@@ -206,6 +207,8 @@
 /* Begin PBXFileReference section */
 		13F688E72070FAD68CCA0807 /* Pods-Ganaz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ganaz.release.xcconfig"; path = "Pods/Target Support Files/Pods-Ganaz/Pods-Ganaz.release.xcconfig"; sourceTree = "<group>"; };
 		255C193A90A85514BBDBE76A /* Pods-Ganaz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ganaz.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Ganaz/Pods-Ganaz.debug.xcconfig"; sourceTree = "<group>"; };
+		8304FCB21FC734ED00976516 /* GANUIAutoTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GANUIAutoTextView.h; path = Library/GANUIAutoTextView/GANUIAutoTextView.h; sourceTree = "<group>"; };
+		8304FCB31FC734ED00976516 /* GANUIAutoTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GANUIAutoTextView.m; path = Library/GANUIAutoTextView/GANUIAutoTextView.m; sourceTree = "<group>"; };
 		83081AED1E5DAB3D004E8E14 /* GANRecruitVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANRecruitVC.h; path = Controller/Company/Recruit/GANRecruitVC.h; sourceTree = "<group>"; };
 		83081AEE1E5DAB3D004E8E14 /* GANRecruitVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GANRecruitVC.m; path = Controller/Company/Recruit/GANRecruitVC.m; sourceTree = "<group>"; };
 		83081AF01E5DC58D004E8E14 /* GANCompanyMessagesVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANCompanyMessagesVC.h; path = Controller/Company/Messages/GANCompanyMessagesVC.h; sourceTree = "<group>"; };
@@ -556,6 +559,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8304FCB11FC734AD00976516 /* GANUIAutoTextView */ = {
+			isa = PBXGroup;
+			children = (
+				8304FCB21FC734ED00976516 /* GANUIAutoTextView.h */,
+				8304FCB31FC734ED00976516 /* GANUIAutoTextView.m */,
+			);
+			name = GANUIAutoTextView;
+			sourceTree = "<group>";
+		};
 		83081B071E5F107B004E8E14 /* Worker */ = {
 			isa = PBXGroup;
 			children = (
@@ -1284,6 +1296,7 @@
 		83CA21231E587CC100C0D787 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				8304FCB11FC734AD00976516 /* GANUIAutoTextView */,
 				835A22FB1F908DCB00A71753 /* GANPieChart */,
 				839DB5211ED679A800E2652A /* GANFadeTransitionDelegate */,
 				83CA21241E587CCB00C0D787 /* GANUIPhoneTextField */,
@@ -1876,6 +1889,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8304FCB41FC734ED00976516 /* GANUIAutoTextView.m in Sources */,
 				834F01E11E83BECD00D58989 /* GANWorkerUpdateLocaionVC.m in Sources */,
 				836DBC2B1F184E3500CCD6AA /* GANLoginResetPasswordVC.m in Sources */,
 				836DBC3D1F1AD1D900CCD6AA /* GANWorkerJobSuggestFriendVC.m in Sources */,
