@@ -26,10 +26,10 @@
 #import "GANGenericFunctionManager.h"
 
 #import <sys/utsname.h>
-#import <IQKeyboardManager.h>
+#import "IQKeyboardManager.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import "Global.h"
-#import <Mixpanel.h>
+#import "Mixpanel.h"
 
 @implementation GANAppManager
 

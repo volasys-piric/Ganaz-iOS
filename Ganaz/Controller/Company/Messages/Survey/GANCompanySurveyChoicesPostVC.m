@@ -17,7 +17,7 @@
 #import "GANGlobalVCManager.h"
 #import "Global.h"
 #import "GANAppManager.h"
-#import <UITextView+Placeholder.h>
+#import "UITextView+Placeholder.h"
 
 @interface GANCompanySurveyChoicesPostVC () <UITextViewDelegate, GANMessageWithChargeConfirmationPopupDelegate>
 
@@ -179,9 +179,36 @@
     [GANGlobalVCManager showHudProgressWithMessage:@"Loading messages..."];
     [managerMessage requestGetMessageListWithCallback:^(int status) {
         [GANGlobalVCManager hideHudProgressWithCallback:^{
-            [self gotoMessageThreadVC];
+            [self gotoMessageListVC];
         }];
     }];
+}
+
+- (void) gotoMessageListVC {
+    UINavigationController *nav = self.navigationController;
+    NSArray <UIViewController *> *arrayVCs = nav.viewControllers;
+    
+    GANCompanyMessageListVC *vcList = nil;
+    
+    for (int i = 0; i < (int) [arrayVCs count]; i++) {
+        UIViewController *vc = [arrayVCs objectAtIndex:i];
+        if ([vc isKindOfClass:[GANCompanyMessageListVC class]] == YES) {
+            vcList = (GANCompanyMessageListVC *) vc;
+            break;
+        }
+    }
+    
+    if (vcList == nil) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+        vcList = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES_LIST"];
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController setViewControllers:@[vcList] animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    });
+    
+    GANACTIVITY_REPORT(@"Company - Go to MessageList from Survey");
 }
 
 - (void) gotoMessageThreadVC{

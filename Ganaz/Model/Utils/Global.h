@@ -14,7 +14,7 @@
 #warning This should be removed before submission!
 #define GANENVIRONMENT_STAGING
 
-// BASE URL
+// BASE URL                                                                                                                                                                                                                                                   
 
 #define GANURL_GATEWAY                              @"http://34.210.176.28"
 

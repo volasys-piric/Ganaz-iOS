@@ -26,7 +26,8 @@
 #import "UIColor+GANColor.h"
 #import "GANGlobalVCManager.h"
 #import "GANGenericFunctionManager.h"
-#import <IQKeyboardManager.h>
+#import "IQKeyboardManager.h"
+#import <GrowingTextView/GrowingTextView-Swift.h>
 
 @interface GANCompanyMessageThreadVC () <UITableViewDelegate, UITableViewDataSource, GANCompanyMapPopupVCDelegate, GANMessageWithChargeConfirmationPopupDelegate, UITextViewDelegate>
 
@@ -36,7 +37,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonTranslate;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
-@property (weak, nonatomic) IBOutlet UITextView *textviewInput;
+@property (weak, nonatomic) IBOutlet GrowingTextView *textviewInput;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *barButtonCall;
 
@@ -74,6 +75,9 @@
     
     self.transController = [[GANFadeTransitionDelegate alloc] init];
     self.modelLocation = nil;
+    
+    self.textviewInput.minHeight = 30;
+    self.textviewInput.maxHeight = 120;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onLocalNotificationReceived:)
@@ -616,6 +620,7 @@
 #pragma mark - UITextView Delegate
 
 - (void) updateTextViewInputHeight {
+    /*
     int minTextViewHeight = 30;
     int maxTextViewHeight = 120;
     int height = (int) self.textviewInput.contentSize.height;
@@ -630,13 +635,30 @@
     if (height != self.constraintTextViewInputHeight.constant) { // set when height changed
         self.constraintTextViewInputHeight.constant = height; // change the value of NSLayoutConstraint
         [self.textviewInput setContentOffset:CGPointZero];
+    }*/
+    
+    /*
+    float fixedWidth = self.textviewInput.frame.size.width;
+    CGSize newSize = [self.textviewInput sizeThatFits:CGSizeMake(fixedWidth, CGFLOAT_MAX)];
+    
+    NSString *contents = self.textviewInput.text;
+    if ([contents hasSuffix:@"\r"] == YES || [contents hasSuffix:@"\n"] == YES) {
+        contents = [contents substringToIndex:contents.length - 1];
     }
-}
-
-- (void)textViewDidChange:(UITextView *)textView {
-    if (textView == self.textviewInput) {
-        [self updateTextViewInputHeight];
-    }
+    self.textviewInput.text = contents;
+    */
+    
+    /*
+    UIFont *font = [UIFont boldSystemFontOfSize:11.0];
+    CGSize size = [self.textviewInput.text sizeWithFont:font
+                                      constrainedToSize:self.textviewInput.frame.size
+                                          lineBreakMode:UILineBreakModeWordWrap]; // default mode
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.constraintTextViewInputHeight.constant = size.height; // change the value of NSLayoutConstraint
+        [self.textviewInput setContentOffset:CGPointZero];
+    });
+     */
 }
 
 @end

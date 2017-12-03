@@ -13,8 +13,8 @@
 
 #import "GANUserManager.h"
 #import "GANMessageManager.h"
-#import <SVProgressHUD.h>
-#import <UIView+Shake.h>
+#import "SVProgressHUD.h"
+#import "UIView+Shake.h"
 
 #define SVPROGRESSHUD_DISMISSAFTER_DEFAULT                      3
 

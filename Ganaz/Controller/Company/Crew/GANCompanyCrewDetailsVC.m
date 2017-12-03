@@ -12,6 +12,7 @@
 
 #import "GANCompanyManager.h"
 
+#import "GANGlobalVCManager.h"
 #import "UIColor+GANColor.h"
 #import "Global.h"
 
@@ -96,6 +97,30 @@
     });
 }
 
+#pragma mark - Logic
+
+- (void) promptForDeleteGroup {
+    [GANGlobalVCManager promptWithVC:self Title:@"Warning!" Message:@"Are you sure you want to delete this group?" ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
+        [self doDeleteGroup];
+    } CallbackNo:nil];
+}
+
+- (void) doDeleteGroup {
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    
+    [managerCompany requestDeleteCrewWithCrewid:self.modelCrew.szId Callback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR) {
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Group has been deleted successfully." DismissAfter:-1 Callback:^{
+                [self gotoBack];
+            }];
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
+        }
+    }];
+}
+
 #pragma mark - Navigation
 
 - (void) gotoCrewWorkersListVC{
@@ -106,6 +131,12 @@
         
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    });
+}
+
+- (void) gotoBack {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController popViewControllerAnimated:YES];
     });
 }
 
@@ -144,8 +175,11 @@
 }
 
 - (IBAction)onButtonDeleteCrewClick:(id)sender {
+    [self promptForDeleteGroup];
 }
+
 - (IBAction)onButtonSaveClick:(id)sender {
+    [self gotoBack];
 }
 
 @end

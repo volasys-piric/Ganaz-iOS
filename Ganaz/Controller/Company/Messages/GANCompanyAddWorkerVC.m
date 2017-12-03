@@ -17,7 +17,7 @@
 #import "GANGenericFunctionManager.h"
 #import "Global.h"
 #import "GANGlobalVCManager.h"
-#import <UIView+Shake.h>
+#import "UIView+Shake.h"
 #import "GANAppManager.h"
 #import "GANPhonebookContactsManager.h"
 #import "GANMessageManager.h"

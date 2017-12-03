@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <TTTAttributedLabel.h>
+#import "TTTAttributedLabel.h"
 #import "GANUtils.h"
 #import "GANLocationManager.h"
 

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <HCSStarRatingView.h>
+#import "HCSStarRatingView.h"
 
 @class GANWorkerCompanyReviewItemTVC;
 

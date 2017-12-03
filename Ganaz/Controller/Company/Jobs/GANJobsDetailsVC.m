@@ -25,7 +25,7 @@
 #import "GANGlobalVCManager.h"
 #import "GANUtils.h"
 #import "Global.h"
-#import <UIView+Shake/UIView+Shake.h>
+#import "UIView+Shake.h"
 #import "GANAppManager.h"
 
 
