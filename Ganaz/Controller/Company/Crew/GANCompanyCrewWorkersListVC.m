@@ -8,9 +8,11 @@
 
 #import "GANCompanyCrewWorkersListVC.h"
 #import "GANCompanyCrewWorkerItemTVC.h"
+#import "GANCompanyAddWorkerVC.h"
 
 #import "GANCompanyManager.h"
 
+#import "GANAppManager.h"
 #import "UIColor+GANColor.h"
 #import "Global.h"
 #import "GANGlobalVCManager.h"
@@ -19,6 +21,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (weak, nonatomic) IBOutlet UIButton *buttonDone;
+@property (weak, nonatomic) IBOutlet UIButton *buttonAddWorkers;
 
 @property (strong, nonatomic) GANCrewDataModel *modelCrew;
 @property (strong, nonatomic) NSMutableArray <GANMyWorkerDataModel *> *arrayMembers;
@@ -41,6 +44,9 @@
     
     [self refreshViews];
     [self registerTableViewCellFromNib];
+}
+
+- (void) viewWillAppear:(BOOL)animated {
     [self refreshTableview];
 }
 
@@ -66,6 +72,10 @@
 - (void) refreshViews {
     self.buttonDone.layer.cornerRadius = 3;
     self.buttonDone.clipsToBounds = YES;
+    
+    self.buttonAddWorkers.layer.cornerRadius = 3;
+    self.buttonAddWorkers.clipsToBounds = YES;
+    self.buttonAddWorkers.backgroundColor = [UIColor GANThemeGreenColor];
 }
 
 - (void) refreshTableview {
@@ -94,36 +104,38 @@
 - (void) updateMyWorkerAtIndex: (int) index IsMember: (BOOL) isMember {
     GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     GANMyWorkerDataModel *myWorker = [self.arrayMembers objectAtIndex:index];
-    
-    NSString *message = @"";
+
+    NSString *newCrewId = @"";
     if (isMember == YES) {
-        message = [NSString stringWithFormat:@"Will you add %@ as a member of %@?", [myWorker getDisplayName], self.modelCrew.szTitle];
-    }
-    else {
-        message = [NSString stringWithFormat:@"Will you remove %@ from %@?", [myWorker getDisplayName], self.modelCrew.szTitle];
+        newCrewId = self.modelCrew.szId;
     }
     
-    [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:message ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
-        NSString *newCrewId = @"";
-        if (isMember == YES) {
-            newCrewId = self.modelCrew.szId;
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [managerCompany requestUpdateMyWorkerCrewWithMyWorkerId:myWorker.szId CrewId:newCrewId Callback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR) {
+            myWorker.szCrewId = newCrewId;
+            [self.arrayMembersSelected replaceObjectAtIndex:index withObject:@(isMember)];
+            
+            [GANGlobalVCManager hideHudProgressWithCallback:^{
+                [self.tableview reloadData];
+            }];
         }
-        
-        [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-        [managerCompany requestUpdateMyWorkerCrewWithMyWorkerId:myWorker.szId CrewId:self.modelCrew.szId Callback:^(int status) {
-            if (status == SUCCESS_WITH_NO_ERROR) {
-                myWorker.szCrewId = newCrewId;
-                [self.arrayMembersSelected replaceObjectAtIndex:index withObject:@(isMember)];
-                
-                [GANGlobalVCManager hideHudProgressWithCallback:^{
-                    [self.tableview reloadData];
-                }];
-            }
-            else {
-                [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
-            }
-        }];
-    } CallbackNo:nil];
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
+        }
+    }];
+}
+
+- (void) gotoAddWorkersVC{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+    GANCompanyAddWorkerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
+    vc.fromCustomVC = ENUM_COMPANY_ADDWORKERS_FROM_MESSAGE;
+    vc.szDescription = @"Who do you want to message?";
+    vc.szCrewId = self.modelCrew.szId;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    GANACTIVITY_REPORT(@"Company - Go to add-worker from Message");
 }
 
 #pragma mark - UITableView Delegate
@@ -165,6 +177,13 @@
 #pragma mark - UIButton Event Listeners
 
 - (IBAction)onButtonDoneClick:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController popViewControllerAnimated:YES];
+    });
+}
+
+- (IBAction)onButtonAddWorkersClick:(id)sender {
+    [self gotoAddWorkersVC];
 }
 
 @end

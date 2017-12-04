@@ -30,6 +30,7 @@
 @property (assign, atomic) BOOL isSelected;
 @property (weak, nonatomic) id<GANCompanyCrewItemTVCDelegate> delegate;
 
+- (void) setItemGreenDot: (BOOL) greenDot;
 - (void) setItemSelected: (BOOL) selected;
 
 @end

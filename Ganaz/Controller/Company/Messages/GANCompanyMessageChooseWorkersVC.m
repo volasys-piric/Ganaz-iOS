@@ -144,6 +144,7 @@
     GANCompanyAddWorkerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
     vc.fromCustomVC = ENUM_COMPANY_ADDWORKERS_FROM_MESSAGE;
     vc.szDescription = @"Who do you want to message?";
+    vc.szCrewId = @"";
     
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -424,6 +425,22 @@
     cell.delegate = self;
     cell.labelName.text = crew.szTitle;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    NSArray *arrayMembers = [[GANCompanyManager sharedInstance] getMembersListForCrew:crew.szId];
+    BOOL onboardingWorkerFound = NO;
+    for (GANMyWorkerDataModel *myWorker in arrayMembers) {
+        if (myWorker.modelWorker.enumType == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
+            onboardingWorkerFound = YES;
+            break;
+        }
+    }
+    
+    if (onboardingWorkerFound == YES) {
+        [cell setItemGreenDot:NO];
+    }
+    else {
+        [cell setItemGreenDot:YES];
+    }
     
     BOOL isSelected = [[self.arrayCrewsSelected objectAtIndex:index] boolValue];
     [cell setItemSelected:isSelected];

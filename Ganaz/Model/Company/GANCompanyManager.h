@@ -26,6 +26,8 @@
 + (NSString *) generateCompanyCodeFromName: (NSString *) companyName;
 - (void) getBestUserDisplayNameWithUserId: (NSString *) userId Callback: (void (^) (NSString *displayName)) callback;
 - (int) getIndexForMyWorkersWithUserId: (NSString *) userId;
+- (int) getIndexForMyWorkersWithPhoneNumber: (NSString *) phoneNumber;
+
 - (NSArray <GANMyWorkerDataModel *> *) getMembersListForCrew: (NSString *) crewId;
 - (NSArray <GANMyWorkerDataModel *> *) getNonCrewMembersList;
 
@@ -45,7 +47,7 @@
 #pragma mark - My Workers
 
 - (void) requestGetMyWorkersListWithCallback: (void (^) (int status)) callback;
-- (void) requestAddMyWorkerWithUserIds: (NSArray *) arrUserIds Callback: (void (^) (int status)) callback;
+- (void) requestAddMyWorkerWithUserIds: (NSArray *) arrUserIds CrewId: (NSString *) crewId Callback: (void (^) (int status)) callback;
 - (void) requestUpdateMyWorkerNicknameWithMyWorkerId: (NSString *) myWorkerId Nickname: (NSString *) nickname Callback: (void (^) (int status)) callback;
 - (void) requestUpdateMyWorkerCrewWithMyWorkerId: (NSString *) myWorkerId CrewId: (NSString *) crewId Callback: (void (^) (int status)) callback;
 

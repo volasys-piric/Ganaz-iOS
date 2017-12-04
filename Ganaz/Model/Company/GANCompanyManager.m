@@ -69,6 +69,16 @@
     return -1;
 }
 
+- (int) getIndexForMyWorkersWithPhoneNumber: (NSString *) phoneNumber {
+    for (int i = 0; i < (int) [self.arrMyWorkers count]; i++){
+        GANMyWorkerDataModel *myWorker = [self.arrMyWorkers objectAtIndex:i];
+        if ([myWorker.modelWorker.modelPhone isSamePhoneNumber:phoneNumber] == YES) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 - (int) getIndexForCompanyUserWithUserId: (NSString *) userId{
     for (int i = 0; i < (int) [self.arrCompanyUsers count]; i++){
         GANUserCompanyDataModel *user = [self.arrCompanyUsers objectAtIndex:i];
@@ -347,11 +357,11 @@
     }];
 }
 
-- (void) requestAddMyWorkerWithUserIds: (NSArray *) arrUserIds Callback: (void (^) (int status)) callback{
+- (void) requestAddMyWorkerWithUserIds: (NSArray *) arrUserIds CrewId: (NSString *) crewId Callback: (void (^) (int status)) callback{
     NSString *companyId = [GANUserManager getCompanyDataModel].szId;
     NSString *szUrl = [GANUrlManager getEndpointForAddMyWorkersWithCompanyId:companyId];
     NSDictionary *params = @{@"worker_user_ids": arrUserIds,
-                             @"crew_id": @""
+                             @"crew_id": [GANGenericFunctionManager refineNSString:crewId],
                              };
     [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;
@@ -535,7 +545,7 @@
 - (BOOL) checkUserInMyworkerList:(NSString *) szPhoneNumber {
     for (int i = 0; i < self.arrMyWorkers.count; i ++) {
         GANMyWorkerDataModel *worker = [self.arrMyWorkers objectAtIndex:i];
-        if([szPhoneNumber caseInsensitiveCompare:worker.modelWorker.modelPhone.szLocalNumber] == NSOrderedSame) {
+        if([worker.modelWorker.modelPhone isSamePhoneNumber:szPhoneNumber] == YES) {
             return YES;
         }
     }

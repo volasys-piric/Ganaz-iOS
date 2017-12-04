@@ -20,6 +20,7 @@
 
 - (void) setLocalNumber: (NSString *) localNumber;
 - (NSString *) getBeautifiedPhoneNumber;
+- (BOOL) isSamePhoneNumber: (NSString *) phoneNumber;
 
 @end
 

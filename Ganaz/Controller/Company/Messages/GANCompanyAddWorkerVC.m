@@ -273,7 +273,7 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
     }
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [[GANCompanyManager sharedInstance] requestAddMyWorkerWithUserIds:arrUserIds Callback:^(int status) {
+    [[GANCompanyManager sharedInstance] requestAddMyWorkerWithUserIds:arrUserIds CrewId:self.szCrewId Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"Worker has been added successfully" DismissAfter:-3 Callback:^{
                 [self.tableview reloadData];
@@ -286,9 +286,28 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
     GANACTIVITY_REPORT(@"Company - Add worker");
 }
 
+- (void) setCrewId: (GANMyWorkerDataModel *) myWorker{
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    [managerCompany requestUpdateMyWorkerCrewWithMyWorkerId:myWorker.szId CrewId:self.szCrewId Callback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR) {
+            myWorker.szCrewId = self.szCrewId;
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Worker has been added successfully" DismissAfter:-3 Callback:^{
+                [self.tableview reloadData];
+            }];
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error." DismissAfter:-1 Callback:nil];
+        }
+    }];
+
+}
+
 - (void) doInviteWorker:(BOOL) isInviteOnly{
     NSString *szCompanyId = [GANUserManager getCompanyDataModel].szId;
     GANPhoneDataModel *phone = [[GANPhoneDataModel alloc] init];
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    
     if(self.indexSelectedSearchResultItem < 0) {
         phone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:self.txtPhone.text];
     }
@@ -303,21 +322,36 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
         }
     }
     
-    if([[GANCompanyManager sharedInstance] checkUserInMyworkerList:phone.szLocalNumber]) {
-        [GANGlobalVCManager showHudInfoWithMessage:@"User is already added" DismissAfter:-1 Callback:nil];
+    if([managerCompany checkUserInMyworkerList:phone.szLocalNumber]) {
+        int indexMyWorker = [managerCompany getIndexForMyWorkersWithPhoneNumber:phone.szLocalNumber];
+        GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:indexMyWorker];
+        [self setCrewId:myWorker];
         return;
     }
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
-    [[GANCompanyManager sharedInstance] requestSendInvite:phone CompanyId:szCompanyId inviteOnly:isInviteOnly Callback:^(int status) {
+    [managerCompany requestSendInvite:phone CompanyId:szCompanyId inviteOnly:isInviteOnly Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             if(isInviteOnly)
                 [GANGlobalVCManager showHudSuccessWithMessage:@"An invitation will be sent shortly via SMS" DismissAfter:-1 Callback:nil];
             else {
-                [GANGlobalVCManager showHudSuccessWithMessage:@"Worker has been added successfully" DismissAfter:-3 Callback:^{
-                    [self refreshMyWorkerList];
+                // Get the my-worker id of newly added worker
+                [managerCompany requestGetMyWorkersListWithCallback:^(int status) {
+                    if(status == SUCCESS_WITH_NO_ERROR) {
+                        int indexMyWorker = [managerCompany getIndexForMyWorkersWithPhoneNumber:phone.szLocalNumber];
+                        if (indexMyWorker == -1) {
+                            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
+                        }
+                        else {
+                            GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:indexMyWorker];
+                            [self setCrewId:myWorker];
+                        }
+                    } else {
+                        [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
+                    }
                 }];
+                [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
             }
         }
         else {
@@ -325,17 +359,6 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
         }
     }];
     GANACTIVITY_REPORT(@"Company - Send invitation");
-}
-
-- (void) refreshMyWorkerList {
-    [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:^(int status) {
-        if(status == SUCCESS_WITH_NO_ERROR) {
-            [self.tableview reloadData];
-        } else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
-        }
-    }];
-    [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
 }
 
 - (IBAction)onBtnSearchClick:(id)sender {

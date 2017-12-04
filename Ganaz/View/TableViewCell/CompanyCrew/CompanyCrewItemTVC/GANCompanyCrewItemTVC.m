@@ -25,6 +25,15 @@
     // Configure the view for the selected state
 }
 
+- (void) setItemGreenDot: (BOOL) greenDot {
+    if (greenDot == YES) {
+        self.labelDots.textColor = [UIColor GANThemeGreenColor];
+    }
+    else {
+        self.labelDots.textColor = [UIColor grayColor];
+    }
+}
+
 - (void) setItemSelected: (BOOL) selected {
     self.isSelected = selected;
     if (selected == YES) {

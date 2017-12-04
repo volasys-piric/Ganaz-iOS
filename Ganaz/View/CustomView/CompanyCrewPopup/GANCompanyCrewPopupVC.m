@@ -18,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UIView *viewContent;
 @property (weak, nonatomic) IBOutlet UIView *viewName;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldName;
+@property (weak, nonatomic) IBOutlet UIButton *buttonCreate;
+@property (weak, nonatomic) IBOutlet UIButton *buttonCancel;
 
 @end
 
@@ -37,9 +39,20 @@
 
 - (void) refreshViews{
     self.viewContent.clipsToBounds = YES;
-    self.viewContent.layer.cornerRadius = 3;
+    self.viewContent.layer.cornerRadius = 6;
+    self.viewContent.layer.borderWidth = 1;
+    self.viewContent.layer.borderColor = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
+
     self.viewName.clipsToBounds = YES;
     self.viewName.layer.cornerRadius = 3;
+    
+    self.buttonCancel.clipsToBounds = YES;
+    self.buttonCancel.layer.cornerRadius = 3;
+    self.buttonCancel.layer.borderColor  = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
+    self.buttonCancel.layer.borderWidth  = 1;
+
+    self.buttonCreate.clipsToBounds = YES;
+    self.buttonCreate.layer.cornerRadius = 3;
 }
 
 - (void) closeDialog{
@@ -66,7 +79,7 @@
     GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     for (GANCrewDataModel *crew in managerCompany.arrayCrews) {
         if ([crew.szTitle caseInsensitiveCompare:name] == NSOrderedSame) {
-            [GANGlobalVCManager showHudErrorWithMessage:@"You have a crew with same name already." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudErrorWithMessage:@"You have a group with same name already." DismissAfter:-1 Callback:nil];
             [self shakeInvalidFields:self.viewName];
             return NO;
         }
@@ -84,7 +97,7 @@
     
     [managerCompany requestAddCrewWithTitle:name Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR) {
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Crew is created successfully." DismissAfter:-1 Callback:^{
+            [GANGlobalVCManager showHudSuccessWithMessage:@"New group is created successfully." DismissAfter:-1 Callback:^{
                 if (self.delegate && [self.delegate respondsToSelector:@selector(companyCrewPopupDidCrewCreate:)]){
                     [self.delegate companyCrewPopupDidCrewCreate:(int) [managerCompany.arrayCrews count] - 1];
                 }
