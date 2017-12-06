@@ -39,8 +39,8 @@
             },
             "android": {
                 "latest_version": "1.7",
-                "latest_build": "1710",
-                "updated_on": "2017-11-16"
+                "latest_build": "1700",
+                "updated_on": "2017-12-04"
             },
             "web": {
                 "latest_version": "1.7",

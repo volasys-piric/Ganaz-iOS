@@ -2936,7 +2936,7 @@ your job post with?</string>
         <!--Messages-->
         <scene sceneID="d0m-TN-Y7r">
             <objects>
-                <viewController storyboardIdentifier="STORYBOARD_COMPANY_MESSAGE_LIST" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Uvm-eU-BSK" customClass="GANCompanyMessageListVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="STORYBOARD_COMPANY_MESSAGES_LIST" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Uvm-eU-BSK" customClass="GANCompanyMessageListVC" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="R7p-Nd-SCz"/>
                         <viewControllerLayoutGuide type="bottom" id="5uk-bu-DWF"/>

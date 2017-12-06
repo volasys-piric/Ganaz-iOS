@@ -266,10 +266,22 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
 
 - (void) doAddMyWorkers:(NSArray<GANUserWorkerDataModel *> *) arrWorkers {
     NSMutableArray *arrUserIds = [[NSMutableArray alloc] init];
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     
     for (int i = 0; i < (int) [arrWorkers count]; i++) {
         GANUserWorkerDataModel *worker = [arrWorkers objectAtIndex:i];
-        [arrUserIds addObject:worker.szId];
+        int indexMyWorker = [managerCompany getIndexForMyWorkersWithUserId:worker.szId];
+        if (indexMyWorker == -1) {
+            [arrUserIds addObject:worker.szId];
+        }
+        else {
+            GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:indexMyWorker];
+            [self setCrewId:myWorker];
+            return;
+        }
+    }
+    if ([arrUserIds count] == 0) {
+        return;
     }
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
