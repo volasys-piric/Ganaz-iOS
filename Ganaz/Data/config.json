@@ -4,43 +4,43 @@
         "production": {
             "status": "running",
             "base_url": "http://35.160.103.25:8000",
-            "backend_version": "1.7",
-            "backend_build": "1700",
-            "frontend_min_version": "1.7",
-            "frontend_min_build": "1700",
+            "backend_version": "1.8",
+            "backend_build": "1800",
+            "frontend_min_version": "1.8",
+            "frontend_min_build": "1800",
             "onesignal_appid": "160b5387-8178-46e2-b194-ad193dc5efac",
             "mixpanel_project_token": "50fffae37bad52c48cf0e691f36cd1a4"
         },
         "demo": {
             "status": "running",
             "base_url": "http://34.210.63.91:8000",
-            "backend_version": "1.7",
-            "backend_build": "1700",
-            "frontend_min_version": "1.7",
-            "frontend_min_build": "1700",
+            "backend_version": "1.8",
+            "backend_build": "1800",
+            "frontend_min_version": "1.8",
+            "frontend_min_build": "1800",
             "onesignal_appid": "37c1d731-1cbd-40cf-9ba3-3936174602e1",
             "mixpanel_project_token": "3f0f41f4cfc0c55f1762ef08f7692b86"
         },
         "staging": {
             "status": "running",
             "base_url": "http://52.43.23.98:8000",
-            "backend_version": "1.7",
-            "backend_build": "1700",
-            "frontend_min_version": "1.7",
-            "frontend_min_build": "1700",
+            "backend_version": "1.8",
+            "backend_build": "1800",
+            "frontend_min_version": "1.8",
+            "frontend_min_build": "1800",
             "onesignal_appid": "ade7e4b5-b439-4d82-9bb2-c040372c1f14",
             "mixpanel_project_token": "d1bee23a670fbbe63a19373daba332b0"
         },
         "frontend": {
             "ios": {
-                "latest_version": "1.7",
-                "latest_build": "1709",
-                "updated_on": "2017-11-16"
+                "latest_version": "1.8",
+                "latest_build": "1805",
+                "updated_on": "2017-12-07"
             },
             "android": {
-                "latest_version": "1.7",
-                "latest_build": "1700",
-                "updated_on": "2017-12-04"
+                "latest_version": "1.8",
+                "latest_build": "1805",
+                "updated_on": "2017-12-07"
             },
             "web": {
                 "latest_version": "1.7",
