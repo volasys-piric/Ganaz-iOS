@@ -9,6 +9,9 @@
 #import "GANMessageManager.h"
 #import "GANMessageDataModel.h"
 #import "GANUserManager.h"
+#import "GANCacheManager.h"
+#import "GANCompanyManager.h"
+
 #import "GANNetworkRequestManager.h"
 #import "GANUrlManager.h"
 #import "GANGenericFunctionManager.h"
@@ -330,5 +333,100 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_MESSAGE_LIST_UPDATEFAILED object:nil];
     }];
 }
+
+#pragma mark - Utils
+
+- (void) requestGetBeautifiedReceiversAbbrWithReceivers: (NSArray <GANUserRefDataModel *> *) arrayReceivers Callback: (void (^)(NSString *beautifiedName)) callback {
+    // If 1 receiver: {Name / Phone number}
+    // If 2+ receivers: {Primary Receiver Name / Phone number}, ... +1
+    
+    int nReceivers = (int) [arrayReceivers count];
+    if (nReceivers == 0) {
+        if (callback) callback(@"");
+        return;
+    }
+    
+    GANUserRefDataModel *receiverPrimary = [arrayReceivers firstObject];
+    GANCacheManager *managerCache = [GANCacheManager sharedInstance];
+    
+    if ([[GANUserManager sharedInstance] isCompanyUser] == YES) {
+        // Check Crews...
+        GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+        for (GANCrewDataModel *crew in managerCompany.arrayCrews) {
+            NSArray <GANMyWorkerDataModel *> *arrayMembers = [managerCompany getMembersListForCrew:crew.szId];
+            if ([arrayMembers count] == 0) continue;
+            
+            BOOL allMembersFound = YES;
+            for (GANMyWorkerDataModel *member in arrayMembers) {
+                BOOL isMemberFound = NO;
+                for (GANUserRefDataModel *receiver in arrayReceivers) {
+                    if ([member.szWorkerUserId isEqualToString:receiver.szUserId] == YES) {
+                        isMemberFound = YES;
+                        break;
+                    }
+                }
+                
+                if (isMemberFound == NO) {
+                    allMembersFound = NO;
+                    break;
+                }
+            }
+            
+            if (allMembersFound == YES) {
+                NSString *displayName = crew.szTitle;
+                int remainingCount = nReceivers - (int) [arrayMembers count];
+                if (remainingCount > 0) {
+                    displayName = [NSString stringWithFormat:@"%@, ...+%d", displayName, remainingCount];
+                }
+                if (callback) callback(displayName);
+                
+                // Should return here...
+                return;
+            }
+        }
+        
+        // No crew is involved,...
+
+        [managerCache requestGetIndexForUserByUserId:receiverPrimary.szUserId Callback:^(int index) {
+            if (index == -1) {
+                if (callback) callback(@"");
+                return;
+            }
+            
+            GANUserBaseDataModel *user = [managerCache.arrayUsers objectAtIndex:index];
+            [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
+                if (callback) {
+                    if (nReceivers == 1) {
+                        callback(displayName);
+                    }
+                    else {
+                        callback([NSString stringWithFormat:@"%@, ...+%d", displayName, (nReceivers - 1)]);
+                    }
+                }
+            }];
+
+        }];
+    }
+    else {
+        [managerCache requestGetIndexForUserByUserId:receiverPrimary.szUserId Callback:^(int index) {
+            if (index == -1) {
+                if (callback) callback(@"");
+                return;
+            }
+            
+            GANUserBaseDataModel *user = [managerCache.arrayUsers objectAtIndex:index];
+
+            if (callback) {
+                if (nReceivers == 1) {
+                    callback([user getValidUsername]);
+                }
+                else {
+                    callback([NSString stringWithFormat:@"%@, ...+%d", [user getValidUsername], (nReceivers - 1)]);
+                }
+            }
+        }];
+    }
+}
+
 
 @end

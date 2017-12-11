@@ -3,7 +3,7 @@
 
 target 'Ganaz' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  # use_frameworks!
+  use_frameworks!
 
   # Pods for Ganaz
   
@@ -19,6 +19,18 @@ target 'Ganaz' do
   pod 'Fabric'
   pod 'Crashlytics'
   pod 'TTTAttributedLabel'
+  pod 'UITextView+Placeholder', '~> 1.2'
+  pod 'GrowingTextView'
+  # pod 'SlackTextViewController'
+  
   #pod 'PNChart'
+  
+  post_install do |installer|
+      installer.pods_project.targets.each do |target|
+          target.build_configurations.each do |config|
+              config.build_settings['SWIFT_VERSION'] = '4.0'
+          end
+      end
+  end
   
 end

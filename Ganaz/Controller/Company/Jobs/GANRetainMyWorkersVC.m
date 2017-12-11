@@ -60,6 +60,7 @@
         GANCompanyAddWorkerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
         vc.fromCustomVC = ENUM_COMPANY_ADDWORKERS_FROM_RETAINMYWORKERS;
         vc.szDescription = @"Who do you want to message?";
+        vc.szCrewId = @"";
         
         [navVC pushViewController:vc animated:YES];
         

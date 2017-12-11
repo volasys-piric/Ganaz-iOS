@@ -26,9 +26,10 @@
 #import "UIColor+GANColor.h"
 #import "GANGlobalVCManager.h"
 #import "GANGenericFunctionManager.h"
-#import <IQKeyboardManager.h>
+#import "IQKeyboardManager.h"
+#import <GrowingTextView/GrowingTextView-Swift.h>
 
-@interface GANCompanyMessageThreadVC () <UITableViewDelegate, UITableViewDataSource, GANCompanyMapPopupVCDelegate, GANMessageWithChargeConfirmationPopupDelegate>
+@interface GANCompanyMessageThreadVC () <UITableViewDelegate, UITableViewDataSource, GANCompanyMapPopupVCDelegate, GANMessageWithChargeConfirmationPopupDelegate, UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewInputWrapper;
 @property (weak, nonatomic) IBOutlet UIImageView *imageAttachMap;
@@ -36,8 +37,11 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonTranslate;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldInput;
+@property (weak, nonatomic) IBOutlet GrowingTextView *textviewInput;
+
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *barButtonCall;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTextViewInputHeight;
 
 @property (strong, nonatomic) GANMessageThreadDataModel *modelThread;
 @property (strong, nonatomic) NSMutableArray <GANMessageDataModel *> *arrayMessages;
@@ -59,7 +63,8 @@
     self.automaticallyAdjustsScrollViewInsets = YES;
     self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.textfieldInput.inputAccessoryView = [[UIView alloc] init];
+    self.textviewInput.inputAccessoryView = [[UIView alloc] init];
+    self.textviewInput.delegate = self;
     
     self.isVCVisible = NO;
     self.isAutoTranslate = YES;
@@ -70,6 +75,9 @@
     
     self.transController = [[GANFadeTransitionDelegate alloc] init];
     self.modelLocation = nil;
+    
+    self.textviewInput.minHeight = 30;
+    self.textviewInput.maxHeight = 120;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onLocalNotificationReceived:)
@@ -82,28 +90,18 @@
     if (self.indexThread == -1) {
         // It's new message thread.
         self.modelThread = [[GANMessageThreadDataModel alloc] init];
-        GANUserRefDataModel *user = [self.arrayReceivers firstObject];
-        
-        if (user != nil) {
-            int indexMyWorker = [[GANCompanyManager sharedInstance] getIndexForMyWorkersWithUserId:user.szUserId];
-            if (indexMyWorker != -1) {
-                GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:indexMyWorker];
-                NSString *title = [myWorker getDisplayName];
-                
-                if ([self.arrayReceivers count] > 1) {
-                    title = [NSString stringWithFormat:@"%@, ...+%d", title, (int) [self.arrayReceivers count] - 1];
-                }
-                self.navigationItem.title = title;
-            }
-        }
+        [[GANMessageManager sharedInstance] requestGetBeautifiedReceiversAbbrWithReceivers:self.arrayReceivers Callback:^(NSString *beautifiedName) {
+            self.navigationItem.title = beautifiedName;
+        }];
     }
     else {
         self.arrayReceivers = [[NSMutableArray alloc] init];
         self.modelThread = [[GANMessageManager sharedInstance].arrayThreads objectAtIndex:self.indexThread];
+        GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
         GANMessageDataModel *message = [self.modelThread getLatestMessage];
         if ([message amISender] == YES) {
             [self.arrayReceivers addObjectsFromArray:message.arrayReceivers];
-            [message requestGetBeautifiedReceiversAbbrWithCallback:^(NSString *beautifiedName) {
+            [managerMessage requestGetBeautifiedReceiversAbbrWithReceivers:message.arrayReceivers Callback:^(NSString *beautifiedName) {
                 self.navigationItem.title = beautifiedName;
             }];
         }
@@ -274,7 +272,7 @@
 }
 
 - (void) sendMessage{
-    if (self.textfieldInput.text.length == 0) {
+    if (self.textviewInput.text.length == 0) {
         [GANGlobalVCManager shakeView:self.viewInputWrapper];
         return;
     }
@@ -303,7 +301,7 @@
 }
 
 - (void) doSendMessage{
-    NSString *szMessage = self.textfieldInput.text;
+    NSString *szMessage = self.textviewInput.text;
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
     NSMutableArray *arrReceivers = [[NSMutableArray alloc] init];
@@ -342,7 +340,8 @@
                 self.modelLocation = nil;
                 [self refreshMapIcon];
                 
-                self.textfieldInput.text = @"";
+                self.textviewInput.text = @"";
+                [self updateTextViewInputHeight];
             }];
         }
         else {
@@ -616,6 +615,50 @@
         [self buildMessageList];
         [self updateReadStatusIfNeeded];
     }
+}
+
+#pragma mark - UITextView Delegate
+
+- (void) updateTextViewInputHeight {
+    /*
+    int minTextViewHeight = 30;
+    int maxTextViewHeight = 120;
+    int height = (int) self.textviewInput.contentSize.height;
+    
+    if (height < minTextViewHeight + 5) { // min cap, + 5 to avoid tiny height difference at min height
+        height = minTextViewHeight;
+    }
+    if (height > maxTextViewHeight) { // max cap
+        height = maxTextViewHeight;
+    }
+    
+    if (height != self.constraintTextViewInputHeight.constant) { // set when height changed
+        self.constraintTextViewInputHeight.constant = height; // change the value of NSLayoutConstraint
+        [self.textviewInput setContentOffset:CGPointZero];
+    }*/
+    
+    /*
+    float fixedWidth = self.textviewInput.frame.size.width;
+    CGSize newSize = [self.textviewInput sizeThatFits:CGSizeMake(fixedWidth, CGFLOAT_MAX)];
+    
+    NSString *contents = self.textviewInput.text;
+    if ([contents hasSuffix:@"\r"] == YES || [contents hasSuffix:@"\n"] == YES) {
+        contents = [contents substringToIndex:contents.length - 1];
+    }
+    self.textviewInput.text = contents;
+    */
+    
+    /*
+    UIFont *font = [UIFont boldSystemFontOfSize:11.0];
+    CGSize size = [self.textviewInput.text sizeWithFont:font
+                                      constrainedToSize:self.textviewInput.frame.size
+                                          lineBreakMode:UILineBreakModeWordWrap]; // default mode
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.constraintTextViewInputHeight.constant = size.height; // change the value of NSLayoutConstraint
+        [self.textviewInput setContentOffset:CGPointZero];
+    });
+     */
 }
 
 @end

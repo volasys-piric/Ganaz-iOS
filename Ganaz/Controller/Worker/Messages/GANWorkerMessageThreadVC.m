@@ -22,7 +22,7 @@
 #import "UIColor+GANColor.h"
 #import "GANGlobalVCManager.h"
 #import "GANGenericFunctionManager.h"
-#import <IQKeyboardManager.h>
+#import "IQKeyboardManager.h"
 
 @interface GANWorkerMessageThreadVC () <UITableViewDelegate, UITableViewDataSource>
 

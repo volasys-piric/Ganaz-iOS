@@ -11,7 +11,7 @@
 #import "GANJobPostSuccessPopupVC.h"
 #import "GANSharePostingWithContactsVC.h"
 #import "GANJobsWorkingsitesVC.h"
-#import "GANJObsListVC.h"
+#import "GANJobsListVC.h"
 
 #import "GANUserManager.h"
 #import "GANJobManager.h"
@@ -25,7 +25,7 @@
 #import "GANGlobalVCManager.h"
 #import "GANUtils.h"
 #import "Global.h"
-#import <UIView+Shake/UIView+Shake.h>
+#import "UIView+Shake.h"
 #import "GANAppManager.h"
 
 

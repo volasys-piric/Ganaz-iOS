@@ -76,28 +76,9 @@
 }
 
 - (void) refreshFields{
-    NSString *szReceivers = @"";
-    int count = MIN(3, (int) [self.arrayReceivers count]);
-    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
-    
-    for (int i = 0; i < count; i++) {
-        GANUserRefDataModel *userRef = [self.arrayReceivers objectAtIndex:i];
-        int indexMyWorker = [managerCompany getIndexForMyWorkersWithUserId:userRef.szUserId];
-        if (indexMyWorker == -1) continue;
-        GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:i];
-        if (i == 0){
-            szReceivers = [myWorker getDisplayName];
-        }
-        else {
-            szReceivers = [NSString stringWithFormat:@"%@, %@", szReceivers, [myWorker getDisplayName]];
-        }
-    }
-    
-    if (count < [self.arrayReceivers count]) {
-        szReceivers = [NSString stringWithFormat:@"%@... (+%d)", szReceivers, (int)([self.arrayReceivers count] - count)];
-    }
-    
-    self.labelReceivers.text = szReceivers;
+    [[GANMessageManager sharedInstance] requestGetBeautifiedReceiversAbbrWithReceivers:self.arrayReceivers Callback:^(NSString *beautifiedName) {
+        self.labelReceivers.text = beautifiedName;
+    }];
 }
 
 #pragma mark - Logic
@@ -137,9 +118,36 @@
     [GANGlobalVCManager showHudProgressWithMessage:@"Loading messages..."];
     [managerMessage requestGetMessageListWithCallback:^(int status) {
         [GANGlobalVCManager hideHudProgressWithCallback:^{
-            [self gotoMessageThreadVC];
+            [self gotoMessageListVC];
         }];
     }];
+}
+
+- (void) gotoMessageListVC {
+    UINavigationController *nav = self.navigationController;
+    NSArray <UIViewController *> *arrayVCs = nav.viewControllers;
+    
+    GANCompanyMessageListVC *vcList = nil;
+    
+    for (int i = 0; i < (int) [arrayVCs count]; i++) {
+        UIViewController *vc = [arrayVCs objectAtIndex:i];
+        if ([vc isKindOfClass:[GANCompanyMessageListVC class]] == YES) {
+            vcList = (GANCompanyMessageListVC *) vc;
+            break;
+        }
+    }
+    
+    if (vcList == nil) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+        vcList = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES_LIST"];
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController setViewControllers:@[vcList] animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    });
+    
+    GANACTIVITY_REPORT(@"Company - Go to MessageList from Survey");
 }
 
 - (void) gotoMessageThreadVC{

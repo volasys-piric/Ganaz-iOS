@@ -10,7 +10,7 @@
 #import "GANCacheManager.h"
 #import "Global.h"
 #import "GANGlobalVCManager.h"
-#import <UIView+Shake.h>
+#import "UIView+Shake.h"
 
 @interface GANCompanyCodePopupVC () <UITextFieldDelegate>
 

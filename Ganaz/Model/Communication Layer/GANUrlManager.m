@@ -128,6 +128,24 @@
     return [NSString stringWithFormat:@"%@/suggest", [GANUrlManager getBaseUrl]];
 }
 
+#pragma mark - Endpoint for Crews
+
++ (NSString *) getEndpointForGetCrewsList: (NSString *) companyId{
+    return [NSString stringWithFormat:@"%@/company/%@/crews", [GANUrlManager getBaseUrl], companyId];
+}
+
++ (NSString *) getEndpointForAddCrewWithCompanyId: (NSString *) companyId{
+    return [NSString stringWithFormat:@"%@/company/%@/crews", [GANUrlManager getBaseUrl], companyId];
+}
+
++ (NSString *) getEndpointForUpdateCrewWithCompanyId: (NSString *) companyId CrewId: (NSString *) crewId{
+    return [NSString stringWithFormat:@"%@/company/%@/crews/%@", [GANUrlManager getBaseUrl], companyId, crewId];
+}
+
++ (NSString *) getEndpointForDeleteCrewWithCompanyId: (NSString *) companyId CrewId: (NSString *) crewId{
+    return [NSString stringWithFormat:@"%@/company/%@/crews/%@", [GANUrlManager getBaseUrl], companyId, crewId];
+}
+
 #pragma mark - Endpoint for MyWorkers
 
 + (NSString *) getEndpointForGetMyWorkersWithCompanyId: (NSString *) companyId{

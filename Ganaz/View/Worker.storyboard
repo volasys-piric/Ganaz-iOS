@@ -835,9 +835,9 @@
                                                             <constraint firstAttribute="height" constant="50" id="izw-oX-3Ph"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
-                                                        <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <state key="normal" title="  Compartir" image="icon-share">
-                                                            <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <state key="normal" title="  Compartir" image="icon-share-white" backgroundImage="button-background">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <connections>
                                                             <action selector="onBtnShareClick:" destination="381-XK-Vsa" eventType="touchUpInside" id="olq-dN-XhJ"/>
@@ -1234,8 +1234,8 @@
                                             <constraint firstAttribute="height" constant="60" id="7LF-YO-KQ0"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
-                                        <state key="normal" title="Compartir">
-                                            <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal" title="Compartir" backgroundImage="button-background">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
                                             <action selector="onButtonShareClick:" destination="Ob8-JB-GgC" eventType="touchUpInside" id="sEJ-Ck-b3G"/>
@@ -1835,7 +1835,7 @@
         <image name="icon-calendar" width="24" height="27"/>
         <image name="icon-medal" width="16" height="22"/>
         <image name="icon-search" width="24" height="24"/>
-        <image name="icon-share" width="13" height="16"/>
+        <image name="icon-share-white" width="13" height="16"/>
         <image name="icon-thumbup-white" width="15" height="14"/>
         <image name="icon-unchecked" width="20" height="20"/>
         <image name="map-pin-center" width="20" height="40"/>

@@ -270,6 +270,7 @@
 
 - (void) configureCell: (GANMessageListItemTVC *) cell AtIndex: (int) index{
     GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     GANCacheManager *managerCache = [GANCacheManager sharedInstance];
     GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
     GANJobManager *managerJob = [GANJobManager sharedInstance];
@@ -292,7 +293,7 @@
                 cell.labelTitle.text = @"Group message sent";
             }
             
-            [message requestGetBeautifiedReceiversAbbrWithCallback:^(NSString *beautifiedName) {
+            [managerMessage requestGetBeautifiedReceiversAbbrWithReceivers:message.arrayReceivers Callback:^(NSString *beautifiedName) {
                 cell.labelTitle.text = beautifiedName;
             }];
         }
@@ -306,7 +307,7 @@
             }
 
             cell.labelMessage.text = [NSString stringWithFormat:@"Sent to %d worker(s)", nReceivers];            
-            [message requestGetBeautifiedReceiversAbbrWithCallback:^(NSString *beautifiedName) {
+            [managerMessage requestGetBeautifiedReceiversAbbrWithReceivers:message.arrayReceivers Callback:^(NSString *beautifiedName) {
                 cell.labelMessage.text = [NSString stringWithFormat:@"Sent to %@", beautifiedName];
             }];
         }
@@ -316,7 +317,7 @@
             cell.labelTitle.text = @"Survey";
             cell.labelMessage.text = [message getContentsEN];
             
-            [message requestGetBeautifiedReceiversAbbrWithCallback:^(NSString *beautifiedName) {
+            [managerMessage requestGetBeautifiedReceiversAbbrWithReceivers:message.arrayReceivers Callback:^(NSString *beautifiedName) {
                 cell.labelTitle.text = beautifiedName;
             }];
         }

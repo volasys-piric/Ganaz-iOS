@@ -202,52 +202,6 @@
     return nil;
 }
 
-- (void) requestGetBeautifiedReceiversAbbrWithCallback: (void (^)(NSString *beautifiedName)) callback {
-    // If 1 receiver: {Name / Phone number}
-    // If 2+ receivers: {Primary Receiver Name / Phone number}, ... +1
-    
-    int nReceivers = [self getReceiversCount];
-    if (nReceivers == 0) {
-        if (callback) callback(@"");
-        return;
-    }
-    
-    GANMessageReceiverDataModel *receiverPrimary = [self getPrimaryReceiver];
-    GANCacheManager *managerCache = [GANCacheManager sharedInstance];
-    
-    [managerCache requestGetIndexForUserByUserId:receiverPrimary.szUserId Callback:^(int index) {
-        if (index == -1) {
-            if (callback) callback(@"");
-        }
-        
-        GANUserBaseDataModel *user = [managerCache.arrayUsers objectAtIndex:index];
-        
-        if ([[GANUserManager sharedInstance] isCompanyUser] == YES) {
-            GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
-            [managerCompany getBestUserDisplayNameWithUserId:user.szId Callback:^(NSString *displayName) {
-                if (callback) {
-                    if (nReceivers == 1) {
-                        callback(displayName);
-                    }
-                    else {
-                        callback([NSString stringWithFormat:@"%@, ...+%d", displayName, (nReceivers - 1)]);
-                    }
-                }
-            }];
-        }
-        else {
-            if (callback) {
-                if (nReceivers == 1) {
-                    callback([user getValidUsername]);
-                }
-                else {
-                    callback([NSString stringWithFormat:@"%@, ...+%d", [user getValidUsername], (nReceivers - 1)]);
-                }
-            }
-        }
-    }];
-}
-
 // Message with Location
 
 - (BOOL) hasLocationInfo{

@@ -33,6 +33,7 @@
 }
 
 - (void) initializeManager{
+    self.arrayCrews = [[NSMutableArray alloc] init];
     self.arrMyWorkers = [[NSMutableArray alloc] init];
     self.arrCompanyUsers = [[NSMutableArray alloc] init];
     self.isMyWorkersLoading = NO;
@@ -48,10 +49,30 @@
     return sz;
 }
 
+- (int) getIndexForCrewWithCrewId: (NSString *) crewId {
+    for (int i = 0; i < (int) [self.arrayCrews count]; i++) {
+        GANCrewDataModel *crew = [self.arrayCrews objectAtIndex:i];
+        if ([crew.szId isEqualToString:crewId] == YES) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 - (int) getIndexForMyWorkersWithUserId: (NSString *) userId{
     for (int i = 0; i < (int) [self.arrMyWorkers count]; i++){
         GANMyWorkerDataModel *myWorker = [self.arrMyWorkers objectAtIndex:i];
         if ([myWorker.szWorkerUserId isEqualToString:userId]){
+            return i;
+        }
+    }
+    return -1;
+}
+
+- (int) getIndexForMyWorkersWithPhoneNumber: (NSString *) phoneNumber {
+    for (int i = 0; i < (int) [self.arrMyWorkers count]; i++){
+        GANMyWorkerDataModel *myWorker = [self.arrMyWorkers objectAtIndex:i];
+        if ([myWorker.modelWorker.modelPhone isSamePhoneNumber:phoneNumber] == YES) {
             return i;
         }
     }
@@ -66,6 +87,17 @@
         }
     }
     return -1;
+}
+
+- (int) addCrewIfNeeded: (GANCrewDataModel *) crewNew {
+    for (int i = 0; i < (int) [self.arrayCrews count]; i++) {
+        GANCrewDataModel *crew = [self.arrayCrews objectAtIndex:i];
+        if ([crew.szId isEqualToString:crewNew.szId] == YES) {
+            return i;
+        }
+    }
+    [self.arrayCrews addObject:crewNew];
+    return (int) [self.arrayCrews count] - 1;
 }
 
 - (int) addMyWorkerIfNeeded: (GANMyWorkerDataModel *) myWorkerNew{
@@ -86,6 +118,26 @@
     }
     [self.arrCompanyUsers addObject:userNew];
     return (int) [self.arrCompanyUsers count] - 1;
+}
+
+- (NSArray <GANMyWorkerDataModel *> *) getMembersListForCrew: (NSString *) crewId {
+    NSMutableArray <GANMyWorkerDataModel *> *arrayMembers = [[NSMutableArray alloc] init];
+    for (GANMyWorkerDataModel *myWorker in self.arrMyWorkers) {
+        if ([myWorker isMemberWithCrewId:crewId] == YES) {
+            [arrayMembers addObject:myWorker];
+        }
+    }
+    return arrayMembers;
+}
+
+- (NSArray <GANMyWorkerDataModel *> *) getNonCrewMembersList {
+    NSMutableArray <GANMyWorkerDataModel *> *arrayMembers = [[NSMutableArray alloc] init];
+    for (GANMyWorkerDataModel *myWorker in self.arrMyWorkers) {
+        if ([myWorker isNonCrewMember] == YES) {
+            [arrayMembers addObject:myWorker];
+        }
+    }
+    return arrayMembers;
 }
 
 - (void) getBestUserDisplayNameWithUserId: (NSString *) userId Callback: (void (^) (NSString *displayName)) callback{
@@ -134,6 +186,138 @@
     }];
 }
 
+#pragma mark - Crews
+
+- (void) requestGetCrewsListWithCallback: (void (^) (int status)) callback{
+    NSString *companyId = [GANUserManager getCompanyDataModel].szId;
+    NSString *szUrl = [GANUrlManager getEndpointForGetCrewsList:companyId];
+    
+    [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:YES parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        GANLOG(@"Crews List ===> %@", responseObject);
+        
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            NSArray *arrayCrews = [dict objectForKey:@"crews"];
+            [self.arrayCrews removeAllObjects];
+            
+            for (int i = 0; i < (int) [arrayCrews count]; i++){
+                NSDictionary *dictCrew = [arrayCrews objectAtIndex:i];
+                
+                GANCrewDataModel *crewNew = [[GANCrewDataModel alloc] init];
+                [crewNew setWithDictionary:dictCrew];
+                [self addCrewIfNeeded:crewNew];
+            }
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_CREWSLIST_UPDATED object:nil];
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_CREWSLIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_CREWSLIST_UPDATEFAILED object:nil];
+    }];
+}
+
+- (void) requestAddCrewWithTitle: (NSString *) title Callback: (void (^) (int status)) callback{
+    NSString *companyId = [GANUserManager getCompanyDataModel].szId;
+    NSString *szUrl = [GANUrlManager getEndpointForAddCrewWithCompanyId:companyId];
+    NSDictionary *params = @{@"title": title,
+                             };
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            NSDictionary *dictCrew = [dict objectForKey:@"crew"];
+            GANCrewDataModel *crewNew = [[GANCrewDataModel alloc] init];
+            [crewNew setWithDictionary:dictCrew];
+            [self addCrewIfNeeded:crewNew];
+            
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_CREWSLIST_UPDATED object:nil];
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_CREWSLIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_CREWSLIST_UPDATEFAILED object:nil];
+    }];
+}
+
+- (void) requestUpdateCrewWithCrewId: (NSString *) crewId Title: (NSString *) title Callback: (void (^) (int status)) callback{
+    NSString *companyId = [GANUserManager getCompanyDataModel].szId;
+    int indexCrew = [self getIndexForCrewWithCrewId:crewId];
+    if (indexCrew == -1) {
+        if (callback) callback(ERROR_NOT_FOUND);
+        return;
+    }
+    
+    GANCrewDataModel *crew = [self.arrayCrews objectAtIndex:indexCrew];
+    crew.szTitle = title;
+    
+    NSString *szUrl = [GANUrlManager getEndpointForUpdateCrewWithCompanyId:companyId CrewId:crewId];
+    
+    NSDictionary *params = @{@"title": title,
+                             };
+    [[GANNetworkRequestManager sharedInstance] PATCH:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_CREWSLIST_UPDATED object:nil];
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_CREWSLIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_CREWSLIST_UPDATEFAILED object:nil];
+    }];
+}
+
+- (void) requestDeleteCrewWithCrewid: (NSString *) crewId Callback: (void (^) (int status)) callback {
+    NSString *companyId = [GANUserManager getCompanyDataModel].szId;
+    int indexCrew = [self getIndexForCrewWithCrewId:crewId];
+    if (indexCrew == -1) {
+        if (callback) callback(ERROR_NOT_FOUND);
+        return;
+    }
+    
+    NSString *szUrl = [GANUrlManager getEndpointForDeleteCrewWithCompanyId:companyId CrewId:crewId];
+    [[GANNetworkRequestManager sharedInstance] DELETE:szUrl requireAuth:YES parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            // Reset my-worker's crew id
+            for (GANMyWorkerDataModel *myWorker in self.arrMyWorkers) {
+                if ([myWorker.szCrewId isEqualToString:crewId] == YES) {
+                    myWorker.szCrewId = @"";
+                }
+            }
+            
+            [self.arrayCrews removeObjectAtIndex:indexCrew];
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_CREWSLIST_UPDATED object:nil];
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_CREWSLIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_CREWSLIST_UPDATEFAILED object:nil];
+    }];
+}
+
 #pragma mark - My Workers
 
 - (void) requestGetMyWorkersListWithCallback: (void (^) (int status)) callback{
@@ -173,11 +357,11 @@
     }];
 }
 
-- (void) requestAddMyWorkerWithUserIds: (NSArray *) arrUserIds Callback: (void (^) (int status)) callback{
+- (void) requestAddMyWorkerWithUserIds: (NSArray *) arrUserIds CrewId: (NSString *) crewId Callback: (void (^) (int status)) callback{
     NSString *companyId = [GANUserManager getCompanyDataModel].szId;
     NSString *szUrl = [GANUrlManager getEndpointForAddMyWorkersWithCompanyId:companyId];
     NSDictionary *params = @{@"worker_user_ids": arrUserIds,
-                             @"crew_id": @""
+                             @"crew_id": [GANGenericFunctionManager refineNSString:crewId],
                              };
     [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;
@@ -210,6 +394,30 @@
     NSString *szUrl = [GANUrlManager getEndpointForUpdateMyWorkersNicknameWithCompanyId:companyId MyWorkerId:myWorkerId];
     
     NSDictionary *params = @{@"nickname": nickname,
+                             };
+    [[GANNetworkRequestManager sharedInstance] PATCH:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATED object:nil];
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATEFAILED object:nil];
+    }];
+}
+
+- (void) requestUpdateMyWorkerCrewWithMyWorkerId: (NSString *) myWorkerId CrewId: (NSString *) crewId Callback: (void (^) (int status)) callback{
+    NSString *companyId = [GANUserManager getCompanyDataModel].szId;
+    NSString *szUrl = [GANUrlManager getEndpointForUpdateMyWorkersNicknameWithCompanyId:companyId MyWorkerId:myWorkerId];
+    
+    NSDictionary *params = @{@"crew_id": crewId,
                              };
     [[GANNetworkRequestManager sharedInstance] PATCH:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;
@@ -337,7 +545,7 @@
 - (BOOL) checkUserInMyworkerList:(NSString *) szPhoneNumber {
     for (int i = 0; i < self.arrMyWorkers.count; i ++) {
         GANMyWorkerDataModel *worker = [self.arrMyWorkers objectAtIndex:i];
-        if([szPhoneNumber caseInsensitiveCompare:worker.modelWorker.modelPhone.szLocalNumber] == NSOrderedSame) {
+        if([worker.modelWorker.modelPhone isSamePhoneNumber:szPhoneNumber] == YES) {
             return YES;
         }
     }

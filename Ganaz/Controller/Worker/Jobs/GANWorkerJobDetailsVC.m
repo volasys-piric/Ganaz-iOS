@@ -211,8 +211,8 @@
     self.btnCompanyDetails.layer.borderWidth = 1;
     self.btnCompanyDetails.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
     
-    self.btnShare.layer.borderWidth = 1;
-    self.btnShare.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
+//    self.btnShare.layer.borderWidth = 1;
+//    self.btnShare.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
     
     if ([[GANUserManager sharedInstance] isUserLoggedIn] == YES){
         self.navigationItem.rightBarButtonItem = nil;

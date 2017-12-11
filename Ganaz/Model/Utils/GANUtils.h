@@ -15,7 +15,7 @@
 #import "GANBenefitDataModel.h"
 #import "GANUserRefDataModel.h"
 
-#import <UIImageView+AFNetworking.h>
+#import "UIImageView+AFNetworking.h"
 
 typedef enum _ENUM_USER_TYPE{
     GANENUM_USER_TYPE_ANY = -1,

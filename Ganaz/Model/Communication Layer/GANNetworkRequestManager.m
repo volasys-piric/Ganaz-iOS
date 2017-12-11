@@ -12,7 +12,7 @@
 #import "GANGenericFunctionManager.h"
 #import "Global.h"
 #import "GANAppManager.h"
-#import <AFNetworking.h>
+#import "AFNetworking.h"
 
 @implementation GANNetworkRequestManager
 

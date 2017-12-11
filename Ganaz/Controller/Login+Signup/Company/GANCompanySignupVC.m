@@ -20,7 +20,7 @@
 #import "GANPushNotificationManager.h"
 #import "GANFadeTransitionDelegate.h"
 
-#import <UIView+Shake/UIView+Shake.h>
+#import "UIView+Shake.h"
 
 #import "GANJobsDetailsVC.h"
 #import "GANComposeMessageOnboardingVC.h"

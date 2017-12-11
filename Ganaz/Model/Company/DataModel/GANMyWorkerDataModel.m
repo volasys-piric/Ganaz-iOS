@@ -54,4 +54,18 @@
     return [self.modelWorker getValidUsername];
 }
 
+- (BOOL) isMemberWithCrewId: (NSString *) crewId{
+    if (self.szCrewId != nil && [self.szCrewId isEqualToString:crewId] == YES) {
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL) isNonCrewMember{
+    if (self.szCrewId == nil || self.szCrewId.length == 0) {
+        return YES;
+    }
+    return NO;
+}
+
 @end

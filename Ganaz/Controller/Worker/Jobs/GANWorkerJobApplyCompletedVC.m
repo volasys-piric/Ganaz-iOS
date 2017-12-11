@@ -45,8 +45,8 @@
     self.buttonSearchJobs.layer.cornerRadius = 3;
     self.buttonShare.clipsToBounds = YES;
     self.buttonShare.layer.cornerRadius = 3;
-    self.buttonShare.layer.borderWidth = 1;
-    self.buttonShare.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
+//    self.buttonShare.layer.borderWidth = 1;
+//    self.buttonShare.layer.borderColor = GANUICOLOR_UIBUTTON_DELETE_BORDERCOLOR.CGColor;
     
     if (self.isSuggestFriend == YES){
         self.labelMessage.text = @"Bien hecho! Hemos avisado la empresa del interés de su amigo.";

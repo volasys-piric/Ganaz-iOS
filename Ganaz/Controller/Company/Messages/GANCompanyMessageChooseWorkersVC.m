@@ -8,6 +8,7 @@
 
 #import "GANCompanyMessageChooseWorkersVC.h"
 #import "GANWorkerItemTVC.h"
+#import "GANCompanyCrewItemTVC.h"
 #import "GANCompanyAddWorkerVC.h"
 #import "GANMyWorkerNickNameEditPopupVC.h"
 #import "GANOnboardingWorkerNickNamePopupVC.h"
@@ -15,6 +16,8 @@
 #import "GANSurveyTypeChoosePopupVC.h"
 #import "GANCompanySurveyChoicesPostVC.h"
 #import "GANCompanySurveyOpenTextPostVC.h"
+#import "GANCompanyCrewDetailsVC.h"
+#import "GANCompanyCrewPopupVC.h"
 
 #import "GANCompanyManager.h"
 #import "GANCacheManager.h"
@@ -27,19 +30,27 @@
 #import "UIColor+GANColor.h"
 
 #define NON_SELECTED -1
+#define CONSTANT_TABLEVIEWCELLHEIGHT                63
 
-@interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANOnboardingWorkerNickNamePopupVCDelegate, GANWorkerItemTVCDelegate, GANSurveyTypeChoosePopupDelegate>
+@interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANOnboardingWorkerNickNamePopupVCDelegate, GANWorkerItemTVCDelegate, GANSurveyTypeChoosePopupDelegate, GANCompanyCrewPopupDelegate, GANCompanyCrewItemTVCDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewSearch;
-@property (weak, nonatomic) IBOutlet UITableView *tableview;
+@property (weak, nonatomic) IBOutlet UITableView *tableviewWorker;
+@property (weak, nonatomic) IBOutlet UITableView *tableviewCrew;
+
 @property (weak, nonatomic) IBOutlet UITextField *textfieldSearch;
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonSendMessage;
 @property (weak, nonatomic) IBOutlet UIButton *buttonSendSurvey;
 
+@property (weak, nonatomic) IBOutlet UIButton *buttonAddCrew;
 @property (weak, nonatomic) IBOutlet UIButton *buttonAddWorker;
 @property (weak, nonatomic) IBOutlet UIButton *buttonSelectAll;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTableviewCrewHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTableviewWorkerHeight;
+
+@property (strong, nonatomic) NSMutableArray *arrayCrewsSelected;
 @property (strong, nonatomic) NSMutableArray *arrayWorkersSelected;
 @property (strong, nonatomic) NSMutableArray *arrayMyWorkers;
 
@@ -59,8 +70,10 @@
     // Do any additional setup after loading the view.
     
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableviewWorker.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableviewWorker.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableviewCrew.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableviewCrew.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.isPopupShowing = NO;
     self.isAutoTranslate = NO;
     self.transController = [[GANFadeTransitionDelegate alloc] init];
@@ -80,6 +93,7 @@
     [super viewWillAppear:animated];
     
     [self buildFilteredArray];
+    [self refreshCrewList];
 }
 
 - (void) dealloc{
@@ -96,7 +110,8 @@
 }
 
 - (void) registerTableViewCellFromNib{
-    [self.tableview registerNib:[UINib nibWithNibName:@"WorkerItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_WORKERITEM"];
+    [self.tableviewWorker registerNib:[UINib nibWithNibName:@"WorkerItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_WORKERITEM"];
+    [self.tableviewCrew registerNib:[UINib nibWithNibName:@"CompanyCrewItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_COMPANYCREWITEM"];
 }
 
 - (void) refreshViews{
@@ -104,11 +119,13 @@
     self.buttonSendSurvey.layer.cornerRadius = 3;
     self.buttonAddWorker.layer.cornerRadius = 3;
     self.buttonSelectAll.layer.cornerRadius = 3;
+    self.buttonAddCrew.layer.cornerRadius = 3;
     
     self.buttonSendMessage.clipsToBounds = YES;
     self.buttonSendSurvey.clipsToBounds = YES;
     self.buttonAddWorker.clipsToBounds = YES;
     self.buttonSelectAll.clipsToBounds = YES;
+    self.buttonAddCrew.clipsToBounds = YES;
     
     self.buttonSendSurvey.layer.borderColor = [UIColor GANThemeMainColor].CGColor;
     self.buttonSendSurvey.layer.borderWidth = 1;
@@ -127,6 +144,7 @@
     GANCompanyAddWorkerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
     vc.fromCustomVC = ENUM_COMPANY_ADDWORKERS_FROM_MESSAGE;
     vc.szDescription = @"Who do you want to message?";
+    vc.szCrewId = @"";
     
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -164,19 +182,34 @@
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableview reloadData];
-        [self refreshSelectAllButton];
+        [self.tableviewWorker reloadData];
+        [self refreshWorkersSelectAllButton];
+        
+        self.constraintTableviewWorkerHeight.constant = CONSTANT_TABLEVIEWCELLHEIGHT * [self.arrayMyWorkers count];
     });
 }
 
-- (void) refreshSelectAllButton{
+- (void) refreshCrewList{
+    int count = (int) [[GANCompanyManager sharedInstance].arrayCrews count];
+    self.arrayCrewsSelected = [[NSMutableArray alloc] init];
+    for (int i = 0; i < count; i++) {
+        [self.arrayCrewsSelected addObject:@(NO)];
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableviewCrew reloadData];
+        self.constraintTableviewCrewHeight.constant = CONSTANT_TABLEVIEWCELLHEIGHT * [[GANCompanyManager sharedInstance].arrayCrews count];
+    });
+}
+
+- (void) refreshWorkersSelectAllButton{
     if ([self.arrayWorkersSelected count] == 0) {
         self.buttonSelectAll.hidden = YES;
         return;
     }
     
     self.buttonSelectAll.hidden = NO;
-    int count = [self getSelectedCount];
+    int count = [self getWorkersSelectedCount];
     if (count == (int) [self.arrayWorkersSelected count]) {
         // All selected
         [self.buttonSelectAll setTitle:@"Deselect\rworkers" forState:UIControlStateNormal];
@@ -188,7 +221,7 @@
     }
 }
 
-- (int) getSelectedCount{
+- (int) getWorkersSelectedCount{
     int count = 0;
     for (int i = 0; i < (int) [self.arrayWorkersSelected count]; i++) {
         if ([[self.arrayWorkersSelected objectAtIndex:i] boolValue] == YES) count++;
@@ -196,8 +229,8 @@
     return count;
 }
 
-- (void) doSelectAll{
-    int count = [self getSelectedCount];
+- (void) doWorkersSelectAll{
+    int count = [self getWorkersSelectedCount];
     if (count == (int) [self.arrayWorkersSelected count]) {
         // Deselect
         for (int i = 0; i < (int) [self.arrayWorkersSelected count]; i++){
@@ -212,8 +245,8 @@
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableview reloadData];
-        [self refreshSelectAllButton];
+        [self.tableviewWorker reloadData];
+        [self refreshWorkersSelectAllButton];
     });
 }
 
@@ -222,8 +255,9 @@
 - (NSMutableArray <GANUserRefDataModel *> *) buildMutableReceiversArrayForSelectedWorkers {
     NSMutableArray <GANUserRefDataModel *> *arrayReceivers = [[NSMutableArray alloc] init];
     
-    for (int i = 0; i < (int) [self.arrayWorkersSelected count]; i++){
-        if ([[self.arrayWorkersSelected objectAtIndex:i] boolValue] == YES){
+    // Add selected workers...
+    for (int i = 0; i < (int) [self.arrayWorkersSelected count]; i++) {
+        if ([[self.arrayWorkersSelected objectAtIndex:i] boolValue] == YES) {
             GANMyWorkerDataModel *myWorker = [self.arrayMyWorkers objectAtIndex:i];
             GANUserRefDataModel *userRef = [[GANUserRefDataModel alloc] init];
             userRef.szCompanyId = @"";
@@ -232,7 +266,42 @@
         }
     }
     
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    
+    // Add selected groups...
+    for (int i = 0; i < (int) [self.arrayCrewsSelected count]; i++) {
+        if ([[self.arrayCrewsSelected objectAtIndex:i] boolValue] == YES) {
+            GANCrewDataModel *crew = [managerCompany.arrayCrews objectAtIndex:i];
+            NSArray <GANMyWorkerDataModel *> *arrayMembers = [managerCompany getMembersListForCrew:crew.szId];
+            for (GANMyWorkerDataModel *member in arrayMembers) {
+                BOOL isAlreadyAdded = NO;
+                for (GANUserRefDataModel *receiver in arrayReceivers) {
+                    if ([member.szWorkerUserId isEqualToString:receiver.szUserId] == YES) {
+                        isAlreadyAdded = YES;
+                        break;
+                    }
+                }
+                if (isAlreadyAdded == NO) {
+                    GANUserRefDataModel *userRef = [[GANUserRefDataModel alloc] init];
+                    userRef.szCompanyId = @"";
+                    userRef.szUserId = member.szWorkerUserId;
+                    [arrayReceivers addObject:userRef];
+                }
+            }
+        }
+    }
+    
     return arrayReceivers;
+}
+
+- (void) gotoCrewDetailsVCAtIndex: (int) index{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyCrew" bundle:nil];
+        GANCompanyCrewDetailsVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_CREW_DETAILS"];
+        vc.indexCrew = index;
+        [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    });
 }
 
 - (void) gotoMessageThreadVC{
@@ -265,6 +334,17 @@
     });
     
     GANACTIVITY_REPORT(@"Company - Go to MessageComposer from Messages");
+}
+
+- (void) showCreateCrewDlg {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        GANCompanyCrewPopupVC *vc = [[GANCompanyCrewPopupVC alloc] initWithNibName:@"CompanyCrewPopupVC" bundle:nil];
+        vc.delegate = self;
+        [vc setTransitioningDelegate:self.transController];
+        vc.view.backgroundColor = [UIColor clearColor];
+        vc.modalPresentationStyle = UIModalPresentationCustom;
+        [self presentViewController:vc animated:YES completion:nil];
+    });
 }
 
 - (void) showSurveyTypeChooseDlg {
@@ -311,9 +391,16 @@
     return NO;
 }
 
+- (BOOL) isCrewSelected {
+    for (int i = 0; i < (int) [self.arrayCrewsSelected count]; i++) {
+        if ([[self.arrayCrewsSelected objectAtIndex:i] boolValue] == YES) return YES;
+    }
+    return NO;
+}
+
 #pragma mark - UITableViewDelegate
 
-- (void) configureCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
+- (void) configureWorkerCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
     GANMyWorkerDataModel *myWorker = [self.arrayMyWorkers objectAtIndex:index];
     cell.lblWorkerId.text = [myWorker getDisplayName];
     cell.delegate = self;
@@ -332,29 +419,77 @@
     [cell setItemSelected:isSelected];
 }
 
+- (void) configureCrewCell: (GANCompanyCrewItemTVC *) cell AtIndex: (int) index {
+    GANCrewDataModel *crew = [[GANCompanyManager sharedInstance].arrayCrews objectAtIndex:index];
+    cell.index = index;
+    cell.delegate = self;
+    cell.labelName.text = crew.szTitle;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    NSArray *arrayMembers = [[GANCompanyManager sharedInstance] getMembersListForCrew:crew.szId];
+    BOOL onboardingWorkerFound = NO;
+    for (GANMyWorkerDataModel *myWorker in arrayMembers) {
+        if (myWorker.modelWorker.enumType == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
+            onboardingWorkerFound = YES;
+            break;
+        }
+    }
+    
+    if (onboardingWorkerFound == YES) {
+        [cell setItemGreenDot:NO];
+    }
+    else {
+        [cell setItemGreenDot:YES];
+    }
+    
+    BOOL isSelected = [[self.arrayCrewsSelected objectAtIndex:index] boolValue];
+    [cell setItemSelected:isSelected];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [self.arrayMyWorkers count];
+    if (tableView == self.tableviewWorker) {
+        return [self.arrayMyWorkers count];
+    }
+    else if (tableView == self.tableviewCrew) {
+        return [[GANCompanyManager sharedInstance].arrayCrews count];
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    GANWorkerItemTVC *cell = [tableView dequeueReusableCellWithIdentifier:@"TVC_WORKERITEM"];
-    [self configureCell:cell AtIndex:(int) indexPath.row];
-    return cell;
+    if (tableView == self.tableviewWorker) {
+        GANWorkerItemTVC *cell = [tableView dequeueReusableCellWithIdentifier:@"TVC_WORKERITEM"];
+        [self configureWorkerCell:cell AtIndex:(int) indexPath.row];
+        return cell;
+    }
+    else if (tableView == self.tableviewCrew) {
+        GANCompanyCrewItemTVC *cell = [tableView dequeueReusableCellWithIdentifier:@"TVC_COMPANYCREWITEM"];
+        [self configureCrewCell:cell AtIndex:(int) indexPath.row];
+        return cell;
+    }
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 63;
+    return CONSTANT_TABLEVIEWCELLHEIGHT;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     int index = (int) indexPath.row;
-    BOOL isSelected = [[self.arrayWorkersSelected objectAtIndex:index] boolValue];
-    [self.arrayWorkersSelected replaceObjectAtIndex:index withObject:@(!isSelected)];
-    [self.tableview reloadData];
+    if (tableView == self.tableviewWorker) {
+        BOOL isSelected = [[self.arrayWorkersSelected objectAtIndex:index] boolValue];
+        [self.arrayWorkersSelected replaceObjectAtIndex:index withObject:@(!isSelected)];
+        [self.tableviewWorker reloadData];
+    }
+    else if (tableView == self.tableviewCrew) {
+        BOOL isSelected = [[self.arrayCrewsSelected objectAtIndex:index] boolValue];
+        [self.arrayCrewsSelected replaceObjectAtIndex:index withObject:@(!isSelected)];
+        [self.tableviewCrew reloadData];
+    }
 }
 
 - (void) changeMyWorkerNickName: (NSInteger) index{
@@ -477,7 +612,7 @@
         if (status == SUCCESS_WITH_NO_ERROR) {
             [GANGlobalVCManager showHudSuccessWithMessage:@"Worker's alias has been updated" DismissAfter:-1 Callback:nil];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableview reloadData];
+                [self.tableviewWorker reloadData];
             });
             GANACTIVITY_REPORT(@"Company - Change worker nickname");
         }
@@ -499,7 +634,7 @@
         if (status == SUCCESS_WITH_NO_ERROR) {
             [GANGlobalVCManager showHudSuccessWithMessage:@"Worker's alias has been updated" DismissAfter:-1 Callback:nil];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableview reloadData];
+                [self.tableviewWorker reloadData];
             });
             GANACTIVITY_REPORT(@"Company - Change worker nickname");
         }
@@ -512,10 +647,15 @@
 
 #pragma mark - UIButton Delegate
 
+- (IBAction)onButtonAddCrewClick:(id)sender {
+    [self.view endEditing:YES];
+    [self showCreateCrewDlg];
+}
+
 - (IBAction)onButtonSendMessageClick:(id)sender {
     [self.view endEditing:YES];
-    if ([self isWorkerSelected] == NO){
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please select the worker(s) you want to message" DismissAfter:-1 Callback:nil];
+    if ([self isWorkerSelected] == NO && [self isCrewSelected] == NO){
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please select the workers or groups you want to message" DismissAfter:-1 Callback:nil];
         return;
     }
     [self gotoMessageThreadVC];
@@ -523,8 +663,8 @@
 
 - (IBAction)onButtonSendSurveyClick:(id)sender {
     [self.view endEditing:YES];
-    if ([self isWorkerSelected] == NO){
-        [GANGlobalVCManager showHudErrorWithMessage:@"Please select the worker(s) you want to message" DismissAfter:-1 Callback:nil];
+    if ([self isWorkerSelected] == NO && [self isCrewSelected] == NO){
+        [GANGlobalVCManager showHudErrorWithMessage:@"Please select the workers or groups you want to message" DismissAfter:-1 Callback:nil];
         return;
     }
     [self showSurveyTypeChooseDlg];
@@ -537,7 +677,7 @@
 
 - (IBAction)onButtonSelectAllClick:(id)sender {
     [self.view endEditing:YES];
-    [self doSelectAll];
+    [self doWorkersSelectAll];
 }
 
 #pragma mark - UITextField Delegate
@@ -553,6 +693,16 @@
              ([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATEFAILED])){
         [self buildFilteredArray];
     }
+    else if (([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_CREWSLIST_UPDATED]) ||
+             ([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_CREWSLIST_UPDATEFAILED])){
+        [self refreshCrewList];
+    }
+}
+
+#pragma mark - GANCompanyCrewItemTVCDelegate
+
+- (void)companyCrewItemCellDidDotClick:(GANCompanyCrewItemTVC *)cell {
+    [self gotoCrewDetailsVCAtIndex:cell.index];
 }
 
 #pragma mark - GANSurveyTypeChoosePopupVC Delegate
@@ -570,6 +720,18 @@
 }
 
 - (void)surveyTypeChoosePopupDidCancelClick:(GANSurveyTypeChoosePopupVC *)popup {
+    
+}
+
+#pragma mark - GANCompanyCrewPopupVC Delegate
+
+- (void)companyCrewPopupDidCrewCreate:(int)indexCrew {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self gotoCrewDetailsVCAtIndex:indexCrew];
+    });
+}
+
+- (void) companyCrewPopupCanceled {
     
 }
 

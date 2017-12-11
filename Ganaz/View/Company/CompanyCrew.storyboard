@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Kml-WR-Jgy">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFUIDisplay-Bold.otf">
+            <string>SFUIDisplay-Bold</string>
+        </array>
+        <array key="SFUIDisplay-Medium.otf">
+            <string>SFUIDisplay-Medium</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="6RJ-Bl-HHC">
+            <objects>
+                <navigationController id="Kml-WR-Jgy" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="F6p-ev-L5j">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="zbv-zs-I8k" kind="relationship" relationship="rootViewController" id="Tn7-1K-fXl"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="s4n-IG-KTA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="297" y="36"/>
+        </scene>
+        <!--View group-->
+        <scene sceneID="Fsb-e8-p30">
+            <objects>
+                <viewController storyboardIdentifier="STORYBOARD_COMPANY_CREW_DETAILS" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zbv-zs-I8k" customClass="GANCompanyCrewDetailsVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="x65-5P-FUN"/>
+                        <viewControllerLayoutGuide type="bottom" id="VXF-gh-6KV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="KcF-IG-RPO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dfr-PD-ZIK" userLabel="View - Main Container">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Crew Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Hkn-49-e5o" userLabel="Label - Title">
+                                        <rect key="frame" x="20" y="20" width="247" height="40"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="18"/>
+                                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="lme-av-Q7O" userLabel="Button - Manage workers">
+                                        <rect key="frame" x="275" y="20" width="80" height="40"/>
+                                        <color key="backgroundColor" red="0.40000000000000002" green="0.70588235290000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="Hch-F8-SPp"/>
+                                            <constraint firstAttribute="width" constant="80" id="qKZ-ex-apc"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="13"/>
+                                        <state key="normal" title="Manage workers">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="titleLabel.textAlignment">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="onButtonManageWorkersClick:" destination="zbv-zs-I8k" eventType="touchUpInside" id="DTx-KW-Oq2"/>
+                                        </connections>
+                                    </button>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="p1p-BE-tAD">
+                                        <rect key="frame" x="20" y="80" width="335" height="363"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="zbv-zs-I8k" id="UQt-g6-Pfm"/>
+                                            <outlet property="delegate" destination="zbv-zs-I8k" id="dpH-WP-Z3N"/>
+                                        </connections>
+                                    </tableView>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="acu-z2-c50" userLabel="Button - Delete crew">
+                                        <rect key="frame" x="20" y="451" width="335" height="60"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="Delete group">
+                                            <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonDeleteCrewClick:" destination="zbv-zs-I8k" eventType="touchUpInside" id="Yv1-1b-D3a"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="as4-hx-7Lr" userLabel="Button - Done">
+                                        <rect key="frame" x="20" y="523" width="335" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="JE8-av-Fdi"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="Done" backgroundImage="button-background">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonSaveClick:" destination="zbv-zs-I8k" eventType="touchUpInside" id="H1d-Hb-5o7"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Hkn-49-e5o" firstAttribute="leading" secondItem="dfr-PD-ZIK" secondAttribute="leading" constant="20" id="3if-S8-f7F"/>
+                                    <constraint firstItem="lme-av-Q7O" firstAttribute="leading" secondItem="Hkn-49-e5o" secondAttribute="trailing" constant="8" id="89U-MB-cl4"/>
+                                    <constraint firstItem="acu-z2-c50" firstAttribute="centerX" secondItem="as4-hx-7Lr" secondAttribute="centerX" id="8of-96-woP"/>
+                                    <constraint firstItem="as4-hx-7Lr" firstAttribute="leading" secondItem="dfr-PD-ZIK" secondAttribute="leading" constant="20" id="FRU-wP-lsI"/>
+                                    <constraint firstItem="acu-z2-c50" firstAttribute="height" secondItem="as4-hx-7Lr" secondAttribute="height" id="JHq-Db-I1X"/>
+                                    <constraint firstItem="acu-z2-c50" firstAttribute="width" secondItem="as4-hx-7Lr" secondAttribute="width" id="Kho-Fg-aFu"/>
+                                    <constraint firstItem="Hkn-49-e5o" firstAttribute="centerY" secondItem="lme-av-Q7O" secondAttribute="centerY" id="LmB-Ry-Sts"/>
+                                    <constraint firstAttribute="bottom" secondItem="as4-hx-7Lr" secondAttribute="bottom" constant="20" id="Pbj-h7-nIg"/>
+                                    <constraint firstAttribute="trailing" secondItem="p1p-BE-tAD" secondAttribute="trailing" constant="20" id="TpW-kD-ujr"/>
+                                    <constraint firstItem="p1p-BE-tAD" firstAttribute="top" secondItem="lme-av-Q7O" secondAttribute="bottom" constant="20" id="VqY-NM-Dz8"/>
+                                    <constraint firstItem="as4-hx-7Lr" firstAttribute="top" secondItem="p1p-BE-tAD" secondAttribute="bottom" constant="80" id="XJb-O3-g4v"/>
+                                    <constraint firstAttribute="trailing" secondItem="lme-av-Q7O" secondAttribute="trailing" constant="20" id="bp6-Yy-HIg"/>
+                                    <constraint firstItem="Hkn-49-e5o" firstAttribute="height" secondItem="lme-av-Q7O" secondAttribute="height" id="eeW-X0-9SX"/>
+                                    <constraint firstAttribute="trailing" secondItem="as4-hx-7Lr" secondAttribute="trailing" constant="20" id="iqA-al-6hp"/>
+                                    <constraint firstItem="lme-av-Q7O" firstAttribute="top" secondItem="dfr-PD-ZIK" secondAttribute="top" constant="20" id="jqQ-AX-9SF"/>
+                                    <constraint firstItem="p1p-BE-tAD" firstAttribute="leading" secondItem="dfr-PD-ZIK" secondAttribute="leading" constant="20" id="kOa-YQ-cnK"/>
+                                    <constraint firstItem="as4-hx-7Lr" firstAttribute="top" secondItem="acu-z2-c50" secondAttribute="bottom" constant="12" id="rCw-KH-Z9I"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="dfr-PD-ZIK" secondAttribute="trailing" id="5eQ-lA-Xf6"/>
+                            <constraint firstItem="dfr-PD-ZIK" firstAttribute="top" secondItem="x65-5P-FUN" secondAttribute="bottom" id="ARb-ec-9WJ"/>
+                            <constraint firstItem="dfr-PD-ZIK" firstAttribute="leading" secondItem="KcF-IG-RPO" secondAttribute="leading" id="FpR-xX-lcb"/>
+                            <constraint firstItem="VXF-gh-6KV" firstAttribute="top" secondItem="dfr-PD-ZIK" secondAttribute="bottom" id="fME-vU-Ykc"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="View group" id="2bP-7n-bai"/>
+                    <connections>
+                        <outlet property="buttonDeleteCrew" destination="acu-z2-c50" id="1E2-Jy-qzZ"/>
+                        <outlet property="buttonManageWorkers" destination="lme-av-Q7O" id="Vex-B6-S0H"/>
+                        <outlet property="buttonSave" destination="as4-hx-7Lr" id="vYu-86-Ckg"/>
+                        <outlet property="labelCrewName" destination="Hkn-49-e5o" id="mZW-cp-07V"/>
+                        <outlet property="tableview" destination="p1p-BE-tAD" id="HPj-Ka-6U3"/>
+                        <segue destination="Ljg-BO-GLZ" kind="show" id="0rf-t0-IX4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yob-pK-2nF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1055" y="36"/>
+        </scene>
+        <!--Manage workers-->
+        <scene sceneID="O6P-CG-ybV">
+            <objects>
+                <viewController storyboardIdentifier="STORYBOARD_COMPANY_CREW_WORKERSLIST" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ljg-BO-GLZ" customClass="GANCompanyCrewWorkersListVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fg9-b8-rT3"/>
+                        <viewControllerLayoutGuide type="bottom" id="SCx-gg-bLJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="MB0-rz-AhK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dz1-fY-pJo" userLabel="View - Main Container">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Workers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="d3C-xF-jxp" userLabel="Label - Title">
+                                        <rect key="frame" x="20" y="30" width="121.5" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="0fv-Qs-TYT"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="18"/>
+                                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zUN-RS-tkL">
+                                        <rect key="frame" x="20" y="70" width="335" height="441"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="Ljg-BO-GLZ" id="gKl-H9-WPP"/>
+                                            <outlet property="delegate" destination="Ljg-BO-GLZ" id="K3d-7O-Jkk"/>
+                                        </connections>
+                                    </tableView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="hXa-VW-1h0" userLabel="Button - Add workers">
+                                        <rect key="frame" x="275" y="20" width="80" height="40"/>
+                                        <color key="backgroundColor" red="0.40000000000000002" green="0.70588235290000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="a52-7Z-Z8V"/>
+                                            <constraint firstAttribute="width" constant="80" id="ofd-m0-IAI"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="13"/>
+                                        <state key="normal" title="Add workers">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="titleLabel.textAlignment">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="onButtonAddWorkersClick:" destination="Ljg-BO-GLZ" eventType="touchUpInside" id="sTa-MD-OXp"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gp3-Zj-GBB" userLabel="Button - Done">
+                                        <rect key="frame" x="20" y="523" width="335" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="WQi-se-cGA"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="Done" backgroundImage="button-background">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonDoneClick:" destination="Ljg-BO-GLZ" eventType="touchUpInside" id="Vot-4m-yBK"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="hXa-VW-1h0" firstAttribute="centerY" secondItem="d3C-xF-jxp" secondAttribute="centerY" id="7lH-B2-XJO"/>
+                                    <constraint firstItem="gp3-Zj-GBB" firstAttribute="leading" secondItem="dz1-fY-pJo" secondAttribute="leading" constant="20" id="Jud-FN-bgb"/>
+                                    <constraint firstItem="zUN-RS-tkL" firstAttribute="top" secondItem="d3C-xF-jxp" secondAttribute="bottom" constant="20" id="KlY-m7-pey"/>
+                                    <constraint firstAttribute="trailing" secondItem="gp3-Zj-GBB" secondAttribute="trailing" constant="20" id="ZX9-mS-0Mi"/>
+                                    <constraint firstItem="gp3-Zj-GBB" firstAttribute="top" secondItem="zUN-RS-tkL" secondAttribute="bottom" constant="12" id="cok-PB-IIy"/>
+                                    <constraint firstItem="d3C-xF-jxp" firstAttribute="leading" secondItem="dz1-fY-pJo" secondAttribute="leading" constant="20" id="gGw-5b-hgG"/>
+                                    <constraint firstAttribute="trailing" secondItem="zUN-RS-tkL" secondAttribute="trailing" constant="20" id="ico-Mg-3ct"/>
+                                    <constraint firstAttribute="trailing" secondItem="hXa-VW-1h0" secondAttribute="trailing" constant="20" id="mLU-Bf-REM"/>
+                                    <constraint firstItem="zUN-RS-tkL" firstAttribute="leading" secondItem="dz1-fY-pJo" secondAttribute="leading" constant="20" id="o3K-km-0ws"/>
+                                    <constraint firstItem="d3C-xF-jxp" firstAttribute="leading" secondItem="dz1-fY-pJo" secondAttribute="leading" constant="20" id="pEw-4b-3dB"/>
+                                    <constraint firstAttribute="bottom" secondItem="gp3-Zj-GBB" secondAttribute="bottom" constant="20" id="q7E-2c-Gxu"/>
+                                    <constraint firstItem="d3C-xF-jxp" firstAttribute="top" secondItem="dz1-fY-pJo" secondAttribute="top" constant="30" id="xav-pw-ZHz"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="dz1-fY-pJo" firstAttribute="leading" secondItem="MB0-rz-AhK" secondAttribute="leading" id="5UE-Z6-IEP"/>
+                            <constraint firstItem="fg9-b8-rT3" firstAttribute="bottom" secondItem="dz1-fY-pJo" secondAttribute="top" id="laa-09-yCN"/>
+                            <constraint firstItem="SCx-gg-bLJ" firstAttribute="top" secondItem="dz1-fY-pJo" secondAttribute="bottom" id="ow4-Aj-Y92"/>
+                            <constraint firstItem="dz1-fY-pJo" firstAttribute="trailing" secondItem="MB0-rz-AhK" secondAttribute="trailing" id="xPM-Dn-kwy"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Manage workers" id="hNd-AU-64d"/>
+                    <connections>
+                        <outlet property="buttonAddWorkers" destination="hXa-VW-1h0" id="zf9-tP-8du"/>
+                        <outlet property="buttonDone" destination="gp3-Zj-GBB" id="06g-YB-2ne"/>
+                        <outlet property="tableview" destination="zUN-RS-tkL" id="O7M-SB-s3m"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ero-5N-2Lw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1838" y="36"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="button-background" width="512" height="10"/>
+    </resources>
+</document>

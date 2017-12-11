@@ -105,6 +105,8 @@
         GANCompanyAddWorkerVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_ADDWORKER"];
         vc.fromCustomVC = ENUM_COMPANY_ADDWORKERS_FROM_HOME;
         vc.szDescription = @"Who do you want to message?";
+        vc.szCrewId = @"";
+        
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     } else {

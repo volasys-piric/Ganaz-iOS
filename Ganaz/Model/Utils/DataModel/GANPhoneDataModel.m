@@ -56,5 +56,14 @@
     return [GANGenericFunctionManager beautifyPhoneNumber:self.szLocalNumber CountryCode:self.szCountryCode];
 }
 
+- (BOOL) isSamePhoneNumber: (NSString *) phoneNumber {
+    phoneNumber = [GANGenericFunctionManager refineNSString:phoneNumber];
+    if (phoneNumber.length > 10) phoneNumber = [phoneNumber substringFromIndex:1];
+    if ([self.szLocalNumber isEqualToString:phoneNumber] == YES) {
+        return YES;
+    }
+    return NO;
+}
+
 @end
 

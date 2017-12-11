@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.7</string>
+	<string>1.8</string>
 	<key>CFBundleVersion</key>
-	<string>1711.1</string>
+	<string>1805.2</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -60,9 +60,9 @@
 		</dict>
 	</dict>
 	<key>NSContactsUsageDescription</key>
-	<string>Ganaz wants to use contacts list.</string>
+	<string>This allows you to invite people you know to use Ganaz directly from the app.  Esto le permite invitar a personas que conoce a usar Ganaz directamente desde la aplicación.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Ganaz wants to use location service.</string>
+	<string>Esto le permitirá ver trabajos cerca de usted.  If you are a worker, this will allow you to see jobs near you.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

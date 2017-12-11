@@ -17,8 +17,9 @@
 #import "GANGlobalVCManager.h"
 #import "Global.h"
 #import "GANAppManager.h"
+#import "UITextView+Placeholder.h"
 
-@interface GANCompanySurveyChoicesPostVC () <UITextFieldDelegate, GANMessageWithChargeConfirmationPopupDelegate>
+@interface GANCompanySurveyChoicesPostVC () <UITextViewDelegate, GANMessageWithChargeConfirmationPopupDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
 
@@ -28,11 +29,11 @@
 @property (weak, nonatomic) IBOutlet UIView *viewAnswer3;
 @property (weak, nonatomic) IBOutlet UIView *viewAnswer4;
 
-@property (weak, nonatomic) IBOutlet UITextField *textfieldQuestion;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldAnswer1;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldAnswer2;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldAnswer3;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldAnswer4;
+@property (weak, nonatomic) IBOutlet UITextView *textviewQuestion;
+@property (weak, nonatomic) IBOutlet UITextView *textviewChoice1;
+@property (weak, nonatomic) IBOutlet UITextView *textviewChoice2;
+@property (weak, nonatomic) IBOutlet UITextView *textviewChoice3;
+@property (weak, nonatomic) IBOutlet UITextView *textviewChoice4;
 
 @property (weak, nonatomic) IBOutlet UILabel *labelReceivers;
 
@@ -78,11 +79,11 @@
     self.viewAnswer4.clipsToBounds = YES;
     self.buttonSubmit.clipsToBounds = YES;
     
-    self.textfieldQuestion.delegate = self;
-    self.textfieldAnswer1.delegate = self;
-    self.textfieldAnswer2.delegate = self;
-    self.textfieldAnswer3.delegate = self;
-    self.textfieldAnswer4.delegate = self;
+    self.textviewQuestion.delegate = self;
+    self.textviewChoice1.delegate = self;
+    self.textviewChoice2.delegate = self;
+    self.textviewChoice3.delegate = self;
+    self.textviewChoice4.delegate = self;
     
     [self refreshAutoTranslateView];
 }
@@ -97,37 +98,19 @@
 }
 
 - (void) refreshFields{
-    NSString *szReceivers = @"";
-    int count = MIN(3, (int) [self.arrayReceivers count]);
-    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
-    for (int i = 0; i < count; i++) {
-        GANUserRefDataModel *userRef = [self.arrayReceivers objectAtIndex:i];
-        int indexMyWorker = [managerCompany getIndexForMyWorkersWithUserId:userRef.szUserId];
-        if (indexMyWorker == -1) continue;
-        GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:i];
-        if (i == 0){
-            szReceivers = [myWorker getDisplayName];
-        }
-        else {
-            szReceivers = [NSString stringWithFormat:@"%@, %@", szReceivers, [myWorker getDisplayName]];
-        }
-    }
-    
-    if (count < [self.arrayReceivers count]) {
-        szReceivers = [NSString stringWithFormat:@"%@... (+%d)", szReceivers, (int)([self.arrayReceivers count] - count)];
-    }
-    
-    self.labelReceivers.text = szReceivers;
+    [[GANMessageManager sharedInstance] requestGetBeautifiedReceiversAbbrWithReceivers:self.arrayReceivers Callback:^(NSString *beautifiedName) {
+        self.labelReceivers.text = beautifiedName;
+    }];
 }
 
 #pragma mark - Logic
 
 - (BOOL) checkMandatoryFields {
-    NSString *szQuestion = self.textfieldQuestion.text;
-    NSString *szChoice1 = self.textfieldAnswer1.text;
-    NSString *szChoice2 = self.textfieldAnswer2.text;
-    NSString *szChoice3 = self.textfieldAnswer3.text;
-    NSString *szChoice4 = self.textfieldAnswer4.text;
+    NSString *szQuestion = self.textviewQuestion.text;
+    NSString *szChoice1 = self.textviewChoice1.text;
+    NSString *szChoice2 = self.textviewChoice2.text;
+    NSString *szChoice3 = self.textviewChoice3.text;
+    NSString *szChoice4 = self.textviewChoice4.text;
     int count = 4;
     if (szQuestion.length == 0){
         [GANGlobalVCManager showHudErrorWithMessage:@"Please input question." DismissAfter:-1 Callback:nil];
@@ -156,11 +139,11 @@
 - (void) doSubmitSurvey{
     if ([self checkMandatoryFields] == NO) return;
     
-    NSString *szQuestion = self.textfieldQuestion.text;
-    NSString *szChoice1 = self.textfieldAnswer1.text;
-    NSString *szChoice2 = self.textfieldAnswer2.text;
-    NSString *szChoice3 = self.textfieldAnswer3.text;
-    NSString *szChoice4 = self.textfieldAnswer4.text;
+    NSString *szQuestion = self.textviewQuestion.text;
+    NSString *szChoice1 = self.textviewChoice1.text;
+    NSString *szChoice2 = self.textviewChoice2.text;
+    NSString *szChoice3 = self.textviewChoice3.text;
+    NSString *szChoice4 = self.textviewChoice4.text;
     NSMutableArray *arrayChoices = [[NSMutableArray alloc] init];
     if (szChoice1.length > 0){
         [arrayChoices addObject:szChoice1];
@@ -196,9 +179,36 @@
     [GANGlobalVCManager showHudProgressWithMessage:@"Loading messages..."];
     [managerMessage requestGetMessageListWithCallback:^(int status) {
         [GANGlobalVCManager hideHudProgressWithCallback:^{
-            [self gotoMessageThreadVC];
+            [self gotoMessageListVC];
         }];
     }];
+}
+
+- (void) gotoMessageListVC {
+    UINavigationController *nav = self.navigationController;
+    NSArray <UIViewController *> *arrayVCs = nav.viewControllers;
+    
+    GANCompanyMessageListVC *vcList = nil;
+    
+    for (int i = 0; i < (int) [arrayVCs count]; i++) {
+        UIViewController *vc = [arrayVCs objectAtIndex:i];
+        if ([vc isKindOfClass:[GANCompanyMessageListVC class]] == YES) {
+            vcList = (GANCompanyMessageListVC *) vc;
+            break;
+        }
+    }
+    
+    if (vcList == nil) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
+        vcList = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGES_LIST"];
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController setViewControllers:@[vcList] animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    });
+    
+    GANACTIVITY_REPORT(@"Company - Go to MessageList from Survey");
 }
 
 - (void) gotoMessageThreadVC{
