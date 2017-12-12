@@ -53,6 +53,7 @@
 
 - (void) requestSearchNewWorkersByPhoneNumber: (NSString *) phoneNumber Callback: (void (^) (int status, NSArray *arrWorkers)) callback;
 - (void) requestSendInvite: (GANPhoneDataModel *) phone CompanyId: (NSString *) companyId inviteOnly:(BOOL)bInviteOnly Callback: (void (^) (int status)) callback;
+- (void) requestDeleteMyWorker: (NSString *) myWorkerId Callback: (void (^) (int status)) callback;
 
 #pragma mark - Company Users
 

@@ -59,6 +59,16 @@
     return -1;
 }
 
+- (int) getIndexForMyWorkersWithMyWorkerId: (NSString *) myWorkerId{
+    for (int i = 0; i < (int) [self.arrMyWorkers count]; i++){
+        GANMyWorkerDataModel *myWorker = [self.arrMyWorkers objectAtIndex:i];
+        if ([myWorker.szId isEqualToString:myWorkerId]){
+            return i;
+        }
+    }
+    return -1;
+}
+
 - (int) getIndexForMyWorkersWithUserId: (NSString *) userId{
     for (int i = 0; i < (int) [self.arrMyWorkers count]; i++){
         GANMyWorkerDataModel *myWorker = [self.arrMyWorkers objectAtIndex:i];
@@ -478,6 +488,37 @@
         }
     } failure:^(int status, NSDictionary *error) {
         if (callback) callback(status);
+    }];
+}
+
+- (void) requestDeleteMyWorker: (NSString *) myWorkerId Callback: (void (^) (int status)) callback {
+    int index = [self getIndexForMyWorkersWithMyWorkerId:myWorkerId];
+    if (index == -1) {
+        if (callback) callback(ERROR_NOT_FOUND);
+        return;
+    }
+    
+    NSString *companyId = [GANUserManager getCompanyDataModel].szId;
+    NSString *szUrl = [GANUrlManager getEndpointForDeleteMyWorkerWithCompanyId:companyId MyWorkerId:myWorkerId];
+    
+    [[GANNetworkRequestManager sharedInstance] DELETE:szUrl requireAuth:YES parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            int index = [self getIndexForMyWorkersWithMyWorkerId:myWorkerId];
+            [self.arrMyWorkers removeObjectAtIndex:index];
+            
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATED object:nil];
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATEFAILED object:nil];
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATEFAILED object:nil];
     }];
 }
 

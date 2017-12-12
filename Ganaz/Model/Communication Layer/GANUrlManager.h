@@ -65,6 +65,7 @@
 + (NSString *) getEndpointForGetMyWorkersWithCompanyId: (NSString *) companyId;
 + (NSString *) getEndpointForAddMyWorkersWithCompanyId: (NSString *) companyId;
 + (NSString *) getEndpointForUpdateMyWorkersNicknameWithCompanyId: (NSString *) companyId MyWorkerId: (NSString *) myWorkerId;
++ (NSString *) getEndpointForDeleteMyWorkerWithCompanyId: (NSString *) companyId MyWorkerId: (NSString *) myWorkerId;
 
 #pragma mark - Messages
 

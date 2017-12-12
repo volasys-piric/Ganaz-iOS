@@ -29,9 +29,6 @@
 #define NON_SELECTED -1
 
 @interface GANRecruitVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIActionSheetDelegate, GANJobPostingSharedPopupVCDelegate, GANOnboardingWorkerNickNamePopupVCDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANWorkerItemTVCDelegate>
-{
-    NSInteger nSelectedIndex;
-}
 
 @property (weak, nonatomic) IBOutlet UILabel *lblJobTitle;
 @property (weak, nonatomic) IBOutlet UITableView *tableviewWorkers;
@@ -46,6 +43,7 @@
 @property (strong, nonatomic) GANFadeTransitionDelegate *transController;
 
 @property (strong, nonatomic) NSMutableArray *arrWorkerSelected;
+@property (assign, atomic) int indexSelected;
 
 @end
 
@@ -60,7 +58,7 @@
     self.tableviewWorkers.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableviewWorkers.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
-    nSelectedIndex = NON_SELECTED;
+    self.indexSelected = NON_SELECTED;
     
     self.transController = [[GANFadeTransitionDelegate alloc] init];
     self.arrWorkerSelected = [[NSMutableArray alloc] init];
@@ -259,7 +257,7 @@
 - (void) configureWorkerItemCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
     GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:index];
     cell.lblWorkerId.text = [myWorker getDisplayName];
-    cell.nIndex = index;
+    cell.index = index;
     cell.delegate = self;
     
     if(myWorker.modelWorker.enumType == GANENUM_USER_TYPE_WORKER) {
@@ -336,43 +334,44 @@
 
 #pragma mark - GANWorkerITEMTVCDelegate
 
-- (void) setWorkerNickName:(NSInteger)nIndex {
-    
-    nSelectedIndex = nIndex;
-    
-    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nIndex];
-    
-    if(myWorker.modelWorker.enumType == GANENUM_USER_TYPE_WORKER) {
-        [self changeMyWorkerNickName:nSelectedIndex];
-        return;
-    }
-    
+- (void) workerItemTableViewCellDidDotsClick:(GANWorkerItemTVC *)cell {
+    self.indexSelected = cell.index;
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:cell.index];
     NSString *szUserName = [myWorker getDisplayName];
     
-    UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:szUserName delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Re-send Invitation",@"Edit", nil];
-    popup.tag = 0;
-    [popup showInView:self.view];
-}
-
-- (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:szUserName message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *actionEdit = [UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self changeMyWorkerNickName:self.indexSelected];
+        });
+    }];
+    UIAlertAction *actionDelete = [UIAlertAction actionWithTitle:@"Delete" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        NSString *szMessage = [NSString stringWithFormat:@"Are you sure you want to delete %@ from your workers list?", szUserName];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [GANGlobalVCManager promptWithVC:self Title:@"Warning!" Message:szMessage ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
+                [self deleteMyWorkerAtIndex:cell.index];
+            } CallbackNo:nil];
+        });
+    }];
     
-    switch (popup.tag) {
-        case 0: {
-            switch (buttonIndex) {
-                case 0:
-                    [self resendInvite:nSelectedIndex];
-                    break;
-                case 1:
-                    [self changeMyWorkerNickName:nSelectedIndex];
-                    break;
-                default:
-                    break;
-            }
-            break;
-        }
-        default:
-            break;
+    [alertController addAction:actionDelete];
+    
+    if (myWorker.modelWorker.enumType == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
+        UIAlertAction *actionResendInvitation = [UIAlertAction actionWithTitle:@"Resend Invitation" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self resendInvite:self.indexSelected];
+            });
+        }];
+        [alertController addAction:actionResendInvitation];
     }
+    
+    [alertController addAction:actionEdit];
+    [alertController addAction:actionCancel];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (void) resendInvite:(NSInteger) nIndex {
@@ -385,17 +384,36 @@
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager showHudSuccessWithMessage:@"An invitation will be sent shortly via SMS" DismissAfter:-1 Callback:nil];
             
-            [self getMyWorkerList];
+            [self refreshMyWorkerList];
         }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
         }
-        nSelectedIndex = NON_SELECTED;
+        self.indexSelected = NON_SELECTED;
     }];
     GANACTIVITY_REPORT(@"Company - Send invite");
 }
 
-- (void) getMyWorkerList {
+- (void) deleteMyWorkerAtIndex: (int) index {
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:self.indexSelected];
+    
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [managerCompany requestDeleteMyWorker:myWorker.szId Callback:^(int status) {
+        if (status == SUCCESS_WITH_NO_ERROR) {
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Worker is successfully removed." DismissAfter:-1 Callback:^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableviewWorkers reloadData];
+                });
+            }];
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error" DismissAfter:-1 Callback:nil];
+        }
+    }];
+}
+
+- (void) refreshMyWorkerList {
     [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:^(int status) {
         if(status == SUCCESS_WITH_NO_ERROR) {
             [self buildWorkerList];
@@ -408,7 +426,7 @@
 #pragma mark - GANMyWorkerNickNameEditPopupVCDelegate
 
 - (void)nicknameEditPopupDidUpdateWithNickname:(NSString *)nickname {
-    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nSelectedIndex];
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:self.indexSelected];
     myWorker.szNickname = nickname;
     
     //Add NickName
@@ -424,12 +442,12 @@
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
         }
-        nSelectedIndex = NON_SELECTED;
+        self.indexSelected = NON_SELECTED;
     }];
 }
 
 - (void) onboardingNicknameEditPopupDidUpdateWithNickname:(NSString *)nickname {
-    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:nSelectedIndex];
+    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:self.indexSelected];
     myWorker.szNickname = nickname;
     
     //Add NickName
@@ -445,7 +463,7 @@
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:-1 Callback:nil];
         }
-        nSelectedIndex = NON_SELECTED;
+        self.indexSelected = NON_SELECTED;
     }];
 }
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -91,7 +91,7 @@
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="l6P-pJ-RpM" secondAttribute="trailing" constant="20" id="158-qk-Bi7"/>
                                         <constraint firstItem="l6P-pJ-RpM" firstAttribute="top" secondItem="Vsj-vO-L2p" secondAttribute="bottom" constant="10" id="2IC-a6-F4X"/>
-                                        <constraint firstAttribute="trailing" secondItem="NDa-iA-Zx3" secondAttribute="trailing" constant="17.5" id="2j9-Dq-dmP"/>
+                                        <constraint firstAttribute="trailing" secondItem="NDa-iA-Zx3" secondAttribute="trailing" constant="17" id="2j9-Dq-dmP"/>
                                         <constraint firstItem="NDa-iA-Zx3" firstAttribute="leading" secondItem="NID-sz-WeW" secondAttribute="leading" constant="17" id="6zr-QN-eJd"/>
                                         <constraint firstItem="NDa-iA-Zx3" firstAttribute="top" secondItem="NID-sz-WeW" secondAttribute="top" constant="15" id="88Y-g9-Drx"/>
                                         <constraint firstItem="l6P-pJ-RpM" firstAttribute="leading" secondItem="NID-sz-WeW" secondAttribute="leading" constant="20" id="L5p-db-qrf"/>
@@ -99,7 +99,6 @@
                                         <constraint firstAttribute="bottom" secondItem="l6P-pJ-RpM" secondAttribute="bottom" id="SvP-b3-4zt"/>
                                         <constraint firstItem="Vsj-vO-L2p" firstAttribute="leading" secondItem="NID-sz-WeW" secondAttribute="leading" constant="17" id="TOh-gs-rJH"/>
                                         <constraint firstItem="Vsj-vO-L2p" firstAttribute="centerX" secondItem="NID-sz-WeW" secondAttribute="centerX" id="UBo-oA-aQb"/>
-                                        <constraint firstItem="NDa-iA-Zx3" firstAttribute="centerX" secondItem="NID-sz-WeW" secondAttribute="centerX" id="YRj-Ls-NNh"/>
                                         <constraint firstItem="Vsj-vO-L2p" firstAttribute="top" secondItem="NDa-iA-Zx3" secondAttribute="bottom" constant="5" id="u2y-FZ-fkj"/>
                                         <constraint firstAttribute="trailing" secondItem="Vsj-vO-L2p" secondAttribute="trailing" constant="17" id="w87-o2-RcV"/>
                                     </constraints>
