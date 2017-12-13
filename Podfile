@@ -21,6 +21,7 @@ target 'Ganaz' do
   pod 'TTTAttributedLabel'
   pod 'UITextView+Placeholder', '~> 1.2'
   pod 'GrowingTextView'
+  pod 'Branch'
   # pod 'SlackTextViewController'
   
   #pod 'PNChart'

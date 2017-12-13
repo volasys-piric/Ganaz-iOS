@@ -4,5 +4,12 @@
 <dict>
 	<key>aps-environment</key>
 	<string>development</string>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:ganaz-beta.app.link</string>
+		<string>applinks:ganaz-beta-alternate.app.link</string>
+		<string>applinks:ganaz-beta.test-app.link</string>
+		<string>applinks:ganaz-beta-alternate.test-app.link</string>
+	</array>
 </dict>
 </plist>

@@ -77,5 +77,21 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+    <key>branch_key</key>
+    <dict>
+        <key>live</key>
+        <string>key_live_ferSVlp0weyXTlDlGNQyQcjcCubGc9XL</string>
+        <key>test</key>
+        <string>key_test_ihrMOjb8whzYTlxkQLJ7mhbksqdPp506</string>
+    </dict>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>ganaz</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>

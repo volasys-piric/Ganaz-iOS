@@ -11,6 +11,7 @@
 #import "GANUserManager.h"
 #import "GANWorkerLoginCodeVC.h"
 #import "GANCompanyLoginCodeVC.h"
+#import "GANDeeplinkManager.h"
 
 #import "Global.h"
 #import "GANAppManager.h"
@@ -138,11 +139,25 @@
         }
     }
     else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_MAIN_CHOOSE"];
-            [self.navigationController setViewControllers:@[vc] animated:YES];
-        });
+        GANDeeplinkManager *managerDeeplink = [GANDeeplinkManager sharedInstance];
+        
+        if (managerDeeplink.enumAction == GANENUM_BRANCHDEEPLINK_ACTION_WORKER_SIGNUPWITHPHONE && [[GANUserManager sharedInstance] isUserLoggedIn] == NO) {
+            // Should go to Worker > Login VC, populating phone number...
+            UIStoryboard *storyboardMain = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIStoryboard *storyboardLogin = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
+            UIViewController *vcChoose = [storyboardMain instantiateViewControllerWithIdentifier:@"STORYBOARD_MAIN_CHOOSE"];
+            UIViewController *vcLogin = [storyboardLogin instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_PHONE"];
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+            [self.navigationController setViewControllers:@[vcChoose, vcLogin] animated:YES];
+            vcLogin.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        }
+        else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_MAIN_CHOOSE"];
+                [self.navigationController setViewControllers:@[vc] animated:YES];
+            });
+        }
     }
 }
 

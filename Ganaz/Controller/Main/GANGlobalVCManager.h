@@ -14,6 +14,13 @@
 + (instancetype) sharedInstance;
 - (void) initializeManager;
 
+#pragma mark - Navigation
+
++ (void) logoutToWorkerLoginVC: (UIViewController *) vcCurrent;
++ (void) gotoWorkerLoginVC;
+
+#pragma mark - Utils
+
 + (UIViewController *)getTopMostViewController;
 + (void) showAlertWithMessage: (NSString *) szMessage;
 + (void) showAlertWithTitle: (NSString *) szTitle Message: (NSString *) szMessage;
@@ -26,10 +33,6 @@
 + (void) shakeView: (UIView *) view InScrollView: (UIScrollView *) scrollView;
 
 + (void)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(NSInteger) nIndex;
-
-#pragma mark - Redirect to certain VC
-
-+ (void) logoutToWorkerLoginVC: (UIViewController *) vcCurrent;
 
 #pragma mark - Badge
 

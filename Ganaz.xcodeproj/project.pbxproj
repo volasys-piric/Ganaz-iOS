@@ -27,6 +27,7 @@
 		832A7F0C1FA821480031A6E9 /* MessageItemYouTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 832A7F0B1FA821480031A6E9 /* MessageItemYouTVC.xib */; };
 		832A7F0F1FA8215D0031A6E9 /* GANMessageItemYouTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 832A7F0E1FA8215D0031A6E9 /* GANMessageItemYouTVC.m */; };
 		833179D41FE0932700EC84E3 /* GANOnboardingActionDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833179D31FE0932700EC84E3 /* GANOnboardingActionDataModel.m */; };
+		833179DA1FE0C61900EC84E3 /* GANDeeplinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 833179D91FE0C61900EC84E3 /* GANDeeplinkManager.m */; };
 		833CB86A1F857114006693FF /* GANUserRefDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833CB8691F857114006693FF /* GANUserRefDataModel.m */; };
 		833CB86D1F8589B6006693FF /* GANSurveyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 833CB86C1F8589B6006693FF /* GANSurveyManager.m */; };
 		833CB8711F877601006693FF /* GANMessageWithChargeConfirmationPopupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 833CB8701F877600006693FF /* GANMessageWithChargeConfirmationPopupVC.m */; };
@@ -244,6 +245,8 @@
 		832A7F0E1FA8215D0031A6E9 /* GANMessageItemYouTVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GANMessageItemYouTVC.m; path = View/TableViewCell/MessageItemYouTVC/GANMessageItemYouTVC.m; sourceTree = "<group>"; };
 		833179D21FE0932700EC84E3 /* GANOnboardingActionDataModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GANOnboardingActionDataModel.h; path = Model/Cache/DataModel/GANOnboardingActionDataModel.h; sourceTree = "<group>"; };
 		833179D31FE0932700EC84E3 /* GANOnboardingActionDataModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GANOnboardingActionDataModel.m; path = Model/Cache/DataModel/GANOnboardingActionDataModel.m; sourceTree = "<group>"; };
+		833179D81FE0C61900EC84E3 /* GANDeeplinkManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GANDeeplinkManager.h; path = Model/Utils/GANDeeplinkManager.h; sourceTree = "<group>"; };
+		833179D91FE0C61900EC84E3 /* GANDeeplinkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GANDeeplinkManager.m; path = Model/Utils/GANDeeplinkManager.m; sourceTree = "<group>"; };
 		833CB8681F857114006693FF /* GANUserRefDataModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GANUserRefDataModel.h; path = Model/Utils/DataModel/GANUserRefDataModel.h; sourceTree = "<group>"; };
 		833CB8691F857114006693FF /* GANUserRefDataModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GANUserRefDataModel.m; path = Model/Utils/DataModel/GANUserRefDataModel.m; sourceTree = "<group>"; };
 		833CB86B1F8589B6006693FF /* GANSurveyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GANSurveyManager.h; path = Model/Survey/GANSurveyManager.h; sourceTree = "<group>"; };
@@ -1102,6 +1105,8 @@
 				834F01F11E85DF5900D58989 /* GANLocalstorageManager.m */,
 				830A84361E88BC5600DECAA9 /* GANPushNotificationManager.h */,
 				830A84371E88BC5600DECAA9 /* GANPushNotificationManager.m */,
+				833179D81FE0C61900EC84E3 /* GANDeeplinkManager.h */,
+				833179D91FE0C61900EC84E3 /* GANDeeplinkManager.m */,
 				83AC854C1E70AF0F005B9422 /* GANUtils.h */,
 				83AC854D1E70AF0F005B9422 /* GANUtils.m */,
 				838E6A681F8379EA0083F3BC /* UIColor+GANColor.h */,
@@ -1721,6 +1726,9 @@
 							com.apple.Push = {
 								enabled = 1;
 							};
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
 						};
 					};
 				};
@@ -1851,6 +1859,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Ganaz/Pods-Ganaz-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Branch/Branch.framework",
 				"${BUILT_PRODUCTS_DIR}/GrowingTextView/GrowingTextView.framework",
 				"${BUILT_PRODUCTS_DIR}/HCSStarRatingView/HCSStarRatingView.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
@@ -1864,6 +1873,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Branch.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GrowingTextView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HCSStarRatingView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
@@ -2000,6 +2010,7 @@
 				838AAC201E578A9E006CC33D /* AppDelegate.m in Sources */,
 				834F01DE1E8340A300D58989 /* GANRecruitDataModel.m in Sources */,
 				833CB8711F877601006693FF /* GANMessageWithChargeConfirmationPopupVC.m in Sources */,
+				833179DA1FE0C61900EC84E3 /* GANDeeplinkManager.m in Sources */,
 				830F9DD01EDAFE960073232B /* GANCacheManager.m in Sources */,
 				9FE57D7E1F3020C0002BCAFE /* GANSharePostingWithContactsVC.m in Sources */,
 				834A87E51EE2027C00EB6E51 /* GANTransContentsDataModel.m in Sources */,
@@ -2181,8 +2192,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ganaz.ganazapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "22409b64-195f-44e6-b202-2c9643c76639";
-				PROVISIONING_PROFILE_SPECIFIER = "com.ganaz.ganazapp-dev-2017-05-30";
+				PROVISIONING_PROFILE = "b839d711-8ddd-4805-8f22-a47fe5bf1bc6";
+				PROVISIONING_PROFILE_SPECIFIER = "com.ganaz.ganazapp-dev-2017-12-12";
 			};
 			name = Debug;
 		};
@@ -2200,8 +2211,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ganaz.ganazapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "22409b64-195f-44e6-b202-2c9643c76639";
-				PROVISIONING_PROFILE_SPECIFIER = "com.ganaz.ganazapp-dev-2017-05-30";
+				PROVISIONING_PROFILE = "b839d711-8ddd-4805-8f22-a47fe5bf1bc6";
+				PROVISIONING_PROFILE_SPECIFIER = "com.ganaz.ganazapp-dev-2017-12-12";
 			};
 			name = Release;
 		};

@@ -7,6 +7,7 @@
 //
 
 #import "GANWorkerLoginPhoneVC.h"
+#import "GANDeeplinkManager.h"
 #import "GANUserManager.h"
 #import "GANWorkerLoginCodeVC.h"
 #import "GANLoginResetPasswordVC.h"
@@ -39,6 +40,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    GANDeeplinkManager *managerDeeplink = [GANDeeplinkManager sharedInstance];
+    if (managerDeeplink.enumAction == GANENUM_BRANCHDEEPLINK_ACTION_WORKER_SIGNUPWITHPHONE && [[GANUserManager sharedInstance] isUserLoggedIn] == NO) {
+        self.textfieldPhoneNumber.text = managerDeeplink.szPhoneNumber;
+    }
     
     [self refreshViews];
     [self refreshPhonePanel];
