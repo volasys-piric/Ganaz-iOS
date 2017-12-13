@@ -26,6 +26,7 @@
 		832A7F0A1FA817210031A6E9 /* GANMessageItemMeTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 832A7F091FA817210031A6E9 /* GANMessageItemMeTVC.m */; };
 		832A7F0C1FA821480031A6E9 /* MessageItemYouTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 832A7F0B1FA821480031A6E9 /* MessageItemYouTVC.xib */; };
 		832A7F0F1FA8215D0031A6E9 /* GANMessageItemYouTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 832A7F0E1FA8215D0031A6E9 /* GANMessageItemYouTVC.m */; };
+		833179D41FE0932700EC84E3 /* GANOnboardingActionDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833179D31FE0932700EC84E3 /* GANOnboardingActionDataModel.m */; };
 		833CB86A1F857114006693FF /* GANUserRefDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833CB8691F857114006693FF /* GANUserRefDataModel.m */; };
 		833CB86D1F8589B6006693FF /* GANSurveyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 833CB86C1F8589B6006693FF /* GANSurveyManager.m */; };
 		833CB8711F877601006693FF /* GANMessageWithChargeConfirmationPopupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 833CB8701F877600006693FF /* GANMessageWithChargeConfirmationPopupVC.m */; };
@@ -241,6 +242,8 @@
 		832A7F0B1FA821480031A6E9 /* MessageItemYouTVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MessageItemYouTVC.xib; path = View/TableViewCell/MessageItemYouTVC/MessageItemYouTVC.xib; sourceTree = "<group>"; };
 		832A7F0D1FA8215D0031A6E9 /* GANMessageItemYouTVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GANMessageItemYouTVC.h; path = View/TableViewCell/MessageItemYouTVC/GANMessageItemYouTVC.h; sourceTree = "<group>"; };
 		832A7F0E1FA8215D0031A6E9 /* GANMessageItemYouTVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GANMessageItemYouTVC.m; path = View/TableViewCell/MessageItemYouTVC/GANMessageItemYouTVC.m; sourceTree = "<group>"; };
+		833179D21FE0932700EC84E3 /* GANOnboardingActionDataModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GANOnboardingActionDataModel.h; path = Model/Cache/DataModel/GANOnboardingActionDataModel.h; sourceTree = "<group>"; };
+		833179D31FE0932700EC84E3 /* GANOnboardingActionDataModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GANOnboardingActionDataModel.m; path = Model/Cache/DataModel/GANOnboardingActionDataModel.m; sourceTree = "<group>"; };
 		833CB8681F857114006693FF /* GANUserRefDataModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GANUserRefDataModel.h; path = Model/Utils/DataModel/GANUserRefDataModel.h; sourceTree = "<group>"; };
 		833CB8691F857114006693FF /* GANUserRefDataModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GANUserRefDataModel.m; path = Model/Utils/DataModel/GANUserRefDataModel.m; sourceTree = "<group>"; };
 		833CB86B1F8589B6006693FF /* GANSurveyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GANSurveyManager.h; path = Model/Survey/GANSurveyManager.h; sourceTree = "<group>"; };
@@ -611,6 +614,7 @@
 		830F9DCD1EDAFE770073232B /* Cache */ = {
 			isa = PBXGroup;
 			children = (
+				833179D11FE092E800EC84E3 /* Data Model */,
 				830F9DCE1EDAFE960073232B /* GANCacheManager.h */,
 				830F9DCF1EDAFE960073232B /* GANCacheManager.m */,
 			);
@@ -625,6 +629,15 @@
 				8311A8901FA557A5001F6FF7 /* GANMessageListItemTVC.m */,
 			);
 			name = MessageListItemTVC;
+			sourceTree = "<group>";
+		};
+		833179D11FE092E800EC84E3 /* Data Model */ = {
+			isa = PBXGroup;
+			children = (
+				833179D21FE0932700EC84E3 /* GANOnboardingActionDataModel.h */,
+				833179D31FE0932700EC84E3 /* GANOnboardingActionDataModel.m */,
+			);
+			name = "Data Model";
 			sourceTree = "<group>";
 		};
 		833CB86E1F8775AB006693FF /* MessageWithChargeConfirmationPopup */ = {
@@ -1934,6 +1947,7 @@
 				83CA21411E5CA60F00C0D787 /* GANJobsDetailsVC.m in Sources */,
 				83F8A27E1FC4FD3B002C900D /* GANCompanyCrewItemTVC.m in Sources */,
 				838E6A5E1F8335F90083F3BC /* GANCompanySurveyChoicesPostVC.m in Sources */,
+				833179D41FE0932700EC84E3 /* GANOnboardingActionDataModel.m in Sources */,
 				83081B041E5E31A8004E8E14 /* GANCompanyAddWorkerVC.m in Sources */,
 				836DBC451F1BF73300CCD6AA /* GANPhonebookContactsManager.m in Sources */,
 				83CA21161E57F1B000C0D787 /* GANGlobalVCManager.m in Sources */,

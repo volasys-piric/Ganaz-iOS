@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Global.h"
+#import "GANUtils.h"
 
 @interface GANJobHomeVC : UIViewController
 

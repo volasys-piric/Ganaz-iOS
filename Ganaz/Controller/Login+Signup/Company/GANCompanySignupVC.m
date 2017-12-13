@@ -30,6 +30,7 @@
 #import "GANCompanyLoginCodeVC.h"
 #import "GANCompanyLoginPhoneVC.h"
 #import "GANJobHomeVC.h"
+#import "Global.h"
 
 @interface GANCompanySignupVC () <UITextFieldDelegate, GANCompanyCodePopupDelegate>
 

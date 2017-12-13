@@ -10,6 +10,8 @@
 #import "GANWorkerSuggestFriendItemTVC.h"
 #import "GANWorkerJobApplyCompletedVC.h"
 
+#import "GANUserManager.h"
+#import "GANCacheManager.h"
 #import "GANPhonebookContactsManager.h"
 #import "GANJobManager.h"
 #import "GANGlobalVCManager.h"
@@ -47,6 +49,11 @@
     [self registerTableViewCellFromNib];
     
     [self askPermissionForPhoneBook];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onLocalNotificationReceived:)
+                                                 name:GANLOCALNOTIFICATION_ONBOARDINGACTION_WORKER_SUGGESTFRIEND
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -63,6 +70,10 @@
 
 - (void) registerTableViewCellFromNib{
     [self.tableview registerNib:[UINib nibWithNibName:@"WorkerSuggestFriendItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_WORKER_SUGGESTFRIEND"];
+}
+
+- (void) dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Biz Logic
@@ -134,6 +145,21 @@
     } else {
         GANPhonebookContactDataModel *contact = [self.arrFilteredContacts objectAtIndex:self.indexSelected];
         szPhoneFriendNumber = contact.modelPhone.szLocalNumber;
+    }
+    
+    if ([[GANUserManager sharedInstance] isUserLoggedIn] == NO){
+        // Register onboarding action to CacheManager
+        GANCacheManager *managerCache = [GANCacheManager sharedInstance];
+        managerCache.modelOnboardingAction.enumLoginFrom = GANENUM_ONBOARDINGACTION_LOGINFROM_WORKER_SUGGESTFRIEND;
+        managerCache.modelOnboardingAction.szJobId = self.szJobId;
+        managerCache.modelOnboardingAction.szSugestPhoneNumber = szPhoneFriendNumber;
+        
+        // Go to Login VC
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_PHONE"];
+        [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        return;
     }
     
     GANJobManager *managerJob = [GANJobManager sharedInstance];
@@ -232,6 +258,14 @@
 - (IBAction)onButtonSubmitClick:(id)sender {
     [self.view endEditing:YES];
     [self doSuggestFrield];
+}
+
+#pragma mark -NSNotification
+
+- (void) onLocalNotificationReceived:(NSNotification *) notification{
+    if ([[notification name] isEqualToString:GANLOCALNOTIFICATION_ONBOARDINGACTION_WORKER_SUGGESTFRIEND]){
+        [self doSuggestFrield];
+    }
 }
 
 @end

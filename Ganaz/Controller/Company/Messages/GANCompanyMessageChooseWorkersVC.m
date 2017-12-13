@@ -28,6 +28,7 @@
 #import "GANGlobalVCManager.h"
 #import "GANAppManager.h"
 #import "UIColor+GANColor.h"
+#import "Global.h"
 
 #define NON_SELECTED -1
 #define CONSTANT_TABLEVIEWCELLHEIGHT                63
