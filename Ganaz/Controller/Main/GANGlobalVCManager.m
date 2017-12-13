@@ -10,6 +10,7 @@
 #import "GANMainChooseVC.h"
 #import "GANWorkerLoginPhoneVC.h"
 #import "GANWorkerLoginCodeVC.h"
+#import "GANMainLoadingVC.h"
 
 #import "GANUserManager.h"
 #import "GANMessageManager.h"
@@ -53,6 +54,7 @@
     UIViewController *vcTop = [GANGlobalVCManager getTopMostViewController];
     UINavigationController *nav = vcTop.navigationController;
 
+    if ([vcTop isKindOfClass:[GANMainLoadingVC class]] == YES) return;
     if ([vcTop isKindOfClass:[GANWorkerLoginPhoneVC class]] == YES) return;
     if ([vcTop isKindOfClass:[GANWorkerLoginCodeVC class]] == YES) return;
     
