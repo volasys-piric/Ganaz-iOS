@@ -41,9 +41,9 @@
 // Branch.io Deferred DeepLink Analyzer
 
 - (void) analyzeBranchDeeplink: (NSDictionary *) params {
-    [self initializeManager];
-    
     NSString *action = [GANGenericFunctionManager refineNSString:[params objectForKey:@"action"]];
+    if (action.length == 0) return;
+    
     self.enumAction = [GANDeeplinkManager getBranchActionTypeFromString:action];
     if (self.enumAction == GANENUM_BRANCHDEEPLINK_ACTION_WORKER_SIGNUPWITHPHONE) {
         self.szPhoneNumber = [GANGenericFunctionManager refineNSString:[params objectForKey:@"p"]];

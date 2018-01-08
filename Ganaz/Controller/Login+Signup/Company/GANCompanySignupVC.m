@@ -330,6 +330,7 @@
     
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    GANLOG(@"Create company");
     [managerCompany requestCreateCompany:company Callback:^(int status, GANCompanyDataModel *companyNew) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager hideHudProgressWithCallback:^{
@@ -372,6 +373,7 @@
     modelCompanyUser.szPassword = szPassword;
     [modelCompanyUser addPlayerIdIfNeeded:[GANPushNotificationManager sharedInstance].szOneSignalPlayerId];
     
+    GANLOG(@"Create company user");
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [[GANUserManager sharedInstance] requestUserSignupWithCallback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){

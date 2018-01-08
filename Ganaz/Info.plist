@@ -18,8 +18,17 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.9</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>ganaz</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>1900</string>
+	<string>1904</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -77,21 +86,12 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-    <key>branch_key</key>
-    <dict>
-        <key>live</key>
-        <string>key_live_ferSVlp0weyXTlDlGNQyQcjcCubGc9XL</string>
-        <key>test</key>
-        <string>key_test_ihrMOjb8whzYTlxkQLJ7mhbksqdPp506</string>
-    </dict>
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>ganaz</string>
-            </array>
-        </dict>
-    </array>
+	<key>branch_key</key>
+	<dict>
+		<key>live</key>
+		<string>key_live_ebrMJnzjxCnM8bew9RzsogedssnY2YGH</string>
+		<key>test</key>
+		<string>key_test_cjuIUdrktrlH0djwYVBrcbnmBEn942R2</string>
+	</dict>
 </dict>
 </plist>

@@ -1121,19 +1121,34 @@
                                             <action selector="onBtnManageRolesClick:" destination="VCV-76-GPl" eventType="touchUpInside" id="nDL-u5-khE"/>
                                         </connections>
                                     </button>
+                                    <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dmU-kz-kvx" userLabel="Button - Crash">
+                                        <rect key="frame" x="20" y="224" width="335" height="60"/>
+                                        <color key="backgroundColor" red="1" green="0.27450980390000002" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
+                                        <state key="normal" title="Crash App">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonCrashClick:" destination="VCV-76-GPl" eventType="touchUpInside" id="I5t-7J-pqT"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="OOe-QU-j7b" firstAttribute="height" secondItem="1oX-eJ-ceX" secondAttribute="height" id="Gxl-Gy-F7W"/>
+                                    <constraint firstItem="dmU-kz-kvx" firstAttribute="centerX" secondItem="kb8-vE-dr2" secondAttribute="centerX" id="I78-YJ-ZBb"/>
                                     <constraint firstItem="OOe-QU-j7b" firstAttribute="top" secondItem="kb8-vE-dr2" secondAttribute="bottom" constant="20" id="IVy-Wm-SVc"/>
                                     <constraint firstItem="OOe-QU-j7b" firstAttribute="width" secondItem="1oX-eJ-ceX" secondAttribute="width" id="Ixu-T5-f4D"/>
+                                    <constraint firstItem="kb8-vE-dr2" firstAttribute="top" secondItem="dmU-kz-kvx" secondAttribute="bottom" constant="20" id="LfQ-e5-0rS"/>
                                     <constraint firstItem="kb8-vE-dr2" firstAttribute="height" secondItem="OOe-QU-j7b" secondAttribute="height" id="Nhf-DX-MpI"/>
                                     <constraint firstItem="OOe-QU-j7b" firstAttribute="centerX" secondItem="1oX-eJ-ceX" secondAttribute="centerX" id="P1C-SN-Ubt"/>
                                     <constraint firstItem="1oX-eJ-ceX" firstAttribute="leading" secondItem="w5f-ed-RXO" secondAttribute="leading" constant="20" id="PkN-Tw-MEv"/>
                                     <constraint firstItem="kb8-vE-dr2" firstAttribute="centerX" secondItem="OOe-QU-j7b" secondAttribute="centerX" id="VJw-rw-dc0"/>
                                     <constraint firstItem="kb8-vE-dr2" firstAttribute="width" secondItem="OOe-QU-j7b" secondAttribute="width" id="Zkc-hS-MgS"/>
                                     <constraint firstAttribute="bottom" secondItem="1oX-eJ-ceX" secondAttribute="bottom" constant="30" id="bxz-uT-txc"/>
+                                    <constraint firstItem="dmU-kz-kvx" firstAttribute="width" secondItem="kb8-vE-dr2" secondAttribute="width" id="jRM-5M-F3L"/>
                                     <constraint firstAttribute="trailing" secondItem="1oX-eJ-ceX" secondAttribute="trailing" constant="20" id="nSC-kQ-GQ0"/>
+                                    <constraint firstItem="dmU-kz-kvx" firstAttribute="height" secondItem="kb8-vE-dr2" secondAttribute="height" id="xvL-Xs-YRw"/>
                                     <constraint firstItem="1oX-eJ-ceX" firstAttribute="top" secondItem="OOe-QU-j7b" secondAttribute="bottom" constant="20" id="zwq-rK-BcR"/>
                                 </constraints>
                             </view>

@@ -14,6 +14,7 @@
 #import "GANGlobalVCManager.h"
 #import "GANGenericFunctionManager.h"
 #import "UIView+Shake.h"
+#import "Global.h"
 
 @interface GANCommunicateWithMyWorkersOnboardingVC ()<UITableViewDelegate, UITableViewDataSource>
 @property (strong, nonatomic) IBOutlet UITextField *txtPhoneNumber;
@@ -153,6 +154,8 @@
     vc.aryCommunicateUsers = [self.arrAddedUsers mutableCopy];
     [self.navigationController pushViewController:vc animated:YES];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+    GANLOG(@"Go to message composer from CommunicateVC: count = %d", (int) [self.arrAddedUsers count]);
 }
 
 - (void) shakeInvalidFields: (UIView *) viewContainer{

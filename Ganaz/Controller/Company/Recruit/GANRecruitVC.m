@@ -349,7 +349,7 @@
     UIAlertAction *actionDelete = [UIAlertAction actionWithTitle:@"Delete" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         NSString *szMessage = [NSString stringWithFormat:@"Are you sure you want to delete %@ from your workers list?", szUserName];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [GANGlobalVCManager promptWithVC:self Title:@"Warning!" Message:szMessage ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
+            [GANGlobalVCManager promptWithVC:self Title:nil Message:szMessage ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
                 [self deleteMyWorkerAtIndex:cell.index];
             } CallbackNo:nil];
         });
@@ -401,7 +401,7 @@
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     [managerCompany requestDeleteMyWorker:myWorker.szId Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR) {
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Worker is successfully removed." DismissAfter:-1 Callback:^{
+            [GANGlobalVCManager showHudSuccessWithMessage:@"Worker has been successfully deleted." DismissAfter:-1 Callback:^{
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.tableviewWorkers reloadData];
                 });

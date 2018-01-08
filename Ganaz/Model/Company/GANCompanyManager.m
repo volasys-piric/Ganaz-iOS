@@ -176,10 +176,13 @@
 - (void) requestCreateCompany: (GANCompanyDataModel *) company Callback: (void (^) (int status, GANCompanyDataModel *companyNew)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForCreateCompany];
     NSDictionary *params = [company serializeToDictionary];
+    GANLOG(@"Create Company. %@", params);
     [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:NO parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dict = responseObject;
         BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
         if (success){
+            GANLOG(@"Company create succeeded");
+            
             GANCompanyDataModel *companyNew = [[GANCompanyDataModel alloc] init];
             NSDictionary *dictCompany = [dict objectForKey:@"company"];
             [companyNew setWithDictionary:dictCompany];
@@ -192,6 +195,7 @@
             if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage], nil);
         }
     } failure:^(int status, NSDictionary *error) {
+        GANLOG(@"Company create failed");
         if (callback) callback(status, nil);
     }];
 }

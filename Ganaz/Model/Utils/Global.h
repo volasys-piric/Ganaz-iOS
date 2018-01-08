@@ -24,7 +24,8 @@
 #define GANURL_BASEURL                              @"http://52.43.23.98:8000/api/v1"
 #define MIXPANEL_PROJECTTOKEN                       @"d1bee23a670fbbe63a19373daba332b0"
 
-#define GANLOG( s, ... ) NSLog( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
+//#define GANLOG( s, ... ) NSLog( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
+#define GANLOG( s, ... ) CLS_LOG( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
 
 #elif   defined(GANENVIRONMENT_DEMO)
 
