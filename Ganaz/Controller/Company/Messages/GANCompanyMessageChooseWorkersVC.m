@@ -61,6 +61,7 @@
 @property (strong, nonatomic) GANFadeTransitionDelegate *transController;
 @property (strong, nonatomic) GANLocationDataModel *mapData;
 @property (assign, atomic) int indexSelected;
+@property (assign, atomic) BOOL isFirstLoad;
 
 @end
 
@@ -77,6 +78,7 @@
     self.tableviewCrew.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.isPopupShowing = NO;
     self.isAutoTranslate = NO;
+    self.isFirstLoad = YES;
     self.transController = [[GANFadeTransitionDelegate alloc] init];
     
     self.indexSelected = NON_SELECTED;
@@ -95,6 +97,21 @@
     
     [self buildFilteredArray];
     [self refreshCrewList];
+
+    if (self.isFirstLoad == NO) {
+        [self refreshAllList];
+    }
+    self.isFirstLoad = NO;
+}
+
+- (void) refreshAllList {
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    [managerCompany requestGetMyWorkersListWithCallback:^(int status) {
+        [managerCompany requestGetCrewsListWithCallback:^(int status) {
+            [self buildFilteredArray];
+            [self refreshCrewList];
+        }];
+    }];
 }
 
 - (void) dealloc{

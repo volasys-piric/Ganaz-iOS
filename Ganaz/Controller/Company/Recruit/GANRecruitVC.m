@@ -44,6 +44,7 @@
 
 @property (strong, nonatomic) NSMutableArray *arrWorkerSelected;
 @property (assign, atomic) int indexSelected;
+@property (assign, atomic) BOOL isFirstLoad;
 
 @end
 
@@ -62,7 +63,8 @@
     
     self.transController = [[GANFadeTransitionDelegate alloc] init];
     self.arrWorkerSelected = [[NSMutableArray alloc] init];
-
+    self.isFirstLoad = YES;
+    
     [self registerTableViewCellFromNib];
     [self refreshViews];
     
@@ -76,6 +78,20 @@
     [super viewWillAppear:animated];
     
     [self buildWorkerList];
+    
+    if (self.isFirstLoad == NO) {
+        [self refreshAllList];
+    }
+    self.isFirstLoad = NO;
+}
+
+- (void) refreshAllList {
+    GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
+    [managerCompany requestGetMyWorkersListWithCallback:^(int status) {
+        [managerCompany requestGetCrewsListWithCallback:^(int status) {
+            [self buildWorkerList];
+        }];
+    }];
 }
 
 - (void) dealloc{
