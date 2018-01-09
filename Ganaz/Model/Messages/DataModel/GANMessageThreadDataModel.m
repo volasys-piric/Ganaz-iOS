@@ -51,19 +51,27 @@
 }
 
 - (BOOL) isSameThread: (GANMessageDataModel *) message{
+    // We need to consider that, multiple company users of same company can be in "receivers" object.
+    
     GANMessageDataModel *messageLatest = [self getLatestMessage];
     if (messageLatest == nil) return NO;
     
     if ([[GANUserManager sharedInstance] isCompanyUser] == YES) {
         // It's same thread in the following 2 cases... (A: Company, B, C: Worker)
-        // [Case 1] Sender1 == Sender2 && Receivers1 == Receivers2       Ex: (A->B,C, A->B,C) || (B->A, B-A)
+        // [Case 1] Sender1 == Sender2 && Receivers1 == Receivers2       Ex: (A->B,C, A->B,C) || (B->A, B->A)
         // [Case 2] Sender1 == Receivers2 && Sender2 == Receivers1     Ex: (A->B, B->A)
         
         // Attention! A->B,C && B->A are not same thread in Company section...
         
         // [Case 1]
         if ([messageLatest.modelSender isSameUser:message.modelSender] == YES) {
+            if ([message amISender] == NO) {
+                // (B->A, B->A)
+                return YES;
+            }
+            
             if ([messageLatest.arrayReceivers count] != [message.arrayReceivers count]) {
+                // If Company is Sender, and Receivers (workers) are different... FALSE
                 return NO;
             }
             
@@ -93,15 +101,25 @@
         }
         
         // [Case 2]
-        if ([messageLatest.arrayReceivers count] != 1) return NO;
-        if ([message.arrayReceivers count] != 1) return NO;
-        
-        GANMessageReceiverDataModel *receiver1 = [messageLatest getPrimaryReceiver];
-        GANMessageReceiverDataModel *receiver2 = [message getPrimaryReceiver];
-        
-        if ([messageLatest.modelSender isSameUser:receiver2] == YES &&
-            [message.modelSender isSameUser:receiver1] == YES) {
-            return YES;
+        if (([messageLatest amISender] == YES) && ([message amISender] == NO)) {
+            // (A->B, B->A)
+            if ([messageLatest.arrayReceivers count] != 1) return NO;     // If first message is for Group, while second message is from single worker to company? FALSE
+            
+            GANMessageReceiverDataModel *receiver1 = [messageLatest getPrimaryReceiver];
+            if ([message.modelSender isSameUser:receiver1] == YES) {
+                return YES;
+            }
+            return NO;
+        }
+        else if (([messageLatest amISender] == NO) && ([message amISender] == YES)) {
+            // (B->A, A->B)
+            if ([message.arrayReceivers count] != 1) return NO;     // If second message is for Group, while first message is from single worker to company? FALSE
+            
+            GANMessageReceiverDataModel *receiver2 = [message getPrimaryReceiver];
+            if ([messageLatest.modelSender isSameUser:receiver2] == YES) {
+                return YES;
+            }
+            return NO;
         }
         return NO;
     }

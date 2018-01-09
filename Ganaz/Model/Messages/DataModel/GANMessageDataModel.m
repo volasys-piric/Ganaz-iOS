@@ -190,7 +190,7 @@
         szCompanyId = [GANUserManager getCompanyDataModel].szId;
         for (int i = 0; i < (int) [self.arrayReceivers count]; i++) {
             GANMessageReceiverDataModel *receiver = [self.arrayReceivers objectAtIndex:i];
-            if ([receiver.szCompanyId isEqualToString:szCompanyId] == YES) return receiver;
+            if (([receiver.szCompanyId isEqualToString:szCompanyId] == YES) && ([receiver.szUserId isEqualToString:szUserId] == YES)) return receiver;
         }
     }
     else{

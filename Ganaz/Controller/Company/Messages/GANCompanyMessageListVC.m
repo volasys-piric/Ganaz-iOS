@@ -324,7 +324,13 @@
     }
     
     else {
-        didRead = !([message getPrimaryReceiver].enumStatus == GANENUM_MESSAGE_STATUS_NEW);
+        // If it's multiple company user, we need to first lookup "myself (current user)" in receivers, and if not found (in rare case), we just refer the primary receiver.
+        if ([message getReceiverMyself] != nil) {
+            didRead = !([message getReceiverMyself].enumStatus == GANENUM_MESSAGE_STATUS_NEW);
+        }
+        else {
+            didRead = !([message getPrimaryReceiver].enumStatus == GANENUM_MESSAGE_STATUS_NEW);
+        }
         
         if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE){
             cell.labelTitle.text = @"Message received";
