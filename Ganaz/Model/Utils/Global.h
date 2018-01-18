@@ -11,8 +11,8 @@
 
 #import <Crashlytics/Crashlytics.h>
 
-#warning This should be removed before submission!
-#define GANENVIRONMENT_STAGING
+//#warning This should be removed before submission!
+//#define GANENVIRONMENT_STAGING
 
 // BASE URL                                                                                                                                                                                                                                                   
 
