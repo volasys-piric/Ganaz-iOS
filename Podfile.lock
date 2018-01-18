@@ -14,6 +14,9 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
+  - Branch (0.21.14):
+    - Branch/Core (= 0.21.14)
+  - Branch/Core (0.21.14)
   - Crashlytics (3.9.3):
     - Fabric (~> 1.7.2)
   - Fabric (1.7.2)
@@ -35,6 +38,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking
+  - Branch
   - Crashlytics
   - Fabric
   - GoogleMaps
@@ -51,6 +55,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  Branch: 1d09c85256236f067dfa96944709f1f011ec17c0
   Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
   Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
   GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
@@ -65,6 +70,6 @@ SPEC CHECKSUMS:
   UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff
   UIView+Shake: 055ad67721de1f74d29c0a1d464697e505dfc62f
 
-PODFILE CHECKSUM: fed212bc1ffedc2dd4005ddd7cefa07ecf9da6a8
+PODFILE CHECKSUM: b33715f52c502af3d233d2f980309d53d741f5f9
 
 COCOAPODS: 1.3.1

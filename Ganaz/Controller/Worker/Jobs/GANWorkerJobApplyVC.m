@@ -10,6 +10,8 @@
 #import "GANWorkerJobSuggestFriendVC.h"
 #import "GANWorkerJobApplyCompletedVC.h"
 
+#import "GANUserManager.h"
+#import "GANCacheManager.h"
 #import "GANJobManager.h"
 #import "GANAppManager.h"
 #import "GANGlobalVCManager.h"
@@ -29,6 +31,11 @@
     // Do any additional setup after loading the view.
     
     [self refreshViews];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onLocalNotificationReceived:)
+                                                 name:GANLOCALNOTIFICATION_ONBOARDINGACTION_WORKER_JOBAPPLY
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,9 +50,27 @@
     self.buttonSuggestFriend.layer.cornerRadius = 3;
 }
 
+- (void) dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Biz Logic
 
 - (void) doApplyJob{
+    if ([[GANUserManager sharedInstance] isUserLoggedIn] == NO){
+        // Register onboarding action to CacheManager
+        GANCacheManager *managerCache = [GANCacheManager sharedInstance];
+        managerCache.modelOnboardingAction.enumLoginFrom = GANENUM_ONBOARDINGACTION_LOGINFROM_WORKER_JOBAPPLY;
+        managerCache.modelOnboardingAction.szJobId = self.szJobId;
+        
+        // Go to Login VC
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_PHONE"];
+        [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        return;
+    }
+
     int indexMyApplication = [[GANJobManager sharedInstance] getIndexForMyApplicationsByJobId:self.szJobId];
     if (indexMyApplication != -1){
         // You already applied to this job.
@@ -117,6 +142,14 @@
 
 - (IBAction)onButtonSuggestFriendClick:(id)sender {
     [self gotoSuggestFriendVC];
+}
+
+#pragma mark -NSNotification
+
+- (void) onLocalNotificationReceived:(NSNotification *) notification{
+    if ([[notification name] isEqualToString:GANLOCALNOTIFICATION_ONBOARDINGACTION_WORKER_JOBAPPLY]){
+        [self doApplyJob];
+    }
 }
 
 @end

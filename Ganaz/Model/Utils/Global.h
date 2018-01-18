@@ -11,8 +11,8 @@
 
 #import <Crashlytics/Crashlytics.h>
 
-#warning This should be removed before submission!
-#define GANENVIRONMENT_STAGING
+//#warning This should be removed before submission!
+//#define GANENVIRONMENT_STAGING
 
 // BASE URL                                                                                                                                                                                                                                                   
 
@@ -24,7 +24,8 @@
 #define GANURL_BASEURL                              @"http://52.43.23.98:8000/api/v1"
 #define MIXPANEL_PROJECTTOKEN                       @"d1bee23a670fbbe63a19373daba332b0"
 
-#define GANLOG( s, ... ) NSLog( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
+//#define GANLOG( s, ... ) NSLog( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
+#define GANLOG( s, ... ) CLS_LOG( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
 
 #elif   defined(GANENVIRONMENT_DEMO)
 
@@ -125,26 +126,12 @@
 #define GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATED           @"GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATED"
 #define GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATEFAILED      @"GANLOCALNOTIFICATION_COMPANY_SURVEYANSWERLIST_UPDATEFAILED"
 
+#define GANLOCALNOTIFICATION_ONBOARDINGACTION_WORKER_JOBAPPLY           @"GANLOCALNOTIFICATION_ONBOARDINGACTION_WORKER_JOBAPPLY"
+#define GANLOCALNOTIFICATION_ONBOARDINGACTION_WORKER_SUGGESTFRIEND      @"GANLOCALNOTIFICATION_ONBOARDINGACTION_WORKER_SUGGESTFRIEND"
+
+#define GANLOCALNOTIFICATION_DEEPLINK_ANALYZECOMPLETED                  @"GANLOCALNOTIFICATION_DEEPLINK_ANALYZECOMPLETED"
+
 #define LOCALSTORAGE_PREFIX                                             @"GANAZLOCALSTORAGE_"
 #define LOCALSTORAGE_USER_LOGIN                                         @"USER_LOGIN"
 
-typedef enum company_signup_from_vc
-{
-    ENUM_DEFAULT_SIGNUP = 0,
-    ENUM_JOBPOST_SIGNUP,
-    ENUM_COMMUNICATE_SIGNUP,
-    ENUM_RETAIN_SIGNUP
-} ENUM_COMPANY_SIGNUP_FROM_CUSTOMVC;
-
-typedef enum company_addworkers_from_vc {
-    ENUM_COMPANY_ADDWORKERS_FROM_HOME = 0,
-    ENUM_COMPANY_ADDWORKERS_FROM_MESSAGE,
-    ENUM_COMPANY_ADDWORKERS_FROM_RECRUITJOB,
-    ENUM_COMPANY_ADDWORKERS_FROM_RETAINMYWORKERS
-} ENUM_COMPANY_ADDWORKERS_FROM_CUSTOMVC;
-
-typedef enum company_sharePostingWithContactFrom_vc {
-    ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_HOME = 0,
-    ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_JOBPOST
-} ENUM_COMPANY_SHAREPOSTINGWITHCONTACT_FROM_CUSTOMVC;
 #endif /* Global_h */

@@ -279,30 +279,6 @@
 }
 
 - (void) doApply{
-    if ([[GANUserManager sharedInstance] isUserLoggedIn] == NO){
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
-        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_PHONE"];
-        [self.navigationController pushViewController:vc animated:YES];
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-        return;
-    }
-
-    /*
-    // Please wait...
-    [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
-    [[GANJobManager sharedInstance] requestApplyForJob:self.job.szId Callback:^(int status) {
-        if (status == SUCCESS_WITH_NO_ERROR){
-            [GANGlobalVCManager showHudSuccessWithMessage:@"Le empresa ha sido notificado sobre su interés." DismissAfter:-1 Callback:^{
-            }];
-        }
-        else {
-            // Sorry, we've encountered an error.
-            [GANGlobalVCManager showHudErrorWithMessage:@"Perdón. Hemos encontrado un error." DismissAfter:-1 Callback:nil];
-        }
-    }];
-    
-    GANACTIVITY_REPORT(@"Worker - Apply for job");
-     */
     [self gotoJobApplyVC];
 }
 

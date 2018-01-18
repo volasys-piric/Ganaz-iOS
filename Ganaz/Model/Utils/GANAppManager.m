@@ -18,6 +18,7 @@
 #import "GANMembershipPlanManager.h"
 #import "GANDataManager.h"
 #import "GANSurveyManager.h"
+#import "GANCacheManager.h"
 
 #import "GANNetworkRequestManager.h"
 #import "GANUrlManager.h"
@@ -89,6 +90,7 @@
     sharedInstance.keyboardDistanceFromTextField = 70;
     sharedInstance.enableAutoToolbar = NO;
     [[GANLocationManager sharedInstance] initializeManager];
+    [[GANCacheManager sharedInstance] initializeManager];
 }
 
 - (void) initializeManagersAfterAppConfig{
@@ -165,6 +167,8 @@
     [[GANUserManager sharedInstance] doLogout];
     [[GANCompanyManager sharedInstance] initializeManager];
     [[GANRecruitManager sharedInstance] initializeManager];
+    [[GANCacheManager sharedInstance] initializeOnboardingAction];
+    
     GANACTIVITY_REPORT(@"User logged out");
 }
 

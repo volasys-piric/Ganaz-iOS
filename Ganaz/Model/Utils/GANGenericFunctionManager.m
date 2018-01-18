@@ -421,6 +421,9 @@
 + (NSDate *) getDateTimeFromNormalizedString: (NSString *) sz{
     // yyyy-MM-dd HH:mm:ss zzz
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSLocale *twentyFour = [[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"];
+    
+    [dateFormatter setLocale:twentyFour];
     [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
     

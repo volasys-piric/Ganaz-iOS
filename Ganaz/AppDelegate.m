@@ -11,11 +11,14 @@
 #import "GANUserManager.h"
 #import "GANMessageManager.h"
 #import "GANPushNotificationManager.h"
+#import "GANDeeplinkManager.h"
+#import "GANGlobalVCManager.h"
 
 #import "Global.h"
 #import <OneSignal/OneSignal.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+#import <Branch/Branch.h>
 
 @interface AppDelegate ()
 
@@ -67,9 +70,53 @@
         [[GANPushNotificationManager sharedInstance] onOneSignalPlayerIdAvailable:userId PushToken:pushToken];
     }];
 #endif
+    
+    // Branch.io For Deferred Deep Link
+    
+    Branch *branch = [Branch getInstance];
+    [branch initSessionWithLaunchOptions:launchOptions andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
+        if (!error && params) {
+            // params are the deep linked params associated with the link that the user clicked -> was re-directed to this app
+            // params will be empty if no data found
+            // ... insert custom logic here ...
+            
+            GANLOG(@"Branch.io Initialization Params: %@", params);
+            
+            GANDeeplinkManager *managerDeeplink = [GANDeeplinkManager sharedInstance];
+            [managerDeeplink analyzeBranchDeeplink:params];
+            
+            if (managerDeeplink.enumAction == GANENUM_BRANCHDEEPLINK_ACTION_WORKER_SIGNUPWITHPHONE && [[GANUserManager sharedInstance] isUserLoggedIn] == NO) {
+                // Open Worker > Phone VC
+                [GANGlobalVCManager gotoWorkerLoginVC];
+            }
+        }
+    }];
+    
     return YES;
 }
 
+#pragma mark - Branch.io
+
+// Respond to URI scheme links
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    // pass the url to the handle deep link call
+    [[Branch getInstance] application:application
+                              openURL:url
+                    sourceApplication:sourceApplication
+                           annotation:annotation];
+    
+    // do other deep link routing for the Facebook SDK, Pinterest SDK, etc
+    return YES;
+}
+
+// Respond to Universal Links
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
+    BOOL handledByBranch = [[Branch getInstance] continueUserActivity:userActivity];
+    
+    return handledByBranch;
+}
+
+#pragma mark - Application Activity
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

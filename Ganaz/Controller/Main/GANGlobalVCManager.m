@@ -10,6 +10,7 @@
 #import "GANMainChooseVC.h"
 #import "GANWorkerLoginPhoneVC.h"
 #import "GANWorkerLoginCodeVC.h"
+#import "GANMainLoadingVC.h"
 
 #import "GANUserManager.h"
 #import "GANMessageManager.h"
@@ -43,19 +44,31 @@
 
 + (void) logoutToWorkerLoginVC: (UIViewController *) vcCurrent{
     [vcCurrent dismissViewControllerAnimated:YES completion:nil];
-    /*
+}
+
++ (void) gotoWorkerLoginVC {
+    if ([[GANUserManager sharedInstance] isUserLoggedIn] == YES) {
+        return;
+    }
+    
+    UIViewController *vcTop = [GANGlobalVCManager getTopMostViewController];
+    UINavigationController *nav = vcTop.navigationController;
+
+    if ([vcTop isKindOfClass:[GANMainLoadingVC class]] == YES) return;
+    if ([vcTop isKindOfClass:[GANWorkerLoginPhoneVC class]] == YES) return;
+    if ([vcTop isKindOfClass:[GANWorkerLoginCodeVC class]] == YES) return;
+    
+    // Should go to Worker > Login VC, populating phone number...
     UIStoryboard *storyboardMain = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIStoryboard *storyboardLogin = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
-    
     UIViewController *vcChoose = [storyboardMain instantiateViewControllerWithIdentifier:@"STORYBOARD_MAIN_CHOOSE"];
-    UIViewController *vcLoginPhone = [storyboardLogin instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_PHONE"];
-    UIViewController *vcLoginCode = [storyboardLogin instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_CODE"];
+    UIViewController *vcLogin = [storyboardLogin instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_PHONE"];
     
-    vcCurrent.navigationController.viewControllers = @[vcChoose, vcLoginPhone, vcLoginCode, vcCurrent];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [vcCurrent.navigationController popViewControllerAnimated:YES];
+        [nav setNavigationBarHidden:NO animated:YES];
+        [nav setViewControllers:@[vcChoose, vcLogin] animated:YES];
+        vcLogin.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     });
-     */
 }
 
 #pragma mark - Utils

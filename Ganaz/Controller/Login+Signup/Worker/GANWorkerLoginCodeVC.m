@@ -7,14 +7,18 @@
 //
 
 #import "GANWorkerLoginCodeVC.h"
-#import "GANUserManager.h"
-#import "GANPushNotificationManager.h"
 #import "GANMainChooseVC.h"
 #import "GANWorkerLoginPhoneVC.h"
-#import "GANGenericFunctionManager.h"
+#import "GANWorkerJobApplyVC.h"
+
+#import "GANUserManager.h"
+#import "GANCacheManager.h"
+#import "GANAppManager.h"
+#import "GANPushNotificationManager.h"
+
 #import "Global.h"
 #import "GANGlobalVCManager.h"
-#import "GANAppManager.h"
+#import "GANGenericFunctionManager.h"
 
 @interface GANWorkerLoginCodeVC () <UITextFieldDelegate>
 
@@ -250,6 +254,7 @@
 - (void) gotoWorkerMain{
     NSMutableArray *arrNewVCs = [[NSMutableArray alloc] init];
     NSArray *arrVCs = self.navigationController.viewControllers;
+    
     // ChooseVC, LoginPhoneVC, LoginCodeVC
     for (int i = 0; i < (int)([arrVCs count]); i++){
         UIViewController *vc = [arrVCs objectAtIndex:i];
@@ -259,8 +264,9 @@
             [arrNewVCs addObject:vc];
         }
     }
-        
+
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Worker" bundle:nil];
+
     UITabBarController *tbc = [storyboard instantiateInitialViewController];
     if ([arrNewVCs count] > 0){
         UINavigationController *nav = [tbc.viewControllers objectAtIndex:0];
@@ -272,6 +278,14 @@
     
     [self.navigationController presentViewController:tbc animated:YES completion:^{
        [self.navigationController setViewControllers:@[[self.navigationController.viewControllers objectAtIndex:0]]];
+        
+        GANCacheManager *managerCache = [GANCacheManager sharedInstance];
+        if ([managerCache.modelOnboardingAction isOnboardingActionForWorker] == YES) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [managerCache.modelOnboardingAction postNotificationToContinueOnboardingAction];
+            });
+        }
+        
     }];
     [[GANAppManager sharedInstance] initializeManagersAfterLogin];
 }

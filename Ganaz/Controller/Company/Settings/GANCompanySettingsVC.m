@@ -8,7 +8,9 @@
 
 #import "GANCompanySettingsVC.h"
 #import "GANAppManager.h"
+#import <Crashlytics/Crashlytics.h>
 #import "Global.h"
+#import "GANGlobalVCManager.h"
 
 @interface GANCompanySettingsVC ()
 
@@ -79,6 +81,12 @@
 
 - (IBAction)onBtnManageRolesClick:(id)sender {
     [self gotoManageRolesVC];
+}
+
+- (IBAction)onButtonCrashClick:(id)sender {
+    [GANGlobalVCManager promptWithVC:self Title:@"Warning!" Message:@"Are you sure you want to crash the app?" ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
+        [[Crashlytics sharedInstance] crash];
+    } CallbackNo:nil];
 }
 
 @end

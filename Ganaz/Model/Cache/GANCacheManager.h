@@ -11,6 +11,7 @@
 #import "GANJobDataModel.h"
 #import "GANCompanyDataModel.h"
 #import "GANSurveyManager.h"
+#import "GANOnboardingActionDataModel.h"
 
 @interface GANCacheManager : NSObject
 
@@ -19,8 +20,14 @@
 @property (strong, nonatomic) NSMutableArray <GANSurveyDataModel *> *arraySurvey;
 @property (strong, nonatomic) NSMutableArray <GANSurveyAnswerDataModel *> *arraySurveyAnswers;
 
+@property (strong, nonatomic) GANOnboardingActionDataModel *modelOnboardingAction;
+
 + (instancetype) sharedInstance;
 - (void) initializeManager;
+
+#pragma mark - Onboarding Action
+
+- (void) initializeOnboardingAction;
 
 #pragma mark Users
 

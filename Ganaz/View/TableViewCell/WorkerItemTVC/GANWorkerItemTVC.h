@@ -8,9 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class GANWorkerItemTVC;
+
 @protocol GANWorkerItemTVCDelegate <NSObject>
 
-- (void) setWorkerNickName : (NSInteger) nIndex;
+@optional
+
+- (void) workerItemTableViewCellDidDotsClick: (GANWorkerItemTVC *) cell;
 
 @end
 
@@ -21,7 +25,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblPoint;
 @property (weak, nonatomic) IBOutlet UIButton *btnEdit;
 
-@property (atomic, assign) NSInteger nIndex;
+@property (atomic, assign) int index;
 @property (weak, nonatomic) id<GANWorkerItemTVCDelegate> delegate;
 
 - (void) setButtonColor:(BOOL) isWorker;

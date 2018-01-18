@@ -36,6 +36,13 @@
     self.arrayUsers = [[NSMutableArray alloc] init];
     self.arraySurvey = [[NSMutableArray alloc] init];
     self.arraySurveyAnswers = [[NSMutableArray alloc] init];
+    [self initializeOnboardingAction];
+}
+
+#pragma mark - Onboarding Action
+
+- (void) initializeOnboardingAction {
+    self.modelOnboardingAction = [[GANOnboardingActionDataModel alloc] init];
 }
 
 #pragma mark Users

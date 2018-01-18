@@ -18,6 +18,7 @@
 #import "GANGenericFunctionManager.h"
 #import "GANGlobalVCManager.h"
 #import "GANAppManager.h"
+#import "Global.h"
 
 @interface GANCompanyLoginCodeVC () <UITextFieldDelegate>
 
