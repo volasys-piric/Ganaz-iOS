@@ -189,7 +189,8 @@
         if ([message amIReceiver] == YES) {
             if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE ||
                 message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT ||
-                message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE) {
+                message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE ||
+                message.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE) {
                 return message.isAutoTranslate;
             }
         }

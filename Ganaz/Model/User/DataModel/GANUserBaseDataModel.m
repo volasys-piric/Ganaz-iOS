@@ -7,6 +7,7 @@
 //
 
 #import "GANUserBaseDataModel.h"
+#import "GANUserWorkerDataModel.h"
 #import "GANGenericFunctionManager.h"
 
 @implementation GANUserBaseDataModel
@@ -80,6 +81,9 @@
     }
     else if (self.enumType == GANENUM_USER_TYPE_WORKER || self.enumType == GANENUM_USER_TYPE_ONBOARDING_WORKER){
         return [self.modelPhone getBeautifiedPhoneNumber];
+    }
+    else if (self.enumType == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER) {
+        return [NSString stringWithFormat:@"Candidate #%d", ((GANUserWorkerDataModel *) self).indexForCandidate];
     }
     return @"";
 }

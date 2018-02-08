@@ -193,4 +193,12 @@
     return count;
 }
 
+- (BOOL) hasFacebookMessage{
+    for (int i = 0; i < (int) [self.arrayMessages count]; i++){
+        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
+        if (message.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE) return YES;
+    }
+    return NO;
+}
+
 @end

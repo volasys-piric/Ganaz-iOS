@@ -12,17 +12,14 @@
 
 @optional
 
-- (void) didRecruit;
-- (void) didEdit;
+- (void) didRecruitClick;
+- (void) didViewCandidatesClick;
+- (void) didEditJobClick;
 
 @end
 
 @interface GANJobRecruitPopupVC : UIViewController
 
 @property (weak, nonatomic) id<GANJobRecruitPopupVCDelegate> delegate;
-
-- (void) setDescriptionTitle:(NSString*)strDescription;
-- (void) setRecruitButtonTitle:(NSString*)strTitle;
-- (void) setEditButtonTitle:(NSString*)strTitle;
 
 @end

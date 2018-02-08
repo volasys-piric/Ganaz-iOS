@@ -40,6 +40,9 @@
     } else if (type == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
         self.modelUser = [[GANUserWorkerDataModel alloc] init];
         [self.modelUser setEnumType:GANENUM_USER_TYPE_ONBOARDING_WORKER];
+    } else if (type == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER) {
+        self.modelUser = [[GANUserWorkerDataModel alloc] init];
+        [self.modelUser setEnumType:GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER];
     } else if (type == GANENUM_USER_TYPE_COMPANY_REGULAR || type == GANENUM_USER_TYPE_COMPANY_ADMIN){
         self.modelUser = [[GANUserCompanyDataModel alloc] init];
     }
@@ -281,11 +284,7 @@
                 
                 GANUserBaseDataModel *user;
                 
-                if (enumUserType == GANENUM_USER_TYPE_WORKER){
-                    user = [[GANUserWorkerDataModel alloc] init];
-                    [user setWithDictionary:dictAccount];
-                }
-                else if (enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
+                if (enumUserType == GANENUM_USER_TYPE_WORKER || enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER || enumUserType == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER){
                     user = [[GANUserWorkerDataModel alloc] init];
                     [user setWithDictionary:dictAccount];
                 }
@@ -317,11 +316,7 @@
             GANENUM_USER_TYPE enumUserType = [GANUtils getUserTypeFromString:szUserType];
             GANUserBaseDataModel *user;
             
-            if (enumUserType == GANENUM_USER_TYPE_WORKER){
-                user = [[GANUserWorkerDataModel alloc] init];
-                [user setWithDictionary:dictAccount];
-            }
-            else if (enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
+            if (enumUserType == GANENUM_USER_TYPE_WORKER || enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER || enumUserType == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER){
                 user = [[GANUserWorkerDataModel alloc] init];
                 [user setWithDictionary:dictAccount];
             }

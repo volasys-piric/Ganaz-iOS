@@ -11,10 +11,10 @@
 
 @interface GANJobRecruitPopupVC ()
 
-@property (weak, nonatomic) IBOutlet UILabel *lblDescription;
 @property (weak, nonatomic) IBOutlet UIView *viewContents;
-@property (weak, nonatomic) IBOutlet UIButton *btnRecruit;
-@property (weak, nonatomic) IBOutlet UIButton *btnEdit;
+@property (weak, nonatomic) IBOutlet UIButton *buttonRecruit;
+@property (weak, nonatomic) IBOutlet UIButton *buttonEdit;
+@property (weak, nonatomic) IBOutlet UIButton *buttonCandidates;
 
 @end
 
@@ -33,10 +33,12 @@
     self.viewContents.layer.borderWidth     = 1;
     self.viewContents.layer.borderColor     = GANUICOLOR_THEMECOLOR_MAIN.CGColor;
     
-    self.btnRecruit.clipsToBounds        = YES;
-    self.btnRecruit.layer.cornerRadius   = 3;
-    self.btnEdit.clipsToBounds        = YES;
-    self.btnEdit.layer.cornerRadius   = 3;
+    self.buttonRecruit.clipsToBounds        = YES;
+    self.buttonRecruit.layer.cornerRadius   = 3;
+    self.buttonEdit.clipsToBounds                 = YES;
+    self.buttonEdit.layer.cornerRadius            = 3;
+    self.buttonCandidates.clipsToBounds        = YES;
+    self.buttonCandidates.layer.cornerRadius   = 3;
 }
 
 - (void) closeDialog{
@@ -47,37 +49,34 @@
     }];
 }
 
-- (void) setRecruitButtonTitle:(NSString*)strTitle {
-    [self.btnRecruit setTitle:strTitle forState:UIControlStateNormal];
-}
-
-- (void) setEditButtonTitle:(NSString*)strTitle {
-    [self.btnEdit setTitle:strTitle forState:UIControlStateNormal];
-}
-
-- (void) setDescriptionTitle:(NSString*)strDescription {
-    self.lblDescription.text = strDescription;
-}
-
-- (IBAction)onBtnWrapperClick:(id)sender {
+- (IBAction)onButtonWrapperClick:(id)sender {
     [self.view endEditing:YES];
     [self closeDialog];
 }
 
-- (IBAction)onRecruit:(id)sender {
+- (IBAction)onButtonRecruitClick:(id)sender {
     [self.view endEditing:YES];
     [self closeDialog];
-    if(self.delegate && [self.delegate respondsToSelector:@selector(didRecruit)]) {
-        [self.delegate didRecruit];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(didRecruitClick)]) {
+        [self.delegate didRecruitClick];
     }
 }
 
-- (IBAction)onEdit:(id)sender {
+- (IBAction)onButtonEditJobClick:(id)sender {
     [self.view endEditing:YES];
     [self closeDialog];
     
-    if(self.delegate && [self.delegate respondsToSelector:@selector(didEdit)]) {
-        [self.delegate didEdit];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(didEditJobClick)]) {
+        [self.delegate didEditJobClick];
+    }
+}
+
+- (IBAction)onButtonViewCandidatesClick:(id)sender {
+    [self.view endEditing:YES];
+    [self closeDialog];
+    
+    if(self.delegate && [self.delegate respondsToSelector:@selector(didViewCandidatesClick)]) {
+        [self.delegate didViewCandidatesClick];
     }
 }
 

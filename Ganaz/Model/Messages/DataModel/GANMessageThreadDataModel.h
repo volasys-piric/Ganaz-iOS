@@ -20,5 +20,6 @@
 - (BOOL) existsMessageWithMessageId: (NSString *) messageId;
 - (NSMutableArray <NSString *> *) getMessageIdsForStatusUpdateMyself;
 - (int) getUnreadMessageCount;
+- (BOOL) hasFacebookMessage;
 
 @end

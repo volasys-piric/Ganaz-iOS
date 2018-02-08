@@ -212,7 +212,7 @@
         didRead = YES;
         GANMessageReceiverDataModel *receiverPrimary = [message getPrimaryReceiver];
         
-        if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE){
+        if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE || message.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE){
             cell.labelMessage.text = [message getContentsES];
             cell.labelTitle.text = @"Mensaje enviado";       // Message sent
             
@@ -308,7 +308,7 @@
         GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
         didRead = (receiver != nil && receiver.enumStatus != GANENUM_MESSAGE_STATUS_NEW);
         
-        if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE){
+        if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE || message.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE){
             cell.labelTitle.text = @"Mensaje recibido";           // Message received
             cell.labelMessage.text = [message getContentsES];
             [managerCache requestGetCompanyDetailsByCompanyId:message.modelSender.szCompanyId Callback:^(int indexCompany) {
