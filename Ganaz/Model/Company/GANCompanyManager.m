@@ -79,10 +79,10 @@
     return -1;
 }
 
-- (int) getIndexForMyWorkersWithPhoneNumber: (NSString *) phoneNumber {
+- (int) getIndexForMyWorkersWithPhone: (GANPhoneDataModel *) phone {
     for (int i = 0; i < (int) [self.arrMyWorkers count]; i++){
         GANMyWorkerDataModel *myWorker = [self.arrMyWorkers objectAtIndex:i];
-        if ([myWorker.modelWorker.modelPhone isSamePhoneNumber:phoneNumber] == YES) {
+        if ([myWorker.modelWorker.modelPhone isSamePhone:phone] == YES) {
             return i;
         }
     }
@@ -451,8 +451,8 @@
     }];
 }
 
-- (void) requestSearchNewWorkersByPhoneNumber: (NSString *) phoneNumber Callback: (void (^) (int status, NSArray *arrWorkers)) callback{
-    [[GANUserManager sharedInstance] requestSearchUserByPhoneNumber:phoneNumber Type:GANENUM_USER_TYPE_WORKER Callback:^(int status, NSArray *array) {
+- (void) requestSearchNewWorkersByPhone: (GANPhoneDataModel *) phone Callback: (void (^) (int status, NSArray *arrWorkers)) callback{
+    [[GANUserManager sharedInstance] requestSearchUserByPhone:phone Type:GANENUM_USER_TYPE_WORKER Callback:^(int status, NSArray *array) {
         if (status == SUCCESS_WITH_NO_ERROR && array != nil){
             NSMutableArray *arr = [[NSMutableArray alloc] init];
             for (int i = 0; i < (int) [array count]; i++){
@@ -587,10 +587,10 @@
     }];
 }
 
-- (BOOL) checkUserInMyworkerList:(NSString *) szPhoneNumber {
+- (BOOL) checkUserInMyworkerList:(GANPhoneDataModel *) phone{
     for (int i = 0; i < self.arrMyWorkers.count; i ++) {
         GANMyWorkerDataModel *worker = [self.arrMyWorkers objectAtIndex:i];
-        if([worker.modelWorker.modelPhone isSamePhoneNumber:szPhoneNumber] == YES) {
+        if([worker.modelWorker.modelPhone isSamePhone:phone] == YES) {
             return YES;
         }
     }

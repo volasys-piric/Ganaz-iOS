@@ -200,7 +200,7 @@
 - (void) requestSendMessageWithJobId: (NSString *) jobId
                                 Type: (GANENUM_MESSAGE_TYPE) type
                            Receivers: (NSArray *) receivers
-               ReceiversPhoneNumbers: (NSArray *) receivers_phone_numbers
+                      ReceiverPhones: (NSArray <GANPhoneDataModel *> *) receiverPhones
                              Message: (NSString *) message
                             MetaData: (NSDictionary *)metaData
                        AutoTranslate: (BOOL) isAutoTranslate
@@ -236,8 +236,12 @@
         
         [params setObject:(isAutoTranslate == YES) ? @"true" : @"false" forKey:@"auto_translate"];
         
-        if(receivers_phone_numbers.count > 0) {
-            [params setObject:receivers_phone_numbers forKey:@"receivers_phone_numbers"];
+        if(receiverPhones.count > 0) {
+            NSMutableArray *arrayReceiversPhoneNumbers = [[NSMutableArray alloc] init];
+            for (GANPhoneDataModel *phone in receiverPhones) {
+                [arrayReceiversPhoneNumbers addObject:[phone getNormalizedPhoneNumber]];
+            }
+            [params setObject:arrayReceiversPhoneNumbers forKey:@"receivers_phone_numbers"];
         }
         
         [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {

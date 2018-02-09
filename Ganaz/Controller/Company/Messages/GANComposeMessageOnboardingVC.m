@@ -104,11 +104,11 @@
     }
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
     
-    NSMutableArray *arrPhoneNumber = [[NSMutableArray alloc] init];
+    NSMutableArray <GANPhoneDataModel *> *arrayPhones = [[NSMutableArray alloc] init];
     
     for (int i =0; i < self.aryCommunicateUsers.count; i ++) {
         GANPhonebookContactDataModel *contact = [self.aryCommunicateUsers objectAtIndex:i];
-        [arrPhoneNumber addObject:contact.modelPhone.szLocalNumber];
+        [arrayPhones addObject:contact.modelPhone];
     }
     
     NSDictionary *metaData;
@@ -116,7 +116,7 @@
         metaData = @{@"map" : [self.mapData serializeToMetaDataDictionary]};
     }
     
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:nil ReceiversPhoneNumbers: arrPhoneNumber Message:szMessage MetaData:metaData AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
+    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:nil ReceiverPhones: arrayPhones Message:szMessage MetaData:metaData AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR) {
             
             [GANGlobalVCManager showHudSuccessWithMessage:@"Message sent!" DismissAfter:-1 Callback:^{

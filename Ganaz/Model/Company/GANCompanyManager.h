@@ -26,12 +26,12 @@
 + (NSString *) generateCompanyCodeFromName: (NSString *) companyName;
 - (void) getBestUserDisplayNameWithUserId: (NSString *) userId Callback: (void (^) (NSString *displayName)) callback;
 - (int) getIndexForMyWorkersWithUserId: (NSString *) userId;
-- (int) getIndexForMyWorkersWithPhoneNumber: (NSString *) phoneNumber;
+- (int) getIndexForMyWorkersWithPhone: (GANPhoneDataModel *) phone;
 
 - (NSArray <GANMyWorkerDataModel *> *) getMembersListForCrew: (NSString *) crewId;
 - (NSArray <GANMyWorkerDataModel *> *) getNonCrewMembersList;
 
-- (BOOL) checkUserInMyworkerList:(NSString *) szPhoneNumber;
+- (BOOL) checkUserInMyworkerList:(GANPhoneDataModel *) phone;
 
 #pragma mark - Requests
 
@@ -51,7 +51,7 @@
 - (void) requestUpdateMyWorkerNicknameWithMyWorkerId: (NSString *) myWorkerId Nickname: (NSString *) nickname Callback: (void (^) (int status)) callback;
 - (void) requestUpdateMyWorkerCrewWithMyWorkerId: (NSString *) myWorkerId CrewId: (NSString *) crewId Callback: (void (^) (int status)) callback;
 
-- (void) requestSearchNewWorkersByPhoneNumber: (NSString *) phoneNumber Callback: (void (^) (int status, NSArray *arrWorkers)) callback;
+- (void) requestSearchNewWorkersByPhone: (GANPhoneDataModel *) phone Callback: (void (^) (int status, NSArray *arrWorkers)) callback;
 - (void) requestSendInvite: (GANPhoneDataModel *) phone CompanyId: (NSString *) companyId inviteOnly:(BOOL)bInviteOnly Callback: (void (^) (int status)) callback;
 - (void) requestDeleteMyWorker: (NSString *) myWorkerId Callback: (void (^) (int status)) callback;
 

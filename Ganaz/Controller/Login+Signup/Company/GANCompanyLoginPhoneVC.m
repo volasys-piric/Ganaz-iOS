@@ -10,18 +10,21 @@
 #import "GANCompanyLoginCodeVC.h"
 #import "GANLoginResetPasswordVC.h"
 #import "GANCompanySignupVC.h"
+#import "GANCountrySelectorPopupVC.h"
 
 #import "GANGenericFunctionManager.h"
 #import "GANGlobalVCManager.h"
 #import "GANUserManager.h"
 #import "GANAppManager.h"
 #import "Global.h"
+#import "GANFadeTransitionDelegate.h"
 
-@interface GANCompanyLoginPhoneVC () <UITextFieldDelegate>
+@interface GANCompanyLoginPhoneVC () <UITextFieldDelegate, GANCountrySelectorPopupDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewPhonePanel;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldPhoneNumber;
 @property (weak, nonatomic) IBOutlet UIButton *buttonContinue;
+@property (weak, nonatomic) IBOutlet UIImageView *imageCountry;
 
 @property (weak, nonatomic) IBOutlet UILabel *labelNumber0;
 @property (weak, nonatomic) IBOutlet UILabel *labelNumber1;
@@ -34,6 +37,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelNumber8;
 @property (weak, nonatomic) IBOutlet UILabel *labelNumber9;
 
+@property (strong, nonatomic) GANFadeTransitionDelegate *transController;
+@property (assign, atomic) GANENUM_PHONE_COUNTRY enumCountry;
+
 @end
 
 @implementation GANCompanyLoginPhoneVC
@@ -42,9 +48,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.enumCountry = GANENUM_PHONE_COUNTRY_US;
     [self refreshViews];
     [self refreshPhonePanel];
     [self.textfieldPhoneNumber becomeFirstResponder];
+    
+    self.transController = [[GANFadeTransitionDelegate alloc] init];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -58,9 +67,18 @@
     self.buttonContinue.clipsToBounds = YES;
     self.buttonContinue.layer.cornerRadius = 3;
     self.textfieldPhoneNumber.tintColor = [UIColor clearColor];
+    
+    [self refreshCountryFlag];
 }
 
-#pragma mark - Biz Logic
+- (void) refreshCountryFlag{
+    if (self.enumCountry == GANENUM_PHONE_COUNTRY_US) {
+        [self.imageCountry setImage:[UIImage imageNamed:@"flag-us"]];
+    }
+    else if (self.enumCountry == GANENUM_PHONE_COUNTRY_MX) {
+        [self.imageCountry setImage:[UIImage imageNamed:@"flag-mx"]];
+    }
+}
 
 - (void) refreshPhonePanel{
     NSString *szPhoneNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:self.textfieldPhoneNumber.text];
@@ -80,6 +98,21 @@
     }
 }
 
+#pragma mark - Biz Logic
+
+- (void) showDlgForCountry{
+    GANCountrySelectorPopupVC *vc = [[GANCountrySelectorPopupVC alloc] initWithNibName:@"CountrySelectorPopupVC" bundle:nil];
+    
+    vc.enumCountry = self.enumCountry;
+    vc.delegate = self;
+    vc.view.backgroundColor = [UIColor clearColor];
+    [vc refreshFields];
+    
+    [vc setTransitioningDelegate:self.transController];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
 - (BOOL) checkMandatoryFields{
     NSString *phoneNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:self.textfieldPhoneNumber.text];
     if (phoneNumber.length != 10){
@@ -94,11 +127,13 @@
         return;
     }
     NSString *phoneNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:self.textfieldPhoneNumber.text];
+    GANPhoneDataModel *phone = [[GANPhoneDataModel alloc] initWithCountry:self.enumCountry LocalNumber:phoneNumber];
+    
     GANUserManager *managerUser = [GANUserManager sharedInstance];
     
     // Check if user exists
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [managerUser requestSearchUserByPhoneNumber:phoneNumber Type:GANENUM_USER_TYPE_ANY Callback:^(int status, NSArray *array) {
+    [managerUser requestSearchUserByPhone:phone Type:GANENUM_USER_TYPE_ANY Callback:^(int status, NSArray *array) {
         if (status == SUCCESS_WITH_NO_ERROR && array != nil && [array count] > 0){
             GANUserBaseDataModel *user = [array objectAtIndex:0];
             if (user.enumAuthType == GANENUM_USER_AUTHTYPE_EMAIL){
@@ -116,7 +151,7 @@
                 [GANGlobalVCManager hideHudProgressWithCallback:^{
                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
                     GANCompanyLoginCodeVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_LOGIN_CODE"];
-                    vc.szPhoneNumber = phoneNumber;
+                    vc.phone = phone;
                     vc.fromCustomVC = self.fromCustomVC;
                     [self.navigationController pushViewController:vc animated:YES];
                     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -147,8 +182,11 @@
             }
         }
         
+        NSString *phoneNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:self.textfieldPhoneNumber.text];
+        GANPhoneDataModel *phone = [[GANPhoneDataModel alloc] initWithCountry:self.enumCountry LocalNumber:phoneNumber];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login+Signup" bundle:nil];
         GANCompanySignupVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_SIGNUP"];
+        vc.phone = phone;
         vc.fromCustomVC = self.fromCustomVC;
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -161,6 +199,10 @@
 - (IBAction)onButtonContinueClick:(id)sender {
     [self.view endEditing:YES];
     [self doLogin];
+}
+
+- (IBAction)onButtonCountryClick:(id)sender {
+    [self showDlgForCountry];
 }
 
 - (IBAction)onButtonBackClick:(id)sender {
@@ -182,6 +224,13 @@
     }
     self.textfieldPhoneNumber.text = szPhoneNumber;
     [self refreshPhonePanel];
+}
+
+#pragma mark - GANCountrySelectorPopup Delegate
+
+- (void) didCountrySelect:(GANENUM_PHONE_COUNTRY)country {
+    self.enumCountry = country;
+    [self refreshCountryFlag];
 }
 
 @end

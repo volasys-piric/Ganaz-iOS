@@ -29,10 +29,11 @@
 #import "GANMainChooseVC.h"
 #import "GANCompanyLoginCodeVC.h"
 #import "GANCompanyLoginPhoneVC.h"
+#import "GANCountrySelectorPopupVC.h"
 #import "GANJobHomeVC.h"
 #import "Global.h"
 
-@interface GANCompanySignupVC () <UITextFieldDelegate, GANCompanyCodePopupDelegate>
+@interface GANCompanySignupVC () <UITextFieldDelegate, GANCompanyCodePopupDelegate, GANCountrySelectorPopupDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewCompanyName;
 @property (weak, nonatomic) IBOutlet UIView *viewDescription;
@@ -40,12 +41,12 @@
 @property (weak, nonatomic) IBOutlet UIView *viewFirstName;
 @property (weak, nonatomic) IBOutlet UIView *viewLastName;
 @property (weak, nonatomic) IBOutlet UIView *viewEmail;
-@property (weak, nonatomic) IBOutlet UIView *viewPhone;
 @property (weak, nonatomic) IBOutlet UIView *viewCodePanel;
 @property (weak, nonatomic) IBOutlet UIView *viewCode0;
 @property (weak, nonatomic) IBOutlet UIView *viewCode1;
 @property (weak, nonatomic) IBOutlet UIView *viewCode2;
 @property (weak, nonatomic) IBOutlet UIView *viewCode3;
+@property (weak, nonatomic) IBOutlet UIView *viewPhonePanel;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *btnSignup;
@@ -59,8 +60,21 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtFirstName;
 @property (weak, nonatomic) IBOutlet UITextField *txtLastName;
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
-@property (weak, nonatomic) IBOutlet GANUIPhoneTextField *txtPhone;
 @property (weak, nonatomic) IBOutlet UITextField *txtCode;
+@property (weak, nonatomic) IBOutlet UITextField *textfieldPhoneNumber;
+
+@property (weak, nonatomic) IBOutlet UIImageView *imageCountry;
+
+@property (weak, nonatomic) IBOutlet UILabel *labelNumber0;
+@property (weak, nonatomic) IBOutlet UILabel *labelNumber1;
+@property (weak, nonatomic) IBOutlet UILabel *labelNumber2;
+@property (weak, nonatomic) IBOutlet UILabel *labelNumber3;
+@property (weak, nonatomic) IBOutlet UILabel *labelNumber4;
+@property (weak, nonatomic) IBOutlet UILabel *labelNumber5;
+@property (weak, nonatomic) IBOutlet UILabel *labelNumber6;
+@property (weak, nonatomic) IBOutlet UILabel *labelNumber7;
+@property (weak, nonatomic) IBOutlet UILabel *labelNumber8;
+@property (weak, nonatomic) IBOutlet UILabel *labelNumber9;
 
 @property (weak, nonatomic) IBOutlet UILabel *labelCode0;
 @property (weak, nonatomic) IBOutlet UILabel *labelCode1;
@@ -86,7 +100,13 @@
     
     self.transController = [[GANFadeTransitionDelegate alloc] init];
     
+    if (self.phone == nil) {
+        self.phone = [[GANPhoneDataModel alloc] init];
+    }
+    self.textfieldPhoneNumber.text = self.phone.szLocalNumber;
+    
     [self refreshViews];
+    [self refreshPhonePanel];
     [self refreshCodePanel];
 }
 
@@ -106,7 +126,9 @@
     self.viewFirstName.layer.cornerRadius = 3;
     self.viewLastName.layer.cornerRadius = 3;
     self.viewEmail.layer.cornerRadius = 3;
-    self.viewPhone.layer.cornerRadius = 3;
+    self.viewPhonePanel.layer.cornerRadius = 3;
+    
+    self.viewPhonePanel.clipsToBounds = YES;
     
     self.btnSignup.layer.cornerRadius = 3;
     self.btnLogin.layer.cornerRadius = 3;
@@ -126,9 +148,21 @@
     self.viewCode3.clipsToBounds = YES;
     self.viewCode3.layer.cornerRadius = 3;
     
+    self.textfieldPhoneNumber.tintColor = [UIColor clearColor];
     self.txtCode.tintColor = [UIColor clearColor];
     
     [self refreshAutoTranslateView];
+    [self refreshCountryFlag];
+}
+
+- (void) refreshCountryFlag{
+    GANENUM_PHONE_COUNTRY country = [self.phone getCountry];
+    if (country == GANENUM_PHONE_COUNTRY_US) {
+        [self.imageCountry setImage:[UIImage imageNamed:@"flag-us"]];
+    }
+    else if (country == GANENUM_PHONE_COUNTRY_MX) {
+        [self.imageCountry setImage:[UIImage imageNamed:@"flag-mx"]];
+    }
 }
 
 - (void) refreshAutoTranslateView{
@@ -137,6 +171,24 @@
     }
     else {
         [self.btnAutoTranslate setImage:[UIImage imageNamed:@"icon-unchecked"] forState:UIControlStateNormal];
+    }
+}
+
+- (void) refreshPhonePanel{
+    NSString *szPhoneNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:self.textfieldPhoneNumber.text];
+    NSArray *arrLabels = @[self.labelNumber0, self.labelNumber1, self.labelNumber2,
+                           self.labelNumber3, self.labelNumber4, self.labelNumber5,
+                           self.labelNumber6, self.labelNumber7, self.labelNumber8,
+                           self.labelNumber9,
+                           ];
+    for (int i = 0; i < (int) [arrLabels count]; i++){
+        UILabel *label = [arrLabels objectAtIndex:i];
+        if (szPhoneNumber.length <= i){
+            label.text = @"";
+        }
+        else {
+            label.text = [szPhoneNumber substringWithRange:NSMakeRange(i, 1)];
+        }
     }
 }
 
@@ -208,6 +260,19 @@
 
 #pragma mark - Biz Logic
 
+- (void) showDlgForCountry{
+    GANCountrySelectorPopupVC *vc = [[GANCountrySelectorPopupVC alloc] initWithNibName:@"CountrySelectorPopupVC" bundle:nil];
+    
+    vc.enumCountry = [self.phone getCountry];
+    vc.delegate = self;
+    vc.view.backgroundColor = [UIColor clearColor];
+    [vc refreshFields];
+    
+    [vc setTransitioningDelegate:self.transController];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
 - (void) showDlgForCompanyCodeVerify{
     GANCompanyCodePopupVC *vc = [[GANCompanyCodePopupVC alloc] initWithNibName:@"CompanyCodePopup" bundle:nil];
     
@@ -227,7 +292,7 @@
     NSString *szFirstName = self.txtFirstName.text;
     NSString *szLastName = self.txtLastName.text;
     NSString *szEmail = self.txtEmail.text;
-    NSString *szPhone = self.txtPhone.text;
+    NSString *szPhone = self.textfieldPhoneNumber.text;
     NSString *szPassword = self.txtCode.text;
     
     if (szCompanyName.length == 0){
@@ -251,7 +316,7 @@
         return NO;
     }
     if (szPhone.length == 0){
-        [self shakeInvalidFields:self.viewPhone];
+        [self shakeInvalidFields:self.viewPhonePanel];
         return NO;
     }
     if (szPassword.length == 0) {
@@ -353,8 +418,7 @@
     NSString *szFirstName = self.txtFirstName.text;
     NSString *szLastName = self.txtLastName.text;
     NSString *szEmail = self.txtEmail.text;
-    NSString *szPhone = [GANGenericFunctionManager stripNonnumericsFromNSString:self.txtPhone.text];
-    NSString *szCompanyUserId = szPhone;
+    NSString *szCompanyUserId = [self.phone getNormalizedPhoneNumber];
     NSString *szPassword = self.txtCode.text;
     
     GANUserManager *managerUser = [GANUserManager sharedInstance];
@@ -368,7 +432,7 @@
     modelCompanyUser.szFirstName = szFirstName;
     modelCompanyUser.szLastName = szLastName;
     modelCompanyUser.szEmail = szEmail;
-    modelCompanyUser.modelPhone.szLocalNumber = szPhone;
+    modelCompanyUser.modelPhone = self.phone;
     modelCompanyUser.szUserName = szCompanyUserId;
     modelCompanyUser.szPassword = szPassword;
     [modelCompanyUser addPlayerIdIfNeeded:[GANPushNotificationManager sharedInstance].szOneSignalPlayerId];
@@ -518,6 +582,15 @@
     return YES;
 }
 
+- (IBAction)onTextfieldPhoneChanged:(id)sender {
+    NSString *szPhoneNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:self.textfieldPhoneNumber.text];
+    if (szPhoneNumber.length > 10){
+        szPhoneNumber = [szPhoneNumber substringToIndex:10];
+    }
+    self.textfieldPhoneNumber.text = szPhoneNumber;
+    [self refreshPhonePanel];
+}
+
 - (IBAction)onTextfieldCodeChanged:(id)sender {
     NSString *szCode = [GANGenericFunctionManager stripNonnumericsFromNSString:self.txtCode.text];
     if (szCode.length > 4){
@@ -528,6 +601,10 @@
 }
 
 #pragma mark - UIButton Delegate
+
+- (IBAction)onButtonCountryClick:(id)sender {
+    [self showDlgForCountry];
+}
 
 - (IBAction)onBtnBackClick:(id)sender {
     [self.view endEditing:YES];
@@ -567,6 +644,13 @@
 - (void)didCompanyCodeVerify:(int)indexCompany{
     self.indexCompany = indexCompany;
     [self refreshCompanyFields];
+}
+
+#pragma mark - GANCountrySelectorPopup Delegate
+
+- (void) didCountrySelect:(GANENUM_PHONE_COUNTRY)country {
+    [self.phone setCountry:country];
+    [self refreshCountryFlag];
 }
 
 @end

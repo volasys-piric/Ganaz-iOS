@@ -170,6 +170,12 @@ typedef enum _ENUM_BRANCHDEEPLINK_ACTION{
     GANENUM_BRANCHDEEPLINK_ACTION_WORKER_SIGNUPWITHPHONE,
 }GANENUM_BRANCHDEEPLINK_ACTION;
 
+// Country
+
+typedef enum _ENUM_PHONE_COUNTRY{
+    GANENUM_PHONE_COUNTRY_US = 1,           // United States
+    GANENUM_PHONE_COUNTRY_MX = 52,          // Mexico
+}GANENUM_PHONE_COUNTRY;
 
 #define GANCONSTANTS_TRANSLATE_LANGUAGE_EN                      @"en"
 #define GANCONSTANTS_TRANSLATE_LANGUAGE_ES                      @"es"
@@ -195,6 +201,11 @@ typedef enum _ENUM_BRANCHDEEPLINK_ACTION{
 
 + (GANENUM_PUSHNOTIFICATION_TYPE) getPushNotificationTypeFromString: (NSString *) szType;
 + (NSString *) getStringFromPushNotificationType: (GANENUM_PUSHNOTIFICATION_TYPE) type;
+
+// Phone Country
+
++ (GANENUM_PHONE_COUNTRY) getCountryFromString: (NSString *) szCountry;
++ (NSString *) getStringFromCountry: (GANENUM_PHONE_COUNTRY) country;
 
 // App Config
 

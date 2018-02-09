@@ -260,12 +260,14 @@
     }];
 }
 
-- (void) requestSearchUserByPhoneNumber: (NSString *) phoneNumber Type: (GANENUM_USER_TYPE) type Callback: (void (^) (int status, NSArray *array)) callback{
+- (void) requestSearchUserByPhone: (GANPhoneDataModel *) phone Type: (GANENUM_USER_TYPE) type Callback: (void (^) (int status, NSArray *array)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForUserSearch];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     if (type != GANENUM_USER_TYPE_ANY){
         [params setObject:[GANUtils getStringFromUserType:type] forKey:@"type"];
     }
+    
+    NSString *phoneNumber = [phone getNormalizedPhoneNumber];
     [params setObject:phoneNumber forKey:@"phone_number"];
     
     [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:NO parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {

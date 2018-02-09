@@ -48,7 +48,7 @@
 
 #pragma mark - Request
 
-- (void) requestSubmitRecruitWithJobIds: (NSArray *) arrJobIds Broadcast: (float) fBroadcast ReRecruitUserIds: (NSArray *) arrReRecruitUserIds PhoneNumbers:(NSArray *) arrPhonenumbers Callback: (void (^) (int status, int count)) callback{
+- (void) requestSubmitRecruitWithJobIds: (NSArray *) arrJobIds Broadcast: (float) fBroadcast ReRecruitUserIds: (NSArray *) arrReRecruitUserIds Phones:(NSArray <GANPhoneDataModel *> *) arrPhones Callback: (void (^) (int status, int count)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForSubmitRecruit];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     
@@ -60,8 +60,12 @@
         [params setObject:arrReRecruitUserIds forKey:@"re_recruit_worker_user_ids"];
     }
     
-    if([arrPhonenumbers count] > 0) {
-        [params setObject:arrPhonenumbers forKey:@"phone_numbers"];
+    if([arrPhones count] > 0) {
+        NSMutableArray *arrayPhoneNumbers = [[NSMutableArray alloc] init];
+        for (GANPhoneDataModel *phone in arrPhones) {
+            [arrayPhoneNumbers addObject:[phone getNormalizedPhoneNumber]];
+        }
+        [params setObject:arrayPhoneNumbers forKey:@"phone_numbers"];
     }
         
     [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {

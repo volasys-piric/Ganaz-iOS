@@ -23,7 +23,7 @@
         },
         "staging": {
             "status": "running",
-            "base_url": "http://52.43.23.98:8000",
+            "base_url": "http://35.166.127.224:8000",
             "backend_version": "1.9",
             "backend_build": "1900",
             "frontend_min_version": "1.8",

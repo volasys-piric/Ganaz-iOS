@@ -19,6 +19,15 @@
     return self;
 }
 
+- (instancetype) initWithCountry: (int) country LocalNumber: (NSString *) localNumber {
+    self = [super init];
+    if (self){
+        [self setCountry:country];
+        [self setLocalNumber:localNumber];
+    }
+    return self;
+}
+
 - (void) initialize{
     self.szCountry = @"US";
     self.szCountryCode = @"1";
@@ -45,6 +54,21 @@
              };
 }
 
+- (void) setCountry: (int) country{
+    if (country == GANENUM_PHONE_COUNTRY_US) {
+        self.szCountry = @"US";
+        self.szCountryCode = @"1";
+    }
+    else if (country == GANENUM_PHONE_COUNTRY_MX) {
+        self.szCountry = @"MX";
+        self.szCountryCode = @"52";
+    }
+}
+
+- (int) getCountry {
+    return [GANUtils getCountryFromString:self.szCountry];
+}
+
 - (void) setLocalNumber: (NSString *) localNumber{
     self.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:localNumber];
     if (self.szLocalNumber.length > 10){
@@ -56,10 +80,18 @@
     return [GANGenericFunctionManager beautifyPhoneNumber:self.szLocalNumber CountryCode:self.szCountryCode];
 }
 
-- (BOOL) isSamePhoneNumber: (NSString *) phoneNumber {
-    phoneNumber = [GANGenericFunctionManager refineNSString:phoneNumber];
+- (NSString *) getNormalizedPhoneNumber{
+    GANENUM_PHONE_COUNTRY country = [GANUtils getCountryFromString:self.szCountry];
+    if (country == GANENUM_PHONE_COUNTRY_US) return self.szLocalNumber;
+    
+    return [NSString stringWithFormat:@"%@%@", self.szCountryCode, self.szLocalNumber];
+}
+
+- (BOOL) isSamePhone: (GANPhoneDataModel *) phone{
+    NSString *phoneNumber = [GANGenericFunctionManager refineNSString:phone.szLocalNumber];
     if (phoneNumber.length > 10) phoneNumber = [phoneNumber substringFromIndex:1];
-    if ([self.szLocalNumber isEqualToString:phoneNumber] == YES) {
+    
+    if ([self.szLocalNumber isEqualToString:phoneNumber] == YES && [self.szCountryCode isEqualToString:phone.szCountryCode] == YES) {
         return YES;
     }
     return NO;
