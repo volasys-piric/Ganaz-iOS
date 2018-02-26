@@ -212,6 +212,20 @@
     return @"choice-single";
 }
 
+// Phone Country
+
++ (GANENUM_PHONE_COUNTRY) getCountryFromString: (NSString *) szCountry {
+    if ([szCountry caseInsensitiveCompare:@"US"] == NSOrderedSame) return GANENUM_PHONE_COUNTRY_US;
+    if ([szCountry caseInsensitiveCompare:@"MX"] == NSOrderedSame) return GANENUM_PHONE_COUNTRY_MX;
+    return GANENUM_PHONE_COUNTRY_US;
+}
+
++ (NSString *) getStringFromCountry: (GANENUM_PHONE_COUNTRY) country {
+    if (country == GANENUM_PHONE_COUNTRY_US) return @"US";
+    if (country == GANENUM_PHONE_COUNTRY_US) return @"MX";
+    return @"US";
+}
+
 //
 
 

@@ -271,6 +271,32 @@
     });
 }
 
+- (void) analyzeMessageContentsForUrlAtIndex: (int) index {
+    GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
+    NSError *error = nil;
+    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:&error];
+    if (error) {
+        return;
+    }
+    
+    NSString *contents = [message getContentsEN];
+    NSArray <NSTextCheckingResult *> *matches = [detector matchesInString:contents options:0 range:NSMakeRange(0, contents.length)];
+    for (NSTextCheckingResult *match in matches) {
+        if ([match resultType] == NSTextCheckingTypeLink) {
+            [self promptForOpenLinkWithUrl:[[match URL] absoluteString]];
+            return;
+        }
+    }
+}
+
+- (void) promptForOpenLinkWithUrl: (NSString *) urlString {
+    if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:urlString]]) {
+        [GANGlobalVCManager promptWithVC:self Title:@"Link detected" Message:[NSString stringWithFormat: @"Will you open %@ in web browser?", urlString] ButtonYes:@"Yes" ButtonNo:@"No" CallbackYes:^{
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+        } CallbackNo:nil];
+    }
+}
+
 - (void) sendMessage{
     if (self.textviewInput.text.length == 0) {
         [GANGlobalVCManager shakeView:self.viewInputWrapper];
@@ -317,7 +343,7 @@
     }
     
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
-    [managerMessage requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage MetaData:dictMetaData AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
+    [managerMessage requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiverPhones: nil Message:szMessage MetaData:dictMetaData AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
 //            [GANGlobalVCManager showHudSuccessWithMessage:@"Message sent!" DismissAfter:-1 Callback:^{
             [GANGlobalVCManager hideHudProgressWithCallback:^{
@@ -555,6 +581,9 @@
     }
     else if ([message isSurveyMessage] == YES){
         [self gotoSurveyDetailsAtIndex:index];
+    }
+    else {
+        [self analyzeMessageContentsForUrlAtIndex:index];
     }
 }
 

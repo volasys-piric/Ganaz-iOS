@@ -9,22 +9,28 @@
 #import "GANCommunicateWithMyWorkersOnboardingVC.h"
 #import "GANWorkerSuggestFriendItemTVC.h"
 #import "GANComposeMessageOnboardingVC.h"
+#import "GANCountrySelectorPopupVC.h"
 
 #import "GANPhonebookContactsManager.h"
 #import "GANGlobalVCManager.h"
 #import "GANGenericFunctionManager.h"
 #import "UIView+Shake.h"
 #import "Global.h"
+#import "GANFadeTransitionDelegate.h"
 
-@interface GANCommunicateWithMyWorkersOnboardingVC ()<UITableViewDelegate, UITableViewDataSource>
+@interface GANCommunicateWithMyWorkersOnboardingVC ()<UITableViewDelegate, UITableViewDataSource, GANCountrySelectorPopupDelegate>
 @property (strong, nonatomic) IBOutlet UITextField *txtPhoneNumber;
 @property (strong, nonatomic) IBOutlet UITableView *tblWorker;
 @property (strong, nonatomic) IBOutlet UIButton *btnAdd;
 @property (strong, nonatomic) IBOutlet UIButton *btnContinue;
 @property (strong, nonatomic) IBOutlet UIView *viewSearch;
+@property (weak, nonatomic) IBOutlet UIImageView *imageCountry;
 
 @property (strong, nonatomic) NSMutableArray *arrFilteredContacts;
 @property (strong, nonatomic) NSMutableArray *arrAddedUsers;
+
+@property (strong, nonatomic) GANFadeTransitionDelegate *transController;
+@property (assign, atomic) GANENUM_PHONE_COUNTRY enumCountry;
 
 @end
 
@@ -41,6 +47,8 @@
     self.arrFilteredContacts = [[NSMutableArray alloc] init];
     self.arrAddedUsers = [[NSMutableArray alloc] init];
     
+    self.enumCountry = GANENUM_PHONE_COUNTRY_US;
+    
     [self refreshViews];
     [self registerTableViewCellFromNib];
     [self askPermissionForPhoneBook];
@@ -55,6 +63,17 @@
     
     self.btnContinue.layer.cornerRadius = 3;
     self.btnContinue.clipsToBounds = YES;
+    
+    [self refreshCountryFlag];
+}
+
+- (void) refreshCountryFlag{
+    if (self.enumCountry == GANENUM_PHONE_COUNTRY_US) {
+        [self.imageCountry setImage:[UIImage imageNamed:@"flag-us"]];
+    }
+    else if (self.enumCountry == GANENUM_PHONE_COUNTRY_MX) {
+        [self.imageCountry setImage:[UIImage imageNamed:@"flag-mx"]];
+    }
 }
 
 - (void) registerTableViewCellFromNib{
@@ -62,6 +81,19 @@
 }
 
 #pragma mark - Biz Logic
+
+- (void) showDlgForCountry{
+    GANCountrySelectorPopupVC *vc = [[GANCountrySelectorPopupVC alloc] initWithNibName:@"CountrySelectorPopupVC" bundle:nil];
+    
+    vc.enumCountry = self.enumCountry;
+    vc.delegate = self;
+    vc.view.backgroundColor = [UIColor clearColor];
+    [vc refreshFields];
+    
+    [vc setTransitioningDelegate:self.transController];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:vc animated:YES completion:nil];
+}
 
 - (void) askPermissionForPhoneBook{
     [[GANPhonebookContactsManager sharedInstance] requestPermissionForAddressBookWithCallback:^(BOOL granted) {
@@ -126,9 +158,7 @@
     }
     
     GANPhonebookContactDataModel *newContact = [[GANPhonebookContactDataModel alloc] init];
-    
-    newContact.modelPhone = [[GANPhoneDataModel alloc] init];
-    newContact.modelPhone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:szPhoneNumber];
+    newContact.modelPhone = [[GANPhoneDataModel alloc] initWithCountry:self.enumCountry LocalNumber:[GANGenericFunctionManager stripNonnumericsFromNSString:szPhoneNumber]];
     
     if([self isAddedUser:newContact] == NO) {
         [self.arrAddedUsers addObject:newContact];
@@ -162,7 +192,12 @@
     [viewContainer shake:6 withDelta:8 speed:0.07];
 }
 
+- (IBAction)onButtonCountryClick:(id)sender {
+    [self showDlgForCountry];
+}
+
 #pragma mark - UITextField Delegate
+
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
@@ -234,14 +269,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - GANCountrySelectorPopup Delegate
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void) didCountrySelect:(GANENUM_PHONE_COUNTRY)country {
+    self.enumCountry = country;
+    [self refreshCountryFlag];
 }
-*/
 
 @end

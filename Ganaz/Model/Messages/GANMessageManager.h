@@ -35,7 +35,7 @@
 - (void) requestSendMessageWithJobId: (NSString *) jobId
                                 Type: (GANENUM_MESSAGE_TYPE) type
                            Receivers: (NSArray *) receivers
-               ReceiversPhoneNumbers: (NSArray *) receivers_phone_numbers
+                      ReceiverPhones: (NSArray <GANPhoneDataModel *> *) receiverPhones
                              Message: (NSString *) message
                             MetaData: (NSDictionary *)metaData
                        AutoTranslate: (BOOL) isAutoTranslate

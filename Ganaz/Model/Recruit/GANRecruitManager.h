@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GANRecruitDataModel.h"
+#import "GANUtils.h"
 
 @interface GANRecruitManager : NSObject
 
@@ -18,6 +19,6 @@
 
 #pragma mark - Request
 
-- (void) requestSubmitRecruitWithJobIds: (NSArray *) arrJobIds Broadcast: (float) fBroadcast ReRecruitUserIds: (NSArray *) arrReRecruitUserIds PhoneNumbers:(NSArray *) arrPhonenumbers Callback: (void (^) (int status, int count)) callback;
+- (void) requestSubmitRecruitWithJobIds: (NSArray *) arrJobIds Broadcast: (float) fBroadcast ReRecruitUserIds: (NSArray *) arrReRecruitUserIds Phones:(NSArray <GANPhoneDataModel *> *) arrPhones Callback: (void (^) (int status, int count)) callback;
 
 @end
