@@ -250,6 +250,32 @@
     } CallbackNo:nil];
 }
 
+- (void) analyzeMessageContentsForUrlAtIndex: (int) index {
+    GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
+    NSError *error = nil;
+    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:&error];
+    if (error) {
+        return;
+    }
+    
+    NSString *contents = [message getContentsEN];
+    NSArray <NSTextCheckingResult *> *matches = [detector matchesInString:contents options:0 range:NSMakeRange(0, contents.length)];
+    for (NSTextCheckingResult *match in matches) {
+        if ([match resultType] == NSTextCheckingTypeLink) {
+            [self promptForOpenLinkWithUrl:[[match URL] absoluteString]];
+            return;
+        }
+    }
+}
+
+- (void) promptForOpenLinkWithUrl: (NSString *) urlString {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:urlString]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+        }
+    });
+}
+
 - (void) gotoJobDetailsAtIndex: (int) index{
     GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
     if ([message amISender] == YES){
@@ -569,6 +595,9 @@
     }
     else if ([message isSurveyMessage] == YES){
         [self gotoSurveyDetailsAtIndex:index];
+    }
+    else {
+        [self analyzeMessageContentsForUrlAtIndex:index];
     }
 }
 
