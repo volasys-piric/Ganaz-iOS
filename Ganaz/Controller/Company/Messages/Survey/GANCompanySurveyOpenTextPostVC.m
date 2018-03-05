@@ -19,8 +19,6 @@
 #import "Global.h"
 #import "GANAppManager.h"
 
-#define GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER      @"Enter question here..."
-
 @interface GANCompanySurveyOpenTextPostVC () <UITextViewDelegate, GANMessageWithChargeConfirmationPopupDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewQuestion;
@@ -43,7 +41,6 @@
     // Do any additional setup after loading the view.
     
     self.isAutoTranslate = NO;
-    self.textviewQuestion.text = GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER;
     self.textviewQuestion.delegate = self;
     
     [self refreshViews];
@@ -86,7 +83,7 @@
 - (BOOL) checkMandatoryFields {
     NSString *szQuestion = self.textviewQuestion.text;
     
-    if (szQuestion.length == 0 || [szQuestion isEqualToString:GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER] == YES){
+    if (szQuestion.length == 0){
         [GANGlobalVCManager shakeView:self.viewQuestion];
         return NO;
     }
@@ -207,19 +204,6 @@
 - (IBAction)onButtonSubmitClick:(id)sender {
     [self.view endEditing:YES];
     [self doSubmitSurvey];
-}
-
-#pragma mark - UITextView Delegate
-
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
-    self.textviewQuestion.text = @"";
-    return YES;
-}
-
-- (void)textViewDidChange:(UITextView *)textView {
-    if (self.textviewQuestion.text.length == 0) {
-        self.textviewQuestion.text = GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER;
-    }
 }
 
 @end

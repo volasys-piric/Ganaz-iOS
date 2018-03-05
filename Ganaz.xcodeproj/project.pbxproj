@@ -2204,8 +2204,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ganaz.ganazapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b839d711-8ddd-4805-8f22-a47fe5bf1bc6";
-				PROVISIONING_PROFILE_SPECIFIER = "com.ganaz.ganazapp-dev-2017-12-12";
+				PROVISIONING_PROFILE = "14df3e3d-0392-4055-8775-ceafac246e5e";
+				PROVISIONING_PROFILE_SPECIFIER = "com.ganaz.ganazapp-dev-2018-03-05";
 			};
 			name = Debug;
 		};
@@ -2223,8 +2223,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ganaz.ganazapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b839d711-8ddd-4805-8f22-a47fe5bf1bc6";
-				PROVISIONING_PROFILE_SPECIFIER = "com.ganaz.ganazapp-dev-2017-12-12";
+				PROVISIONING_PROFILE = "14df3e3d-0392-4055-8775-ceafac246e5e";
+				PROVISIONING_PROFILE_SPECIFIER = "com.ganaz.ganazapp-dev-2018-03-05";
 			};
 			name = Release;
 		};
