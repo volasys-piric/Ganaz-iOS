@@ -124,7 +124,7 @@
     for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
         GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
         if ([thread hasFacebookMessage] == YES) {
-            GANMessageDataModel *message = [thread.arrayMessages firstObject];
+            GANMessageDataModel *message = [thread.arrayMessages lastObject];
             [self.arrayMessages addObject:message];
         }
     }
@@ -165,6 +165,7 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
         GANCompanyMessageThreadVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_THREAD"];
         vc.indexThread = indexThread;
+        vc.isFacebookLeadWorker = YES;
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     });

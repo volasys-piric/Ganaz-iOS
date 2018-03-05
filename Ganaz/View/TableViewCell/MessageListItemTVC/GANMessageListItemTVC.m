@@ -38,6 +38,7 @@
     BOOL isES = ![[GANUserManager sharedInstance] isCompanyUser];
     
     if (type == GANENUM_MESSAGE_TYPE_MESSAGE ||
+        type == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE ||
         type == GANENUM_MESSAGE_TYPE_APPLICATION ||
         type == GANENUM_MESSAGE_TYPE_SUGGEST){
         if (isES == YES) {

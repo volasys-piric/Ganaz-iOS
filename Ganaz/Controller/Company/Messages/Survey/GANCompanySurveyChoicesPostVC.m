@@ -247,6 +247,7 @@
     
     vcThread.indexThread = indexThread;
     vcThread.arrayReceivers = [[NSMutableArray alloc] initWithArray: self.arrayReceivers];
+    vcThread.isFacebookLeadWorker = NO;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.navigationController setViewControllers:@[vcList, vcThread] animated:YES];

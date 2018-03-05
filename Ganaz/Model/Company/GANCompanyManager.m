@@ -597,4 +597,65 @@
     return NO;
 }
 
+#pragma mark - Facebook Lead Candidates
+
+- (void) requestGetFacebookLeadsListWithCallback: (void (^) (int status)) callback{
+    NSString *companyId = [GANUserManager getCompanyDataModel].szId;
+    NSString *szUrl = [GANUrlManager getEndpointForUserSearch];
+    NSDictionary *params = @{@"type": [GANUtils getStringFromUserType:GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER],
+                             @"facebook_lead": @{
+                                     @"company_id": companyId
+                                     }
+                             };
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:NO parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        GANLOG(@"Get Facebook Leads Response ===> %@", responseObject);
+        
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            NSArray *arrayLeadsDict = [dict objectForKey:@"users"];
+            NSMutableArray *arrayLeads = [[NSMutableArray alloc] init];
+            for (int i = 0; i < (int) [arrayLeadsDict count]; i++){
+                NSDictionary *dictLead = [arrayLeadsDict objectAtIndex:i];
+                NSString *szUserType = [GANGenericFunctionManager refineNSString: [dictLead objectForKey:@"type"]];
+                GANENUM_USER_TYPE enumUserType = [GANUtils getUserTypeFromString:szUserType];
+                
+                GANUserBaseDataModel *user;
+                
+                if (enumUserType == GANENUM_USER_TYPE_WORKER || enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER || enumUserType == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER){
+                    user = [[GANUserWorkerDataModel alloc] init];
+                    [user setWithDictionary:dictLead];
+                }
+                else {
+                    continue;
+                }
+                [arrayLeads addObject:user];
+            }
+            
+            [arrayLeads sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                GANUserWorkerDataModel *worker1 = obj1;
+                GANUserWorkerDataModel *worker2 = obj2;
+                if (worker1.dateCreatedAt == nil) return NSOrderedAscending;
+                if (worker2.dateCreatedAt == nil) return NSOrderedDescending;
+                return [worker1.dateCreatedAt compare:worker2.dateCreatedAt];
+            }];
+            
+            for (int i = 0; i < (int) [arrayLeads count]; i++) {
+                GANUserWorkerDataModel *lead = [arrayLeads objectAtIndex:i];
+                lead.indexForCandidate = i + 1;
+                [[GANCacheManager sharedInstance] addUserIfNeeded:lead];
+            }
+            
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+    }];
+}
+
 @end

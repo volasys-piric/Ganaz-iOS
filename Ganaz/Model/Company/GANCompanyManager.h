@@ -44,6 +44,10 @@
 - (void) requestUpdateCrewWithCrewId: (NSString *) crewId Title: (NSString *) title Callback: (void (^) (int status)) callback;
 - (void) requestDeleteCrewWithCrewid: (NSString *) crewId Callback: (void (^) (int status)) callback;
 
+#pragma mark - Facebook Lead Candidates
+
+- (void) requestGetFacebookLeadsListWithCallback: (void (^) (int status)) callback;
+
 #pragma mark - My Workers
 
 - (void) requestGetMyWorkersListWithCallback: (void (^) (int status)) callback;
