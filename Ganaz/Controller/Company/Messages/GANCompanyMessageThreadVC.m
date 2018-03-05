@@ -361,6 +361,7 @@
                         self.indexThread = indexThread;
                         self.modelThread = [[GANMessageManager sharedInstance].arrayThreads objectAtIndex:self.indexThread];
                         GANMessageDataModel *message = [self.modelThread getLatestMessage];
+                        [self.arrayReceivers removeAllObjects];
                         [self.arrayReceivers addObjectsFromArray:message.arrayReceivers];
                     }
                 }
@@ -393,8 +394,6 @@
 }
 
 - (void) callPhoneNumber: (NSString *) phoneNumber{
-    phoneNumber = [GANGenericFunctionManager beautifyPhoneNumber:phoneNumber CountryCode:@"US"];
-    
     [GANGlobalVCManager promptWithVC:self Title:@"Confirmation" Message:[NSString stringWithFormat:@"Do you want to call %@?", phoneNumber] ButtonYes:@"Yes" ButtonNo:@"NO" CallbackYes:^{
         NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",[GANGenericFunctionManager stripNonnumericsFromNSString:phoneNumber]]];
         
@@ -616,7 +615,8 @@
     [managerCache requestGetIndexForUserByUserId:userRef.szUserId Callback:^(int index) {
         if (index == -1) return;
         GANUserBaseDataModel *user = [managerCache.arrayUsers objectAtIndex:index];
-        [self callPhoneNumber:user.modelPhone.szLocalNumber];
+        NSString *phoneNumber = [GANGenericFunctionManager beautifyPhoneNumber:user.modelPhone.szLocalNumber CountryCode:user.modelPhone.szCountryCode];
+        [self callPhoneNumber:phoneNumber];
     }];
 }
 

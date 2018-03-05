@@ -233,24 +233,6 @@
     GANACTIVITY_REPORT(@"Worker - Reply Message");
 }
 
-- (void) callPhoneNumber: (NSString *) phoneNumber{
-    phoneNumber = [GANGenericFunctionManager beautifyPhoneNumber:phoneNumber CountryCode:@"US"];
-    
-    // Title: Confirmation, Message: Do you want to call %@?
-    [GANGlobalVCManager promptWithVC:self Title:@"Confirmación" Message:[NSString stringWithFormat:@"Quieres llamar a %@?", phoneNumber] ButtonYes:@"Yes" ButtonNo:@"NO" CallbackYes:^{
-        NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",[GANGenericFunctionManager stripNonnumericsFromNSString:phoneNumber]]];
-        
-        if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
-            [[UIApplication sharedApplication] openURL:phoneUrl];
-            GANACTIVITY_REPORT(@"Worker - Call phone");
-        }
-        else{
-            // Your device does not support phone calls
-            [GANGlobalVCManager showHudErrorWithMessage:@"Tu dispositivo no es compatible con llamadas telefónicas" DismissAfter:-1 Callback:nil];
-        }
-    } CallbackNo:nil];
-}
-
 - (void) analyzeMessageContentsForUrlAtIndex: (int) index {
     GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
     NSError *error = nil;
