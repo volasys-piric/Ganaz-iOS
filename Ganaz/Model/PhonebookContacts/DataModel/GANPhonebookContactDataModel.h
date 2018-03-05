@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "GANPhoneDataModel.h"
-@import AddressBook;
 
 @interface GANPhonebookContactDataModel : NSObject
 
@@ -19,7 +18,6 @@
 
 - (instancetype) init;
 - (NSString *)description;
-- (void) setWithPerson: (ABRecordRef) person;
 
 - (BOOL) isValidContact;
 - (BOOL) isCompleteContact;
