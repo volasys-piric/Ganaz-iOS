@@ -36,6 +36,7 @@
     self.arrayCrews = [[NSMutableArray alloc] init];
     self.arrMyWorkers = [[NSMutableArray alloc] init];
     self.arrCompanyUsers = [[NSMutableArray alloc] init];
+    self.arrayFacebookLeads = [[NSMutableArray alloc] init];
     self.isMyWorkersLoading = NO;
 }
 
@@ -169,6 +170,19 @@
     // If added in my-workers list... return nickname if possible.
     GANMyWorkerDataModel *myWorker = [self.arrMyWorkers objectAtIndex:indexMyWorker];
     if (callback) callback([myWorker getDisplayName]);
+}
+
+- (NSArray <GANUserRefDataModel *> *) getFacebookLeadsByJobId: (NSString *) jobId {
+    NSMutableArray <GANUserRefDataModel *> *arrayLeads = [[NSMutableArray alloc] init];
+    for (GANUserWorkerDataModel *lead in self.arrayFacebookLeads) {
+        if ([lead.szFacebookJobId isEqualToString:jobId] == YES) {
+            GANUserRefDataModel *leadUserRef = [[GANUserRefDataModel alloc] init];
+            leadUserRef.szCompanyId = @"";
+            leadUserRef.szUserId = lead.szId;
+            [arrayLeads addObject: leadUserRef];
+        }
+    }
+    return arrayLeads;
 }
 
 #pragma mark - Request
@@ -641,9 +655,11 @@
                 return [worker1.dateCreatedAt compare:worker2.dateCreatedAt];
             }];
             
+            [self.arrayFacebookLeads removeAllObjects];
             for (int i = 0; i < (int) [arrayLeads count]; i++) {
                 GANUserWorkerDataModel *lead = [arrayLeads objectAtIndex:i];
                 lead.indexForCandidate = i + 1;
+                [self.arrayFacebookLeads addObject:lead];
                 [[GANCacheManager sharedInstance] addUserIfNeeded:lead];
             }
             

@@ -41,6 +41,7 @@
     self.arrayMessages = [[NSMutableArray alloc] init];
     self.arrayGeneralThreads = [[NSMutableArray alloc] init];
     self.arrayCandidateThreads = [[NSMutableArray alloc] init];
+    self.arrayCandidates = [[NSMutableArray alloc] init];
     self.isLoading = NO;
     self.nUnreadMessages = 0;
 }
@@ -227,6 +228,48 @@
     GANMessageThreadDataModel *newThread = [[GANMessageThreadDataModel alloc] init];
     [newThread addMessageIfNeeded:newMessage];
     [self.arrayCandidateThreads addObject:newThread];
+}
+
+- (void) generateCandidateThreadsByCandidates: (NSArray <GANUserRefDataModel *> *) arrayCandidates{
+    [self.arrayCandidateThreads removeAllObjects];
+    
+    // Message should contain only the candidates in sender/receivers list...
+    
+    for (GANMessageDataModel *message in self.arrayMessages) {
+        BOOL containsNonCandidate = NO;
+        if ([message amISender] == YES) {
+            for (GANMessageReceiverDataModel *receiver in message.arrayReceivers) {
+                BOOL isCandidate = NO;
+                for (GANUserRefDataModel *candidate in arrayCandidates) {
+                    if ([receiver isSameUser:candidate] == YES) {
+                        isCandidate = YES;
+                        break;
+                    }
+                }
+                if (isCandidate == NO) {
+                    containsNonCandidate = YES;
+                    break;
+                }
+            }
+        }
+        else {
+            BOOL isCandidate = NO;
+            for (GANUserRefDataModel *candidate in arrayCandidates) {
+                if ([message.modelSender isSameUser:candidate] == YES) {
+                    isCandidate = YES;
+                    break;
+                }
+            }
+            
+            if (isCandidate == NO) {
+                containsNonCandidate = YES;
+            }
+        }
+        
+        if (containsNonCandidate == NO) {
+            [self addMessageToCandidateThread:message];
+        }
+    }
 }
 
 #pragma mark - Request

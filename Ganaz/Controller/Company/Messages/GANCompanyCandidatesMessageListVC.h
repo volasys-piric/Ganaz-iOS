@@ -10,4 +10,6 @@
 
 @interface GANCompanyCandidatesMessageListVC : UIViewController
 
+@property (assign, atomic) int indexJob;
+
 @end

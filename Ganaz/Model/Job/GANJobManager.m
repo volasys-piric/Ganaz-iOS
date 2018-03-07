@@ -388,6 +388,43 @@
     }];
 }
 
+- (void) requestGetApplicantsByJobId: (NSString *) jobId Callback: (void (^) (NSArray <GANUserRefDataModel *> *applicants, int status)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForGetApplications];
+    NSDictionary *param = [[NSMutableDictionary alloc] init];
+    param = @{@"job_ids": @[jobId
+                      ]
+              };
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            NSArray *arrApplications = [dict objectForKey:@"applications"];
+            NSMutableArray <GANUserRefDataModel *> *arrayApplicants = [[NSMutableArray alloc] init];
+            
+            for (int i = 0; i < (int) [arrApplications count]; i++){
+                NSDictionary *dictApplication = [arrApplications objectAtIndex:i];
+                GANJobApplicationDataModel *application = [[GANJobApplicationDataModel alloc] init];
+                [application setWithDictionary:dictApplication];
+                
+                GANUserRefDataModel *applicant = [[GANUserRefDataModel alloc] init];
+                applicant.szCompanyId = @"";
+                applicant.szUserId = application.szWorkerUserId;
+                [arrayApplicants addObject:applicant];
+            }
+            
+            if (callback) callback(arrayApplicants, SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback(nil, [[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+        }
+        
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(nil, status);
+    }];
+}
+
 /*
 #pragma mark - Worker > MyJobs (jobs for which the worker is recruited)
 

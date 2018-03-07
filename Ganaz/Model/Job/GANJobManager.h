@@ -52,5 +52,6 @@
 - (void) requestApplyForJob: (NSString *) jobId Callback: (void (^) (int status)) callback;
 - (void) requestSuggestFriendForJob: (NSString *) jobId PhoneNumber: (NSString *) phoneNumber Callback: (void (^) (int status)) callback;
 - (void) requestGetMyApplicationsWithCallback: (void (^) (int status)) callback;
+- (void) requestGetApplicantsByJobId: (NSString *) jobId Callback: (void (^) (NSArray <GANUserRefDataModel *> *applicants, int status)) callback;
 
 @end

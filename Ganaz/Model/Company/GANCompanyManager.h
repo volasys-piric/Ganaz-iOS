@@ -16,6 +16,7 @@
 
 @property (strong, nonatomic) NSMutableArray<GANCrewDataModel *> *arrayCrews;
 @property (strong, nonatomic) NSMutableArray<GANMyWorkerDataModel *> *arrMyWorkers;
+@property (strong, nonatomic) NSMutableArray<GANUserWorkerDataModel *> *arrayFacebookLeads;
 @property (strong, nonatomic) NSMutableArray<GANUserCompanyDataModel *> *arrCompanyUsers;
 
 @property (assign, atomic) BOOL isMyWorkersLoading;
@@ -32,6 +33,7 @@
 - (NSArray <GANMyWorkerDataModel *> *) getNonCrewMembersList;
 
 - (BOOL) checkUserInMyworkerList:(GANPhoneDataModel *) phone;
+- (NSArray <GANUserRefDataModel *> *) getFacebookLeadsByJobId: (NSString *) jobId;
 
 #pragma mark - Requests
 

@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSMutableArray *arrayMessages;
 @property (strong, nonatomic) NSMutableArray <GANMessageThreadDataModel *> *arrayGeneralThreads;
 @property (strong, nonatomic) NSMutableArray <GANMessageThreadDataModel *> *arrayCandidateThreads;
+@property (strong, nonatomic) NSMutableArray <GANUserRefDataModel *> *arrayCandidates;
 
 @property (assign, atomic) BOOL isLoading;
 
@@ -28,6 +29,8 @@
 
 - (int) getIndexForCandidateMessageThreadWithReceivers: (NSArray <GANUserRefDataModel *> *) arrayReceivers;
 - (int) getIndexForCandidateMessageThreadWithSender: (GANUserRefDataModel *) sender;
+- (void) addMessageToCandidateThread: (GANMessageDataModel *) newMessage;
+- (void) generateCandidateThreadsByCandidates: (NSArray <GANUserRefDataModel *> *) arrayCandidates;
 
 - (int) getUnreadMessageCount;
 

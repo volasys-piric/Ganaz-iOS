@@ -113,6 +113,15 @@
 - (void) refreshViews{
     self.buttonMessageAll.clipsToBounds = YES;
     self.buttonMessageAll.layer.cornerRadius = 3;
+    
+    
+    GANJobManager *managerJob = [GANJobManager sharedInstance];
+    if (self.indexJob != -1 && self.indexJob < (int) [managerJob.arrMyJobs count]) {
+        GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:self.indexJob];
+        if (job != nil) {
+            self.navigationItem.title = [NSString stringWithFormat:@"%@ - Candidates", [job getTitleEN]];
+        }
+    }
 }
 
 - (void) buildMessageList{
@@ -123,10 +132,8 @@
     
     for (int i = 0; i < (int) [managerMessage.arrayCandidateThreads count]; i++) {
         GANMessageThreadDataModel *thread = [managerMessage.arrayCandidateThreads objectAtIndex:i];
-        if ([thread hasFacebookMessage] == YES) {
-            GANMessageDataModel *message = [thread.arrayMessages lastObject];
-            [self.arrayMessages addObject:message];
-        }
+        GANMessageDataModel *message = [thread.arrayMessages lastObject];
+        [self.arrayMessages addObject:message];
     }
     
     [self.arrayMessages sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
@@ -165,7 +172,24 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
         GANCompanyMessageThreadVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_THREAD"];
         vc.indexThread = indexThread;
-        vc.isFacebookLeadWorker = YES;
+        vc.isCandidateThread = YES;
+        vc.arrayReceivers = [GANMessageManager sharedInstance].arrayCandidates;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    });
+    GANACTIVITY_REPORT(@"Company - Go to message thread from Messages");
+}
+
+- (void) gotoMessageThreadVCForAllCandidates{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+        GANCompanyMessageThreadVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_THREAD"];
+        vc.indexThread = -1;
+        vc.isCandidateThread = YES;
+        vc.arrayReceivers = [[NSMutableArray alloc] init];
+        [vc.arrayReceivers addObjectsFromArray:[GANMessageManager sharedInstance].arrayCandidates];
+        
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     });
@@ -397,7 +421,7 @@
 #pragma mark - UIButton Event Listeners
 
 - (IBAction)onButtonMessageAllClick:(id)sender {
-    
+    [self gotoMessageThreadVCForAllCandidates];
 }
 
 #pragma mark -NSNotification

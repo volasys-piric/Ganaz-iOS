@@ -96,7 +96,13 @@
     }
     else {
         self.arrayReceivers = [[NSMutableArray alloc] init];
-        self.modelThread = [[GANMessageManager sharedInstance].arrayGeneralThreads objectAtIndex:self.indexThread];
+        if (self.isCandidateThread == NO) {
+            self.modelThread = [[GANMessageManager sharedInstance].arrayGeneralThreads objectAtIndex:self.indexThread];
+        }
+        else {
+            self.modelThread = [[GANMessageManager sharedInstance].arrayCandidateThreads objectAtIndex:self.indexThread];
+        }
+        
         GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
         GANMessageDataModel *message = [self.modelThread getLatestMessage];
         if ([message amISender] == YES) {
@@ -201,7 +207,12 @@
     
     if ([self.modelThread getUnreadMessageCount] > 0){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [[GANMessageManager sharedInstance] requestMarkAsReadWithGeneralThreadIndex:self.indexThread Callback:nil];
+            if (self.isCandidateThread == NO) {
+                [[GANMessageManager sharedInstance] requestMarkAsReadWithGeneralThreadIndex:self.indexThread Callback:nil];
+            }
+            else {
+                [[GANMessageManager sharedInstance] requestMarkAsReadWithCandidateThreadIndex:self.indexThread Callback:nil];
+            }
         });
     }
 }
@@ -363,56 +374,132 @@
 
 - (void) doSendMessage{
     NSString *szMessage = self.textviewInput.text;
-    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    
-    NSMutableArray *arrReceivers = [[NSMutableArray alloc] init];
-    for (int i = 0; i < (int) [self.arrayReceivers count]; i++) {
-        GANUserRefDataModel *receiver = [self.arrayReceivers objectAtIndex:i];
-        [arrReceivers addObject:@{@"user_id": receiver.szUserId,
-                                  @"company_id": receiver.szCompanyId}];
-    }
-    
     NSDictionary *dictMetaData = nil;
     if(self.modelLocation) {
         dictMetaData = @{@"map" : [self.modelLocation serializeToMetaDataDictionary]};
     }
     
-    GANENUM_MESSAGE_TYPE enumType = GANENUM_MESSAGE_TYPE_MESSAGE;
-    if (self.isFacebookLeadWorker == YES) enumType = GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE;
-    
-    GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
-    [managerMessage requestSendMessageWithJobId:@"NONE" Type:enumType Receivers:arrReceivers ReceiverPhones: nil Message:szMessage MetaData:dictMetaData AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
-        if (status == SUCCESS_WITH_NO_ERROR){
-//            [GANGlobalVCManager showHudSuccessWithMessage:@"Message sent!" DismissAfter:-1 Callback:^{
-            [GANGlobalVCManager hideHudProgressWithCallback:^{
-                if (self.indexThread == -1) {
-                    // Lookup for the newly created thread...
-                    int indexThread = [managerMessage getIndexForGeneralMessageThreadWithReceivers:self.arrayReceivers];
-                    if (indexThread == -1 && [self.arrayReceivers count] == 1) {
-                        indexThread = [managerMessage getIndexForGeneralMessageThreadWithSender:[self.arrayReceivers firstObject]];
+    if (self.isCandidateThread == NO) {
+        NSMutableArray *arrayReceivers = [[NSMutableArray alloc] init];
+        for (int i = 0; i < (int) [self.arrayReceivers count]; i++) {
+            GANUserRefDataModel *receiver = [self.arrayReceivers objectAtIndex:i];
+            [arrayReceivers addObject:@{@"user_id": receiver.szUserId,
+                                        @"company_id": receiver.szCompanyId}];
+        }
+        
+        [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+        
+        GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
+        [managerMessage requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrayReceivers ReceiverPhones: nil Message:szMessage MetaData:dictMetaData AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
+            if (status == SUCCESS_WITH_NO_ERROR){
+                [GANGlobalVCManager hideHudProgressWithCallback:^{
+                    if (self.indexThread == -1) {
+                        // Lookup for the newly created thread...
+                        int indexThread = [managerMessage getIndexForGeneralMessageThreadWithReceivers:self.arrayReceivers];
+                        if (indexThread == -1 && [self.arrayReceivers count] == 1) {
+                            indexThread = [managerMessage getIndexForGeneralMessageThreadWithSender:[self.arrayReceivers firstObject]];
+                        }
+                        
+                        if (indexThread != -1) {
+                            self.indexThread = indexThread;
+                            self.modelThread = [[GANMessageManager sharedInstance].arrayGeneralThreads objectAtIndex:self.indexThread];
+                            GANMessageDataModel *message = [self.modelThread getLatestMessage];
+                            [self.arrayReceivers removeAllObjects];
+                            [self.arrayReceivers addObjectsFromArray:message.arrayReceivers];
+                        }
                     }
                     
-                    if (indexThread != -1) {
-                        self.indexThread = indexThread;
-                        self.modelThread = [[GANMessageManager sharedInstance].arrayGeneralThreads objectAtIndex:self.indexThread];
-                        GANMessageDataModel *message = [self.modelThread getLatestMessage];
-                        [self.arrayReceivers removeAllObjects];
-                        [self.arrayReceivers addObjectsFromArray:message.arrayReceivers];
+                    [self buildMessageList];
+                    self.modelLocation = nil;
+                    [self refreshMapIcon];
+                    
+                    self.textviewInput.text = @"";
+                    [self updateTextViewInputHeight];
+                }];
+            }
+            else {
+                [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
+            }
+        }];
+    }
+    else {
+        // Iterate each candidate and send...
+        [GANGlobalVCManager showHudProgressWithMessage:[NSString stringWithFormat: @"Sending message to %d candidate(s)...", (int) [self.arrayReceivers count]]];
+        GANCacheManager *managerCache = [GANCacheManager sharedInstance];
+        GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
+        
+        NSMutableArray <GANMessageReceiverDataModel *> *arrayReceivers = [[NSMutableArray alloc] init];
+        
+        for (GANUserRefDataModel *r in self.arrayReceivers) {
+            GANMessageReceiverDataModel *receiver = [[GANMessageReceiverDataModel alloc] init];
+            receiver.szUserId = r.szUserId;
+            receiver.szCompanyId = r.szCompanyId;
+            receiver.enumStatus = GANENUM_MESSAGE_STATUS_NEW;
+            [arrayReceivers addObject:receiver];
+        }
+        
+        __block BOOL isMessageAddedToThread = NO;
+        dispatch_group_t group = dispatch_group_create();
+        for (GANUserRefDataModel *receiver in self.arrayReceivers) {
+            int indexWorker = [managerCache getIndexForUserWithUserId:receiver.szUserId];
+            if (indexWorker == -1) continue;
+            
+            GANUserWorkerDataModel *worker = (GANUserWorkerDataModel *) [managerCache.arrayUsers objectAtIndex:indexWorker];
+            NSDictionary *dictReceiver = @{@"user_id": receiver.szUserId,
+                                           @"company_id": receiver.szCompanyId};
+            GANENUM_MESSAGE_TYPE enumMessageType = GANENUM_MESSAGE_TYPE_MESSAGE;
+            
+            if (worker.enumType == GANENUM_USER_TYPE_WORKER) {
+                enumMessageType = GANENUM_MESSAGE_TYPE_MESSAGE;
+            }
+            else {
+                enumMessageType = GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE;
+            }
+            dispatch_group_enter(group);
+            
+            [managerMessage requestSendMessageWithJobId:@"NONE" Type:enumMessageType Receivers:@[dictReceiver] ReceiverPhones: nil Message:szMessage MetaData:dictMetaData AutoTranslate:self.isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES Callback:^(int status) {
+
+                dispatch_group_leave(group);
+                if (status == SUCCESS_WITH_NO_ERROR){
+                    if (self.indexThread == -1 && isMessageAddedToThread == NO) {
+                        // Auto-generate temporary message object by copying newly created message object
+
+                        // Lookup for the newly created message object...
+                        int indexThread = [managerMessage getIndexForCandidateMessageThreadWithSender:receiver];
+                        GANMessageThreadDataModel *thread = [[GANMessageManager sharedInstance].arrayCandidateThreads objectAtIndex:indexThread];
+                        GANMessageDataModel *message = [thread getLatestMessage];
+                        GANMessageDataModel *messageNew = [[GANMessageDataModel alloc] init];
+                        messageNew.szId = message.szId;
+                        messageNew.szJobId = message.szJobId;
+                        messageNew.enumType = message.enumType;
+                        messageNew.modelSender = message.modelSender;
+                        messageNew.modelContents = message.modelContents;
+                        messageNew.isAutoTranslate = message.isAutoTranslate;
+                        messageNew.dictMetadata = message.dictMetadata;
+                        messageNew.dateSent = message.dateSent;
+                        messageNew.locationInfo = message.locationInfo;
+                        messageNew.szSurveyId = message.szSurveyId;
+                        
+                        messageNew.arrayReceivers = arrayReceivers;
+                        
+                        [self.modelThread addMessageIfNeeded:messageNew];
+                        isMessageAddedToThread = YES;
                     }
+                    self.modelLocation = nil;
+                    [self refreshMapIcon];
+                    
+                    self.textviewInput.text = @"";
+                    [self updateTextViewInputHeight];
                 }
-                
-                [self buildMessageList];
-                self.modelLocation = nil;
-                [self refreshMapIcon];
-                
-                self.textviewInput.text = @"";
-                [self updateTextViewInputHeight];
             }];
         }
-        else {
-            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
-        }
-    }];
+        
+        dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+            [GANGlobalVCManager hideHudProgress];
+            [self buildMessageList];
+        });
+    }
+    
     GANACTIVITY_REPORT(@"Company - Send message");
 }
 

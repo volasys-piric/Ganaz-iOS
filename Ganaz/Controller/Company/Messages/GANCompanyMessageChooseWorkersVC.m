@@ -341,7 +341,7 @@
         vc.indexThread = -1;
         vc.arrayReceivers = arrayReceivers;
     }
-    vc.isFacebookLeadWorker = NO;
+    vc.isCandidateThread = NO;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         // Replace VC
