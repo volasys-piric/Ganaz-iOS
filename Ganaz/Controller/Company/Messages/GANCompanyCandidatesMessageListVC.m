@@ -121,8 +121,8 @@
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     [self.arrayMessages removeAllObjects];
     
-    for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
+    for (int i = 0; i < (int) [managerMessage.arrayCandidateThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [managerMessage.arrayCandidateThreads objectAtIndex:i];
         if ([thread hasFacebookMessage] == YES) {
             GANMessageDataModel *message = [thread.arrayMessages lastObject];
             [self.arrayMessages addObject:message];
@@ -152,8 +152,8 @@
     NSString *messageId = message.szId;
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     int indexThread = -1;
-    for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
+    for (int i = 0; i < (int) [managerMessage.arrayCandidateThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [managerMessage.arrayCandidateThreads objectAtIndex:i];
         if ([thread existsMessageWithMessageId:messageId] == YES) {
             indexThread = i;
             break;

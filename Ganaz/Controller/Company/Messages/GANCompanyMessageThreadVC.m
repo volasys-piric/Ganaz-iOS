@@ -96,7 +96,7 @@
     }
     else {
         self.arrayReceivers = [[NSMutableArray alloc] init];
-        self.modelThread = [[GANMessageManager sharedInstance].arrayThreads objectAtIndex:self.indexThread];
+        self.modelThread = [[GANMessageManager sharedInstance].arrayGeneralThreads objectAtIndex:self.indexThread];
         GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
         GANMessageDataModel *message = [self.modelThread getLatestMessage];
         if ([message amISender] == YES) {
@@ -201,7 +201,7 @@
     
     if ([self.modelThread getUnreadMessageCount] > 0){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [[GANMessageManager sharedInstance] requestMarkAsReadWithThreadIndex:self.indexThread Callback:nil];
+            [[GANMessageManager sharedInstance] requestMarkAsReadWithGeneralThreadIndex:self.indexThread Callback:nil];
         });
     }
 }
@@ -217,9 +217,44 @@
         GANMessageDataModel *message = [self.modelThread.arrayMessages objectAtIndex:i];
         if ([message amIReceiver] == NO && [message amISender] == NO) continue;
         if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) continue;
+        if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION) continue;
+        if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER) continue;
         
         [self.arrayMessages addObject:message];
     }
+    
+    // ================= Add group message if current thread is individual chat-channel
+    
+    if ([self.arrayReceivers count] == 1) {
+        GANUserRefDataModel *receiver = [self.arrayReceivers objectAtIndex:0];
+        GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
+        for (int i = 0; i < (int) [managerMessage.arrayGeneralThreads count]; i++) {
+            GANMessageThreadDataModel *thread = [managerMessage.arrayGeneralThreads objectAtIndex:i];
+            GANMessageDataModel *message = [thread getLatestMessage];
+            if (message == nil) continue;
+            if ([message isUserInvolvedInMessage:receiver] == YES) {
+
+                // Add all messages of this thread, but no duplicate is allowed
+                for (int i = 0; i < (int) [thread.arrayMessages count]; i++) {
+                    GANMessageDataModel *messageToAdd = [thread.arrayMessages objectAtIndex:i];
+                    BOOL isAlreadyAdded = NO;
+                    for (int j = 0; j < (int) [self.arrayMessages count]; j++) {
+                        GANMessageDataModel *messageAdded = [self.arrayMessages objectAtIndex:j];
+                        if ([messageToAdd.szId isEqualToString:messageAdded.szId] == YES) {
+                            isAlreadyAdded = YES;
+                            break;
+                        }
+                    }
+                    if (isAlreadyAdded == NO) {
+                        [self.arrayMessages addObject:messageToAdd];
+                    }
+                }
+
+            }
+        }
+    }
+    
+    // =================
     
     [self.arrayMessages sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         GANMessageDataModel *msg1 = obj1;
@@ -352,14 +387,14 @@
             [GANGlobalVCManager hideHudProgressWithCallback:^{
                 if (self.indexThread == -1) {
                     // Lookup for the newly created thread...
-                    int indexThread = [managerMessage getIndexForMessageThreadWithReceivers:self.arrayReceivers];
+                    int indexThread = [managerMessage getIndexForGeneralMessageThreadWithReceivers:self.arrayReceivers];
                     if (indexThread == -1 && [self.arrayReceivers count] == 1) {
-                        indexThread = [managerMessage getIndexForMessageThreadWithSender:[self.arrayReceivers firstObject]];
+                        indexThread = [managerMessage getIndexForGeneralMessageThreadWithSender:[self.arrayReceivers firstObject]];
                     }
                     
                     if (indexThread != -1) {
                         self.indexThread = indexThread;
-                        self.modelThread = [[GANMessageManager sharedInstance].arrayThreads objectAtIndex:self.indexThread];
+                        self.modelThread = [[GANMessageManager sharedInstance].arrayGeneralThreads objectAtIndex:self.indexThread];
                         GANMessageDataModel *message = [self.modelThread getLatestMessage];
                         [self.arrayReceivers removeAllObjects];
                         [self.arrayReceivers addObjectsFromArray:message.arrayReceivers];

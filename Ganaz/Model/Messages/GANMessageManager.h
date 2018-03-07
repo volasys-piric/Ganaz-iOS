@@ -13,7 +13,8 @@
 @interface GANMessageManager : NSObject
 
 @property (strong, nonatomic) NSMutableArray *arrayMessages;
-@property (strong, nonatomic) NSMutableArray <GANMessageThreadDataModel *> *arrayThreads;
+@property (strong, nonatomic) NSMutableArray <GANMessageThreadDataModel *> *arrayGeneralThreads;
+@property (strong, nonatomic) NSMutableArray <GANMessageThreadDataModel *> *arrayCandidateThreads;
 
 @property (assign, atomic) BOOL isLoading;
 
@@ -22,8 +23,11 @@
 + (instancetype) sharedInstance;
 - (void) initializeManager;
 
-- (int) getIndexForMessageThreadWithReceivers: (NSArray <GANUserRefDataModel *> *) arrayReceivers;
-- (int) getIndexForMessageThreadWithSender: (GANUserRefDataModel *) sender;
+- (int) getIndexForGeneralMessageThreadWithReceivers: (NSArray <GANUserRefDataModel *> *) arrayReceivers;
+- (int) getIndexForGeneralMessageThreadWithSender: (GANUserRefDataModel *) sender;
+
+- (int) getIndexForCandidateMessageThreadWithReceivers: (NSArray <GANUserRefDataModel *> *) arrayReceivers;
+- (int) getIndexForCandidateMessageThreadWithSender: (GANUserRefDataModel *) sender;
 
 - (int) getUnreadMessageCount;
 
@@ -31,7 +35,6 @@
 
 - (void) requestGetMessageListWithCallback: (void (^) (int status)) callback;
 - (void) requestMarkAsReadAllMessagesWithCallback: (void (^) (int status)) callback;
-- (void) requestMarkAsReadWithThreadIndex: (int) indexThread Callback: (void (^) (int status)) callback;
 - (void) requestSendMessageWithJobId: (NSString *) jobId
                                 Type: (GANENUM_MESSAGE_TYPE) type
                            Receivers: (NSArray *) receivers
@@ -43,6 +46,9 @@
                           ToLanguage: (NSString *) toLanguage
                             Callback: (void (^) (int status)) callback;
 
+
+- (void) requestMarkAsReadWithGeneralThreadIndex: (int) indexThread Callback: (void (^) (int status)) callback;
+- (void) requestMarkAsReadWithCandidateThreadIndex: (int) indexThread Callback: (void (^) (int status)) callback;
 
 #pragma mark - Utils
 

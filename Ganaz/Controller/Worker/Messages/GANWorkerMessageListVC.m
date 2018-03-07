@@ -115,8 +115,8 @@
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     [self.arrayMessages removeAllObjects];
     
-    for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
+    for (int i = 0; i < (int) [managerMessage.arrayGeneralThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [managerMessage.arrayGeneralThreads objectAtIndex:i];
         int nMessages = (int) [thread.arrayMessages count];
 
         /*
@@ -177,8 +177,8 @@
     NSString *messageId = message.szId;
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     int indexThread = -1;
-    for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
+    for (int i = 0; i < (int) [managerMessage.arrayGeneralThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [managerMessage.arrayGeneralThreads objectAtIndex:i];
         if ([thread existsMessageWithMessageId:messageId] == YES) {
             indexThread = i;
             break;

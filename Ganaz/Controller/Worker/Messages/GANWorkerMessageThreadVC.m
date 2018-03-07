@@ -65,7 +65,7 @@
     
     self.navigationItem.title = @"Mensajes";
 
-    self.modelThread = [[GANMessageManager sharedInstance].arrayThreads objectAtIndex:self.indexThread];
+    self.modelThread = [[GANMessageManager sharedInstance].arrayGeneralThreads objectAtIndex:self.indexThread];
     GANMessageDataModel *message = [self.modelThread getLatestMessage];
     
     if ([message amISender] == YES) {
@@ -144,7 +144,7 @@
     
     if ([self.modelThread getUnreadMessageCount] > 0){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [[GANMessageManager sharedInstance] requestMarkAsReadWithThreadIndex:self.indexThread Callback:nil];
+            [[GANMessageManager sharedInstance] requestMarkAsReadWithGeneralThreadIndex:self.indexThread Callback:nil];
         });
     }
 }

@@ -119,6 +119,8 @@
     if ([szType caseInsensitiveCompare:@"survey-open-text"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT;
     if ([szType caseInsensitiveCompare:@"survey-answer"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_ANSWER;
     if ([szType caseInsensitiveCompare:@"facebook-message"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE;
+    if ([szType caseInsensitiveCompare:@"survey-confirmation-sms-question"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION;
+    if ([szType caseInsensitiveCompare:@"survey-confirmation-sms-answer"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER;
     
     return GANENUM_MESSAGE_TYPE_MESSAGE;
 }
@@ -132,6 +134,8 @@
     if (type == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT) return @"survey-open-text";
     if (type == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) return @"survey-answer";
     if (type == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE) return @"facebook-message";
+    if (type == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION) return @"survey-confirmation-sms-question";
+    if (type == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER) return @"survey-confirmation-sms-answer";
     
     return @"message";
 }

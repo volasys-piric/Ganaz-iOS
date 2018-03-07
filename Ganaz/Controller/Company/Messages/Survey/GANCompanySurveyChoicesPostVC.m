@@ -213,9 +213,9 @@
 
 - (void) gotoMessageThreadVC{
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
-    int indexThread = [managerMessage getIndexForMessageThreadWithReceivers:self.arrayReceivers];
+    int indexThread = [managerMessage getIndexForGeneralMessageThreadWithReceivers:self.arrayReceivers];
     if (indexThread == -1 && [self.arrayReceivers count] == 1) {
-        indexThread = [managerMessage getIndexForMessageThreadWithSender:[self.arrayReceivers firstObject]];
+        indexThread = [managerMessage getIndexForGeneralMessageThreadWithSender:[self.arrayReceivers firstObject]];
     }
 
     UINavigationController *nav = self.navigationController;
