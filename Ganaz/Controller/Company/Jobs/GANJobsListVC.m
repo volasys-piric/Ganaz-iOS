@@ -9,6 +9,7 @@
 #import "GANJobsListVC.h"
 #import "GANJobItemTVC.h"
 #import "GANJobsDetailsVC.h"
+#import "GANCompanyCandidatesMessageListVC.h"
 #import "GANJobRecruitPopupVC.h"
 #import "GANRecruitVC.h"
 
@@ -16,6 +17,8 @@
 #import "GANFadeTransitionDelegate.h"
 #import "GANUserManager.h"
 #import "GANJobManager.h"
+#import "GANCompanyManager.h"
+#import "GANMessageManager.h"
 #import "GANJobDataModel.h"
 
 #import "GANGenericFunctionManager.h"
@@ -143,9 +146,38 @@
     });
 }
 
+- (void) requestCandidatesForJobAtIndex: (int) index {
+    GANJobDataModel *job = [[GANJobManager sharedInstance].arrMyJobs objectAtIndex:index];
+    if (job == nil) return;
+    
+    GANJobManager *managerJob = [GANJobManager sharedInstance];
+
+    [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
+    [managerJob requestGetApplicantsByJobId:job.szId Callback:^(NSArray<GANUserRefDataModel *> *applicants, int status) {
+        if (status == SUCCESS_WITH_NO_ERROR) {
+            NSMutableArray <GANUserRefDataModel *> *arrayCandidates = [[NSMutableArray alloc] init];
+            [arrayCandidates addObjectsFromArray:applicants];
+            [arrayCandidates addObjectsFromArray:[[GANCompanyManager sharedInstance] getFacebookLeadsByJobId:job.szId]];
+            [GANMessageManager sharedInstance].arrayCandidates = arrayCandidates;
+            [[GANMessageManager sharedInstance] generateCandidateThreadsByCandidates:arrayCandidates];
+            
+            [GANGlobalVCManager hideHudProgressWithCallback:^{
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+                GANCompanyCandidatesMessageListVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_CANDIDATESLIST"];
+                vc.indexJob = index;
+                [self.navigationController pushViewController:vc animated:YES];
+                self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+            }];
+        }
+        else {
+            [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an error" DismissAfter:-1 Callback:nil];
+        }
+    }];
+}
+
 #pragma mark - GANJobRecruitPopupVCDelegate
 
-- (void) didRecruit {
+- (void)didRecruitClick {
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Company" bundle:nil];
         GANRecruitVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_RECRUIT"];
@@ -155,7 +187,11 @@
     });
 }
 
-- (void) didEdit {
+- (void)didViewCandidatesClick {
+    [self requestCandidatesForJobAtIndex:nSelectedIndex];
+}
+
+- (void)didEditJobClick {
     [self gotoDetailsVCAtIndex:nSelectedIndex];
 }
 

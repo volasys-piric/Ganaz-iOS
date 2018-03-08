@@ -118,8 +118,8 @@
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     [self.arrayMessages removeAllObjects];
     
-    for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
+    for (int i = 0; i < (int) [managerMessage.arrayGeneralThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [managerMessage.arrayGeneralThreads objectAtIndex:i];
         int nMessages = (int) [thread.arrayMessages count];
         
         BOOL foundMessage = NO;         // Message, Application, Suggest
@@ -175,8 +175,8 @@
     NSString *messageId = message.szId;
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     int indexThread = -1;
-    for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
+    for (int i = 0; i < (int) [managerMessage.arrayGeneralThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [managerMessage.arrayGeneralThreads objectAtIndex:i];
         if ([thread existsMessageWithMessageId:messageId] == YES) {
             indexThread = i;
             break;
@@ -188,6 +188,7 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
         GANCompanyMessageThreadVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_THREAD"];
         vc.indexThread = indexThread;
+        vc.isCandidateThread = NO;
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     });

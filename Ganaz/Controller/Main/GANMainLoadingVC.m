@@ -113,7 +113,7 @@
                 UIViewController *vcChoose = [storyboardMain instantiateViewControllerWithIdentifier:@"STORYBOARD_MAIN_CHOOSE"];
                 UIViewController *vcLogin = [storyboardLogin instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_PHONE"];
                 GANWorkerLoginCodeVC *vcCode = [storyboardLogin instantiateViewControllerWithIdentifier:@"STORYBOARD_WORKER_LOGIN_CODE"];
-                vcCode.szPhoneNumber = managerUser.modelUserMinInfo.modelPhone.szLocalNumber;
+                vcCode.phone = managerUser.modelUserMinInfo.modelPhone;
                 vcCode.isLogin = YES;
                 vcCode.isAutoLogin = YES;
                 
@@ -128,7 +128,7 @@
                 UIViewController *vcChoose = [storyboardMain instantiateViewControllerWithIdentifier:@"STORYBOARD_MAIN_CHOOSE"];
                 UIViewController *vcLogin = [storyboardLogin instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_LOGIN_PHONE"];
                 GANCompanyLoginCodeVC *vcCode = [storyboardLogin instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_LOGIN_CODE"];
-                vcCode.szPhoneNumber = managerUser.modelUserMinInfo.modelPhone.szLocalNumber;
+                vcCode.phone = managerUser.modelUserMinInfo.modelPhone;
                 vcCode.isLogin = YES;
                 vcCode.isAutoLogin = YES;
                 

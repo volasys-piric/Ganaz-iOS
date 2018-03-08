@@ -40,6 +40,9 @@
     } else if (type == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
         self.modelUser = [[GANUserWorkerDataModel alloc] init];
         [self.modelUser setEnumType:GANENUM_USER_TYPE_ONBOARDING_WORKER];
+    } else if (type == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER) {
+        self.modelUser = [[GANUserWorkerDataModel alloc] init];
+        [self.modelUser setEnumType:GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER];
     } else if (type == GANENUM_USER_TYPE_COMPANY_REGULAR || type == GANENUM_USER_TYPE_COMPANY_ADMIN){
         self.modelUser = [[GANUserCompanyDataModel alloc] init];
     }
@@ -260,12 +263,14 @@
     }];
 }
 
-- (void) requestSearchUserByPhoneNumber: (NSString *) phoneNumber Type: (GANENUM_USER_TYPE) type Callback: (void (^) (int status, NSArray *array)) callback{
+- (void) requestSearchUserByPhone: (GANPhoneDataModel *) phone Type: (GANENUM_USER_TYPE) type Callback: (void (^) (int status, NSArray *array)) callback{
     NSString *szUrl = [GANUrlManager getEndpointForUserSearch];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     if (type != GANENUM_USER_TYPE_ANY){
         [params setObject:[GANUtils getStringFromUserType:type] forKey:@"type"];
     }
+    
+    NSString *phoneNumber = [phone getNormalizedPhoneNumber];
     [params setObject:phoneNumber forKey:@"phone_number"];
     
     [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:NO parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -281,11 +286,7 @@
                 
                 GANUserBaseDataModel *user;
                 
-                if (enumUserType == GANENUM_USER_TYPE_WORKER){
-                    user = [[GANUserWorkerDataModel alloc] init];
-                    [user setWithDictionary:dictAccount];
-                }
-                else if (enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
+                if (enumUserType == GANENUM_USER_TYPE_WORKER || enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER || enumUserType == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER){
                     user = [[GANUserWorkerDataModel alloc] init];
                     [user setWithDictionary:dictAccount];
                 }
@@ -317,11 +318,7 @@
             GANENUM_USER_TYPE enumUserType = [GANUtils getUserTypeFromString:szUserType];
             GANUserBaseDataModel *user;
             
-            if (enumUserType == GANENUM_USER_TYPE_WORKER){
-                user = [[GANUserWorkerDataModel alloc] init];
-                [user setWithDictionary:dictAccount];
-            }
-            else if (enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER) {
+            if (enumUserType == GANENUM_USER_TYPE_WORKER || enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER || enumUserType == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER){
                 user = [[GANUserWorkerDataModel alloc] init];
                 [user setWithDictionary:dictAccount];
             }

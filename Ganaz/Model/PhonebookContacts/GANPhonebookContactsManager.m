@@ -7,7 +7,9 @@
 //
 
 #import "GANPhonebookContactsManager.h"
+#import "GANGenericFunctionManager.h"
 #import "Global.h"
+@import AddressBook;
 
 #define EMGCONSTANT_ADDRESSBOOK_MAXIMUMCONTACTS             10000
 
@@ -75,15 +77,9 @@
     nPeople = MIN(nPeople, EMGCONSTANT_ADDRESSBOOK_MAXIMUMCONTACTS);
     
     for (int i = 0; i < nPeople; i++){
-        GANPhonebookContactDataModel *contact = [[GANPhonebookContactDataModel alloc] init];
-        
         ABRecordRef person = CFArrayGetValueAtIndex(allPeople, i);
-        [contact setWithPerson:person];
-        if ([contact isValidContact] == YES){
-            [self.arrContacts addObject:contact];
-        }
-        else {
-        }
+        NSArray <GANPhonebookContactDataModel *> *arrayContactsForPerson = [self generatePhonebookContactsWithPerson:person];
+        [self.arrContacts addObjectsFromArray:arrayContactsForPerson];
     }
     
     [self.arrContacts sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
@@ -105,6 +101,45 @@
     }];
     
     self.isContactsListBuilt = YES;
+}
+
+- (NSArray <GANPhonebookContactDataModel *> *) generatePhonebookContactsWithPerson: (ABRecordRef) person {
+    NSString *firstName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonFirstNameProperty));
+    NSString *lastName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonLastNameProperty));
+
+    firstName = [GANGenericFunctionManager refineNSString:firstName];
+    lastName = [GANGenericFunctionManager refineNSString:lastName];
+    firstName = [firstName stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+    lastName = [lastName stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+
+    ABMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
+    NSString *email = @"";
+    for (CFIndex i = 0; i < ABMultiValueGetCount(emails); i++) {
+        NSString *temp = [GANGenericFunctionManager refineNSString:(__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(emails, i)];
+        
+        if ([GANGenericFunctionManager isValidEmailAddress:temp] == YES){
+            // Add Primary email only
+            email = temp;
+            break;
+        }
+    }
+    
+    NSMutableArray <GANPhonebookContactDataModel *> *arrayContacts = [[NSMutableArray alloc] init];
+    ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
+    int count = (int) ABMultiValueGetCount(phoneNumbers);
+    
+    for (int i = 0; i < count; i++) {
+        NSString *phoneNumber = [GANGenericFunctionManager refineNSString:(__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, i)];
+        GANPhonebookContactDataModel *contact = [[GANPhonebookContactDataModel alloc] init];
+        contact.szFirstName = firstName;
+        contact.szLastName = lastName;
+        contact.szEmail = email;
+        [contact.modelPhone setLocalNumber:phoneNumber];
+        if ([contact isValidContact] == YES) {
+            [arrayContacts addObject:contact];
+        }
+    }
+    return arrayContacts;
 }
 
 @end

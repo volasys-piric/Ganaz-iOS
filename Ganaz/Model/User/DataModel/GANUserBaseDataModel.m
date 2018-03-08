@@ -7,6 +7,7 @@
 //
 
 #import "GANUserBaseDataModel.h"
+#import "GANUserWorkerDataModel.h"
 #import "GANGenericFunctionManager.h"
 
 @implementation GANUserBaseDataModel
@@ -27,6 +28,7 @@
     self.szUserName = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"username"]];
     self.szEmail = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"email_address"]];
     self.szExternalId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"external_id"]];
+    self.dateCreatedAt = [GANGenericFunctionManager getDateTimeFromNormalizedString:[dict objectForKey:@"created_at"]];
     
     NSArray *arrPlayerIds = [dict objectForKey:@"player_ids"];
     self.arrPlayerIds = [[NSMutableArray alloc] init];
@@ -80,6 +82,9 @@
     }
     else if (self.enumType == GANENUM_USER_TYPE_WORKER || self.enumType == GANENUM_USER_TYPE_ONBOARDING_WORKER){
         return [self.modelPhone getBeautifiedPhoneNumber];
+    }
+    else if (self.enumType == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER) {
+        return [NSString stringWithFormat:@"Candidate #%d", ((GANUserWorkerDataModel *) self).indexForCandidate];
     }
     return @"";
 }

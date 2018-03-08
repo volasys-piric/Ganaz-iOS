@@ -11,6 +11,7 @@
 
 @interface GANCompanySignupVC : UIViewController
 
+@property (strong, nonatomic) GANPhoneDataModel *phone;
 @property (atomic, assign) ENUM_COMPANY_SIGNUP_FROM_CUSTOMVC fromCustomVC;
 
 @end

@@ -65,7 +65,7 @@
     
     self.navigationItem.title = @"Mensajes";
 
-    self.modelThread = [[GANMessageManager sharedInstance].arrayThreads objectAtIndex:self.indexThread];
+    self.modelThread = [[GANMessageManager sharedInstance].arrayGeneralThreads objectAtIndex:self.indexThread];
     GANMessageDataModel *message = [self.modelThread getLatestMessage];
     
     if ([message amISender] == YES) {
@@ -144,7 +144,7 @@
     
     if ([self.modelThread getUnreadMessageCount] > 0){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [[GANMessageManager sharedInstance] requestMarkAsReadWithThreadIndex:self.indexThread Callback:nil];
+            [[GANMessageManager sharedInstance] requestMarkAsReadWithGeneralThreadIndex:self.indexThread Callback:nil];
         });
     }
 }
@@ -189,7 +189,8 @@
         if ([message amIReceiver] == YES) {
             if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE ||
                 message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT ||
-                message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE) {
+                message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE ||
+                message.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE) {
                 return message.isAutoTranslate;
             }
         }
@@ -214,7 +215,7 @@
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     
-    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiversPhoneNumbers: nil Message:szMessage MetaData: nil AutoTranslate:shouldTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN Callback:^(int status) {
+    [[GANMessageManager sharedInstance] requestSendMessageWithJobId:@"NONE" Type:GANENUM_MESSAGE_TYPE_MESSAGE Receivers:arrReceivers ReceiverPhones: nil Message:szMessage MetaData: nil AutoTranslate:shouldTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             // Message is successfully sent!
             // ES: Éxito! Su mensaje ha sido enviado
@@ -232,22 +233,30 @@
     GANACTIVITY_REPORT(@"Worker - Reply Message");
 }
 
-- (void) callPhoneNumber: (NSString *) phoneNumber{
-    phoneNumber = [GANGenericFunctionManager beautifyPhoneNumber:phoneNumber CountryCode:@"US"];
+- (void) analyzeMessageContentsForUrlAtIndex: (int) index {
+    GANMessageDataModel *message = [self.arrayMessages objectAtIndex:index];
+    NSError *error = nil;
+    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:&error];
+    if (error) {
+        return;
+    }
     
-    // Title: Confirmation, Message: Do you want to call %@?
-    [GANGlobalVCManager promptWithVC:self Title:@"Confirmación" Message:[NSString stringWithFormat:@"Quieres llamar a %@?", phoneNumber] ButtonYes:@"Yes" ButtonNo:@"NO" CallbackYes:^{
-        NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",[GANGenericFunctionManager stripNonnumericsFromNSString:phoneNumber]]];
-        
-        if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
-            [[UIApplication sharedApplication] openURL:phoneUrl];
-            GANACTIVITY_REPORT(@"Worker - Call phone");
+    NSString *contents = [message getContentsEN];
+    NSArray <NSTextCheckingResult *> *matches = [detector matchesInString:contents options:0 range:NSMakeRange(0, contents.length)];
+    for (NSTextCheckingResult *match in matches) {
+        if ([match resultType] == NSTextCheckingTypeLink) {
+            [self promptForOpenLinkWithUrl:[[match URL] absoluteString]];
+            return;
         }
-        else{
-            // Your device does not support phone calls
-            [GANGlobalVCManager showHudErrorWithMessage:@"Tu dispositivo no es compatible con llamadas telefónicas" DismissAfter:-1 Callback:nil];
+    }
+}
+
+- (void) promptForOpenLinkWithUrl: (NSString *) urlString {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:urlString]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
         }
-    } CallbackNo:nil];
+    });
 }
 
 - (void) gotoJobDetailsAtIndex: (int) index{
@@ -569,6 +578,9 @@
     }
     else if ([message isSurveyMessage] == YES){
         [self gotoSurveyDetailsAtIndex:index];
+    }
+    else {
+        [self analyzeMessageContentsForUrlAtIndex:index];
     }
 }
 

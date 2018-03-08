@@ -8,7 +8,7 @@
 
 #ifndef Global_h
 #define Global_h
-
+ 
 #import <Crashlytics/Crashlytics.h>
 
 //#warning This should be removed before submission!
@@ -21,11 +21,11 @@
 #if     defined(GANENVIRONMENT_STAGING)
 
 #define ONESIGNAL_APPID                             @"ade7e4b5-b439-4d82-9bb2-c040372c1f14"
-#define GANURL_BASEURL                              @"http://52.43.23.98:8000/api/v1"
+#define GANURL_BASEURL                              @"http://35.166.127.224:8000/api/v1"
 #define MIXPANEL_PROJECTTOKEN                       @"d1bee23a670fbbe63a19373daba332b0"
 
-//#define GANLOG( s, ... ) NSLog( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
-#define GANLOG( s, ... ) CLS_LOG( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
+#define GANLOG( s, ... ) NSLog( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
+//#define GANLOG( s, ... ) CLS_LOG( @"%s: %@ l=>%d", __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__], __LINE__ )
 
 #elif   defined(GANENVIRONMENT_DEMO)
 

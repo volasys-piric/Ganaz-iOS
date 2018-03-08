@@ -42,7 +42,7 @@
 - (void) requestUserSignupWithCallback: (void (^) (int status)) callback;
 - (void) requestUserLoginWithUsername: (NSString *) username Password: (NSString *) password Callback: (void (^) (int status)) callback;
 - (void) requestUserLoginWithPhoneNumber: (NSString *) phoneNumber Password: (NSString *) password Callback: (void (^) (int status)) callback;
-- (void) requestSearchUserByPhoneNumber: (NSString *) phoneNumber Type: (GANENUM_USER_TYPE) type Callback: (void (^) (int status, NSArray *array)) callback;
+- (void) requestSearchUserByPhone: (GANPhoneDataModel *) phone Type: (GANENUM_USER_TYPE) type Callback: (void (^) (int status, NSArray *array)) callback;
 - (void) requestUserDetailsByUserId: (NSString *) userId Callback: (void (^) (int status, GANUserBaseDataModel *user)) callback;
 
 - (void) requestUpdateMyLocationWithCallback: (void (^) (int status)) callback;

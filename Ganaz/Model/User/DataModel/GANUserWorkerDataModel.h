@@ -16,6 +16,13 @@
 @property (assign, atomic) BOOL isJobSearchLock;
 @property (strong, nonatomic) NSMutableArray <NSString *> *arrayJobSearchAllowedCompanyIds;
 
+@property (assign, atomic) int indexForCandidate;              // Increasing index among the Candidates
+@property (strong, nonatomic) NSString *szFacebookPSID;
+@property (strong, nonatomic) NSString *szFacebookPageId;
+@property (strong, nonatomic) NSString *szFacebookAdsId;
+@property (strong, nonatomic) NSString *szFacebookCompanyId;
+@property (strong, nonatomic) NSString *szFacebookJobId;
+
 - (instancetype) init;
 - (void) setWithDictionary: (NSDictionary *) dict;
 

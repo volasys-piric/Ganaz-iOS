@@ -36,6 +36,7 @@
     self.arrayCrews = [[NSMutableArray alloc] init];
     self.arrMyWorkers = [[NSMutableArray alloc] init];
     self.arrCompanyUsers = [[NSMutableArray alloc] init];
+    self.arrayFacebookLeads = [[NSMutableArray alloc] init];
     self.isMyWorkersLoading = NO;
 }
 
@@ -79,10 +80,10 @@
     return -1;
 }
 
-- (int) getIndexForMyWorkersWithPhoneNumber: (NSString *) phoneNumber {
+- (int) getIndexForMyWorkersWithPhone: (GANPhoneDataModel *) phone {
     for (int i = 0; i < (int) [self.arrMyWorkers count]; i++){
         GANMyWorkerDataModel *myWorker = [self.arrMyWorkers objectAtIndex:i];
-        if ([myWorker.modelWorker.modelPhone isSamePhoneNumber:phoneNumber] == YES) {
+        if ([myWorker.modelWorker.modelPhone isSamePhone:phone] == YES) {
             return i;
         }
     }
@@ -169,6 +170,19 @@
     // If added in my-workers list... return nickname if possible.
     GANMyWorkerDataModel *myWorker = [self.arrMyWorkers objectAtIndex:indexMyWorker];
     if (callback) callback([myWorker getDisplayName]);
+}
+
+- (NSArray <GANUserRefDataModel *> *) getFacebookLeadsByJobId: (NSString *) jobId {
+    NSMutableArray <GANUserRefDataModel *> *arrayLeads = [[NSMutableArray alloc] init];
+    for (GANUserWorkerDataModel *lead in self.arrayFacebookLeads) {
+        if ([lead.szFacebookJobId isEqualToString:jobId] == YES) {
+            GANUserRefDataModel *leadUserRef = [[GANUserRefDataModel alloc] init];
+            leadUserRef.szCompanyId = @"";
+            leadUserRef.szUserId = lead.szId;
+            [arrayLeads addObject: leadUserRef];
+        }
+    }
+    return arrayLeads;
 }
 
 #pragma mark - Request
@@ -451,8 +465,8 @@
     }];
 }
 
-- (void) requestSearchNewWorkersByPhoneNumber: (NSString *) phoneNumber Callback: (void (^) (int status, NSArray *arrWorkers)) callback{
-    [[GANUserManager sharedInstance] requestSearchUserByPhoneNumber:phoneNumber Type:GANENUM_USER_TYPE_WORKER Callback:^(int status, NSArray *array) {
+- (void) requestSearchNewWorkersByPhone: (GANPhoneDataModel *) phone Callback: (void (^) (int status, NSArray *arrWorkers)) callback{
+    [[GANUserManager sharedInstance] requestSearchUserByPhone:phone Type:GANENUM_USER_TYPE_WORKER Callback:^(int status, NSArray *array) {
         if (status == SUCCESS_WITH_NO_ERROR && array != nil){
             NSMutableArray *arr = [[NSMutableArray alloc] init];
             for (int i = 0; i < (int) [array count]; i++){
@@ -587,14 +601,77 @@
     }];
 }
 
-- (BOOL) checkUserInMyworkerList:(NSString *) szPhoneNumber {
+- (BOOL) checkUserInMyworkerList:(GANPhoneDataModel *) phone{
     for (int i = 0; i < self.arrMyWorkers.count; i ++) {
         GANMyWorkerDataModel *worker = [self.arrMyWorkers objectAtIndex:i];
-        if([worker.modelWorker.modelPhone isSamePhoneNumber:szPhoneNumber] == YES) {
+        if([worker.modelWorker.modelPhone isSamePhone:phone] == YES) {
             return YES;
         }
     }
     return NO;
+}
+
+#pragma mark - Facebook Lead Candidates
+
+- (void) requestGetFacebookLeadsListWithCallback: (void (^) (int status)) callback{
+    NSString *companyId = [GANUserManager getCompanyDataModel].szId;
+    NSString *szUrl = [GANUrlManager getEndpointForUserSearch];
+    NSDictionary *params = @{@"type": [GANUtils getStringFromUserType:GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER],
+                             @"facebook_lead": @{
+                                     @"company_id": companyId
+                                     }
+                             };
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:NO parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        GANLOG(@"Get Facebook Leads Response ===> %@", responseObject);
+        
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            NSArray *arrayLeadsDict = [dict objectForKey:@"users"];
+            NSMutableArray *arrayLeads = [[NSMutableArray alloc] init];
+            for (int i = 0; i < (int) [arrayLeadsDict count]; i++){
+                NSDictionary *dictLead = [arrayLeadsDict objectAtIndex:i];
+                NSString *szUserType = [GANGenericFunctionManager refineNSString: [dictLead objectForKey:@"type"]];
+                GANENUM_USER_TYPE enumUserType = [GANUtils getUserTypeFromString:szUserType];
+                
+                GANUserBaseDataModel *user;
+                
+                if (enumUserType == GANENUM_USER_TYPE_WORKER || enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER || enumUserType == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER){
+                    user = [[GANUserWorkerDataModel alloc] init];
+                    [user setWithDictionary:dictLead];
+                }
+                else {
+                    continue;
+                }
+                [arrayLeads addObject:user];
+            }
+            
+            [arrayLeads sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                GANUserWorkerDataModel *worker1 = obj1;
+                GANUserWorkerDataModel *worker2 = obj2;
+                if (worker1.dateCreatedAt == nil) return NSOrderedAscending;
+                if (worker2.dateCreatedAt == nil) return NSOrderedDescending;
+                return [worker1.dateCreatedAt compare:worker2.dateCreatedAt];
+            }];
+            
+            [self.arrayFacebookLeads removeAllObjects];
+            for (int i = 0; i < (int) [arrayLeads count]; i++) {
+                GANUserWorkerDataModel *lead = [arrayLeads objectAtIndex:i];
+                lead.indexForCandidate = i + 1;
+                [self.arrayFacebookLeads addObject:lead];
+                [[GANCacheManager sharedInstance] addUserIfNeeded:lead];
+            }
+            
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+        }
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
+    }];
 }
 
 @end

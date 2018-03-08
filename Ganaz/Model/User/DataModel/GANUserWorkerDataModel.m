@@ -39,6 +39,13 @@
     self.arrayJobSearchAllowedCompanyIds = [[NSMutableArray alloc] init];
     self.modelLocation = [[GANLocationDataModel alloc] init];
     
+    self.indexForCandidate = 1;
+    self.szFacebookPSID = @"";
+    self.szFacebookPageId = @"";
+    self.szFacebookAdsId = @"";
+    self.szFacebookCompanyId = @"";
+    self.szFacebookJobId = @"";
+    
     GANLocationManager *managerLocation = [GANLocationManager sharedInstance];
     if (managerLocation.location != nil){
         self.modelLocation.fLatitude = managerLocation.location.coordinate.latitude;
@@ -68,17 +75,35 @@
             }
         }
     }
+    
+    NSDictionary *dictFacebookLead = [dictWorker objectForKey:@"facebook_lead"];
+    if (dictFacebookLead != nil && [dictFacebookLead isKindOfClass:[NSDictionary class]] == YES) {
+        self.szFacebookPSID = [GANGenericFunctionManager refineNSString:[dictFacebookLead objectForKey:@"psid"]];
+        self.szFacebookPageId = [GANGenericFunctionManager refineNSString:[dictFacebookLead objectForKey:@"page_id"]];
+        self.szFacebookAdsId = [GANGenericFunctionManager refineNSString:[dictFacebookLead objectForKey:@"ad_id"]];
+        self.szFacebookCompanyId = [GANGenericFunctionManager refineNSString:[dictFacebookLead objectForKey:@"company_id"]];
+        self.szFacebookJobId = [GANGenericFunctionManager refineNSString:[dictFacebookLead objectForKey:@"job_id"]];
+    }
 }
 
 - (NSDictionary *) serializeToDictionary{
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super serializeToDictionary]];
+
     [dict setObject:@{@"location": [self.modelLocation serializeToDictionary],
                       @"is_newjob_lock": (self.isNewJobLock == YES) ? @"true" : @"false",
                       @"job_search_lock": @{
                               @"lock": (self.isJobSearchLock == YES) ? @"true" : @"false",
                               @"allowed_company_ids": self.arrayJobSearchAllowedCompanyIds,
-                              }
+                              },
+                      @"facebook_lead": @{
+                              @"psid": self.szFacebookPSID,
+                              @"page_id": self.szFacebookPageId,
+                              @"ad_id": self.szFacebookAdsId,
+                              @"company_id": self.szFacebookCompanyId,
+                              @"job_id": self.szFacebookJobId,
+                              },
                       } forKey:@"worker"];
+    
     return dict;
 }
 

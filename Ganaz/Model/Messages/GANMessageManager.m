@@ -39,7 +39,9 @@
 
 - (void) initializeManager{
     self.arrayMessages = [[NSMutableArray alloc] init];
-    self.arrayThreads = [[NSMutableArray alloc] init];
+    self.arrayGeneralThreads = [[NSMutableArray alloc] init];
+    self.arrayCandidateThreads = [[NSMutableArray alloc] init];
+    self.arrayCandidates = [[NSMutableArray alloc] init];
     self.isLoading = NO;
     self.nUnreadMessages = 0;
 }
@@ -52,7 +54,39 @@
     return -1;
 }
 
-- (int) getIndexForMessageThreadWithReceivers: (NSArray <GANUserRefDataModel *> *) arrayReceivers {
+- (BOOL) isValidMessage: (GANMessageDataModel *) newMessage{
+    if (newMessage == nil) return NO;
+    if (newMessage.arrayReceivers == nil || [newMessage.arrayReceivers count] == 0) return NO;
+    if (newMessage.modelSender == nil) return NO;
+    if ([newMessage amISender] == NO && [newMessage amIReceiver] == NO) return NO;
+    return YES;
+}
+
+- (BOOL) addMessageIfNeeded: (GANMessageDataModel *) newMessage{
+    if ([self isValidMessage:newMessage] == NO) return NO;
+    for (int i = 0; i < (int) [self.arrayMessages count]; i++){
+        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
+        if ([message.szId isEqualToString:newMessage.szId] == YES) return NO;
+    }
+    [self.arrayMessages addObject:newMessage];
+    [self addMessageToGeneralThread:newMessage];
+    [self addMessageToCandidateThread:newMessage];
+    return YES;
+}
+
+- (int) getUnreadMessageCount{
+    int count = 0;
+    for (int i = 0; i < (int) [self.arrayMessages count]; i++){
+        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
+        GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
+        if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) count++;
+    }
+    return count;
+}
+
+#pragma mark - General Thread (Message Tab)
+
+- (int) getIndexForGeneralMessageThreadWithReceivers: (NSArray <GANUserRefDataModel *> *) arrayReceivers {
     // Create temporary message, and compare...
     GANMessageDataModel *messageTemp = [[GANMessageDataModel alloc] init];
     for (int i = 0; i < (int) [arrayReceivers count]; i++) {
@@ -74,14 +108,14 @@
         messageTemp.modelSender.szUserId = managerUser.modelUser.szId;
     }
     
-    for (int i = 0; i < (int) [self.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [self.arrayThreads objectAtIndex:i];
-        if ([thread isSameThread:messageTemp] == YES) return i;
+    for (int i = 0; i < (int) [self.arrayGeneralThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [self.arrayGeneralThreads objectAtIndex:i];
+        if ([thread isSameThread:messageTemp ThreadType:GANENUM_MESSAGETHREAD_TYPE_GENERAL] == YES) return i;
     }
     return -1;
 }
 
-- (int) getIndexForMessageThreadWithSender: (GANUserRefDataModel *) sender{
+- (int) getIndexForGeneralMessageThreadWithSender: (GANUserRefDataModel *) sender{
     // Create temporary message, and compare...
     GANMessageDataModel *messageTemp = [[GANMessageDataModel alloc] init];
     messageTemp.modelSender = sender;
@@ -100,37 +134,18 @@
     }
     [messageTemp.arrayReceivers addObject:receiver];
     
-    for (int i = 0; i < (int) [self.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [self.arrayThreads objectAtIndex:i];
-        if ([thread isSameThread:messageTemp] == YES) return i;
+    for (int i = 0; i < (int) [self.arrayGeneralThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [self.arrayGeneralThreads objectAtIndex:i];
+        if ([thread isSameThread:messageTemp ThreadType:GANENUM_MESSAGETHREAD_TYPE_GENERAL] == YES) return i;
     }
     return -1;
 }
 
-- (BOOL) isValidMessage: (GANMessageDataModel *) newMessage{
-    if (newMessage == nil) return NO;
-    if (newMessage.arrayReceivers == nil || [newMessage.arrayReceivers count] == 0) return NO;
-    if (newMessage.modelSender == nil) return NO;
-    if ([newMessage amISender] == NO && [newMessage amIReceiver] == NO) return NO;
-    return YES;
-}
-
-- (BOOL) addMessageIfNeeded: (GANMessageDataModel *) newMessage{
-    if ([self isValidMessage:newMessage] == NO) return NO;
-    for (int i = 0; i < (int) [self.arrayMessages count]; i++){
-        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
-        if ([message.szId isEqualToString:newMessage.szId] == YES) return NO;
-    }
-    [self.arrayMessages addObject:newMessage];
-    [self addMessageToThread:newMessage];
-    return YES;
-}
-
-- (void) addMessageToThread: (GANMessageDataModel *) newMessage{
+- (void) addMessageToGeneralThread: (GANMessageDataModel *) newMessage{
     if ([self isValidMessage:newMessage] == NO) return;
-    for (int i = 0; i < (int) [self.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [self.arrayThreads objectAtIndex:i];
-        if ([thread isSameThread:newMessage] == YES) {
+    for (int i = 0; i < (int) [self.arrayGeneralThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [self.arrayGeneralThreads objectAtIndex:i];
+        if ([thread isSameThread:newMessage ThreadType:GANENUM_MESSAGETHREAD_TYPE_GENERAL] == YES) {
             [thread addMessageIfNeeded:newMessage];
             return;
         }
@@ -139,17 +154,122 @@
     // Create new thread && add message
     GANMessageThreadDataModel *newThread = [[GANMessageThreadDataModel alloc] init];
     [newThread addMessageIfNeeded:newMessage];
-    [self.arrayThreads addObject:newThread];
+    [self.arrayGeneralThreads addObject:newThread];
 }
 
-- (int) getUnreadMessageCount{
-    int count = 0;
-    for (int i = 0; i < (int) [self.arrayMessages count]; i++){
-        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
-        GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
-        if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) count++;
+#pragma mark - Candidate Thread (Company > Job > View Candidate)
+
+- (int) getIndexForCandidateMessageThreadWithReceivers: (NSArray <GANUserRefDataModel *> *) arrayReceivers {
+    // Create temporary message, and compare...
+    GANMessageDataModel *messageTemp = [[GANMessageDataModel alloc] init];
+    for (int i = 0; i < (int) [arrayReceivers count]; i++) {
+        GANUserRefDataModel *receiverUserRef = [arrayReceivers objectAtIndex:i];
+        GANMessageReceiverDataModel *receiverTemp = [[GANMessageReceiverDataModel alloc] init];
+        receiverTemp.szCompanyId = receiverUserRef.szCompanyId;
+        receiverTemp.szUserId = receiverUserRef.szUserId;
+        [messageTemp.arrayReceivers addObject:receiverTemp];
     }
-    return count;
+    
+    // Set myself as "sender"
+    GANUserManager *managerUser = [GANUserManager sharedInstance];
+    if ([managerUser isCompanyUser] == YES) {
+        messageTemp.modelSender.szCompanyId = [GANUserManager getUserCompanyDataModel].szCompanyId;
+        messageTemp.modelSender.szUserId = managerUser.modelUser.szId;
+    }
+    else {
+        messageTemp.modelSender.szCompanyId = @"";
+        messageTemp.modelSender.szUserId = managerUser.modelUser.szId;
+    }
+    
+    for (int i = 0; i < (int) [self.arrayCandidateThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [self.arrayCandidateThreads objectAtIndex:i];
+        if ([thread isSameThread:messageTemp ThreadType:GANENUM_MESSAGETHREAD_TYPE_COMPANY_JOBCANDIDATE] == YES) return i;
+    }
+    return -1;
+}
+
+- (int) getIndexForCandidateMessageThreadWithSender: (GANUserRefDataModel *) sender{
+    // Create temporary message, and compare...
+    GANMessageDataModel *messageTemp = [[GANMessageDataModel alloc] init];
+    messageTemp.modelSender = sender;
+    
+    // Set myself as "receiver"
+    GANUserManager *managerUser = [GANUserManager sharedInstance];
+    GANMessageReceiverDataModel *receiver = [[GANMessageReceiverDataModel alloc] init];
+    
+    if ([managerUser isCompanyUser] == YES) {
+        receiver.szCompanyId = [GANUserManager getUserCompanyDataModel].szCompanyId;
+        receiver.szUserId = managerUser.modelUser.szId;
+    }
+    else {
+        receiver.szCompanyId = @"";
+        receiver.szUserId = managerUser.modelUser.szId;
+    }
+    [messageTemp.arrayReceivers addObject:receiver];
+    
+    for (int i = 0; i < (int) [self.arrayCandidateThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [self.arrayCandidateThreads objectAtIndex:i];
+        if ([thread isSameThread:messageTemp ThreadType:GANENUM_MESSAGETHREAD_TYPE_COMPANY_JOBCANDIDATE] == YES) return i;
+    }
+    return -1;
+}
+
+- (void) addMessageToCandidateThread: (GANMessageDataModel *) newMessage{
+    if ([self isValidMessage:newMessage] == NO) return;
+    for (int i = 0; i < (int) [self.arrayCandidateThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [self.arrayCandidateThreads objectAtIndex:i];
+        if ([thread isSameThread:newMessage ThreadType:GANENUM_MESSAGETHREAD_TYPE_COMPANY_JOBCANDIDATE] == YES) {
+            [thread addMessageIfNeeded:newMessage];
+            return;
+        }
+    }
+    
+    // Create new thread && add message
+    GANMessageThreadDataModel *newThread = [[GANMessageThreadDataModel alloc] init];
+    [newThread addMessageIfNeeded:newMessage];
+    [self.arrayCandidateThreads addObject:newThread];
+}
+
+- (void) generateCandidateThreadsByCandidates: (NSArray <GANUserRefDataModel *> *) arrayCandidates{
+    [self.arrayCandidateThreads removeAllObjects];
+    
+    // Message should contain only the candidates in sender/receivers list...
+    
+    for (GANMessageDataModel *message in self.arrayMessages) {
+        BOOL containsNonCandidate = NO;
+        if ([message amISender] == YES) {
+            for (GANMessageReceiverDataModel *receiver in message.arrayReceivers) {
+                BOOL isCandidate = NO;
+                for (GANUserRefDataModel *candidate in arrayCandidates) {
+                    if ([receiver isSameUser:candidate] == YES) {
+                        isCandidate = YES;
+                        break;
+                    }
+                }
+                if (isCandidate == NO) {
+                    containsNonCandidate = YES;
+                    break;
+                }
+            }
+        }
+        else {
+            BOOL isCandidate = NO;
+            for (GANUserRefDataModel *candidate in arrayCandidates) {
+                if ([message.modelSender isSameUser:candidate] == YES) {
+                    isCandidate = YES;
+                    break;
+                }
+            }
+            
+            if (isCandidate == NO) {
+                containsNonCandidate = YES;
+            }
+        }
+        
+        if (containsNonCandidate == NO) {
+            [self addMessageToCandidateThread:message];
+        }
+    }
 }
 
 #pragma mark - Request
@@ -200,7 +320,7 @@
 - (void) requestSendMessageWithJobId: (NSString *) jobId
                                 Type: (GANENUM_MESSAGE_TYPE) type
                            Receivers: (NSArray *) receivers
-               ReceiversPhoneNumbers: (NSArray *) receivers_phone_numbers
+                      ReceiverPhones: (NSArray <GANPhoneDataModel *> *) receiverPhones
                              Message: (NSString *) message
                             MetaData: (NSDictionary *)metaData
                        AutoTranslate: (BOOL) isAutoTranslate
@@ -236,8 +356,12 @@
         
         [params setObject:(isAutoTranslate == YES) ? @"true" : @"false" forKey:@"auto_translate"];
         
-        if(receivers_phone_numbers.count > 0) {
-            [params setObject:receivers_phone_numbers forKey:@"receivers_phone_numbers"];
+        if(receiverPhones.count > 0) {
+            NSMutableArray *arrayReceiversPhoneNumbers = [[NSMutableArray alloc] init];
+            for (GANPhoneDataModel *phone in receiverPhones) {
+                [arrayReceiversPhoneNumbers addObject:[phone getNormalizedPhoneNumber]];
+            }
+            [params setObject:arrayReceiversPhoneNumbers forKey:@"receivers_phone_numbers"];
         }
         
         [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -285,9 +409,21 @@
     [self requestMarkAsRead:arrayMessageIds Callback:callback];
 }
 
-- (void) requestMarkAsReadWithThreadIndex: (int) indexThread Callback: (void (^) (int status)) callback {
+- (void) requestMarkAsReadWithGeneralThreadIndex: (int) indexThread Callback: (void (^) (int status)) callback {
     NSArray *arrayMessageIds = [[NSMutableArray alloc] init];
-    GANMessageThreadDataModel *thread = [self.arrayThreads objectAtIndex:indexThread];
+    GANMessageThreadDataModel *thread = [self.arrayGeneralThreads objectAtIndex:indexThread];
+    arrayMessageIds = [thread getMessageIdsForStatusUpdateMyself];
+    if ([arrayMessageIds count] == 0) {
+        if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        return;
+    }
+    
+    [self requestMarkAsRead:arrayMessageIds Callback:callback];
+}
+
+- (void) requestMarkAsReadWithCandidateThreadIndex: (int) indexThread Callback: (void (^) (int status)) callback {
+    NSArray *arrayMessageIds = [[NSMutableArray alloc] init];
+    GANMessageThreadDataModel *thread = [self.arrayCandidateThreads objectAtIndex:indexThread];
     arrayMessageIds = [thread getMessageIdsForStatusUpdateMyself];
     if ([arrayMessageIds count] == 0) {
         if (callback) callback(SUCCESS_WITH_NO_ERROR);

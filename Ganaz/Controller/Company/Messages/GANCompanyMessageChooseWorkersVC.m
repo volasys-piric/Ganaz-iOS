@@ -326,9 +326,9 @@
     NSMutableArray <GANUserRefDataModel *> *arrayReceivers = [self buildMutableReceiversArrayForSelectedWorkers];
     
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
-    int indexThread = [managerMessage getIndexForMessageThreadWithReceivers:arrayReceivers];
+    int indexThread = [managerMessage getIndexForGeneralMessageThreadWithReceivers:arrayReceivers];
     if (indexThread == -1 && [arrayReceivers count] == 1) {
-        indexThread = [managerMessage getIndexForMessageThreadWithSender:[arrayReceivers firstObject]];
+        indexThread = [managerMessage getIndexForGeneralMessageThreadWithSender:[arrayReceivers firstObject]];
     }
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
@@ -341,6 +341,7 @@
         vc.indexThread = -1;
         vc.arrayReceivers = arrayReceivers;
     }
+    vc.isCandidateThread = NO;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         // Replace VC

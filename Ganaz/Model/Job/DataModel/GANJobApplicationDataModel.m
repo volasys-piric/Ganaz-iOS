@@ -28,7 +28,7 @@
 - (void) setWithDictionary:(NSDictionary *)dict{
     self.szId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"_id"]];
     self.szJobId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"job_id"]];
-    self.szWorkerUserId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"user_id"]];
+    self.szWorkerUserId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"worker_user_id"]];
 }
 
 @end

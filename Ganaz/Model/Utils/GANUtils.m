@@ -50,10 +50,13 @@
     if ([szType caseInsensitiveCompare:@"worker"] == NSOrderedSame){
         return GANENUM_USER_TYPE_WORKER;
     }
-    
     if([szType caseInsensitiveCompare:@"onboarding-worker"] == NSOrderedSame) {
         return GANENUM_USER_TYPE_ONBOARDING_WORKER;
     }
+    if([szType caseInsensitiveCompare:@"facebook-lead-worker"] == NSOrderedSame) {
+        return GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER;
+    }
+    
     if ([szType caseInsensitiveCompare:@"company-regular"] == NSOrderedSame){
         return GANENUM_USER_TYPE_COMPANY_REGULAR;
     }
@@ -66,6 +69,8 @@
 + (NSString *) getStringFromUserType: (GANENUM_USER_TYPE) type{
     if (type == GANENUM_USER_TYPE_WORKER) return @"worker";
     if (type == GANENUM_USER_TYPE_ONBOARDING_WORKER) return @"onboarding-worker";
+    if (type == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER) return @"facebook-lead-worker";
+    
     if (type == GANENUM_USER_TYPE_COMPANY_REGULAR) return @"company-regular";
     if (type == GANENUM_USER_TYPE_COMPANY_ADMIN) return @"company-admin";
     return @"any";
@@ -113,6 +118,9 @@
     if ([szType caseInsensitiveCompare:@"survey-choice-single"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE;
     if ([szType caseInsensitiveCompare:@"survey-open-text"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT;
     if ([szType caseInsensitiveCompare:@"survey-answer"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_ANSWER;
+    if ([szType caseInsensitiveCompare:@"facebook-message"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE;
+    if ([szType caseInsensitiveCompare:@"survey-confirmation-sms-question"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION;
+    if ([szType caseInsensitiveCompare:@"survey-confirmation-sms-answer"] == NSOrderedSame) return GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER;
     
     return GANENUM_MESSAGE_TYPE_MESSAGE;
 }
@@ -125,6 +133,9 @@
     if (type == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE) return @"survey-choice-single";
     if (type == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT) return @"survey-open-text";
     if (type == GANENUM_MESSAGE_TYPE_SURVEY_ANSWER) return @"survey-answer";
+    if (type == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE) return @"facebook-message";
+    if (type == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION) return @"survey-confirmation-sms-question";
+    if (type == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER) return @"survey-confirmation-sms-answer";
     
     return @"message";
 }
@@ -203,6 +214,20 @@
     if (type == GANENUM_SURVEYTYPE_CHOICESINGLE) return @"choice-single";
     if (type == GANENUM_SURVEYTYPE_OPENTEXT) return @"open-text";
     return @"choice-single";
+}
+
+// Phone Country
+
++ (GANENUM_PHONE_COUNTRY) getCountryFromString: (NSString *) szCountry {
+    if ([szCountry caseInsensitiveCompare:@"US"] == NSOrderedSame) return GANENUM_PHONE_COUNTRY_US;
+    if ([szCountry caseInsensitiveCompare:@"MX"] == NSOrderedSame) return GANENUM_PHONE_COUNTRY_MX;
+    return GANENUM_PHONE_COUNTRY_US;
+}
+
++ (NSString *) getStringFromCountry: (GANENUM_PHONE_COUNTRY) country {
+    if (country == GANENUM_PHONE_COUNTRY_US) return @"US";
+    if (country == GANENUM_PHONE_COUNTRY_US) return @"MX";
+    return @"US";
 }
 
 //
