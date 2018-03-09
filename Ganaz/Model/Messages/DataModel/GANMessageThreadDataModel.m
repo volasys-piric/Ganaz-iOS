@@ -57,9 +57,9 @@
     if ([[GANUserManager sharedInstance] isCompanyUser] == YES) {
         if (threadType == GANENUM_MESSAGETHREAD_TYPE_GENERAL) {
             
-            if (messageLatest.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE ||
-                messageLatest.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION ||
-                messageLatest.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER) {
+            if (message.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE ||
+                message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION ||
+                message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER) {
                 return NO;
             }
             
@@ -131,8 +131,8 @@
         }
         else if (threadType == GANENUM_MESSAGETHREAD_TYPE_COMPANY_JOBCANDIDATE) {
             
-            if (messageLatest.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION ||
-                messageLatest.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER) {
+            if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION ||
+                message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER) {
                 return NO;
             }
             
@@ -209,9 +209,9 @@
     else if ([[GANUserManager sharedInstance] isWorker] == YES) {
         if (threadType == GANENUM_MESSAGETHREAD_TYPE_GENERAL) {
             
-            if (messageLatest.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE ||
-                messageLatest.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION ||
-                messageLatest.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER) {
+            if (message.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE ||
+                message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION ||
+                message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER) {
                 return NO;
             }
             

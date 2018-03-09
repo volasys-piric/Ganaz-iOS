@@ -143,6 +143,12 @@
 
 - (void) addMessageToGeneralThread: (GANMessageDataModel *) newMessage{
     if ([self isValidMessage:newMessage] == NO) return;
+    if (newMessage.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE ||
+        newMessage.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION ||
+        newMessage.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER) {
+        return;
+    }
+
     for (int i = 0; i < (int) [self.arrayGeneralThreads count]; i++) {
         GANMessageThreadDataModel *thread = [self.arrayGeneralThreads objectAtIndex:i];
         if ([thread isSameThread:newMessage ThreadType:GANENUM_MESSAGETHREAD_TYPE_GENERAL] == YES) {
@@ -216,6 +222,11 @@
 
 - (void) addMessageToCandidateThread: (GANMessageDataModel *) newMessage{
     if ([self isValidMessage:newMessage] == NO) return;
+    if (newMessage.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION ||
+        newMessage.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER) {
+        return;
+    }
+    
     for (int i = 0; i < (int) [self.arrayCandidateThreads count]; i++) {
         GANMessageThreadDataModel *thread = [self.arrayCandidateThreads objectAtIndex:i];
         if ([thread isSameThread:newMessage ThreadType:GANENUM_MESSAGETHREAD_TYPE_COMPANY_JOBCANDIDATE] == YES) {
