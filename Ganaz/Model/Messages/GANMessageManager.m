@@ -41,7 +41,6 @@
     self.arrayMessages = [[NSMutableArray alloc] init];
     self.arrayGeneralThreads = [[NSMutableArray alloc] init];
     self.arrayCandidateThreads = [[NSMutableArray alloc] init];
-    self.arrayCandidates = [[NSMutableArray alloc] init];
     self.isLoading = NO;
     self.nUnreadMessages = 0;
 }

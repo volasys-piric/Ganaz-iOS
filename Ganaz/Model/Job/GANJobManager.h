@@ -8,6 +8,19 @@
 
 #import <Foundation/Foundation.h>
 #import "GANJobDataModel.h"
+#import "GANJobApplicationDataModel.h"
+
+// [Job: Candidate] Mapping...
+
+@interface GANJobCandidatesMappingDataModel : NSObject
+
+@property (strong, nonatomic) NSString *szJobId;
+@property (strong, nonatomic) NSMutableArray <GANUserRefDataModel *> *arrayCandidates;
+
+@end
+
+
+// Job Manager
 
 @interface GANJobManager : NSObject
 
@@ -16,6 +29,9 @@
  */
 
 @property (strong, nonatomic) NSMutableArray *arrMyJobs;
+@property (strong, nonatomic) NSMutableArray <GANJobApplicationDataModel *> *arrayJobApplications;
+@property (strong, nonatomic) NSMutableArray <GANJobCandidatesMappingDataModel *> *arrayJobCandidatesMapping;
+
 @property (assign, atomic) BOOL isMyJobsLoading;
 
 @property (strong, nonatomic) GANJobDataModel *modelOnboardingJob;
@@ -33,6 +49,8 @@
 
 - (int) getIndexForMyJobsByJobId: (NSString *) jobId;
 - (int) getIndexForMyApplicationsByJobId: (NSString *) jobId;
+- (void) addJobCandidateIfNeeded: (NSString *) jobId Candidate: (GANUserRefDataModel *) newCandidate;
+- (GANJobCandidatesMappingDataModel *) getJobCandidatesMappingByJobId: (NSString *) jobId;
 + (BOOL) isValidJobId: (NSString *) jobId;
 
 #pragma mark - Request For <Company> User
@@ -52,6 +70,5 @@
 - (void) requestApplyForJob: (NSString *) jobId Callback: (void (^) (int status)) callback;
 - (void) requestSuggestFriendForJob: (NSString *) jobId PhoneNumber: (NSString *) phoneNumber Callback: (void (^) (int status)) callback;
 - (void) requestGetMyApplicationsWithCallback: (void (^) (int status)) callback;
-- (void) requestGetApplicantsByJobId: (NSString *) jobId Callback: (void (^) (NSArray <GANUserRefDataModel *> *applicants, int status)) callback;
 
 @end

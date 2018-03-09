@@ -57,4 +57,11 @@
     return dict;
 }
 
+- (GANUserRefDataModel *) toUserRefObject {
+    GANUserRefDataModel *userRef = [[GANUserRefDataModel alloc] init];
+    userRef.szUserId = self.szId;
+    userRef.szCompanyId = self.szCompanyId;
+    return userRef;
+}
+
 @end

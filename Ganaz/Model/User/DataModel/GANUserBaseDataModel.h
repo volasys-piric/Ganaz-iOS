@@ -35,4 +35,6 @@
 - (NSString *) getFullName;
 - (NSString *) getValidUsername;
 
+- (GANUserRefDataModel *) toUserRefObject;
+
 @end

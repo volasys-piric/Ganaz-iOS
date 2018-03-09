@@ -89,4 +89,11 @@
     return @"";
 }
 
+- (GANUserRefDataModel *) toUserRefObject {
+    GANUserRefDataModel *userRef = [[GANUserRefDataModel alloc] init];
+    userRef.szUserId = self.szId;
+    userRef.szCompanyId = @"";
+    return userRef;
+}
+
 @end

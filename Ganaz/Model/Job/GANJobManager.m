@@ -7,7 +7,6 @@
 //
 
 #import "GANJobManager.h"
-#import "GANJobApplicationDataModel.h"
 #import "GANLocationManager.h"
 
 #import "GANUserManager.h"
@@ -16,6 +15,22 @@
 #import "GANGenericFunctionManager.h"
 #import "GANErrorManager.h"
 #import "Global.h"
+
+@implementation GANJobCandidatesMappingDataModel
+
+- (id) init{
+    if (self = [super init]){
+        [self initialize];
+    }
+    return self;
+}
+
+- (void) initialize {
+    self.szJobId = @"";
+    self.arrayCandidates = [[NSMutableArray alloc] init];
+}
+
+@end
 
 @implementation GANJobManager
 
@@ -37,6 +52,8 @@
 
 - (void) initializeManager{
     self.arrMyJobs = [[NSMutableArray alloc] init];
+    self.arrayJobApplications = [[NSMutableArray alloc] init];
+    self.arrayJobCandidatesMapping = [[NSMutableArray alloc] init];
     self.arrJobsSearchResult = [[NSMutableArray alloc] init];
     self.arrMyApplications = [[NSMutableArray alloc] init];
     
@@ -90,6 +107,44 @@
     return (([jobId caseInsensitiveCompare:@"NONE"] != NSOrderedSame) && (jobId.length > 0));
 }
 
+- (void) addJobApplicationIfNeeded: (GANJobApplicationDataModel *) newApplication {
+    for (GANJobApplicationDataModel *application in self.arrayJobApplications) {
+        if ([application.szId isEqualToString:newApplication.szId] == YES) {
+            return;
+        }
+    }
+    [self.arrayJobApplications addObject:newApplication];
+}
+
+- (void) addJobCandidateIfNeeded: (NSString *) jobId Candidate: (GANUserRefDataModel *) newCandidate {
+    for (GANJobCandidatesMappingDataModel *mapping in self.arrayJobCandidatesMapping) {
+        if ([mapping.szJobId isEqualToString:jobId] == YES) {
+            for (GANUserRefDataModel *candidate in mapping.arrayCandidates) {
+                if ([candidate isSameUser:newCandidate] == YES) {
+                    return;
+                }
+            }
+            [mapping.arrayCandidates addObject:newCandidate];
+            return;
+        }
+    }
+    
+    // New Mapping
+    GANJobCandidatesMappingDataModel *mapping = [[GANJobCandidatesMappingDataModel alloc] init];
+    mapping.szJobId = jobId;
+    [mapping.arrayCandidates addObject:newCandidate];
+    [self.arrayJobCandidatesMapping addObject:mapping];
+}
+
+- (GANJobCandidatesMappingDataModel *) getJobCandidatesMappingByJobId: (NSString *) jobId {
+    for (GANJobCandidatesMappingDataModel *mapping in self.arrayJobCandidatesMapping) {
+        if ([mapping.szJobId isEqualToString:jobId] == YES) {
+            return mapping;
+        }
+    }
+    return nil;
+}
+
 #pragma mark - Request for <Company> Users
 
 - (void) requestMyJobListWithCallback: (void (^) (int status)) callback{
@@ -113,6 +168,8 @@
                 [job setWithDictionary:dictJob];
                 [self.arrMyJobs addObject:job];
             }
+            
+            [self requestGetJobApplicationsWithCallback:nil];
             if (callback) callback(SUCCESS_WITH_NO_ERROR);
             [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_JOBLIST_UPDATED object:nil];
         }
@@ -198,6 +255,46 @@
     } failure:^(int status, NSDictionary *error) {
         if (callback) callback(status);
         [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_JOBLIST_UPDATEFAILED object:nil];
+    }];
+}
+
+- (void) requestGetJobApplicationsWithCallback: (void (^) (int status)) callback{
+    NSString *szUrl = [GANUrlManager getEndpointForGetApplications];
+    NSDictionary *param = [[NSMutableDictionary alloc] init];
+    NSMutableArray <NSString *> *arrayJobIds = [[NSMutableArray alloc] init];
+    for (GANJobDataModel *job in self.arrMyJobs) {
+        [arrayJobIds addObject:job.szId];
+    }
+    param = @{@"job_ids": arrayJobIds};
+    
+    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dict = responseObject;
+        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+        if (success){
+            NSArray *arrApplications = [dict objectForKey:@"applications"];
+            
+            for (int i = 0; i < (int) [arrApplications count]; i++){
+                NSDictionary *dictApplication = [arrApplications objectAtIndex:i];
+                GANJobApplicationDataModel *application = [[GANJobApplicationDataModel alloc] init];
+                [application setWithDictionary:dictApplication];
+                
+                GANUserRefDataModel *applicant = [[GANUserRefDataModel alloc] init];
+                applicant.szCompanyId = @"";
+                applicant.szUserId = application.szWorkerUserId;
+                
+                [self addJobApplicationIfNeeded:application];
+                [self addJobCandidateIfNeeded:application.szJobId Candidate:applicant];
+            }
+            
+            if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        }
+        else {
+            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+        }
+        
+    } failure:^(int status, NSDictionary *error) {
+        if (callback) callback(status);
     }];
 }
 
@@ -385,43 +482,6 @@
         
     } failure:^(int status, NSDictionary *error) {
         if (callback) callback(status);
-    }];
-}
-
-- (void) requestGetApplicantsByJobId: (NSString *) jobId Callback: (void (^) (NSArray <GANUserRefDataModel *> *applicants, int status)) callback{
-    NSString *szUrl = [GANUrlManager getEndpointForGetApplications];
-    NSDictionary *param = [[NSMutableDictionary alloc] init];
-    param = @{@"job_ids": @[jobId
-                      ]
-              };
-    
-    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSDictionary *dict = responseObject;
-        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
-        if (success){
-            NSArray *arrApplications = [dict objectForKey:@"applications"];
-            NSMutableArray <GANUserRefDataModel *> *arrayApplicants = [[NSMutableArray alloc] init];
-            
-            for (int i = 0; i < (int) [arrApplications count]; i++){
-                NSDictionary *dictApplication = [arrApplications objectAtIndex:i];
-                GANJobApplicationDataModel *application = [[GANJobApplicationDataModel alloc] init];
-                [application setWithDictionary:dictApplication];
-                
-                GANUserRefDataModel *applicant = [[GANUserRefDataModel alloc] init];
-                applicant.szCompanyId = @"";
-                applicant.szUserId = application.szWorkerUserId;
-                [arrayApplicants addObject:applicant];
-            }
-            
-            if (callback) callback(arrayApplicants, SUCCESS_WITH_NO_ERROR);
-        }
-        else {
-            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
-            if (callback) callback(nil, [[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
-        }
-        
-    } failure:^(int status, NSDictionary *error) {
-        if (callback) callback(nil, status);
     }];
 }
 

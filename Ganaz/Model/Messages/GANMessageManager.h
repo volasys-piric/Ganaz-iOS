@@ -15,7 +15,6 @@
 @property (strong, nonatomic) NSMutableArray *arrayMessages;
 @property (strong, nonatomic) NSMutableArray <GANMessageThreadDataModel *> *arrayGeneralThreads;
 @property (strong, nonatomic) NSMutableArray <GANMessageThreadDataModel *> *arrayCandidateThreads;
-@property (strong, nonatomic) NSMutableArray <GANUserRefDataModel *> *arrayCandidates;
 
 @property (assign, atomic) BOOL isLoading;
 

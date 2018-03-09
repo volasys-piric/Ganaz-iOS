@@ -9,6 +9,7 @@
 #import "GANCompanyManager.h"
 #import "GANCacheManager.h"
 #import "GANUrlManager.h"
+#import "GANJobManager.h"
 #import "GANNetworkRequestManager.h"
 #import "GANErrorManager.h"
 #import "GANGenericFunctionManager.h"
@@ -635,8 +636,7 @@
                 NSString *szUserType = [GANGenericFunctionManager refineNSString: [dictLead objectForKey:@"type"]];
                 GANENUM_USER_TYPE enumUserType = [GANUtils getUserTypeFromString:szUserType];
                 
-                GANUserBaseDataModel *user;
-                
+                GANUserWorkerDataModel *user;
                 if (enumUserType == GANENUM_USER_TYPE_WORKER || enumUserType == GANENUM_USER_TYPE_ONBOARDING_WORKER || enumUserType == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER){
                     user = [[GANUserWorkerDataModel alloc] init];
                     [user setWithDictionary:dictLead];
@@ -644,6 +644,11 @@
                 else {
                     continue;
                 }
+                
+                if (user.szFacebookJobId.length == 0 || user.szFacebookAdsId.length == 0) {
+                    continue;
+                }
+                
                 [arrayLeads addObject:user];
             }
             
@@ -656,11 +661,16 @@
             }];
             
             [self.arrayFacebookLeads removeAllObjects];
+            
+            GANJobManager *managerJob = [GANJobManager sharedInstance];
+            GANCacheManager *managerCache = [GANCacheManager sharedInstance];
+            
             for (int i = 0; i < (int) [arrayLeads count]; i++) {
                 GANUserWorkerDataModel *lead = [arrayLeads objectAtIndex:i];
                 lead.indexForCandidate = i + 1;
                 [self.arrayFacebookLeads addObject:lead];
-                [[GANCacheManager sharedInstance] addUserIfNeeded:lead];
+                [managerCache addUserIfNeeded:lead];
+                [managerJob addJobCandidateIfNeeded:lead.szFacebookJobId Candidate:[lead toUserRefObject]];
             }
             
             if (callback) callback(SUCCESS_WITH_NO_ERROR);

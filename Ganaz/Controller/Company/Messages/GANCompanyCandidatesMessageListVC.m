@@ -173,7 +173,6 @@
         GANCompanyMessageThreadVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_THREAD"];
         vc.indexThread = indexThread;
         vc.isCandidateThread = YES;
-        vc.arrayReceivers = [GANMessageManager sharedInstance].arrayCandidates;
         
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -182,13 +181,17 @@
 }
 
 - (void) gotoMessageThreadVCForAllCandidates{
+    GANJobManager *managerJob = [GANJobManager sharedInstance];
+    GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:self.indexJob];
+    GANJobCandidatesMappingDataModel *mapping = [managerJob getJobCandidatesMappingByJobId:job.szId];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
         GANCompanyMessageThreadVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_THREAD"];
         vc.indexThread = -1;
         vc.isCandidateThread = YES;
         vc.arrayReceivers = [[NSMutableArray alloc] init];
-        [vc.arrayReceivers addObjectsFromArray:[GANMessageManager sharedInstance].arrayCandidates];
+        [vc.arrayReceivers addObjectsFromArray:mapping.arrayCandidates];
         
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
