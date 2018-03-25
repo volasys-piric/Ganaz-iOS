@@ -391,12 +391,25 @@
     return arrayMessageIds;
 }
 
-- (int) getUnreadMessageCount{
+- (int) getUnreadGeneralMessageCount{
     int count = 0;
     for (int i = 0; i < (int) [self.arrayMessages count]; i++){
         GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
+        if (message.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE) continue;
         GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
         if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) count++;
+    }
+    return count;
+}
+
+- (int) getUnreadCandidateMessageCount{
+    int count = 0;
+    for (int i = 0; i < (int) [self.arrayMessages count]; i++){
+        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
+        if (message.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE) {
+            GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
+            if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) count++;
+        }
     }
     return count;
 }

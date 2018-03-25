@@ -161,6 +161,12 @@
     if ([szType caseInsensitiveCompare:@"message"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE;
     if ([szType caseInsensitiveCompare:@"application"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_APPLICATION;
     if ([szType caseInsensitiveCompare:@"suggest"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_SUGGEST;
+    if ([szType caseInsensitiveCompare:@"survey-choice-single"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_CHOICESINGLE;
+    if ([szType caseInsensitiveCompare:@"survey-open-text"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_OPENTEXT;
+    if ([szType caseInsensitiveCompare:@"survey-answer"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_ANSWER;
+    if ([szType caseInsensitiveCompare:@"facebook-message"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_FACEBOOKMESSAGE;
+    if ([szType caseInsensitiveCompare:@"survey-confirmation-sms-question"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_CONFIRMATIONSMSQUESTION;
+    if ([szType caseInsensitiveCompare:@"survey-confirmation-sms-answer"] == NSOrderedSame) return GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_CONFIRMATIONSMSANSWER;
     return GANENUM_PUSHNOTIFICATION_TYPE_NONE;
 }
 
@@ -169,6 +175,12 @@
     if (type == GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE) return @"message";
     if (type == GANENUM_PUSHNOTIFICATION_TYPE_APPLICATION) return @"application";
     if (type == GANENUM_PUSHNOTIFICATION_TYPE_SUGGEST) return @"suggest";
+    if (type == GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_CHOICESINGLE) return @"survey-choice-single";
+    if (type == GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_OPENTEXT) return @"survey-open-text";
+    if (type == GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_ANSWER) return @"survey-answer";
+    if (type == GANENUM_PUSHNOTIFICATION_TYPE_FACEBOOKMESSAGE) return @"facebook-message";
+    if (type == GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_CONFIRMATIONSMSQUESTION) return @"survey-confirmation-sms-question";
+    if (type == GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_CONFIRMATIONSMSANSWER) return @"survey-confirmation-sms-answer";
     return @"";
 }
 
@@ -290,8 +302,10 @@
     }];
 }
 
-+ (void) requestTranslateEsMultipleTexts: (NSArray <NSString *>*) texts
++ (void) requestTranslateMultipleTexts: (NSArray <NSString *>*) texts
                                Translate: (BOOL) shouldTranslate
+                          FromLanguage: (NSString *) fromLanguage
+                            ToLanguage: (NSString *) toLanguage
                                 Callback:(void (^)(int, NSArray <GANTransContentsDataModel *> *))callback {
     NSMutableArray <GANTransContentsDataModel *> *arrayTransContents = [[NSMutableArray alloc] init];
     for (int i = 0; i < (int) [texts count]; i++) {
@@ -308,13 +322,8 @@
     }
     
     NSString *szUrl = [GANUrlManager getEndpointForGoogleTranslate];
-//    NSDictionary *params = @{@"key": GOOGLE_TRANSLATE_API_KEY,
-//                             @"source": @"en",
-//                             @"target": @"es",
-//                             @"q": texts,
-//                             };
     
-    szUrl = [NSString stringWithFormat:@"%@?key=%@&source=en&target=es", szUrl, [GANGenericFunctionManager urlEncode:GOOGLE_TRANSLATE_API_KEY]];
+    szUrl = [NSString stringWithFormat:@"%@?key=%@&source=%@&target=%@", szUrl, [GANGenericFunctionManager urlEncode:GOOGLE_TRANSLATE_API_KEY], fromLanguage, toLanguage];
     for (int i = 0; i < (int) [texts count]; i++) {
         szUrl = [NSString stringWithFormat:@"%@&q=%@", szUrl, [GANGenericFunctionManager urlEncode:[texts objectAtIndex:i]]];
     }
@@ -325,7 +334,13 @@
             for (int i = 0; i < [arrTransTexts count]; i++) {
                 NSDictionary *dictTransText = [arrTransTexts objectAtIndex:i];
                 GANTransContentsDataModel *transContents = [arrayTransContents objectAtIndex:i];
-                transContents.szTextES = [GANGenericFunctionManager refineNSString:[dictTransText objectForKey:@"translatedText"]];
+                if ([toLanguage caseInsensitiveCompare:GANCONSTANTS_TRANSLATE_LANGUAGE_EN] == NSOrderedSame) {
+                    transContents.szTextEN = [GANGenericFunctionManager refineNSString:[dictTransText objectForKey:@"translatedText"]];
+                }
+                else {
+                    transContents.szTextES = [GANGenericFunctionManager refineNSString:[dictTransText objectForKey:@"translatedText"]];
+                }
+                
             }
         }
         if (callback) callback(SUCCESS_WITH_NO_ERROR, arrayTransContents);

@@ -205,15 +205,19 @@
     if (self.isVCVisible == NO) return;
     if ([self.modelThread.arrayMessages count] == 0) return;
     
-    if ([self.modelThread getUnreadMessageCount] > 0){
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            if (self.isCandidateThread == NO) {
+    if (self.isCandidateThread == NO) {
+        if ([self.modelThread getUnreadGeneralMessageCount] > 0){
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [[GANMessageManager sharedInstance] requestMarkAsReadWithGeneralThreadIndex:self.indexThread Callback:nil];
-            }
-            else {
+            });
+        }
+    }
+    else {
+        if ([self.modelThread getUnreadCandidateMessageCount] > 0){
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [[GANMessageManager sharedInstance] requestMarkAsReadWithCandidateThreadIndex:self.indexThread Callback:nil];
-            }
-        });
+            });
+        }
     }
 }
 

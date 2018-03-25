@@ -369,6 +369,10 @@
                 
                 GANMyWorkerDataModel *myWorkerNew = [[GANMyWorkerDataModel alloc] init];
                 [myWorkerNew setWithDictionary:dictMyWorker];
+                
+                // Don't add facebook lead to my-workers list... They are managed in arrayFacebookLeadWorkers.
+                if (myWorkerNew.modelWorker.enumType == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER) continue;
+                
                 [self addMyWorkerIfNeeded:myWorkerNew];
                 [[GANCacheManager sharedInstance] addUserIfNeeded:myWorkerNew.modelWorker];
             }

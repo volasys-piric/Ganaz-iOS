@@ -31,12 +31,12 @@
 - (void) addMessageToCandidateThread: (GANMessageDataModel *) newMessage;
 - (void) generateCandidateThreadsByCandidates: (NSArray <GANUserRefDataModel *> *) arrayCandidates;
 
-- (int) getUnreadMessageCount;
+- (int) getUnreadGeneralMessageCount;
+- (int) getUnreadCandidateMessageCount;
 
 #pragma mark - Request
 
 - (void) requestGetMessageListWithCallback: (void (^) (int status)) callback;
-- (void) requestMarkAsReadAllMessagesWithCallback: (void (^) (int status)) callback;
 - (void) requestSendMessageWithJobId: (NSString *) jobId
                                 Type: (GANENUM_MESSAGE_TYPE) type
                            Receivers: (NSArray *) receivers
@@ -49,6 +49,8 @@
                             Callback: (void (^) (int status)) callback;
 
 
+- (void) requestMarkAsReadAllGeneralMessagesWithCallback: (void (^) (int status)) callback;
+- (void) requestMarkAsReadAllCandidateMessagesWithCallback: (void (^) (int status)) callback;
 - (void) requestMarkAsReadWithGeneralThreadIndex: (int) indexThread Callback: (void (^) (int status)) callback;
 - (void) requestMarkAsReadWithCandidateThreadIndex: (int) indexThread Callback: (void (^) (int status)) callback;
 

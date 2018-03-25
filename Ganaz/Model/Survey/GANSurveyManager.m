@@ -113,7 +113,12 @@
         [arrayTexts addObjectsFromArray:choiceTexts];
     }
     
-    [GANUtils requestTranslateEsMultipleTexts:arrayTexts Translate:isAutoTranslate Callback:^(int status, NSArray<GANTransContentsDataModel *> *arrayTransContents) {
+    [GANUtils requestTranslateMultipleTexts:arrayTexts
+                                  Translate:isAutoTranslate
+                               FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN
+                                 ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES
+                                   Callback:^(int status, NSArray<GANTransContentsDataModel *> *arrayTransContents) {
+                                       
         GANTransContentsDataModel *question = [arrayTransContents objectAtIndex:0];
         NSMutableArray <GANTransContentsDataModel *> *choices = [[NSMutableArray alloc] init];
         for (int i = 1; i < (int) [arrayTransContents count]; i++){
@@ -237,39 +242,45 @@
     }];
 }
 
-- (void) requestSubmitSurveyOpenTextAnswerBySurveyId: (NSString *) surveyId Text: (NSString *) text Callback: (void (^) (int status)) callback{
-    NSString *szUrl = [GANUrlManager getEndpointForSubmitSurveyAnswer];
-    NSDictionary *param = @{@"survey_id": surveyId,
-                            @"answer": @{
-                                    @"text": @{
-                                            @"en": text,
-                                            @"es": text,
-                                            }
-                                    },
-                            @"responder": @{
-                                    @"user_id": [GANUserManager getUserWorkerDataModel].szId,
-                                    @"company_id": @""
-                                    },
-                            @"auto_translate": @"false"
-                            };
-    
-    [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSDictionary *dict = responseObject;
-        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
-        if (success){
-            GANSurveyAnswerDataModel *answer = [[GANSurveyAnswerDataModel alloc] init];
-            [answer setWithDictionary:[dict objectForKey:@"answer"]];
-            [[GANCacheManager sharedInstance] addSurveyAnswerIfNeeded:answer];
-            if (callback)  callback(SUCCESS_WITH_NO_ERROR);
+- (void) requestSubmitSurveyOpenTextAnswerBySurveyId: (NSString *) surveyId Text: (NSString *) text AutoTranslate: (BOOL) isAutoTranslate Callback: (void (^) (int status)) callback{
+    [GANUtils requestTranslate:text Translate:isAutoTranslate FromLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_ES ToLanguage:GANCONSTANTS_TRANSLATE_LANGUAGE_EN Callback:^(int status, NSString *translatedText) {
+        NSString *textEN = text;
+        if (status == SUCCESS_WITH_NO_ERROR) {
+            textEN = translatedText;
         }
-        else {
-            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
-            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+        NSString *szUrl = [GANUrlManager getEndpointForSubmitSurveyAnswer];
+        NSDictionary *param = @{@"survey_id": surveyId,
+                                @"answer": @{
+                                        @"text": @{
+                                                @"en": textEN,
+                                                @"es": text,
+                                                }
+                                        },
+                                @"responder": @{
+                                        @"user_id": [GANUserManager getUserWorkerDataModel].szId,
+                                        @"company_id": @""
+                                        },
+                                @"auto_translate": (isAutoTranslate ? @"true" : @"false")
+                                };
+        
+        [[GANNetworkRequestManager sharedInstance] POST:szUrl requireAuth:YES parameters:param success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSDictionary *dict = responseObject;
+            BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+            if (success){
+                GANSurveyAnswerDataModel *answer = [[GANSurveyAnswerDataModel alloc] init];
+                [answer setWithDictionary:[dict objectForKey:@"answer"]];
+                [[GANCacheManager sharedInstance] addSurveyAnswerIfNeeded:answer];
+                if (callback)  callback(SUCCESS_WITH_NO_ERROR);
+            }
+            else {
+                NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+                if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+                [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYLIST_UPDATEFAILED object:nil];
+            }
+        } failure:^(int status, NSDictionary *error) {
+            if (callback) callback(status);
             [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYLIST_UPDATEFAILED object:nil];
-        }
-    } failure:^(int status, NSDictionary *error) {
-        if (callback) callback(status);
-        [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_SURVEYLIST_UPDATEFAILED object:nil];
+        }];
     }];
 }
 

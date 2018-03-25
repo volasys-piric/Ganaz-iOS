@@ -58,6 +58,8 @@
     if (newMessage.arrayReceivers == nil || [newMessage.arrayReceivers count] == 0) return NO;
     if (newMessage.modelSender == nil) return NO;
     if ([newMessage amISender] == NO && [newMessage amIReceiver] == NO) return NO;
+    if (newMessage.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION ||
+        newMessage.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER) return NO;
     return YES;
 }
 
@@ -73,12 +75,25 @@
     return YES;
 }
 
-- (int) getUnreadMessageCount{
+- (int) getUnreadGeneralMessageCount{
     int count = 0;
     for (int i = 0; i < (int) [self.arrayMessages count]; i++){
         GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
+        if (message.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE) continue;
         GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
         if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) count++;
+    }
+    return count;
+}
+
+- (int) getUnreadCandidateMessageCount{
+    int count = 0;
+    for (int i = 0; i < (int) [self.arrayMessages count]; i++){
+        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
+        if (message.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE) {
+            GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
+            if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) count++;
+        }
     }
     return count;
 }
@@ -402,13 +417,33 @@
     }];
 }
 
-- (void) requestMarkAsReadAllMessagesWithCallback: (void (^) (int status)) callback{
+- (void) requestMarkAsReadAllGeneralMessagesWithCallback: (void (^) (int status)) callback{
     NSMutableArray *arrayMessageIds = [[NSMutableArray alloc] init];
     for (int i = 0; i < (int) [self.arrayMessages count]; i++){
         GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
+        if (message.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE) continue;
         GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
         if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) {
             [arrayMessageIds addObject:message.szId];
+        }
+    }
+    if ([arrayMessageIds count] == 0) {
+        if (callback) callback(SUCCESS_WITH_NO_ERROR);
+        return;
+    }
+    
+    [self requestMarkAsRead:arrayMessageIds Callback:callback];
+}
+
+- (void) requestMarkAsReadAllCandidateMessagesWithCallback: (void (^) (int status)) callback{
+    NSMutableArray *arrayMessageIds = [[NSMutableArray alloc] init];
+    for (int i = 0; i < (int) [self.arrayMessages count]; i++){
+        GANMessageDataModel *message = [self.arrayMessages objectAtIndex:i];
+        if (message.enumType == GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE) {
+            GANMessageReceiverDataModel *receiver = [message getReceiverMyself];
+            if (receiver != nil && receiver.enumStatus == GANENUM_MESSAGE_STATUS_NEW) {
+                [arrayMessageIds addObject:message.szId];
+            }
         }
     }
     if ([arrayMessageIds count] == 0) {

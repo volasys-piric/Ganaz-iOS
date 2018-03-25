@@ -80,6 +80,12 @@
         else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_SUGGEST){
             [GANGlobalVCManager showHudInfoWithMessage:@"New job inquiry has arrived." DismissAfter:-1 Callback:nil];
         }
+        else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_ANSWER){
+            [GANGlobalVCManager showHudInfoWithMessage:@"New survey answer has arrived." DismissAfter:-1 Callback:nil];
+        }
+        else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_FACEBOOKMESSAGE) {
+            [GANGlobalVCManager showHudInfoWithMessage:@"New facebook message has arrived." DismissAfter:-1 Callback:nil];
+        }
     }
     [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
 }

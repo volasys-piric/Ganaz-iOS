@@ -98,6 +98,12 @@ typedef enum _ENUM_PUSHNOTIFICATION_TYPE{
     GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE,
     GANENUM_PUSHNOTIFICATION_TYPE_APPLICATION,
     GANENUM_PUSHNOTIFICATION_TYPE_SUGGEST,
+    GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_CHOICESINGLE,
+    GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_OPENTEXT,
+    GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_ANSWER,
+    GANENUM_PUSHNOTIFICATION_TYPE_FACEBOOKMESSAGE,
+    GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_CONFIRMATIONSMSQUESTION,
+    GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_CONFIRMATIONSMSANSWER,
 }GANENUM_PUSHNOTIFICATION_TYPE;
 
 // Enum Membership Plan Type
@@ -243,8 +249,10 @@ typedef enum _ENUM_PHONE_COUNTRY{
                ToLanguage: (NSString *) toLanguage
                  Callback: (void (^) (int status, NSString *translatedText)) callback;
 
-+ (void) requestTranslateEsMultipleTexts: (NSArray <NSString *>*) texts
-                               Translate: (BOOL) shouldTranslate
-                                Callback:(void (^)(int, NSArray <GANTransContentsDataModel *> *))callback;
++ (void) requestTranslateMultipleTexts: (NSArray <NSString *>*) texts
+                             Translate: (BOOL) shouldTranslate
+                          FromLanguage: (NSString *) fromLanguage
+                            ToLanguage: (NSString *) toLanguage
+                              Callback:(void (^)(int, NSArray <GANTransContentsDataModel *> *))callback;
 
 @end

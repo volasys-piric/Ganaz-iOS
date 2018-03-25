@@ -102,9 +102,9 @@
 
 - (void) updateReadStatusIfNeeded{
     if (self.isVCVisible == NO) return;
-    if ([[GANMessageManager sharedInstance] getUnreadMessageCount] > 0){
+    if ([[GANMessageManager sharedInstance] getUnreadGeneralMessageCount] > 0){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [[GANMessageManager sharedInstance] requestMarkAsReadAllMessagesWithCallback:nil];
+            [[GANMessageManager sharedInstance] requestMarkAsReadAllGeneralMessagesWithCallback:nil];
         });
     }
 }
@@ -154,10 +154,10 @@
                     [self.arrayMessages addObject:message];
                 }
             }
-            
-            if (foundMessage == YES && foundRecruit == YES && foundSurvey == YES) break;
+            if (foundMessage == YES && foundRecruit == YES) break;
+//            if (foundMessage == YES && foundRecruit == YES && foundSurvey == YES) break;
         }
-    }
+    }    
     
     [self.arrayMessages sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         GANMessageDataModel *msg1 = obj1;
@@ -244,7 +244,6 @@
             }
         }];
     }];
-    
 }
 
 - (void) gotoSurveyChoicesResultVCAtSurveyIndex: (int) indexSurvey{

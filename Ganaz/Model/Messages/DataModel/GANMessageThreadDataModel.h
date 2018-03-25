@@ -21,7 +21,8 @@
 - (BOOL) isSameThread:(GANMessageDataModel *)message ThreadType: (GANENUM_MESSAGETHREAD_TYPE) threadType;
 - (BOOL) existsMessageWithMessageId: (NSString *) messageId;
 - (NSMutableArray <NSString *> *) getMessageIdsForStatusUpdateMyself;
-- (int) getUnreadMessageCount;
+- (int) getUnreadGeneralMessageCount;
+- (int) getUnreadCandidateMessageCount;
 - (BOOL) hasFacebookMessage;
 
 @end
