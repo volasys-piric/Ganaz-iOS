@@ -677,6 +677,7 @@
                 [managerJob addJobCandidateIfNeeded:lead.szFacebookJobId Candidate:[lead toUserRefObject]];
             }
             
+            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_CANDIDATESLIST_UPDATED object:nil];
             if (callback) callback(SUCCESS_WITH_NO_ERROR);
         }
         else {

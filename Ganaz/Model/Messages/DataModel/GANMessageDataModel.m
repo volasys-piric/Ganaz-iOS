@@ -218,6 +218,12 @@
     return YES;
 }
 
+// Group
+
+- (BOOL) isGroupMessage {
+    return [self getReceiversCount] > 1;
+}
+
 // Survey
 
 - (BOOL) isSurveyMessage{

@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "GANUserManager.h"
 #import "GANMessageManager.h"
+#import "GANCompanyManager.h"
 #import "GANUtils.h"
 #import "GANGenericFunctionManager.h"
 #import "GANGlobalVCManager.h"
@@ -85,6 +86,7 @@
         }
         else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_FACEBOOKMESSAGE) {
             [GANGlobalVCManager showHudInfoWithMessage:@"New facebook message has arrived." DismissAfter:-1 Callback:nil];
+            [[GANCompanyManager sharedInstance] requestGetFacebookLeadsListWithCallback:nil];
         }
     }
     [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];

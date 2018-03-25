@@ -56,6 +56,10 @@
 
 - (BOOL) hasLocationInfo;
 
+// Group
+
+- (BOOL) isGroupMessage;
+
 // Survey
 
 - (BOOL) isSurveyMessage;

@@ -599,7 +599,12 @@
     
     cell.labelTimestamp.text = [GANGenericFunctionManager getBeautifiedPastTime:message.dateSent];
     if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE) {
-        cell.labelMessage.text = [message getContentsEN];
+        if ([message isGroupMessage] == YES) {
+            [self beautifyLabelText:cell.labelMessage Title:@"Message to Group\r" Text:[message getContentsEN]];
+        }
+        else {
+            [self beautifyLabelText:cell.labelMessage Title:@"" Text:[message getContentsEN]];
+        }
     }
     else if (message.enumType == GANENUM_MESSAGE_TYPE_RECRUIT) {
         int indexJob = [managerJob getIndexForMyJobsByJobId:message.szJobId];
@@ -636,7 +641,12 @@
     
     cell.labelTimestamp.text = [GANGenericFunctionManager getBeautifiedPastTime:message.dateSent];
     if (message.enumType == GANENUM_MESSAGE_TYPE_MESSAGE) {
-        cell.labelMessage.text = [message getContentsEN];
+        if ([message isGroupMessage] == YES) {
+            [self beautifyLabelText:cell.labelMessage Title:@"Message to Group\r" Text:[message getContentsEN]];
+        }
+        else {
+            [self beautifyLabelText:cell.labelMessage Title:@"" Text:[message getContentsEN]];
+        }
     }
     else if (message.enumType == GANENUM_MESSAGE_TYPE_APPLICATION) {
         int indexJob = [managerJob getIndexForMyJobsByJobId:message.szJobId];
@@ -661,7 +671,7 @@
     else {
         [self beautifyLabelText:cell.labelMessage Title:@"" Text:[message getContentsEN]];
     }
-    
+
     if ([message hasLocationInfo] == YES) {
         [cell showMapWithLatitude:message.locationInfo.fLatitude Longitude:message.locationInfo.fLongitude];
     }
