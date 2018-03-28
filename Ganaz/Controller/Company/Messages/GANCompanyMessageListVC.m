@@ -147,14 +147,14 @@
                 }
             }
             
-            if (foundSurvey == NO) {
+//            if (foundSurvey == NO) {
                 if (message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT ||
                     message.enumType == GANENUM_MESSAGE_TYPE_SURVEY_CHOICESINGLE) {
                     foundSurvey = YES;
                     [self.arrayMessages addObject:message];
                 }
-            }
-            if (foundMessage == YES && foundRecruit == YES) break;
+//            }
+//            if (foundMessage == YES && foundRecruit == YES) break;
 //            if (foundMessage == YES && foundRecruit == YES && foundSurvey == YES) break;
         }
     }    
