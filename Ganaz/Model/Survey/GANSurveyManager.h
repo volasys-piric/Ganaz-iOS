@@ -42,6 +42,7 @@
 
 - (void) requestSubmitSurveyOpenTextAnswerBySurveyId: (NSString *) surveyId
                                                 Text: (NSString *) text
+                                       AutoTranslate: (BOOL) isAutoTranslate
                                             Callback: (void (^) (int status)) callback;
 
 - (void) requestSurveyAnswerDetailsByAnswerId: (NSString *) answerId

@@ -9,6 +9,8 @@
 #import "GANSharePostingWithContactsVC.h"
 #import "GANCompanySuggestWorkersItemTVC.h"
 #import "GANJobPostingSharedPopupVC.h"
+#import "GANCountrySelectorPopupVC.h"
+
 #import "GANMainChooseVC.h"
 #import "GANFadeTransitionDelegate.h"
 #import "GANPhonebookContactsManager.h"
@@ -21,16 +23,18 @@
 #import "GANRecruitManager.h"
 #import "GANGenericFunctionManager.h"
 
-@interface GANSharePostingWithContactsVC ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, GANCompanySuggestWorkersItemTVCDelegate, GANJobPostingSharedPopupVCDelegate>
+@interface GANSharePostingWithContactsVC ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, GANCompanySuggestWorkersItemTVCDelegate, GANJobPostingSharedPopupVCDelegate, GANCountrySelectorPopupDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet UIButton *buttonShare;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *buttonDone;
 
+@property (weak, nonatomic) IBOutlet UIImageView *imageCountry;
 @property (strong, nonatomic) GANFadeTransitionDelegate *transController;
 @property (strong, nonatomic) NSMutableArray *arrFilteredContacts;
 @property (assign, atomic) int indexSelected;
+@property (assign, atomic) GANENUM_PHONE_COUNTRY enumCountry;
 
 @end
 
@@ -43,11 +47,8 @@
     [self refreshView];
     
     self.txtSearch.delegate = self;
-    
     self.tableView.delegate = self;
-    
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
     self.transController = [[GANFadeTransitionDelegate alloc] init];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -55,19 +56,28 @@
     
     self.indexSelected = -1;
     self.arrFilteredContacts = [[NSMutableArray alloc] init];
+    self.enumCountry = GANENUM_PHONE_COUNTRY_US;
     
     [self registerTableViewCellFromNib];
     [self askPermissionForPhoneBook];
 }
 
 - (void) refreshView {
-    
     self.buttonShare.layer.cornerRadius = 3.f;
     self.buttonShare.clipsToBounds = YES;
-    
     self.buttonDone.layer.cornerRadius = 3.f;
     self.buttonDone.clipsToBounds = YES;
     
+    [self refreshCountryFlag];
+}
+
+- (void) refreshCountryFlag{
+    if (self.enumCountry == GANENUM_PHONE_COUNTRY_US) {
+        [self.imageCountry setImage:[UIImage imageNamed:@"flag-us"]];
+    }
+    else if (self.enumCountry == GANENUM_PHONE_COUNTRY_MX) {
+        [self.imageCountry setImage:[UIImage imageNamed:@"flag-mx"]];
+    }
 }
 
 - (void) registerTableViewCellFromNib {
@@ -75,6 +85,19 @@
 }
 
 #pragma mark - Biz Logic
+
+- (void) showDlgForCountry{
+    GANCountrySelectorPopupVC *vc = [[GANCountrySelectorPopupVC alloc] initWithNibName:@"CountrySelectorPopupVC" bundle:nil];
+    
+    vc.enumCountry = self.enumCountry;
+    vc.delegate = self;
+    vc.view.backgroundColor = [UIColor clearColor];
+    [vc refreshFields];
+    
+    [vc setTransitioningDelegate:self.transController];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:vc animated:YES completion:nil];
+}
 
 - (void) askPermissionForPhoneBook{
     [[GANPhonebookContactsManager sharedInstance] requestPermissionForAddressBookWithCallback:^(BOOL granted) {
@@ -133,7 +156,7 @@
     
     GANJobManager *managerJob = [GANJobManager sharedInstance];
     GANRecruitManager *managerRecruit = [GANRecruitManager sharedInstance];
-    NSMutableArray *arrPhoneNumbers = [[NSMutableArray alloc] init];
+    NSMutableArray *arrayPhones = [[NSMutableArray alloc] init];
     
     if(self.indexSelected == -1 ) {
         NSString *szPhoneNumber = [GANGenericFunctionManager getValidPhoneNumber:self.txtSearch.text];
@@ -141,10 +164,12 @@
             [GANGlobalVCManager showHudErrorWithMessage:@"Please enter a valid phone number" DismissAfter:-1 Callback:nil];
             return;
         }
-        [arrPhoneNumbers addObject:szPhoneNumber];
+        
+        GANPhoneDataModel *phone = [[GANPhoneDataModel alloc] initWithCountry:self.enumCountry LocalNumber:szPhoneNumber];
+        [arrayPhones addObject:phone];
     } else {
         GANPhonebookContactDataModel *worker = [self.arrFilteredContacts objectAtIndex:self.indexSelected];
-        [arrPhoneNumbers addObject:worker.modelPhone.szLocalNumber];
+        [arrayPhones addObject:worker.modelPhone];
     }
     
     NSMutableArray *arrJobIds = [[NSMutableArray alloc] init];
@@ -152,7 +177,7 @@
     [arrJobIds addObject:job.szId];
 
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [managerRecruit requestSubmitRecruitWithJobIds:arrJobIds Broadcast:0 ReRecruitUserIds:nil PhoneNumbers:arrPhoneNumbers Callback:^(int status, int count) {
+    [managerRecruit requestSubmitRecruitWithJobIds:arrJobIds Broadcast:0 ReRecruitUserIds:nil Phones:arrayPhones Callback:^(int status, int count) {
         
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager hideHudProgress];
@@ -175,6 +200,10 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)onButtonCountryClick:(id)sender {
+    [self showDlgForCountry];
 }
 
 - (IBAction)onShare:(id)sender {
@@ -266,8 +295,16 @@
     return 63;
 }
 
+#pragma mark - GANCountrySelectorPopup Delegate
+
+- (void) didCountrySelect:(GANENUM_PHONE_COUNTRY)country {
+    self.enumCountry = country;
+    [self refreshCountryFlag];
+}
+
 #pragma mark - GANCompanySuggestWorkersItemTVCDelegate
--(void) onWorkersShare:(NSInteger) nIndex {
+
+- (void) onWorkersShare:(NSInteger) nIndex {
     [self.view endEditing:YES];
     
     self.indexSelected = (int)nIndex;

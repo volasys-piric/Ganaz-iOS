@@ -23,6 +23,7 @@
 @property (assign, atomic) GANENUM_USER_AUTHTYPE enumAuthType;
 @property (strong, nonatomic) NSString *szExternalId;
 @property (strong, nonatomic) NSMutableArray *arrPlayerIds;
+@property (strong, nonatomic) NSDate *dateCreatedAt;
 
 - (instancetype) init;
 - (void) setWithDictionary: (NSDictionary *) dict;
@@ -33,5 +34,7 @@
 
 - (NSString *) getFullName;
 - (NSString *) getValidUsername;
+
+- (GANUserRefDataModel *) toUserRefObject;
 
 @end

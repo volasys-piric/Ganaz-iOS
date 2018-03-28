@@ -75,7 +75,7 @@
 - (void) checkAutoLogin{
     if (self.isAutoLogin == YES){
         GANUserManager *managerUser = [GANUserManager sharedInstance];
-        self.szPhoneNumber = managerUser.modelUserMinInfo.modelPhone.szLocalNumber;
+        self.phone = managerUser.modelUserMinInfo.modelPhone;
         self.textfieldCode.text = managerUser.modelUserMinInfo.szPassword;
         [self refreshCodePanel];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -123,7 +123,7 @@
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
     
-    [managerUser requestUserLoginWithPhoneNumber:self.szPhoneNumber Password:szPassword Callback:^(int status) {
+    [managerUser requestUserLoginWithPhoneNumber:[self.phone getNormalizedPhoneNumber] Password:szPassword Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR){
             [GANGlobalVCManager hideHudProgressWithCallback:^{
                 GANUserManager *managerUser = [GANUserManager sharedInstance];
@@ -158,8 +158,8 @@
     
     GANUserWorkerDataModel *modelWorker = [GANUserManager getUserWorkerDataModel];
     modelWorker.enumAuthType = GANENUM_USER_AUTHTYPE_PHONE;
-    modelWorker.szUserName = self.szPhoneNumber;
-    modelWorker.modelPhone.szLocalNumber = self.szPhoneNumber;
+    modelWorker.szUserName = [self.phone getNormalizedPhoneNumber];
+    modelWorker.modelPhone = self.phone;
     modelWorker.szPassword = szPassword;
     modelWorker.szId = self.szId;
     
@@ -205,8 +205,8 @@
     
     GANUserWorkerDataModel *modelWorker = [GANUserManager getUserWorkerDataModel];
     modelWorker.enumAuthType = GANENUM_USER_AUTHTYPE_PHONE;
-    modelWorker.szUserName = self.szPhoneNumber;
-    modelWorker.modelPhone.szLocalNumber = self.szPhoneNumber;
+    modelWorker.szUserName = [self.phone getNormalizedPhoneNumber];
+    modelWorker.modelPhone = self.phone;
     modelWorker.szPassword = szPassword;
     [modelWorker addPlayerIdIfNeeded:[GANPushNotificationManager sharedInstance].szOneSignalPlayerId];
     

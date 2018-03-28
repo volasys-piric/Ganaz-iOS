@@ -202,11 +202,26 @@
     return nil;
 }
 
+- (BOOL) isUserInvolvedInMessage: (GANUserRefDataModel *) user {
+    if ([self.modelSender isSameUser:user] == YES) return YES;
+    for (int i = 0; i < (int) [self.arrayReceivers count]; i++) {
+        GANMessageReceiverDataModel *receiver = [self.arrayReceivers objectAtIndex:i];
+        if ([receiver isSameUser:user] == YES) return YES;
+    }
+    return NO;
+}
+
 // Message with Location
 
 - (BOOL) hasLocationInfo{
     if (self.locationInfo == nil || [self.locationInfo isValidLocation] == NO) return NO;
     return YES;
+}
+
+// Group
+
+- (BOOL) isGroupMessage {
+    return [self getReceiversCount] > 1;
 }
 
 // Survey

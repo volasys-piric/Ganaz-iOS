@@ -50,10 +50,15 @@
 - (NSString *) getPhoneNumberForSuggestFriend;
 - (GANMessageReceiverDataModel *) getPrimaryReceiver;
 - (GANMessageReceiverDataModel *) getReceiverMyself;
+- (BOOL) isUserInvolvedInMessage: (GANUserRefDataModel *) user;
 
 // Message with Location
 
 - (BOOL) hasLocationInfo;
+
+// Group
+
+- (BOOL) isGroupMessage;
 
 // Survey
 

@@ -19,8 +19,6 @@
 #import "Global.h"
 #import "GANAppManager.h"
 
-#define GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER      @"Enter question here..."
-
 @interface GANCompanySurveyOpenTextPostVC () <UITextViewDelegate, GANMessageWithChargeConfirmationPopupDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewQuestion;
@@ -43,7 +41,6 @@
     // Do any additional setup after loading the view.
     
     self.isAutoTranslate = NO;
-    self.textviewQuestion.text = GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER;
     self.textviewQuestion.delegate = self;
     
     [self refreshViews];
@@ -86,7 +83,7 @@
 - (BOOL) checkMandatoryFields {
     NSString *szQuestion = self.textviewQuestion.text;
     
-    if (szQuestion.length == 0 || [szQuestion isEqualToString:GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER] == YES){
+    if (szQuestion.length == 0){
         [GANGlobalVCManager shakeView:self.viewQuestion];
         return NO;
     }
@@ -152,9 +149,9 @@
 
 - (void) gotoMessageThreadVC{
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
-    int indexThread = [managerMessage getIndexForMessageThreadWithReceivers:self.arrayReceivers];
+    int indexThread = [managerMessage getIndexForGeneralMessageThreadWithReceivers:self.arrayReceivers];
     if (indexThread == -1 && [self.arrayReceivers count] == 1) {
-        indexThread = [managerMessage getIndexForMessageThreadWithSender:[self.arrayReceivers firstObject]];
+        indexThread = [managerMessage getIndexForGeneralMessageThreadWithSender:[self.arrayReceivers firstObject]];
     }
     
     UINavigationController *nav = self.navigationController;
@@ -186,6 +183,7 @@
     
     vcThread.indexThread = indexThread;
     vcThread.arrayReceivers = [[NSMutableArray alloc] initWithArray: self.arrayReceivers];
+    vcThread.isCandidateThread = NO;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.navigationController setViewControllers:@[vcList, vcThread] animated:YES];
@@ -206,19 +204,6 @@
 - (IBAction)onButtonSubmitClick:(id)sender {
     [self.view endEditing:YES];
     [self doSubmitSurvey];
-}
-
-#pragma mark - UITextView Delegate
-
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
-    self.textviewQuestion.text = @"";
-    return YES;
-}
-
-- (void)textViewDidChange:(UITextView *)textView {
-    if (self.textviewQuestion.text.length == 0) {
-        self.textviewQuestion.text = GANCOMPANYSURVEYCHOICESPOSTVC_TEXTVIEW_PLACEHOLDER;
-    }
 }
 
 @end

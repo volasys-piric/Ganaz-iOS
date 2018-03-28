@@ -89,7 +89,7 @@
     
     // Please wait...
     [GANGlobalVCManager showHudProgressWithMessage:@"Por favor, espere..."];
-    [[GANSurveyManager sharedInstance] requestSubmitSurveyOpenTextAnswerBySurveyId:self.modelSurvey.szId Text:szText Callback:^(int status) {
+    [[GANSurveyManager sharedInstance] requestSubmitSurveyOpenTextAnswerBySurveyId:self.modelSurvey.szId Text:szText AutoTranslate:self.modelSurvey.isAutoTranslate Callback:^(int status) {
         if (status == SUCCESS_WITH_NO_ERROR) {
             [GANGlobalVCManager showHudSuccessWithMessage:@"Gracias por responder a esta encuesta." DismissAfter:-1 Callback:^{
                 [self refreshMessagesList];

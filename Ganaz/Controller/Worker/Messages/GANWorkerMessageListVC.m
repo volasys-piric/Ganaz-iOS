@@ -99,9 +99,12 @@
 
 - (void) updateReadStatusIfNeeded{
     if (self.isVCVisible == NO) return;
-    if ([[GANMessageManager sharedInstance] getUnreadMessageCount] > 0){
+    GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
+    int countUnreadMessages = [managerMessage getUnreadGeneralMessageCount] + [managerMessage getUnreadCandidateMessageCount];
+    if (countUnreadMessages > 0){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [[GANMessageManager sharedInstance] requestMarkAsReadAllMessagesWithCallback:nil];
+            [managerMessage requestMarkAsReadAllGeneralMessagesWithCallback:nil];
+            [managerMessage requestMarkAsReadAllCandidateMessagesWithCallback:nil];
         });
     }
 }
@@ -115,8 +118,8 @@
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     [self.arrayMessages removeAllObjects];
     
-    for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
+    for (int i = 0; i < (int) [managerMessage.arrayGeneralThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [managerMessage.arrayGeneralThreads objectAtIndex:i];
         int nMessages = (int) [thread.arrayMessages count];
 
         /*
@@ -177,8 +180,8 @@
     NSString *messageId = message.szId;
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     int indexThread = -1;
-    for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
+    for (int i = 0; i < (int) [managerMessage.arrayGeneralThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [managerMessage.arrayGeneralThreads objectAtIndex:i];
         if ([thread existsMessageWithMessageId:messageId] == YES) {
             indexThread = i;
             break;

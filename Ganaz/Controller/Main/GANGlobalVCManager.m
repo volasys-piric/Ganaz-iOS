@@ -207,18 +207,44 @@
 
 + (void) updateMessageBadge{
     if ([[GANUserManager sharedInstance] isUserLoggedIn] == YES){
-        int indexTab = 1;
-        if ([[GANUserManager sharedInstance] isCompanyUser] == YES) indexTab = 2;
+        GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
         
-        int count = [[GANMessageManager sharedInstance] getUnreadMessageCount];
-        UIViewController *vc = [GANGlobalVCManager getTopMostViewController];
-        UITabBarController *tbc = vc.tabBarController;
-        if (tbc != nil && [tbc isKindOfClass:[UITabBarController class]]){
-            if (count > 0){
-                [[tbc.tabBar.items objectAtIndex:indexTab] setBadgeValue:[NSString stringWithFormat:@"%d", count]];
+        if ([[GANUserManager sharedInstance] isCompanyUser] == YES) {
+            int countUnreadGeneralMessages = [managerMessage getUnreadGeneralMessageCount];
+            int countUnreadCandidateMessages = [managerMessage getUnreadCandidateMessageCount];
+            UIViewController *vc = [GANGlobalVCManager getTopMostViewController];
+            UITabBarController *tbc = vc.tabBarController;
+            if (tbc != nil && [tbc isKindOfClass:[UITabBarController class]]){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (countUnreadGeneralMessages > 0){
+                        [[tbc.tabBar.items objectAtIndex:2] setBadgeValue:[NSString stringWithFormat:@"%d", countUnreadGeneralMessages]];
+                    }
+                    else {
+                        [[tbc.tabBar.items objectAtIndex:2] setBadgeValue:nil];
+                    }
+                    
+                    if (countUnreadCandidateMessages > 0){
+                        [[tbc.tabBar.items objectAtIndex:1] setBadgeValue:[NSString stringWithFormat:@"%d", countUnreadCandidateMessages]];
+                    }
+                    else {
+                        [[tbc.tabBar.items objectAtIndex:1] setBadgeValue:nil];
+                    }
+                });
             }
-            else {
-                [[tbc.tabBar.items objectAtIndex:indexTab] setBadgeValue:nil];
+        }
+        else {
+            int countUnreadMessages = [managerMessage getUnreadGeneralMessageCount] + [managerMessage getUnreadCandidateMessageCount];
+            UIViewController *vc = [GANGlobalVCManager getTopMostViewController];
+            UITabBarController *tbc = vc.tabBarController;
+            if (tbc != nil && [tbc isKindOfClass:[UITabBarController class]]){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (countUnreadMessages > 0){
+                        [[tbc.tabBar.items objectAtIndex:1] setBadgeValue:[NSString stringWithFormat:@"%d", countUnreadMessages]];
+                    }
+                    else {
+                        [[tbc.tabBar.items objectAtIndex:1] setBadgeValue:nil];
+                    }
+                });
             }
         }
     }

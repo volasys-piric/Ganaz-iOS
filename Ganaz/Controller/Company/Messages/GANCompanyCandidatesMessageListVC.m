@@ -103,9 +103,9 @@
 
 - (void) updateReadStatusIfNeeded{
     if (self.isVCVisible == NO) return;
-    if ([[GANMessageManager sharedInstance] getUnreadMessageCount] > 0){
+    if ([[GANMessageManager sharedInstance] getUnreadCandidateMessageCount] > 0){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [[GANMessageManager sharedInstance] requestMarkAsReadAllMessagesWithCallback:nil];
+            [[GANMessageManager sharedInstance] requestMarkAsReadAllCandidateMessagesWithCallback:nil];
         });
     }
 }
@@ -113,6 +113,15 @@
 - (void) refreshViews{
     self.buttonMessageAll.clipsToBounds = YES;
     self.buttonMessageAll.layer.cornerRadius = 3;
+    
+    
+    GANJobManager *managerJob = [GANJobManager sharedInstance];
+    if (self.indexJob != -1 && self.indexJob < (int) [managerJob.arrMyJobs count]) {
+        GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:self.indexJob];
+        if (job != nil) {
+            self.navigationItem.title = [NSString stringWithFormat:@"%@ - Candidates", [job getTitleEN]];
+        }
+    }
 }
 
 - (void) buildMessageList{
@@ -121,12 +130,10 @@
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     [self.arrayMessages removeAllObjects];
     
-    for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
-        if ([thread hasFacebookMessage] == YES) {
-            GANMessageDataModel *message = [thread.arrayMessages firstObject];
-            [self.arrayMessages addObject:message];
-        }
+    for (int i = 0; i < (int) [managerMessage.arrayCandidateThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [managerMessage.arrayCandidateThreads objectAtIndex:i];
+        GANMessageDataModel *message = [thread.arrayMessages lastObject];
+        [self.arrayMessages addObject:message];
     }
     
     [self.arrayMessages sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
@@ -152,8 +159,8 @@
     NSString *messageId = message.szId;
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     int indexThread = -1;
-    for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
+    for (int i = 0; i < (int) [managerMessage.arrayCandidateThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [managerMessage.arrayCandidateThreads objectAtIndex:i];
         if ([thread existsMessageWithMessageId:messageId] == YES) {
             indexThread = i;
             break;
@@ -165,6 +172,27 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
         GANCompanyMessageThreadVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_THREAD"];
         vc.indexThread = indexThread;
+        vc.isCandidateThread = YES;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    });
+    GANACTIVITY_REPORT(@"Company - Go to message thread from Messages");
+}
+
+- (void) gotoMessageThreadVCForAllCandidates{
+    GANJobManager *managerJob = [GANJobManager sharedInstance];
+    GANJobDataModel *job = [managerJob.arrMyJobs objectAtIndex:self.indexJob];
+    GANJobCandidatesMappingDataModel *mapping = [managerJob getJobCandidatesMappingByJobId:job.szId];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+        GANCompanyMessageThreadVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_THREAD"];
+        vc.indexThread = -1;
+        vc.isCandidateThread = YES;
+        vc.arrayReceivers = [[NSMutableArray alloc] init];
+        [vc.arrayReceivers addObjectsFromArray:mapping.arrayCandidates];
+        
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     });
@@ -396,7 +424,7 @@
 #pragma mark - UIButton Event Listeners
 
 - (IBAction)onButtonMessageAllClick:(id)sender {
-    
+    [self gotoMessageThreadVCForAllCandidates];
 }
 
 #pragma mark -NSNotification

@@ -18,4 +18,6 @@
 - (void) setWithDictionary: (NSDictionary *) dict;
 - (NSDictionary *) serializeToDictionary;
 
+- (GANUserRefDataModel *) toUserRefObject;
+
 @end

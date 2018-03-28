@@ -63,6 +63,8 @@ typedef enum _ENUM_MESSAGE_TYPE{
     GANENUM_MESSAGE_TYPE_SURVEY_OPENTEXT,
     GANENUM_MESSAGE_TYPE_SURVEY_ANSWER,
     GANENUM_MESSAGE_TYPE_FACEBOOKMESSAGE,
+    GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSQUESTION,
+    GANENUM_MESSAGE_TYPE_SURVEY_CONFIRMATIONSMSANSWER,
 }GANENUM_MESSAGE_TYPE;
 
 // Enum Message Read Status
@@ -96,6 +98,12 @@ typedef enum _ENUM_PUSHNOTIFICATION_TYPE{
     GANENUM_PUSHNOTIFICATION_TYPE_MESSAGE,
     GANENUM_PUSHNOTIFICATION_TYPE_APPLICATION,
     GANENUM_PUSHNOTIFICATION_TYPE_SUGGEST,
+    GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_CHOICESINGLE,
+    GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_OPENTEXT,
+    GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_ANSWER,
+    GANENUM_PUSHNOTIFICATION_TYPE_FACEBOOKMESSAGE,
+    GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_CONFIRMATIONSMSQUESTION,
+    GANENUM_PUSHNOTIFICATION_TYPE_SURVEY_CONFIRMATIONSMSANSWER,
 }GANENUM_PUSHNOTIFICATION_TYPE;
 
 // Enum Membership Plan Type
@@ -172,6 +180,19 @@ typedef enum _ENUM_BRANCHDEEPLINK_ACTION{
     GANENUM_BRANCHDEEPLINK_ACTION_WORKER_SIGNUPWITHPHONE,
 }GANENUM_BRANCHDEEPLINK_ACTION;
 
+// Enum: Message Thread Type
+
+typedef enum _ENUM_MESSAGETHREAD_TYPE{
+    GANENUM_MESSAGETHREAD_TYPE_GENERAL,
+    GANENUM_MESSAGETHREAD_TYPE_COMPANY_JOBCANDIDATE,
+}GANENUM_MESSAGETHREAD_TYPE;
+
+// Country
+
+typedef enum _ENUM_PHONE_COUNTRY{
+    GANENUM_PHONE_COUNTRY_US = 1,           // United States
+    GANENUM_PHONE_COUNTRY_MX = 52,          // Mexico
+}GANENUM_PHONE_COUNTRY;
 
 #define GANCONSTANTS_TRANSLATE_LANGUAGE_EN                      @"en"
 #define GANCONSTANTS_TRANSLATE_LANGUAGE_ES                      @"es"
@@ -198,6 +219,11 @@ typedef enum _ENUM_BRANCHDEEPLINK_ACTION{
 + (GANENUM_PUSHNOTIFICATION_TYPE) getPushNotificationTypeFromString: (NSString *) szType;
 + (NSString *) getStringFromPushNotificationType: (GANENUM_PUSHNOTIFICATION_TYPE) type;
 
+// Phone Country
+
++ (GANENUM_PHONE_COUNTRY) getCountryFromString: (NSString *) szCountry;
++ (NSString *) getStringFromCountry: (GANENUM_PHONE_COUNTRY) country;
+
 // App Config
 
 + (GANENUM_APPCONFIG_ENV) getAppConfigEnvFromString: (NSString *) szEnv;
@@ -223,8 +249,10 @@ typedef enum _ENUM_BRANCHDEEPLINK_ACTION{
                ToLanguage: (NSString *) toLanguage
                  Callback: (void (^) (int status, NSString *translatedText)) callback;
 
-+ (void) requestTranslateEsMultipleTexts: (NSArray <NSString *>*) texts
-                               Translate: (BOOL) shouldTranslate
-                                Callback:(void (^)(int, NSArray <GANTransContentsDataModel *> *))callback;
++ (void) requestTranslateMultipleTexts: (NSArray <NSString *>*) texts
+                             Translate: (BOOL) shouldTranslate
+                          FromLanguage: (NSString *) fromLanguage
+                            ToLanguage: (NSString *) toLanguage
+                              Callback:(void (^)(int, NSArray <GANTransContentsDataModel *> *))callback;
 
 @end

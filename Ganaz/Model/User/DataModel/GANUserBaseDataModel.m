@@ -28,6 +28,7 @@
     self.szUserName = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"username"]];
     self.szEmail = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"email_address"]];
     self.szExternalId = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"external_id"]];
+    self.dateCreatedAt = [GANGenericFunctionManager getDateTimeFromNormalizedString:[dict objectForKey:@"created_at"]];
     
     NSArray *arrPlayerIds = [dict objectForKey:@"player_ids"];
     self.arrPlayerIds = [[NSMutableArray alloc] init];
@@ -86,6 +87,13 @@
         return [NSString stringWithFormat:@"Candidate #%d", ((GANUserWorkerDataModel *) self).indexForCandidate];
     }
     return @"";
+}
+
+- (GANUserRefDataModel *) toUserRefObject {
+    GANUserRefDataModel *userRef = [[GANUserRefDataModel alloc] init];
+    userRef.szUserId = self.szId;
+    userRef.szCompanyId = @"";
+    return userRef;
 }
 
 @end

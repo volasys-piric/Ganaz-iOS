@@ -9,6 +9,7 @@
 #import "GANJobsListVC.h"
 #import "GANJobItemTVC.h"
 #import "GANJobsDetailsVC.h"
+#import "GANCompanyCandidatesMessageListVC.h"
 #import "GANJobRecruitPopupVC.h"
 #import "GANRecruitVC.h"
 
@@ -16,6 +17,8 @@
 #import "GANFadeTransitionDelegate.h"
 #import "GANUserManager.h"
 #import "GANJobManager.h"
+#import "GANCompanyManager.h"
+#import "GANMessageManager.h"
 #import "GANJobDataModel.h"
 
 #import "GANGenericFunctionManager.h"
@@ -143,6 +146,22 @@
     });
 }
 
+- (void) requestCandidatesForJobAtIndex: (int) index {
+    GANJobDataModel *job = [[GANJobManager sharedInstance].arrMyJobs objectAtIndex:index];
+    if (job == nil) return;
+    
+    GANJobCandidatesMappingDataModel *mapping = [[GANJobManager sharedInstance] getJobCandidatesMappingByJobId:job.szId];
+    [[GANMessageManager sharedInstance] generateCandidateThreadsByCandidates:mapping.arrayCandidates];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
+        GANCompanyCandidatesMessageListVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_CANDIDATESLIST"];
+        vc.indexJob = index;
+        [self.navigationController pushViewController:vc animated:YES];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    });
+}
+
 #pragma mark - GANJobRecruitPopupVCDelegate
 
 - (void)didRecruitClick {
@@ -156,12 +175,7 @@
 }
 
 - (void)didViewCandidatesClick {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
-        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_CANDIDATESLIST"];
-        [self.navigationController pushViewController:vc animated:YES];
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    });
+    [self requestCandidatesForJobAtIndex:nSelectedIndex];
 }
 
 - (void)didEditJobClick {
@@ -172,9 +186,16 @@
 
 - (void) configureCell: (GANJobItemTVC *) cell AtIndex: (int) index{
     GANJobDataModel *job = [[GANJobManager sharedInstance].arrMyJobs objectAtIndex:index];
+    GANJobCandidatesMappingDataModel *mapping = [[GANJobManager sharedInstance] getJobCandidatesMappingByJobId:job.szId];
+    
     cell.lblTitle.text = [job getTitleEN];
+    /*
     cell.lblPrice.text = [NSString stringWithFormat:@"$%.02f", job.fPayRate];
     cell.lblUnit.text = job.szPayUnit;
+     */
+    
+    cell.lblPrice.text = [NSString stringWithFormat:@"%d", (int) [mapping.arrayCandidates count]];
+    cell.lblUnit.text = @"Candidates";
     cell.lblDate.text = [NSString stringWithFormat:@"%@ - %@", [GANGenericFunctionManager getBeautifiedDate:job.dateFrom], [GANGenericFunctionManager getBeautifiedDate:job.dateTo]];
     
     [cell showPayRate:[job isPayRateSpecified]];
@@ -234,8 +255,11 @@
 
 - (void) onLocalNotificationReceived:(NSNotification *) notification{
     if (([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_JOBLIST_UPDATED]) ||
-        ([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_JOBLIST_UPDATEFAILED])){
-        [self.tableview reloadData];
+        ([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_JOBLIST_UPDATEFAILED]) ||
+        ([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_CANDIDATESLIST_UPDATED])){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableview reloadData];
+        });
     }
 }
 

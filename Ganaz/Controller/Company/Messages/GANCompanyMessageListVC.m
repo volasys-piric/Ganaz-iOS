@@ -102,9 +102,9 @@
 
 - (void) updateReadStatusIfNeeded{
     if (self.isVCVisible == NO) return;
-    if ([[GANMessageManager sharedInstance] getUnreadMessageCount] > 0){
+    if ([[GANMessageManager sharedInstance] getUnreadGeneralMessageCount] > 0){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [[GANMessageManager sharedInstance] requestMarkAsReadAllMessagesWithCallback:nil];
+            [[GANMessageManager sharedInstance] requestMarkAsReadAllGeneralMessagesWithCallback:nil];
         });
     }
 }
@@ -118,8 +118,8 @@
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     [self.arrayMessages removeAllObjects];
     
-    for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
+    for (int i = 0; i < (int) [managerMessage.arrayGeneralThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [managerMessage.arrayGeneralThreads objectAtIndex:i];
         int nMessages = (int) [thread.arrayMessages count];
         
         BOOL foundMessage = NO;         // Message, Application, Suggest
@@ -154,10 +154,10 @@
                     [self.arrayMessages addObject:message];
                 }
             }
-            
-            if (foundMessage == YES && foundRecruit == YES && foundSurvey == YES) break;
+            if (foundMessage == YES && foundRecruit == YES) break;
+//            if (foundMessage == YES && foundRecruit == YES && foundSurvey == YES) break;
         }
-    }
+    }    
     
     [self.arrayMessages sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         GANMessageDataModel *msg1 = obj1;
@@ -175,8 +175,8 @@
     NSString *messageId = message.szId;
     GANMessageManager *managerMessage = [GANMessageManager sharedInstance];
     int indexThread = -1;
-    for (int i = 0; i < (int) [managerMessage.arrayThreads count]; i++) {
-        GANMessageThreadDataModel *thread = [managerMessage.arrayThreads objectAtIndex:i];
+    for (int i = 0; i < (int) [managerMessage.arrayGeneralThreads count]; i++) {
+        GANMessageThreadDataModel *thread = [managerMessage.arrayGeneralThreads objectAtIndex:i];
         if ([thread existsMessageWithMessageId:messageId] == YES) {
             indexThread = i;
             break;
@@ -188,6 +188,7 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CompanyMessage" bundle:nil];
         GANCompanyMessageThreadVC *vc = [storyboard instantiateViewControllerWithIdentifier:@"STORYBOARD_COMPANY_MESSAGE_THREAD"];
         vc.indexThread = indexThread;
+        vc.isCandidateThread = NO;
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     });
@@ -243,7 +244,6 @@
             }
         }];
     }];
-    
 }
 
 - (void) gotoSurveyChoicesResultVCAtSurveyIndex: (int) indexSurvey{

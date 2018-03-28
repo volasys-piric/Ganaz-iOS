@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GANUtils.h"
 
 @interface GANPhoneDataModel : NSObject
 
@@ -14,13 +15,18 @@
 @property (strong, nonatomic) NSString *szCountryCode;
 @property (strong, nonatomic) NSString *szLocalNumber;
 
+- (instancetype) initWithCountry: (int) country LocalNumber: (NSString *) localNumber;
+
 - (void) setWithDictionary:(NSDictionary *)dict;
 - (void) initializeWithPhone: (GANPhoneDataModel *) phone;
 - (NSDictionary *) serializeToDictionary;
 
+- (void) setCountry: (int) country;
+- (int) getCountry;
 - (void) setLocalNumber: (NSString *) localNumber;
 - (NSString *) getBeautifiedPhoneNumber;
-- (BOOL) isSamePhoneNumber: (NSString *) phoneNumber;
+- (NSString *) getNormalizedPhoneNumber;
+- (BOOL) isSamePhone: (GANPhoneDataModel *) phone;
 
 @end
 

@@ -150,7 +150,14 @@
     if (szFormattedNumber.length > nMaxLength){
         szFormattedNumber = [szFormattedNumber substringToIndex:nMaxLength];
     }
-//    szFormattedNumber = [NSString stringWithFormat:@"+1 %@", szFormattedNumber];
+    
+    if ([countryCode isEqualToString:@"US"] == YES || [countryCode isEqualToString:@"1"] == YES || [countryCode isEqualToString:@"01"] == YES) {
+        // US Phone Number
+    }
+    else {
+        szFormattedNumber = [NSString stringWithFormat:@"+%@ %@", countryCode, szFormattedNumber];
+    }
+
     return szFormattedNumber;
 }
 

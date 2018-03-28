@@ -9,6 +9,7 @@
 #import "GANCompanyAddWorkerVC.h"
 #import "GANCompanyAddWorkerItemTVC.h"
 #import "GANInviteWorkerPopupVC.h"
+#import "GANCountrySelectorPopupVC.h"
 
 #import "GANUserWorkerDataModel.h"
 #import "GANCompanyManager.h"
@@ -21,6 +22,7 @@
 #import "GANAppManager.h"
 #import "GANPhonebookContactsManager.h"
 #import "GANMessageManager.h"
+#import "GANFadeTransitionDelegate.h"
 
 typedef enum _ENUM_FOUNDSTATUS{
     GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS_NONE,
@@ -33,7 +35,7 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
     GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE_WORKER,
 }GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE;
 
-@interface GANCompanyAddWorkerVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, GANCompanyAddWorkerItemTVCDelegate, GANInviteWorkerPopupVCDelegate>
+@interface GANCompanyAddWorkerVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, GANCompanyAddWorkerItemTVCDelegate, GANInviteWorkerPopupVCDelegate, GANCountrySelectorPopupDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *lblDescription;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
@@ -45,6 +47,7 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
 @property (weak, nonatomic) IBOutlet UILabel *lblNote;
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 
+@property (weak, nonatomic) IBOutlet UIImageView *imageCountry;
 @property (strong, nonatomic) NSMutableArray *arrWorkersFound;
 
 @property (assign, atomic) GANENUM_COMPANYADDWORKERVC_FOUNDSTATUS enumStatus;
@@ -52,6 +55,7 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
 @property (assign, atomic) int indexSelectedSearchResultItem;
 
 @property (strong, nonatomic) GANFadeTransitionDelegate *transController;
+@property (assign, atomic) GANENUM_PHONE_COUNTRY enumCountry;
 
 @end
 
@@ -78,6 +82,7 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
     self.arrWorkersFound = [[NSMutableArray alloc] init];
     
     self.lblDescription.text = self.szDescription;
+    self.enumCountry = GANENUM_PHONE_COUNTRY_US;
     
     [self registerTableViewCellFromNib];
     [self refreshViews];
@@ -119,6 +124,17 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
         self.btnInvite.hidden = NO;
         self.btnAdd.hidden = NO;
     }
+    
+    [self refreshCountryFlag];
+}
+
+- (void) refreshCountryFlag{
+    if (self.enumCountry == GANENUM_PHONE_COUNTRY_US) {
+        [self.imageCountry setImage:[UIImage imageNamed:@"flag-us"]];
+    }
+    else if (self.enumCountry == GANENUM_PHONE_COUNTRY_MX) {
+        [self.imageCountry setImage:[UIImage imageNamed:@"flag-mx"]];
+    }
 }
 
 - (void) shakeInvalidFields: (UIView *) viewContainer{
@@ -126,6 +142,19 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
 }
 
 #pragma mark - Biz Logic
+
+- (void) showDlgForCountry{
+    GANCountrySelectorPopupVC *vc = [[GANCountrySelectorPopupVC alloc] initWithNibName:@"CountrySelectorPopupVC" bundle:nil];
+    
+    vc.enumCountry = self.enumCountry;
+    vc.delegate = self;
+    vc.view.backgroundColor = [UIColor clearColor];
+    [vc refreshFields];
+    
+    [vc setTransitioningDelegate:self.transController];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:vc animated:YES completion:nil];
+}
 
 - (void) askPermissionForPhoneBook{
     [[GANPhonebookContactsManager sharedInstance] requestPermissionForAddressBookWithCallback:^(BOOL granted) {
@@ -189,7 +218,7 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
 - (void) doSearchWorkerWithPhonebookContactAtIndex: (int) indexPhonebookContact{
     GANPhonebookContactDataModel *worker = [self.arrWorkersFound objectAtIndex:indexPhonebookContact];
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [[GANCompanyManager sharedInstance] requestSearchNewWorkersByPhoneNumber:worker.modelPhone.szLocalNumber Callback:^(int status, NSArray *arrWorkers) {
+    [[GANCompanyManager sharedInstance] requestSearchNewWorkersByPhone:worker.modelPhone Callback:^(int status, NSArray *arrWorkers) {
         if (status == SUCCESS_WITH_NO_ERROR && arrWorkers != nil){
             int count = (int) [arrWorkers count];
             if (count == 0){
@@ -217,21 +246,23 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
 
 - (void) doSearchWorkerWithSearchString: (NSString *) keyword{
     // keyword = Phone number
-    NSString *szPhoneNumber = keyword;
+    NSString *phoneNumber = keyword;
     
-    if ([szPhoneNumber isEqualToString:@""]){
+    if ([phoneNumber isEqualToString:@""]){
         [self shakeInvalidFields:self.viewPhone];
         return;
     }
     
-    szPhoneNumber = [GANGenericFunctionManager getValidPhoneNumber:szPhoneNumber];
-    if([szPhoneNumber isEqualToString:@""]) {
+    phoneNumber = [GANGenericFunctionManager getValidPhoneNumber:phoneNumber];
+    if([phoneNumber isEqualToString:@""]) {
         [GANGlobalVCManager showHudErrorWithMessage:@"Please enter a valid phone number" DismissAfter:-1 Callback:nil];
         return;
     }
-
+    
+    GANPhoneDataModel *phone = [[GANPhoneDataModel alloc] initWithCountry:self.enumCountry LocalNumber:phoneNumber];
     [GANGlobalVCManager showHudProgressWithMessage:@"Please wait..."];
-    [[GANCompanyManager sharedInstance] requestSearchNewWorkersByPhoneNumber:keyword Callback:^(int status, NSArray *arrWorkers) {
+    
+    [[GANCompanyManager sharedInstance] requestSearchNewWorkersByPhone:phone Callback:^(int status, NSArray *arrWorkers) {
         if (status == SUCCESS_WITH_NO_ERROR && arrWorkers != nil){
             int count = (int) [arrWorkers count];
             if (count == 0){
@@ -321,21 +352,22 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
     GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     
     if(self.indexSelectedSearchResultItem < 0) {
-        phone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:self.txtPhone.text];
+        [phone setLocalNumber:[GANGenericFunctionManager stripNonnumericsFromNSString:self.txtPhone.text]];
+        [phone setCountry:self.enumCountry];
     }
     else {
         if (self.enumSearchResultItemType == GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE_WORKER){
             GANUserWorkerDataModel *worker = [self.arrWorkersFound objectAtIndex:self.indexSelectedSearchResultItem];
-            phone.szLocalNumber = worker.modelPhone.szLocalNumber;
+            phone = worker.modelPhone;
         }
         else if (self.enumSearchResultItemType == GANENUM_COMPANYADDWORKERVC_SEARCHRESULTITEMTYPE_PHONEBOOKCONTACT){
             GANPhonebookContactDataModel *phonebookContact = [self.arrWorkersFound objectAtIndex:self.indexSelectedSearchResultItem];
-            phone.szLocalNumber = phonebookContact.modelPhone.szLocalNumber;
+            phone = phonebookContact.modelPhone;
         }
     }
     
-    if([managerCompany checkUserInMyworkerList:phone.szLocalNumber]) {
-        int indexMyWorker = [managerCompany getIndexForMyWorkersWithPhoneNumber:phone.szLocalNumber];
+    if([managerCompany checkUserInMyworkerList:phone]) {
+        int indexMyWorker = [managerCompany getIndexForMyWorkersWithPhone:phone];
         GANMyWorkerDataModel *myWorker = [managerCompany.arrMyWorkers objectAtIndex:indexMyWorker];
         [self setCrewId:myWorker];
         return;
@@ -351,7 +383,7 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
                 // Get the my-worker id of newly added worker
                 [managerCompany requestGetMyWorkersListWithCallback:^(int status) {
                     if(status == SUCCESS_WITH_NO_ERROR) {
-                        int indexMyWorker = [managerCompany getIndexForMyWorkersWithPhoneNumber:phone.szLocalNumber];
+                        int indexMyWorker = [managerCompany getIndexForMyWorkersWithPhone:phone];
                         if (indexMyWorker == -1) {
                             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue" DismissAfter:-1 Callback:nil];
                         }
@@ -393,6 +425,10 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
         [GANGlobalVCManager tabBarController:self.tabBarController shouldSelectViewController:2];
         [self.navigationController popToRootViewControllerAnimated:NO];
     }
+}
+
+- (IBAction)onButtonCountryClick:(id)sender {
+    [self showDlgForCountry];
 }
 
 - (IBAction)onBtnInviteClick:(id)sender {
@@ -479,6 +515,13 @@ typedef enum _ENUM_SEARCHRESULTITEMTYPE{
 
 - (void) companyInviteWorkerPopupDidCancel:(GANInviteWorkerPopupVC *)popup{
     
+}
+
+#pragma mark - GANCountrySelectorPopup Delegate
+
+- (void) didCountrySelect:(GANENUM_PHONE_COUNTRY)country {
+    self.enumCountry = country;
+    [self refreshCountryFlag];
 }
 
 #pragma mark - UITextFieldDelegate

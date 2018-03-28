@@ -110,6 +110,7 @@
     
     if ([managerUser isCompanyUser] == YES){
         [[GANJobManager sharedInstance] requestMyJobListWithCallback:nil];
+        [[GANCompanyManager sharedInstance] requestGetFacebookLeadsListWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetCompanyUsersWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetCrewsListWithCallback:nil];
