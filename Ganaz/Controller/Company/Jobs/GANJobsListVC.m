@@ -257,7 +257,9 @@
     if (([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_JOBLIST_UPDATED]) ||
         ([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_JOBLIST_UPDATEFAILED]) ||
         ([[notification name] isEqualToString:GANLOCALNOTIFICATION_COMPANY_CANDIDATESLIST_UPDATED])){
-        [self.tableview reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableview reloadData];
+        });
     }
 }
 
