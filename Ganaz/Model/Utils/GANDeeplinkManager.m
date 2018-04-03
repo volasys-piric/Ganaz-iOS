@@ -29,7 +29,7 @@
 
 - (void) initializeManager{
     self.enumAction = GANENUM_BRANCHDEEPLINK_ACTION_NONE;
-    self.szPhoneNumber = @"";
+    self.modelPhone = [[GANPhoneDataModel alloc] init];
 }
 
 
@@ -46,7 +46,8 @@
     
     self.enumAction = [GANDeeplinkManager getBranchActionTypeFromString:action];
     if (self.enumAction == GANENUM_BRANCHDEEPLINK_ACTION_WORKER_SIGNUPWITHPHONE) {
-        self.szPhoneNumber = [GANGenericFunctionManager refineNSString:[params objectForKey:@"p"]];
+        NSString *phoneNumber = [GANGenericFunctionManager refineNSString:[params objectForKey:@"p"]];
+        [self.modelPhone setWithNumber:phoneNumber];
     }
 }
 
