@@ -76,6 +76,22 @@
     }
 }
 
+- (void) setWithNumber: (NSString *) phoneNumber {
+    phoneNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:phoneNumber];
+    [self setCountry:GANENUM_PHONE_COUNTRY_US];
+    [self setLocalNumber:phoneNumber];
+    
+    if (phoneNumber.length > 10) {
+        NSString *countryCode = [phoneNumber substringToIndex:(phoneNumber.length - 10)];
+        if ([countryCode isEqualToString:@"1"] == YES) {
+            [self setCountry:GANENUM_PHONE_COUNTRY_US];
+        }
+        else if ([countryCode isEqualToString:@"52"] == YES) {
+            [self setCountry:GANENUM_PHONE_COUNTRY_MX];
+        }
+    }
+}
+
 - (NSString *) getBeautifiedPhoneNumber{
     return [GANGenericFunctionManager beautifyPhoneNumber:self.szLocalNumber CountryCode:self.szCountryCode];
 }

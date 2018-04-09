@@ -51,7 +51,8 @@
     self.enumCountry = GANENUM_PHONE_COUNTRY_US;
     GANDeeplinkManager *managerDeeplink = [GANDeeplinkManager sharedInstance];
     if (managerDeeplink.enumAction == GANENUM_BRANCHDEEPLINK_ACTION_WORKER_SIGNUPWITHPHONE && [[GANUserManager sharedInstance] isUserLoggedIn] == NO) {
-        self.textfieldPhoneNumber.text = managerDeeplink.szPhoneNumber;
+        self.enumCountry = [GANUtils getCountryFromString:managerDeeplink.modelPhone.szCountry];
+        self.textfieldPhoneNumber.text = managerDeeplink.modelPhone.szLocalNumber;
     }
     
     [self refreshViews];

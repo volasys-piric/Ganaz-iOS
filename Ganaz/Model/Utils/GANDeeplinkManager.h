@@ -12,7 +12,7 @@
 @interface GANDeeplinkManager : NSObject
 
 @property (assign, atomic) GANENUM_BRANCHDEEPLINK_ACTION enumAction;
-@property (strong, nonatomic) NSString *szPhoneNumber;
+@property (strong, nonatomic) GANPhoneDataModel *modelPhone;
 
 + (instancetype) sharedInstance;
 - (void) initializeManager;

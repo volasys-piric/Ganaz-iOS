@@ -85,7 +85,7 @@
             [GANGlobalVCManager showHudInfoWithMessage:@"New survey answer has arrived." DismissAfter:-1 Callback:nil];
         }
         else if (enumType == GANENUM_PUSHNOTIFICATION_TYPE_FACEBOOKMESSAGE) {
-            [GANGlobalVCManager showHudInfoWithMessage:@"New facebook message has arrived." DismissAfter:-1 Callback:nil];
+            [GANGlobalVCManager showHudInfoWithMessage:@"A new message from a candidate has arrived." DismissAfter:-1 Callback:nil];
             [[GANCompanyManager sharedInstance] requestGetFacebookLeadsListWithCallback:nil];
         }
     }

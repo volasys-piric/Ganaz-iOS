@@ -24,6 +24,7 @@
 - (void) setCountry: (int) country;
 - (int) getCountry;
 - (void) setLocalNumber: (NSString *) localNumber;
+- (void) setWithNumber: (NSString *) phoneNumber;
 - (NSString *) getBeautifiedPhoneNumber;
 - (NSString *) getNormalizedPhoneNumber;
 - (BOOL) isSamePhone: (GANPhoneDataModel *) phone;
