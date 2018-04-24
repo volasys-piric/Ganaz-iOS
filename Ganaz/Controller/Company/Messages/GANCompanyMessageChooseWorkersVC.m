@@ -9,6 +9,8 @@
 #import "GANCompanyMessageChooseWorkersVC.h"
 #import "GANWorkerItemTVC.h"
 #import "GANCompanyCrewItemTVC.h"
+#import "GANCompanyChooseWorkerHeaderTVC.h"
+#import "GANCompanyChooseWorkerGroupHeaderTVC.h"
 #import "GANCompanyAddWorkerVC.h"
 #import "GANMyWorkerNickNameEditPopupVC.h"
 #import "GANOnboardingWorkerNickNamePopupVC.h"
@@ -33,23 +35,12 @@
 #define NON_SELECTED -1
 #define CONSTANT_TABLEVIEWCELLHEIGHT                63
 
-@interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANOnboardingWorkerNickNamePopupVCDelegate, GANWorkerItemTVCDelegate, GANSurveyTypeChoosePopupDelegate, GANCompanyCrewPopupDelegate, GANCompanyCrewItemTVCDelegate>
+@interface GANCompanyMessageChooseWorkersVC () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, GANMyWorkerNickNameEditPopupVCDelegate, GANOnboardingWorkerNickNamePopupVCDelegate, GANWorkerItemTVCDelegate, GANSurveyTypeChoosePopupDelegate, GANCompanyCrewPopupDelegate, GANCompanyCrewItemTVCDelegate, GANCompanyChooseWorkerGroupHeaderTVCDelegate, GANCompanyChooseWorkerHeaderTVCDelegate>
 
-@property (weak, nonatomic) IBOutlet UIView *viewSearch;
-@property (weak, nonatomic) IBOutlet UITableView *tableviewWorker;
-@property (weak, nonatomic) IBOutlet UITableView *tableviewCrew;
-
-@property (weak, nonatomic) IBOutlet UITextField *textfieldSearch;
+@property (weak, nonatomic) IBOutlet UITableView *tableview;
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonSendMessage;
 @property (weak, nonatomic) IBOutlet UIButton *buttonSendSurvey;
-
-@property (weak, nonatomic) IBOutlet UIButton *buttonAddCrew;
-@property (weak, nonatomic) IBOutlet UIButton *buttonAddWorker;
-@property (weak, nonatomic) IBOutlet UIButton *buttonSelectAll;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTableviewCrewHeight;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTableviewWorkerHeight;
 
 @property (strong, nonatomic) NSMutableArray *arrayCrewsSelected;
 @property (strong, nonatomic) NSMutableArray *arrayWorkersSelected;
@@ -62,6 +53,7 @@
 @property (strong, nonatomic) GANLocationDataModel *mapData;
 @property (assign, atomic) int indexSelected;
 @property (assign, atomic) BOOL isFirstLoad;
+@property (strong, nonatomic) NSString *szSearchKeyword;
 
 @end
 
@@ -72,20 +64,21 @@
     // Do any additional setup after loading the view.
     
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.tableviewWorker.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableviewWorker.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.tableviewCrew.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableviewCrew.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.isPopupShowing = NO;
     self.isAutoTranslate = NO;
     self.isFirstLoad = YES;
+    self.szSearchKeyword = @"";
     self.transController = [[GANFadeTransitionDelegate alloc] init];
     
     self.indexSelected = NON_SELECTED;
     
+    NSLog(@"Checkpoint - 1.1: Timestamp = %f", [[NSDate date] timeIntervalSince1970]);
     [self registerTableViewCellFromNib];
     [self refreshViews];
     
+    NSLog(@"Checkpoint - 1.2: Timestamp = %f", [[NSDate date] timeIntervalSince1970]);
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onLocalNotificationReceived:)
                                                  name:nil
@@ -95,6 +88,7 @@
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    NSLog(@"Checkpoint - 2.1: Timestamp = %f", [[NSDate date] timeIntervalSince1970]);
     [self buildFilteredArray];
     [self refreshCrewList];
 
@@ -102,14 +96,17 @@
         [self refreshAllList];
     }
     self.isFirstLoad = NO;
+    NSLog(@"Checkpoint - 2.2: Timestamp = %f", [[NSDate date] timeIntervalSince1970]);
 }
 
 - (void) refreshAllList {
+    NSLog(@"Checkpoint - 3.1: Timestamp = %f", [[NSDate date] timeIntervalSince1970]);
     GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
     [managerCompany requestGetMyWorkersListWithCallback:^(int status) {
         [managerCompany requestGetCrewsListWithCallback:^(int status) {
             [self buildFilteredArray];
             [self refreshCrewList];
+            NSLog(@"Checkpoint - 3.2: Timestamp = %f", [[NSDate date] timeIntervalSince1970]);
         }];
     }];
 }
@@ -128,33 +125,22 @@
 }
 
 - (void) registerTableViewCellFromNib{
-    [self.tableviewWorker registerNib:[UINib nibWithNibName:@"WorkerItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_WORKERITEM"];
-    [self.tableviewCrew registerNib:[UINib nibWithNibName:@"CompanyCrewItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_COMPANYCREWITEM"];
+    [self.tableview registerNib:[UINib nibWithNibName:@"WorkerItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_WORKERITEM"];
+    [self.tableview registerNib:[UINib nibWithNibName:@"CompanyCrewItemTVC" bundle:nil] forCellReuseIdentifier:@"TVC_COMPANYCREWITEM"];
+    [self.tableview registerNib:[UINib nibWithNibName:@"CompanyChooseWorkerHeaderTVC" bundle:nil] forCellReuseIdentifier:@"TVC_COMPANYCHOOSEWORKER_HEADER"];
+    [self.tableview registerNib:[UINib nibWithNibName:@"CompanyChooseWorkerGroupHeaderTVC" bundle:nil] forCellReuseIdentifier:@"TVC_COMPANYCHOOSEWORKER_GROUPHEADER"];
 }
 
 - (void) refreshViews{
     self.buttonSendMessage.layer.cornerRadius = 3;
     self.buttonSendSurvey.layer.cornerRadius = 3;
-    self.buttonAddWorker.layer.cornerRadius = 3;
-    self.buttonSelectAll.layer.cornerRadius = 3;
-    self.buttonAddCrew.layer.cornerRadius = 3;
     
     self.buttonSendMessage.clipsToBounds = YES;
     self.buttonSendSurvey.clipsToBounds = YES;
-    self.buttonAddWorker.clipsToBounds = YES;
-    self.buttonSelectAll.clipsToBounds = YES;
-    self.buttonAddCrew.clipsToBounds = YES;
     
     self.buttonSendSurvey.layer.borderColor = [UIColor GANThemeMainColor].CGColor;
     self.buttonSendSurvey.layer.borderWidth = 1;
-    [self.buttonSendSurvey setTitleColor:[UIColor GANThemeMainColor] forState:UIControlStateNormal];
-    
-    self.viewSearch.layer.borderColor = [UIColor GANThemeGreenColor].CGColor;
-    self.viewSearch.layer.borderWidth = 1;
-    self.viewSearch.layer.cornerRadius = 10;
-    self.viewSearch.clipsToBounds = YES;
-    
-    self.buttonAddWorker.backgroundColor = [UIColor GANThemeGreenColor];
+    [self.buttonSendSurvey setTitleColor:[UIColor GANThemeMainColor] forState:UIControlStateNormal];    
 }
 
 - (void) gotoAddWorkerVC{
@@ -170,11 +156,17 @@
 }
 
 - (void) buildFilteredArray{
+    NSLog(@"Checkpoint - 4.1: Timestamp = %f", [[NSDate date] timeIntervalSince1970]);
     self.arrayMyWorkers = [[NSMutableArray alloc] init];
 
     GANCompanyManager *managerCompany = [GANCompanyManager sharedInstance];
-    NSString *keyword = [self.textfieldSearch.text lowercaseString];
+    NSString *keyword = [self.szSearchKeyword lowercaseString];
     keyword = [keyword stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+    
+    if (managerCompany.isMyWorkersLoading == YES) {
+        [self buildWorkerList];
+        return;
+    }
     
     if (keyword.length == 0){
         [self.arrayMyWorkers addObjectsFromArray:managerCompany.arrMyWorkers];
@@ -190,24 +182,27 @@
             [self.arrayMyWorkers addObject:myWorker];
         }
     }
+    NSLog(@"Checkpoint - 4.2: Timestamp = %f", [[NSDate date] timeIntervalSince1970]);
     [self buildWorkerList];
 }
 
 - (void) buildWorkerList{
+    NSLog(@"Checkpoint - 5.1: Timestamp = %f", [[NSDate date] timeIntervalSince1970]);
     self.arrayWorkersSelected = [[NSMutableArray alloc] init];
     for (int i = 0; i < (int)[self.arrayMyWorkers count]; i++){
         [self.arrayWorkersSelected addObject:@(NO)];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableviewWorker reloadData];
+//        [self.tableview reloadData];
+        [self.tableview reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(3, 1)] withRowAnimation:UITableViewRowAnimationNone];
         [self refreshWorkersSelectAllButton];
-        
-        self.constraintTableviewWorkerHeight.constant = CONSTANT_TABLEVIEWCELLHEIGHT * [self.arrayMyWorkers count];
     });
+    NSLog(@"Checkpoint - 5.2: Timestamp = %f", [[NSDate date] timeIntervalSince1970]);
 }
 
 - (void) refreshCrewList{
+    NSLog(@"Checkpoint - 6.1: Timestamp = %f", [[NSDate date] timeIntervalSince1970]);
     int count = (int) [[GANCompanyManager sharedInstance].arrayCrews count];
     self.arrayCrewsSelected = [[NSMutableArray alloc] init];
     for (int i = 0; i < count; i++) {
@@ -215,28 +210,13 @@
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableviewCrew reloadData];
-        self.constraintTableviewCrewHeight.constant = CONSTANT_TABLEVIEWCELLHEIGHT * [[GANCompanyManager sharedInstance].arrayCrews count];
+        [self.tableview reloadData];
     });
+    NSLog(@"Checkpoint - 6.2: Timestamp = %f", [[NSDate date] timeIntervalSince1970]);
 }
 
 - (void) refreshWorkersSelectAllButton{
-    if ([self.arrayWorkersSelected count] == 0) {
-        self.buttonSelectAll.hidden = YES;
-        return;
-    }
-    
-    self.buttonSelectAll.hidden = NO;
-    int count = [self getWorkersSelectedCount];
-    if (count == (int) [self.arrayWorkersSelected count]) {
-        // All selected
-        [self.buttonSelectAll setTitle:@"Deselect\rworkers" forState:UIControlStateNormal];
-        self.buttonSelectAll.backgroundColor = [UIColor GANThemeMainColor];
-    }
-    else {
-        [self.buttonSelectAll setTitle:@"Select all\rworkers" forState:UIControlStateNormal];
-        self.buttonSelectAll.backgroundColor = [UIColor GANThemeGreenColor];
-    }
+    [self.tableview reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, 1)] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (int) getWorkersSelectedCount{
@@ -263,7 +243,7 @@
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableviewWorker reloadData];
+        [self.tableview reloadData];
         [self refreshWorkersSelectAllButton];
     });
 }
@@ -419,7 +399,34 @@
 
 #pragma mark - UITableViewDelegate
 
+- (void) configureGroupHeaderCell: (GANCompanyChooseWorkerGroupHeaderTVC *) cell {
+    cell.delegate = self;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+}
+
+- (void) configureWorkerHeaderCell: (GANCompanyChooseWorkerHeaderTVC *) cell {
+    BOOL show = YES;
+    BOOL selectedAll = NO;
+    
+    if ([self.arrayWorkersSelected count] == 0) {
+        show = NO;
+    }
+    int count = [self getWorkersSelectedCount];
+    if (count == (int) [self.arrayWorkersSelected count]) {
+        // All selected
+        selectedAll = YES;
+    }
+    else {
+        selectedAll = NO;
+    }
+    
+    [cell refreshSelectAllButton:show SelectedAll:selectedAll];
+    cell.delegate = self;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+}
+
 - (void) configureWorkerCell: (GANWorkerItemTVC *) cell AtIndex: (int) index{
+    NSLog(@"Checkpoint - 7.%d: Timestamp = %f", index, [[NSDate date] timeIntervalSince1970]);
     GANMyWorkerDataModel *myWorker = [self.arrayMyWorkers objectAtIndex:index];
     cell.lblWorkerId.text = [myWorker getDisplayName];
     cell.delegate = self;
@@ -466,48 +473,74 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (tableView == self.tableviewWorker) {
-        return [self.arrayMyWorkers count];
+    if (section == 0) {
+        return 1;
     }
-    else if (tableView == self.tableviewCrew) {
+    else if (section == 1) {
         return [[GANCompanyManager sharedInstance].arrayCrews count];
+    }
+    else if (section == 2) {
+        return 1;
+    }
+    else if (section == 3) {
+        return [self.arrayMyWorkers count];
     }
     return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (tableView == self.tableviewWorker) {
-        GANWorkerItemTVC *cell = [tableView dequeueReusableCellWithIdentifier:@"TVC_WORKERITEM"];
-        [self configureWorkerCell:cell AtIndex:(int) indexPath.row];
+    int section = (int) indexPath.section;
+    int row = (int) indexPath.row;
+    if (section == 0) {
+        GANCompanyChooseWorkerGroupHeaderTVC *cell = [tableView dequeueReusableCellWithIdentifier:@"TVC_COMPANYCHOOSEWORKER_GROUPHEADER"];
+        [self configureGroupHeaderCell:cell];
         return cell;
     }
-    else if (tableView == self.tableviewCrew) {
+    else if (section == 1) {
         GANCompanyCrewItemTVC *cell = [tableView dequeueReusableCellWithIdentifier:@"TVC_COMPANYCREWITEM"];
-        [self configureCrewCell:cell AtIndex:(int) indexPath.row];
+        [self configureCrewCell:cell AtIndex:row];
+        return cell;
+    }
+    else if (section == 2) {
+        GANCompanyChooseWorkerHeaderTVC *cell = [tableView dequeueReusableCellWithIdentifier:@"TVC_COMPANYCHOOSEWORKER_HEADER"];
+        [self configureWorkerHeaderCell:cell];
+        return cell;
+    }
+    else if (section == 3) {
+        GANWorkerItemTVC *cell = [tableView dequeueReusableCellWithIdentifier:@"TVC_WORKERITEM"];
+        [self configureWorkerCell:cell AtIndex:row];
         return cell;
     }
     return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    int section = (int) indexPath.section;
+    if (section == 0) {
+        return 80;
+    }
+    else if (section == 2) {
+        return 132;
+    }
     return CONSTANT_TABLEVIEWCELLHEIGHT;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    int index = (int) indexPath.row;
-    if (tableView == self.tableviewWorker) {
-        BOOL isSelected = [[self.arrayWorkersSelected objectAtIndex:index] boolValue];
-        [self.arrayWorkersSelected replaceObjectAtIndex:index withObject:@(!isSelected)];
-        [self.tableviewWorker reloadData];
+    int section = (int) indexPath.section;
+    int row = (int) indexPath.row;
+    if (section == 3) {
+        BOOL isSelected = [[self.arrayWorkersSelected objectAtIndex:row] boolValue];
+        [self.arrayWorkersSelected replaceObjectAtIndex:row withObject:@(!isSelected)];
+        [self.tableview reloadData];
     }
-    else if (tableView == self.tableviewCrew) {
-        BOOL isSelected = [[self.arrayCrewsSelected objectAtIndex:index] boolValue];
-        [self.arrayCrewsSelected replaceObjectAtIndex:index withObject:@(!isSelected)];
-        [self.tableviewCrew reloadData];
+    else if (section == 1) {
+        BOOL isSelected = [[self.arrayCrewsSelected objectAtIndex:row] boolValue];
+        [self.arrayCrewsSelected replaceObjectAtIndex:row withObject:@(!isSelected)];
+        [self.tableview reloadData];
     }
 }
 
@@ -553,7 +586,7 @@
 
 - (void) workerItemTableViewCellDidDotsClick:(GANWorkerItemTVC *)cell {
     self.indexSelected = cell.index;
-    GANMyWorkerDataModel *myWorker = [[GANCompanyManager sharedInstance].arrMyWorkers objectAtIndex:cell.index];
+    GANMyWorkerDataModel *myWorker = [self.arrayMyWorkers objectAtIndex:cell.index];
     NSString *szUserName = [myWorker getDisplayName];
 
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:szUserName message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -651,7 +684,7 @@
         if (status == SUCCESS_WITH_NO_ERROR) {
             [GANGlobalVCManager showHudSuccessWithMessage:@"Worker's alias has been updated" DismissAfter:-1 Callback:nil];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableviewWorker reloadData];
+                [self.tableview reloadData];
             });
             GANACTIVITY_REPORT(@"Company - Change worker nickname");
         }
@@ -673,7 +706,7 @@
         if (status == SUCCESS_WITH_NO_ERROR) {
             [GANGlobalVCManager showHudSuccessWithMessage:@"Worker's alias has been updated" DismissAfter:-1 Callback:nil];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableviewWorker reloadData];
+                [self.tableview reloadData];
             });
             GANACTIVITY_REPORT(@"Company - Change worker nickname");
         }
@@ -685,11 +718,6 @@
 }
 
 #pragma mark - UIButton Delegate
-
-- (IBAction)onButtonAddCrewClick:(id)sender {
-    [self.view endEditing:YES];
-    [self showCreateCrewDlg];
-}
 
 - (IBAction)onButtonSendMessageClick:(id)sender {
     [self.view endEditing:YES];
@@ -707,22 +735,6 @@
         return;
     }
     [self showSurveyTypeChooseDlg];
-}
-
-- (IBAction)onButtonAddWorkerClick:(id)sender {
-    [self.view endEditing:YES];
-    [self gotoAddWorkerVC];
-}
-
-- (IBAction)onButtonSelectAllClick:(id)sender {
-    [self.view endEditing:YES];
-    [self doWorkersSelectAll];
-}
-
-#pragma mark - UITextField Delegate
-
-- (IBAction)onTextfieldSearchChanged:(id)sender {
-    [self buildFilteredArray];
 }
 
 #pragma mark -NSNotification
@@ -772,6 +784,34 @@
 
 - (void) companyCrewPopupCanceled {
     
+}
+
+#pragma mark - GANCompanyChooseWorker Delegates
+
+- (void) didAddWorkerClick {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.view endEditing:YES];
+        [self gotoAddWorkerVC];
+    });
+}
+
+- (void) didAddGroupClick {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.view endEditing:YES];
+        [self showCreateCrewDlg];
+    });
+}
+
+- (void) didSelectAllClick {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.view endEditing:YES];
+        [self doWorkersSelectAll];
+    });
+}
+
+- (void)didTextfieldSearchChange:(NSString *)text {
+    self.szSearchKeyword = text;
+    [self buildFilteredArray];
 }
 
 @end

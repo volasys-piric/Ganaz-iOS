@@ -113,6 +113,7 @@
 }
 
 - (int) addMyWorkerIfNeeded: (GANMyWorkerDataModel *) myWorkerNew{
+    if (myWorkerNew == nil) return 0;
     for (int i = 0; i < (int) [self.arrMyWorkers count]; i++){
         GANMyWorkerDataModel *myWorker = [self.arrMyWorkers objectAtIndex:i];
         if ([myWorker.szId isEqualToString:myWorkerNew.szId]){
@@ -355,35 +356,37 @@
     self.isMyWorkersLoading = YES;
     
     [[GANNetworkRequestManager sharedInstance] GET:szUrl requireAuth:YES parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        GANLOG(@"My Workers Response ===> %@", responseObject);
-        self.isMyWorkersLoading = NO;
-        
-        NSDictionary *dict = responseObject;
-        BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
-        if (success){
-            NSArray *arrMyWorkers = [dict objectForKey:@"my_workers"];
-            [self.arrMyWorkers removeAllObjects];
-            
-            for (int i = 0; i < (int) [arrMyWorkers count]; i++){
-                NSDictionary *dictMyWorker = [arrMyWorkers objectAtIndex:i];
+//        GANLOG(@"My Workers Response ===> %@", responseObject);
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSDictionary *dict = responseObject;
+            BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
+            if (success){
+                NSArray *arrMyWorkers = [dict objectForKey:@"my_workers"];
+                [self.arrMyWorkers removeAllObjects];
                 
-                GANMyWorkerDataModel *myWorkerNew = [[GANMyWorkerDataModel alloc] init];
-                [myWorkerNew setWithDictionary:dictMyWorker];
-                
-                // Don't add facebook lead to my-workers list... They are managed in arrayFacebookLeadWorkers.
-                if (myWorkerNew.modelWorker.enumType == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER) continue;
-                
-                [self addMyWorkerIfNeeded:myWorkerNew];
-                [[GANCacheManager sharedInstance] addUserIfNeeded:myWorkerNew.modelWorker];
+                for (int i = 0; i < (int) [arrMyWorkers count]; i++){
+                    NSDictionary *dictMyWorker = [arrMyWorkers objectAtIndex:i];
+                    
+                    GANMyWorkerDataModel *myWorkerNew = [[GANMyWorkerDataModel alloc] init];
+                    [myWorkerNew setWithDictionary:dictMyWorker];
+                    
+                    // Don't add facebook lead to my-workers list... They are managed in arrayFacebookLeadWorkers.
+                    if (myWorkerNew.modelWorker.enumType == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER) continue;
+                    
+                    [self addMyWorkerIfNeeded:myWorkerNew];
+                    [[GANCacheManager sharedInstance] addUserIfNeeded:myWorkerNew.modelWorker];
+                }
+                self.isMyWorkersLoading = NO;
+                if (callback) callback(SUCCESS_WITH_NO_ERROR);
+                [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATED object:nil];
             }
-            if (callback) callback(SUCCESS_WITH_NO_ERROR);
-            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATED object:nil];
-        }
-        else {
-            NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
-            if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
-            [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATEFAILED object:nil];
-        }
+            else {
+                self.isMyWorkersLoading = NO;
+                NSString *szMessage = [GANGenericFunctionManager refineNSString:[dict objectForKey:@"msg"]];
+                if (callback) callback([[GANErrorManager sharedInstance] analyzeErrorResponseWithMessage:szMessage]);
+                [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATEFAILED object:nil];
+            }
+        });
     } failure:^(int status, NSDictionary *error) {
         if (callback) callback(status);
         [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATEFAILED object:nil];

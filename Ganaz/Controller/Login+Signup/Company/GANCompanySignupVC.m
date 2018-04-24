@@ -404,6 +404,10 @@
                 }
             }];
         }
+        else if (status == ERROR_USER_SIGNUPFAILED_PHONENUMBERCONFLICT) {
+            // Company name duplicated
+            [GANGlobalVCManager showHudErrorWithMessage:@"The company name is already in use" DismissAfter:-1 Callback:nil];
+        }
         else {
             [GANGlobalVCManager showHudErrorWithMessage:@"Sorry, we've encountered an issue." DismissAfter:3 Callback:^{
                 if (callback){
@@ -415,6 +419,8 @@
 }
 
 - (void) doCreateCompanyUserWithCompany: (GANCompanyDataModel *) company UserType: (GANENUM_USER_TYPE) type{
+    self.phone.szLocalNumber = [GANGenericFunctionManager stripNonnumericsFromNSString:self.textfieldPhoneNumber.text];
+    
     NSString *szFirstName = self.txtFirstName.text;
     NSString *szLastName = self.txtLastName.text;
     NSString *szEmail = self.txtEmail.text;
@@ -588,6 +594,7 @@
         szPhoneNumber = [szPhoneNumber substringToIndex:10];
     }
     self.textfieldPhoneNumber.text = szPhoneNumber;
+    self.phone.szLocalNumber = szPhoneNumber;
     [self refreshPhonePanel];
 }
 

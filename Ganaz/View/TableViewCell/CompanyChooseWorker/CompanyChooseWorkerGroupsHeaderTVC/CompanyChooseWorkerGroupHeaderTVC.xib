@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFUIDisplay-Bold.otf">
+            <string>SFUIDisplay-Bold</string>
+        </array>
+        <array key="SFUIDisplay-Medium.otf">
+            <string>SFUIDisplay-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TVC_COMPANYCHOOSEWORKER_GROUPHEADER" rowHeight="80" id="NcA-R9-MYV" customClass="GANCompanyChooseWorkerGroupHeaderTVC">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NcA-R9-MYV" id="u8g-yo-xgf">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="06c-cb-qj5" userLabel="View - Main Container">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Groups" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="bif-wB-Hg0" userLabel="Label - Title">
+                                <rect key="frame" x="0.0" y="29.5" width="375" height="21.5"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="18"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="LQD-m8-gGV" userLabel="Button - Add Crew">
+                                <rect key="frame" x="295" y="20" width="80" height="40"/>
+                                <color key="backgroundColor" red="0.40000000000000002" green="0.70588235290000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="3e0-zY-vsw"/>
+                                    <constraint firstAttribute="height" constant="40" id="Pf4-Iw-LQy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="13"/>
+                                <state key="normal" title="Add group">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="titleLabel.textAlignment">
+                                        <integer key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onButtonAddCrewClick:" destination="NcA-R9-MYV" eventType="touchUpInside" id="YN4-qw-iKa"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="LQD-m8-gGV" secondAttribute="trailing" id="7U1-hp-DaJ"/>
+                            <constraint firstItem="LQD-m8-gGV" firstAttribute="top" secondItem="06c-cb-qj5" secondAttribute="top" constant="20" id="98U-y2-8hH"/>
+                            <constraint firstItem="bif-wB-Hg0" firstAttribute="centerY" secondItem="LQD-m8-gGV" secondAttribute="centerY" id="HWV-es-weB"/>
+                            <constraint firstAttribute="bottom" secondItem="LQD-m8-gGV" secondAttribute="bottom" constant="20" id="W6J-ar-k6t"/>
+                            <constraint firstAttribute="trailing" secondItem="bif-wB-Hg0" secondAttribute="trailing" id="XIs-4O-5lZ"/>
+                            <constraint firstItem="bif-wB-Hg0" firstAttribute="leading" secondItem="06c-cb-qj5" secondAttribute="leading" id="qPh-FL-jzM"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="06c-cb-qj5" secondAttribute="bottom" id="EuS-qU-ptV"/>
+                    <constraint firstItem="06c-cb-qj5" firstAttribute="leading" secondItem="u8g-yo-xgf" secondAttribute="leading" id="UUk-SO-SWn"/>
+                    <constraint firstAttribute="trailing" secondItem="06c-cb-qj5" secondAttribute="trailing" id="Vju-fO-FX2"/>
+                    <constraint firstItem="06c-cb-qj5" firstAttribute="top" secondItem="u8g-yo-xgf" secondAttribute="top" id="Wxs-uh-xMc"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="buttonAddCrew" destination="LQD-m8-gGV" id="bkL-nq-9gC"/>
+            </connections>
+            <point key="canvasLocation" x="-117.5" y="62"/>
+        </tableViewCell>
+    </objects>
+</document>

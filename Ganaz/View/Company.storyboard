@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AFm-hh-gqk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AFm-hh-gqk">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -67,7 +67,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Broadcast this job" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qqC-wY-A4h" userLabel="Label - Broadcast">
-                                        <rect key="frame" x="20" y="73" width="122" height="20"/>
+                                        <rect key="frame" x="20" y="73" width="126" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="096-a1-aSg"/>
                                         </constraints>
@@ -112,7 +112,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share this job" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jya-Lm-k1S" userLabel="Label - Re-recruit">
-                                        <rect key="frame" x="20" y="184" width="92" height="20"/>
+                                        <rect key="frame" x="20" y="184" width="95.5" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="rUZ-Xt-fn7"/>
                                         </constraints>
@@ -378,7 +378,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DbU-yY-MoP">
-                                        <rect key="frame" x="20" y="179" width="335" height="230"/>
+                                        <rect key="frame" x="20" y="179" width="335" height="228.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="dataSource" destination="Db0-vm-j2k" id="l0g-o7-Jfh"/>
@@ -386,7 +386,7 @@
                                         </connections>
                                     </tableView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gQn-Jc-Qae" userLabel="Label - Note">
-                                        <rect key="frame" x="20" y="417" width="335" height="49"/>
+                                        <rect key="frame" x="20" y="415.5" width="335" height="50.5"/>
                                         <string key="text">Have a lot of contacts? You can send a list of them to info@ganazapp.com and we’ll happily share this posting with them for you.</string>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="14"/>
                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -478,222 +478,21 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1HC-jz-nLd" userLabel="View - List">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="472"/>
                                         <subviews>
-                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fPf-Pw-Q6Q">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="472"/>
-                                                <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Unj-co-vuJ" userLabel="View - Content View">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="825"/>
-                                                        <subviews>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SQl-YW-ufz" userLabel="View - Crew Panel">
-                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="272"/>
-                                                                <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Groups" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="P1a-fY-slx" userLabel="Label - Title">
-                                                                        <rect key="frame" x="20" y="30" width="252" height="20"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="20" id="hLt-hp-cta"/>
-                                                                        </constraints>
-                                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="18"/>
-                                                                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="BSh-UU-Km4" userLabel="Button - Add Crew">
-                                                                        <rect key="frame" x="275" y="20" width="80" height="40"/>
-                                                                        <color key="backgroundColor" red="0.40000000000000002" green="0.70588235290000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="40" id="BYJ-j9-Mh3"/>
-                                                                            <constraint firstAttribute="width" constant="80" id="Ogv-8u-nuj"/>
-                                                                        </constraints>
-                                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="13"/>
-                                                                        <state key="normal" title="Add group">
-                                                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        </state>
-                                                                        <userDefinedRuntimeAttributes>
-                                                                            <userDefinedRuntimeAttribute type="number" keyPath="titleLabel.textAlignment">
-                                                                                <integer key="value" value="1"/>
-                                                                            </userDefinedRuntimeAttribute>
-                                                                        </userDefinedRuntimeAttributes>
-                                                                        <connections>
-                                                                            <action selector="onButtonAddCrewClick:" destination="wtC-Rh-Nrq" eventType="touchUpInside" id="LWw-Jp-xXN"/>
-                                                                        </connections>
-                                                                    </button>
-                                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vxV-sZ-6Mc">
-                                                                        <rect key="frame" x="20" y="72" width="335" height="200"/>
-                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="200" id="GRp-ad-suX"/>
-                                                                        </constraints>
-                                                                        <connections>
-                                                                            <outlet property="dataSource" destination="wtC-Rh-Nrq" id="F17-gy-gfe"/>
-                                                                            <outlet property="delegate" destination="wtC-Rh-Nrq" id="pR4-Yt-FF7"/>
-                                                                        </connections>
-                                                                    </tableView>
-                                                                </subviews>
-                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <constraints>
-                                                                    <constraint firstItem="vxV-sZ-6Mc" firstAttribute="top" secondItem="BSh-UU-Km4" secondAttribute="bottom" constant="12" id="2Ba-5I-e5M"/>
-                                                                    <constraint firstItem="P1a-fY-slx" firstAttribute="leading" secondItem="SQl-YW-ufz" secondAttribute="leading" constant="20" id="2ui-RX-94S"/>
-                                                                    <constraint firstItem="BSh-UU-Km4" firstAttribute="top" secondItem="SQl-YW-ufz" secondAttribute="top" constant="20" id="6fk-bG-1Db"/>
-                                                                    <constraint firstItem="vxV-sZ-6Mc" firstAttribute="leading" secondItem="P1a-fY-slx" secondAttribute="leading" id="9xG-Qa-Aeg"/>
-                                                                    <constraint firstItem="BSh-UU-Km4" firstAttribute="leading" secondItem="P1a-fY-slx" secondAttribute="trailing" constant="3" id="CRd-Ds-Zv6"/>
-                                                                    <constraint firstAttribute="trailing" secondItem="BSh-UU-Km4" secondAttribute="trailing" constant="20" id="Jo0-4x-UhE"/>
-                                                                    <constraint firstItem="P1a-fY-slx" firstAttribute="centerY" secondItem="BSh-UU-Km4" secondAttribute="centerY" id="R4g-ki-LC0"/>
-                                                                    <constraint firstItem="vxV-sZ-6Mc" firstAttribute="trailing" secondItem="BSh-UU-Km4" secondAttribute="trailing" id="YS4-Bf-STO"/>
-                                                                    <constraint firstAttribute="bottom" secondItem="vxV-sZ-6Mc" secondAttribute="bottom" id="eGA-a2-9ep"/>
-                                                                </constraints>
-                                                            </view>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TcK-y6-Rss" userLabel="Label - Separator">
-                                                                <rect key="frame" x="20" y="284" width="335" height="1"/>
-                                                                <color key="backgroundColor" red="0.54901960780000003" green="0.53725490200000003" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" constant="1" id="EHk-ZZ-psw"/>
-                                                                </constraints>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <nil key="textColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S8G-oe-yRu" userLabel="View - Worker Panel">
-                                                                <rect key="frame" x="0.0" y="293" width="375" height="532"/>
-                                                                <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Workers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7Wa-bL-uw4" userLabel="Label - Choose workers">
-                                                                        <rect key="frame" x="20" y="30" width="160" height="20"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="20" id="0n6-57-BzB"/>
-                                                                        </constraints>
-                                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="18"/>
-                                                                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Pdc-L4-AEz" userLabel="Button - Select All">
-                                                                        <rect key="frame" x="183" y="20" width="80" height="40"/>
-                                                                        <color key="backgroundColor" red="0.40000000000000002" green="0.70588235290000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
-                                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="13"/>
-                                                                        <state key="normal" title="Select all workers">
-                                                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        </state>
-                                                                        <userDefinedRuntimeAttributes>
-                                                                            <userDefinedRuntimeAttribute type="number" keyPath="titleLabel.textAlignment">
-                                                                                <integer key="value" value="1"/>
-                                                                            </userDefinedRuntimeAttribute>
-                                                                        </userDefinedRuntimeAttributes>
-                                                                        <connections>
-                                                                            <action selector="onButtonSelectAllClick:" destination="wtC-Rh-Nrq" eventType="touchUpInside" id="AOK-9s-3la"/>
-                                                                        </connections>
-                                                                    </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ZFR-4Q-Jph" userLabel="Button - Add Workers">
-                                                                        <rect key="frame" x="275" y="20" width="80" height="40"/>
-                                                                        <color key="backgroundColor" red="0.40000000000000002" green="0.70588235294117641" blue="0.12549019607843137" alpha="1" colorSpace="calibratedRGB"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="40" id="DSc-ul-7eB"/>
-                                                                            <constraint firstAttribute="width" constant="80" id="In5-3m-gSY"/>
-                                                                        </constraints>
-                                                                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="13"/>
-                                                                        <state key="normal" title="Add workers">
-                                                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        </state>
-                                                                        <userDefinedRuntimeAttributes>
-                                                                            <userDefinedRuntimeAttribute type="number" keyPath="titleLabel.textAlignment">
-                                                                                <integer key="value" value="1"/>
-                                                                            </userDefinedRuntimeAttribute>
-                                                                        </userDefinedRuntimeAttributes>
-                                                                        <connections>
-                                                                            <action selector="onButtonAddWorkerClick:" destination="wtC-Rh-Nrq" eventType="touchUpInside" id="P1C-tr-AI4"/>
-                                                                        </connections>
-                                                                    </button>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1HQ-VV-FvM" userLabel="View - Search">
-                                                                        <rect key="frame" x="20" y="68" width="335" height="44"/>
-                                                                        <subviews>
-                                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="3JC-5E-9sU" userLabel="Image - Search">
-                                                                                <rect key="frame" x="12" y="14" width="16" height="16"/>
-                                                                                <constraints>
-                                                                                    <constraint firstAttribute="width" secondItem="3JC-5E-9sU" secondAttribute="height" multiplier="1:1" id="0z2-Gw-Aet"/>
-                                                                                    <constraint firstAttribute="width" constant="16" id="AHN-HY-r8g"/>
-                                                                                </constraints>
-                                                                            </imageView>
-                                                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hAj-QO-Rug" userLabel="Text Field - Search">
-                                                                                <rect key="frame" x="40" y="0.0" width="287" height="44"/>
-                                                                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="14"/>
-                                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                                                <connections>
-                                                                                    <action selector="onTextfieldSearchChanged:" destination="wtC-Rh-Nrq" eventType="editingChanged" id="vnZ-gn-5VX"/>
-                                                                                    <outlet property="delegate" destination="wtC-Rh-Nrq" id="3et-tX-vP8"/>
-                                                                                </connections>
-                                                                            </textField>
-                                                                        </subviews>
-                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                        <constraints>
-                                                                            <constraint firstItem="hAj-QO-Rug" firstAttribute="height" secondItem="1HQ-VV-FvM" secondAttribute="height" id="8DU-Lx-2rI"/>
-                                                                            <constraint firstItem="hAj-QO-Rug" firstAttribute="centerY" secondItem="1HQ-VV-FvM" secondAttribute="centerY" id="Jgj-YQ-bVb"/>
-                                                                            <constraint firstItem="3JC-5E-9sU" firstAttribute="leading" secondItem="1HQ-VV-FvM" secondAttribute="leading" constant="12" id="KbK-le-FaL"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="hAj-QO-Rug" secondAttribute="trailing" constant="8" id="KeN-t7-ADV"/>
-                                                                            <constraint firstItem="3JC-5E-9sU" firstAttribute="centerY" secondItem="1HQ-VV-FvM" secondAttribute="centerY" id="M54-sn-v66"/>
-                                                                            <constraint firstItem="hAj-QO-Rug" firstAttribute="leading" secondItem="3JC-5E-9sU" secondAttribute="trailing" constant="12" id="NOH-L7-tLg"/>
-                                                                            <constraint firstAttribute="height" constant="44" id="vUL-ld-lA9"/>
-                                                                        </constraints>
-                                                                    </view>
-                                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FE8-w2-Vh2">
-                                                                        <rect key="frame" x="20" y="124" width="335" height="400"/>
-                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="400" id="Ide-D6-zNG"/>
-                                                                        </constraints>
-                                                                        <connections>
-                                                                            <outlet property="dataSource" destination="wtC-Rh-Nrq" id="q7G-yb-g60"/>
-                                                                            <outlet property="delegate" destination="wtC-Rh-Nrq" id="kq5-sJ-nO4"/>
-                                                                        </connections>
-                                                                    </tableView>
-                                                                </subviews>
-                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                <constraints>
-                                                                    <constraint firstItem="ZFR-4Q-Jph" firstAttribute="leading" secondItem="Pdc-L4-AEz" secondAttribute="trailing" constant="12" id="0rp-sL-enc"/>
-                                                                    <constraint firstItem="1HQ-VV-FvM" firstAttribute="leading" secondItem="7Wa-bL-uw4" secondAttribute="leading" id="1fq-Ny-55n"/>
-                                                                    <constraint firstItem="7Wa-bL-uw4" firstAttribute="leading" secondItem="S8G-oe-yRu" secondAttribute="leading" constant="20" id="Bfe-2R-pAI"/>
-                                                                    <constraint firstItem="1HQ-VV-FvM" firstAttribute="trailing" secondItem="ZFR-4Q-Jph" secondAttribute="trailing" id="MTs-4X-1vx"/>
-                                                                    <constraint firstItem="Pdc-L4-AEz" firstAttribute="height" secondItem="ZFR-4Q-Jph" secondAttribute="height" id="Ods-yQ-Olu"/>
-                                                                    <constraint firstAttribute="trailing" secondItem="FE8-w2-Vh2" secondAttribute="trailing" constant="20" id="QBp-rg-o36"/>
-                                                                    <constraint firstItem="FE8-w2-Vh2" firstAttribute="leading" secondItem="S8G-oe-yRu" secondAttribute="leading" constant="20" id="TnK-vT-0H4"/>
-                                                                    <constraint firstItem="FE8-w2-Vh2" firstAttribute="top" secondItem="1HQ-VV-FvM" secondAttribute="bottom" constant="12" id="VlM-sd-dDs"/>
-                                                                    <constraint firstItem="7Wa-bL-uw4" firstAttribute="centerY" secondItem="ZFR-4Q-Jph" secondAttribute="centerY" id="bli-Ia-YtH"/>
-                                                                    <constraint firstItem="1HQ-VV-FvM" firstAttribute="top" secondItem="ZFR-4Q-Jph" secondAttribute="bottom" constant="8" id="ceE-di-4vu"/>
-                                                                    <constraint firstItem="ZFR-4Q-Jph" firstAttribute="top" secondItem="S8G-oe-yRu" secondAttribute="top" constant="20" id="d9U-IN-K67"/>
-                                                                    <constraint firstItem="Pdc-L4-AEz" firstAttribute="width" secondItem="ZFR-4Q-Jph" secondAttribute="width" id="fgA-iQ-NWG"/>
-                                                                    <constraint firstItem="Pdc-L4-AEz" firstAttribute="leading" secondItem="7Wa-bL-uw4" secondAttribute="trailing" constant="3" id="klh-kV-tGs"/>
-                                                                    <constraint firstAttribute="trailing" secondItem="ZFR-4Q-Jph" secondAttribute="trailing" constant="20" id="mTl-Gr-sEG"/>
-                                                                    <constraint firstItem="Pdc-L4-AEz" firstAttribute="centerY" secondItem="ZFR-4Q-Jph" secondAttribute="centerY" id="yI8-D8-viB"/>
-                                                                </constraints>
-                                                            </view>
-                                                        </subviews>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <constraints>
-                                                            <constraint firstItem="S8G-oe-yRu" firstAttribute="top" secondItem="TcK-y6-Rss" secondAttribute="bottom" constant="8" id="0VP-Ou-s4P"/>
-                                                            <constraint firstItem="S8G-oe-yRu" firstAttribute="leading" secondItem="Unj-co-vuJ" secondAttribute="leading" id="2fL-Vs-eoO"/>
-                                                            <constraint firstAttribute="bottom" secondItem="FE8-w2-Vh2" secondAttribute="bottom" constant="8" id="Kt3-Aw-Qlk"/>
-                                                            <constraint firstItem="TcK-y6-Rss" firstAttribute="leading" secondItem="Unj-co-vuJ" secondAttribute="leading" constant="20" id="bVy-sc-mSp"/>
-                                                            <constraint firstAttribute="trailing" secondItem="S8G-oe-yRu" secondAttribute="trailing" id="cXu-zL-mLs"/>
-                                                            <constraint firstItem="SQl-YW-ufz" firstAttribute="leading" secondItem="Unj-co-vuJ" secondAttribute="leading" id="mjK-1g-Oec"/>
-                                                            <constraint firstAttribute="trailing" secondItem="TcK-y6-Rss" secondAttribute="trailing" constant="20" id="qE9-KB-g4l"/>
-                                                            <constraint firstAttribute="trailing" secondItem="SQl-YW-ufz" secondAttribute="trailing" id="qtq-nl-dPc"/>
-                                                            <constraint firstItem="SQl-YW-ufz" firstAttribute="top" secondItem="Unj-co-vuJ" secondAttribute="top" id="s9p-GK-jbi"/>
-                                                            <constraint firstAttribute="bottom" secondItem="S8G-oe-yRu" secondAttribute="bottom" id="uLh-1P-rYI"/>
-                                                            <constraint firstItem="TcK-y6-Rss" firstAttribute="top" secondItem="SQl-YW-ufz" secondAttribute="bottom" constant="12" id="yZa-r8-0be"/>
-                                                        </constraints>
-                                                    </view>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstAttribute="trailing" secondItem="Unj-co-vuJ" secondAttribute="trailing" id="1vN-ZE-CSv"/>
-                                                    <constraint firstItem="Unj-co-vuJ" firstAttribute="leading" secondItem="fPf-Pw-Q6Q" secondAttribute="leading" id="Lr8-6b-pU4"/>
-                                                    <constraint firstAttribute="bottom" secondItem="Unj-co-vuJ" secondAttribute="bottom" id="POd-I7-8eF"/>
-                                                    <constraint firstItem="Unj-co-vuJ" firstAttribute="top" secondItem="fPf-Pw-Q6Q" secondAttribute="top" id="dFX-Ej-aBh"/>
-                                                </constraints>
-                                            </scrollView>
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vxV-sZ-6Mc" userLabel="Tableview">
+                                                <rect key="frame" x="20" y="30" width="335" height="430"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="wtC-Rh-Nrq" id="F17-gy-gfe"/>
+                                                    <outlet property="delegate" destination="wtC-Rh-Nrq" id="pR4-Yt-FF7"/>
+                                                </connections>
+                                            </tableView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="fPf-Pw-Q6Q" firstAttribute="top" secondItem="1HC-jz-nLd" secondAttribute="top" id="3JK-nu-knO"/>
-                                            <constraint firstItem="fPf-Pw-Q6Q" firstAttribute="leading" secondItem="1HC-jz-nLd" secondAttribute="leading" id="5ui-pV-gp4"/>
-                                            <constraint firstAttribute="bottom" secondItem="fPf-Pw-Q6Q" secondAttribute="bottom" id="AIv-we-0U0"/>
-                                            <constraint firstItem="Unj-co-vuJ" firstAttribute="width" secondItem="1HC-jz-nLd" secondAttribute="width" id="Lsh-vf-ySX"/>
-                                            <constraint firstAttribute="trailing" secondItem="fPf-Pw-Q6Q" secondAttribute="trailing" id="Mz6-Ol-SH7"/>
+                                            <constraint firstAttribute="bottom" secondItem="vxV-sZ-6Mc" secondAttribute="bottom" constant="12" id="3eI-HP-qUR"/>
+                                            <constraint firstItem="vxV-sZ-6Mc" firstAttribute="leading" secondItem="1HC-jz-nLd" secondAttribute="leading" constant="20" id="NL3-tx-Uui"/>
+                                            <constraint firstAttribute="trailing" secondItem="vxV-sZ-6Mc" secondAttribute="trailing" constant="20" id="kJR-3I-6NU"/>
+                                            <constraint firstItem="vxV-sZ-6Mc" firstAttribute="top" secondItem="1HC-jz-nLd" secondAttribute="top" constant="30" id="vvj-ni-epF"/>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5hM-Fo-yap" userLabel="Button - Survey Workers">
@@ -746,17 +545,9 @@
                     </view>
                     <navigationItem key="navigationItem" title="Choose workers" id="RFU-NE-cKm"/>
                     <connections>
-                        <outlet property="buttonAddCrew" destination="BSh-UU-Km4" id="8YQ-Q1-dOE"/>
-                        <outlet property="buttonAddWorker" destination="ZFR-4Q-Jph" id="PUH-KH-Pf9"/>
-                        <outlet property="buttonSelectAll" destination="Pdc-L4-AEz" id="rGG-lM-hB2"/>
                         <outlet property="buttonSendMessage" destination="Ywx-vs-gkp" id="hKp-4K-hA4"/>
                         <outlet property="buttonSendSurvey" destination="5hM-Fo-yap" id="TBq-lC-RE0"/>
-                        <outlet property="constraintTableviewCrewHeight" destination="GRp-ad-suX" id="lNq-OT-TOs"/>
-                        <outlet property="constraintTableviewWorkerHeight" destination="Ide-D6-zNG" id="mZE-D6-i2q"/>
-                        <outlet property="tableviewCrew" destination="vxV-sZ-6Mc" id="GUD-Rv-W8w"/>
-                        <outlet property="tableviewWorker" destination="FE8-w2-Vh2" id="30q-Hz-nah"/>
-                        <outlet property="textfieldSearch" destination="hAj-QO-Rug" id="18m-CK-3aT"/>
-                        <outlet property="viewSearch" destination="1HQ-VV-FvM" id="psS-SF-LLS"/>
+                        <outlet property="tableview" destination="vxV-sZ-6Mc" id="vLK-Md-cXS"/>
                         <segue destination="Db0-vm-j2k" kind="show" identifier="SEGUE_FROM_COMPANY_MESSAGES_CHOOSEWORKER_TO_ADD" id="tfm-ek-6QP"/>
                     </connections>
                 </viewController>
@@ -882,7 +673,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qkj-s8-Xnt">
-                                        <rect key="frame" x="20" y="179" width="335" height="186"/>
+                                        <rect key="frame" x="20" y="179" width="335" height="184.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="dataSource" destination="IgI-Dg-aPB" id="fbR-fy-yeX"/>
@@ -890,7 +681,7 @@
                                         </connections>
                                     </tableView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xyo-RE-eZe" userLabel="Label - Note">
-                                        <rect key="frame" x="20" y="373" width="335" height="49"/>
+                                        <rect key="frame" x="20" y="371.5" width="335" height="50.5"/>
                                         <string key="text">Have a lot of contacts? You can send a list of them to info@ganazapp.com and we’ll happily share this posting with them for you.</string>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="14"/>
                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -1381,13 +1172,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What would you like to do?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y8j-QM-s8O">
-                                <rect key="frame" x="42" y="86" width="292.5" height="28"/>
+                                <rect key="frame" x="48" y="86" width="279" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="u21-TL-Yrl"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="24"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vJs-vL-rDt">
-                                <rect key="frame" x="37.5" y="164" width="300" height="404"/>
+                                <rect key="frame" x="37.5" y="166" width="300" height="402"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hF1-ve-ZNO">
                                         <rect key="frame" x="18.5" y="25" width="263" height="81.5"/>
@@ -1400,7 +1194,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="qmx-27-Zox">
-                                        <rect key="frame" x="18.5" y="161.5" width="263.5" height="82"/>
+                                        <rect key="frame" x="18.5" y="160.5" width="263.5" height="82"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="qmx-27-Zox" secondAttribute="height" multiplier="29:9" id="FBO-aB-rZ1"/>
                                         </constraints>
@@ -1415,7 +1209,7 @@ my workers</string>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ME0-yn-vDp">
-                                        <rect key="frame" x="18.5" y="297" width="263" height="82"/>
+                                        <rect key="frame" x="18.5" y="295" width="263" height="82"/>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="20"/>
                                         <state key="normal" backgroundImage="button-background">
                                             <string key="title">Retain my 
@@ -1493,7 +1287,7 @@ workers</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uj0-or-vPk" userLabel="View - Badge">
-                                        <rect key="frame" x="20" y="72" width="144.5" height="26"/>
+                                        <rect key="frame" x="20" y="72" width="140.5" height="26"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-medal" translatesAutoresizingMaskIntoConstraints="NO" id="n99-3a-T0Y" userLabel="Image - Badge Icon">
                                                 <rect key="frame" x="12" y="6" width="11" height="15"/>
@@ -1503,7 +1297,7 @@ workers</string>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GOLD EMPLOYER" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pVw-WU-hxC" userLabel="Label - Badge">
-                                                <rect key="frame" x="31" y="0.0" width="101.5" height="26"/>
+                                                <rect key="frame" x="31" y="0.0" width="97.5" height="26"/>
                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="12"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -1600,16 +1394,16 @@ workers</string>
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P3a-Uu-Asw" userLabel="View - Content View">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="1334"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="1335"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Super!  There are 38 workers near you.  Tell us about your job." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="vYh-Sv-1K0" userLabel="Label - Worker Count">
-                                                        <rect key="frame" x="10" y="20" width="355" height="47"/>
+                                                        <rect key="frame" x="10" y="20" width="355" height="48"/>
                                                         <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="20"/>
                                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f8N-DM-4iX" userLabel="Label - Title">
-                                                        <rect key="frame" x="20" y="87.5" width="335" height="20"/>
+                                                        <rect key="frame" x="20" y="88.5" width="335" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20" id="saX-i1-7G3"/>
                                                         </constraints>
@@ -1618,7 +1412,7 @@ workers</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1bs-eB-CGl" userLabel="View - Title Panel">
-                                                        <rect key="frame" x="20" y="121.5" width="335" height="44"/>
+                                                        <rect key="frame" x="20" y="122.5" width="335" height="44"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="9N0-RY-4dU" userLabel="Text Field - Title">
                                                                 <rect key="frame" x="12" y="0.0" width="311" height="44"/>
@@ -1640,7 +1434,7 @@ workers</string>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pay (Optional)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y1N-S4-ZH1" userLabel="Label - Pay">
-                                                        <rect key="frame" x="20" y="189.5" width="335" height="20"/>
+                                                        <rect key="frame" x="20" y="190.5" width="335" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20" id="pBb-ZE-2bE"/>
                                                         </constraints>
@@ -1649,7 +1443,7 @@ workers</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AXx-xk-8Fw" userLabel="View - Price Panel">
-                                                        <rect key="frame" x="20" y="223.5" width="140.5" height="44"/>
+                                                        <rect key="frame" x="20" y="224.5" width="140.5" height="44"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LQ1-jQ-0Hj" userLabel="Label - $">
                                                                 <rect key="frame" x="12" y="12" width="12" height="20"/>
@@ -1683,7 +1477,7 @@ workers</string>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="per" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CjA-de-foL" userLabel="Label - Per">
-                                                        <rect key="frame" x="172.5" y="235.5" width="30" height="20"/>
+                                                        <rect key="frame" x="172.5" y="236.5" width="30" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="30" id="4RN-uC-dpT"/>
                                                             <constraint firstAttribute="height" constant="20" id="7gi-Tl-ORe"/>
@@ -1693,7 +1487,7 @@ workers</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ogr-wt-92M" userLabel="View - Unit Panel">
-                                                        <rect key="frame" x="214.5" y="223.5" width="140.5" height="44"/>
+                                                        <rect key="frame" x="214.5" y="224.5" width="140.5" height="44"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Unit" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CCA-pS-Ot4">
                                                                 <rect key="frame" x="0.0" y="-0.5" width="140.5" height="44"/>
@@ -1715,7 +1509,7 @@ workers</string>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Szg-Gw-AvO" userLabel="Label - From">
-                                                        <rect key="frame" x="20" y="291.5" width="157.5" height="20"/>
+                                                        <rect key="frame" x="20" y="292.5" width="157.5" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20" id="m8m-HL-5e1"/>
                                                         </constraints>
@@ -1724,7 +1518,7 @@ workers</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h54-AE-h5W" userLabel="View - Date From Panel">
-                                                        <rect key="frame" x="20" y="325.5" width="157.5" height="44"/>
+                                                        <rect key="frame" x="20" y="326.5" width="157.5" height="44"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sZc-VW-mqB" userLabel="Label - From">
                                                                 <rect key="frame" x="12" y="0.0" width="107.5" height="44"/>
@@ -1762,7 +1556,7 @@ workers</string>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z5S-Gr-0As" userLabel="Label - To">
-                                                        <rect key="frame" x="197.5" y="291.5" width="157.5" height="20"/>
+                                                        <rect key="frame" x="197.5" y="292.5" width="157.5" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20" id="9Ea-f6-h0y"/>
                                                         </constraints>
@@ -1771,7 +1565,7 @@ workers</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vKv-ji-8z4" userLabel="View - Date To Panel">
-                                                        <rect key="frame" x="197.5" y="325.5" width="157.5" height="44"/>
+                                                        <rect key="frame" x="197.5" y="326.5" width="157.5" height="44"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pS9-wn-nTc" userLabel="Label - To">
                                                                 <rect key="frame" x="12" y="0.0" width="107.5" height="44"/>
@@ -1809,7 +1603,7 @@ workers</string>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number of positions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sUv-Wj-s9U" userLabel="Label - Positions">
-                                                        <rect key="frame" x="20" y="393.5" width="335" height="20"/>
+                                                        <rect key="frame" x="20" y="394.5" width="335" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20" id="Wgx-ae-kVp"/>
                                                         </constraints>
@@ -1818,7 +1612,7 @@ workers</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7cn-Dy-KHl" userLabel="View - Positions Panel">
-                                                        <rect key="frame" x="20" y="427.5" width="100" height="44"/>
+                                                        <rect key="frame" x="20" y="428.5" width="100" height="44"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CpI-yG-1iQ" userLabel="Text Field - Positions">
                                                                 <rect key="frame" x="12" y="0.0" width="76" height="44"/>
@@ -1838,7 +1632,7 @@ workers</string>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Benefits" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ICR-6e-Xtb" userLabel="Label - Benefits">
-                                                        <rect key="frame" x="20" y="495.5" width="335" height="20"/>
+                                                        <rect key="frame" x="20" y="496.5" width="335" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20" id="xF2-WU-ypN"/>
                                                         </constraints>
@@ -1847,7 +1641,7 @@ workers</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="phn-yQ-KQj" userLabel="View - Benefits Training">
-                                                        <rect key="frame" x="20" y="529.5" width="159.5" height="44"/>
+                                                        <rect key="frame" x="20" y="530.5" width="159.5" height="44"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tCh-fH-hEh" userLabel="Button - Training">
                                                                 <rect key="frame" x="14" y="0.0" width="131.5" height="44"/>
@@ -1883,7 +1677,7 @@ workers</string>
                                                         </constraints>
                                                     </view>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="irZ-Lu-1Jl" userLabel="View - Benefits Health">
-                                                        <rect key="frame" x="195.5" y="529.5" width="159.5" height="44"/>
+                                                        <rect key="frame" x="195.5" y="530.5" width="159.5" height="44"/>
                                                         <subviews>
                                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWv-wz-4Yn" userLabel="Button - Health">
                                                                 <rect key="frame" x="14" y="0.0" width="131.5" height="44"/>
@@ -1919,7 +1713,7 @@ workers</string>
                                                         </constraints>
                                                     </view>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fde-gd-WiM" userLabel="View - Benefits Housing">
-                                                        <rect key="frame" x="20" y="587.5" width="159.5" height="44"/>
+                                                        <rect key="frame" x="20" y="588.5" width="159.5" height="44"/>
                                                         <subviews>
                                                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KP5-ED-qMe" userLabel="Button - Housing">
                                                                 <rect key="frame" x="14" y="0.0" width="131.5" height="44"/>
@@ -1955,7 +1749,7 @@ workers</string>
                                                         </constraints>
                                                     </view>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5f9-MR-e8n" userLabel="View - Benefits Transportation">
-                                                        <rect key="frame" x="195.5" y="587.5" width="159.5" height="44"/>
+                                                        <rect key="frame" x="195.5" y="588.5" width="159.5" height="44"/>
                                                         <subviews>
                                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gK4-5H-hUZ" userLabel="Button - Transportation">
                                                                 <rect key="frame" x="14" y="0.0" width="131.5" height="44"/>
@@ -1991,7 +1785,7 @@ workers</string>
                                                         </constraints>
                                                     </view>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3YW-6L-pG5" userLabel="View - Benefits Bonus">
-                                                        <rect key="frame" x="20" y="645.5" width="159.5" height="44"/>
+                                                        <rect key="frame" x="20" y="646.5" width="159.5" height="44"/>
                                                         <subviews>
                                                             <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W2U-Q7-dZ4" userLabel="Button - Bonus">
                                                                 <rect key="frame" x="14" y="0.0" width="131.5" height="44"/>
@@ -2027,7 +1821,7 @@ workers</string>
                                                         </constraints>
                                                     </view>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UL5-BS-xIS" userLabel="View - Benefits Scholarships">
-                                                        <rect key="frame" x="195.5" y="645.5" width="159.5" height="44"/>
+                                                        <rect key="frame" x="195.5" y="646.5" width="159.5" height="44"/>
                                                         <subviews>
                                                             <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CiC-Rq-eJ5" userLabel="Button - Scholarships">
                                                                 <rect key="frame" x="14" y="0.0" width="131.5" height="44"/>
@@ -2063,7 +1857,7 @@ workers</string>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Working sites" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kon-0v-uiN" userLabel="Label - Working Sites">
-                                                        <rect key="frame" x="20" y="713.5" width="335" height="20"/>
+                                                        <rect key="frame" x="20" y="714.5" width="335" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20" id="2Eu-TO-c6A"/>
                                                         </constraints>
@@ -2072,7 +1866,7 @@ workers</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2WL-L0-kt7" userLabel="Button - Manage">
-                                                        <rect key="frame" x="275" y="703.5" width="80" height="40"/>
+                                                        <rect key="frame" x="275" y="704.5" width="80" height="40"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="40" id="Lqq-Bs-Lp7"/>
                                                             <constraint firstAttribute="width" constant="80" id="cfM-0p-li5"/>
@@ -2086,14 +1880,14 @@ workers</string>
                                                         </connections>
                                                     </button>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UDL-sW-JeA" userLabel="View - Map Container">
-                                                        <rect key="frame" x="20" y="747.5" width="335" height="201"/>
+                                                        <rect key="frame" x="20" y="748.5" width="335" height="201"/>
                                                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.070000000000000007" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="UDL-sW-JeA" secondAttribute="height" multiplier="5:3" id="svU-zs-8wS"/>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nid-3i-aWk" userLabel="View - Map Mask">
-                                                        <rect key="frame" x="20" y="747.5" width="335" height="201"/>
+                                                        <rect key="frame" x="20" y="748.5" width="335" height="201"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No sites specified. Click manage to select." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ve0-MJ-Sw4" userLabel="Label - Title">
                                                                 <rect key="frame" x="0.0" y="0.0" width="335" height="201"/>
@@ -2112,7 +1906,7 @@ workers</string>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Additional comments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="55S-sq-dXT" userLabel="Label - Additional comments">
-                                                        <rect key="frame" x="20" y="972.5" width="335" height="20"/>
+                                                        <rect key="frame" x="20" y="973.5" width="335" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20" id="byz-iI-GwG"/>
                                                         </constraints>
@@ -2121,7 +1915,7 @@ workers</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UE9-QE-M5r" userLabel="View - Comments">
-                                                        <rect key="frame" x="20" y="1006.5" width="335" height="111.5"/>
+                                                        <rect key="frame" x="20" y="1007.5" width="335" height="111.5"/>
                                                         <subviews>
                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="YbJ-6t-Y2j" userLabel="Text View - Comments">
                                                                 <rect key="frame" x="12" y="8" width="311" height="95.5"/>
@@ -2144,7 +1938,7 @@ workers</string>
                                                         </constraints>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="juW-5U-lEG" userLabel="Button - Translate">
-                                                        <rect key="frame" x="20" y="1126" width="335" height="24"/>
+                                                        <rect key="frame" x="20" y="1127" width="335" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="K65-Rb-VsJ"/>
                                                         </constraints>
@@ -2158,7 +1952,7 @@ workers</string>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0uZ-yG-prs" userLabel="Button - Post">
-                                                        <rect key="frame" x="20" y="1180" width="335" height="60"/>
+                                                        <rect key="frame" x="20" y="1181" width="335" height="60"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="60" id="D7E-7r-m8G"/>
                                                         </constraints>
@@ -2171,7 +1965,7 @@ workers</string>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z8g-U9-sYW" userLabel="Button - Delete">
-                                                        <rect key="frame" x="20" y="1254" width="335" height="60"/>
+                                                        <rect key="frame" x="20" y="1255" width="335" height="60"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="60" id="z2q-ez-9t1"/>
                                                         </constraints>
@@ -2184,7 +1978,7 @@ workers</string>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N7s-hP-Mrx" userLabel="Button - PostJobWithBroadcast">
-                                                        <rect key="frame" x="20" y="1254" width="335" height="60"/>
+                                                        <rect key="frame" x="20" y="1255" width="335" height="60"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="60" id="mco-E0-DBa"/>
                                                         </constraints>
@@ -2456,7 +2250,7 @@ all workers in area</string>
                                 <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3JO-II-38i">
-                                        <rect key="frame" x="70.5" y="19" width="235" height="47"/>
+                                        <rect key="frame" x="75" y="19" width="226" height="48"/>
                                         <string key="text">Who do you want to share
 your job post with?</string>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="20"/>
@@ -2464,10 +2258,10 @@ your job post with?</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YMI-KP-JaG">
-                                        <rect key="frame" x="15" y="81" width="345" height="473"/>
+                                        <rect key="frame" x="15" y="82" width="345" height="472"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type a name or phone number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EdB-Az-IXA">
-                                                <rect key="frame" x="0.0" y="8" width="205" height="18"/>
+                                                <rect key="frame" x="0.0" y="8" width="204" height="18"/>
                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -2549,7 +2343,7 @@ your job post with?</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xuJ-hW-cKD">
-                                                <rect key="frame" x="0.0" y="121" width="345" height="215"/>
+                                                <rect key="frame" x="0.0" y="121" width="345" height="212.5"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <connections>
                                                     <outlet property="dataSource" destination="tKS-Bi-hnz" id="Mjp-bY-PwJ"/>
@@ -2557,14 +2351,14 @@ your job post with?</string>
                                                 </connections>
                                             </tableView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ay-FF-Z2D">
-                                                <rect key="frame" x="0.0" y="344" width="345" height="49"/>
+                                                <rect key="frame" x="0.0" y="341.5" width="345" height="50.5"/>
                                                 <string key="text">Have a lot of contacts? You can send a list of them to info@ganazapp.com and we’ll happily share this posting with them for you.</string>
                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="14"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wzb-E3-cbI">
-                                                <rect key="frame" x="0.0" y="398" width="345" height="60"/>
+                                                <rect key="frame" x="0.0" y="397" width="345" height="60"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="EKm-35-ExX"/>
                                                 </constraints>
@@ -2804,13 +2598,13 @@ your job post with?</string>
                                 <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Let’s be sure your best workers come back next season by sending them a message or surveying them about their experience" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="QtU-A8-vp5">
-                                        <rect key="frame" x="30" y="30" width="315" height="84"/>
+                                        <rect key="frame" x="30" y="30" width="315" height="86"/>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="18"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="biX-rn-k2f">
-                                        <rect key="frame" x="20" y="134" width="335" height="60"/>
+                                        <rect key="frame" x="20" y="136" width="335" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="rkf-GD-QmQ"/>
                                         </constraints>
@@ -2823,7 +2617,7 @@ your job post with?</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For example, thank them for a great season, ask them about their experience, or inform them about next season." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o1N-kf-vYG">
-                                        <rect key="frame" x="30" y="214" width="315" height="52.5"/>
+                                        <rect key="frame" x="30" y="216" width="315" height="54"/>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="15"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -2929,7 +2723,6 @@ your job post with?</string>
         <image name="icon-unchecked" width="20" height="20"/>
         <image name="map-pin" width="20" height="30"/>
         <image name="map-pin-center" width="20" height="40"/>
-        <image name="search" width="14" height="14"/>
         <image name="tab-home" width="29" height="24"/>
         <image name="tab-list" width="40" height="40"/>
         <image name="tab-message" width="40" height="40"/>
