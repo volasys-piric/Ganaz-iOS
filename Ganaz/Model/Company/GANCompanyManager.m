@@ -362,8 +362,8 @@
             BOOL success = [GANGenericFunctionManager refineBool:[dict objectForKey:@"success"] DefaultValue:NO];
             if (success){
                 NSArray *arrMyWorkers = [dict objectForKey:@"my_workers"];
-                [self.arrMyWorkers removeAllObjects];
-                
+//                [self.arrMyWorkers removeAllObjects];
+                NSMutableArray <GANMyWorkerDataModel *> *arrayMyWorkers = [[NSMutableArray alloc] init];
                 for (int i = 0; i < (int) [arrMyWorkers count]; i++){
                     NSDictionary *dictMyWorker = [arrMyWorkers objectAtIndex:i];
                     
@@ -373,9 +373,12 @@
                     // Don't add facebook lead to my-workers list... They are managed in arrayFacebookLeadWorkers.
                     if (myWorkerNew.modelWorker.enumType == GANENUM_USER_TYPE_FACEBOOK_LEAD_WORKER) continue;
                     
-                    [self addMyWorkerIfNeeded:myWorkerNew];
+//                    [self addMyWorkerIfNeeded:myWorkerNew];
+                    [arrayMyWorkers addObject:myWorkerNew];
                     [[GANCacheManager sharedInstance] addUserIfNeeded:myWorkerNew.modelWorker];
                 }
+                self.arrMyWorkers = arrayMyWorkers;
+                
                 self.isMyWorkersLoading = NO;
                 if (callback) callback(SUCCESS_WITH_NO_ERROR);
                 [[NSNotificationCenter defaultCenter] postNotificationName:GANLOCALNOTIFICATION_COMPANY_MYWORKERSLIST_UPDATED object:nil];

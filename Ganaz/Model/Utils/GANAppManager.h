@@ -9,6 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "GANAppConfigDataModel.h"
 
+@protocol GANAppManagerDelegate <NSObject>
+
+@optional
+
+- (void) didUpdateProgressiveLoadAfterLogin: (int) percentage;
+- (void) didFinishProgressiveLoadAfterLogin: (BOOL) success;
+
+@end
+
 @interface GANAppManager : NSObject
 
 @property (strong, nonatomic) GANAppConfigDataModel *config;
@@ -19,12 +28,15 @@
 @property (strong, nonatomic) NSString *szDeviceModel;
 @property (assign, atomic) GANENUM_APPCONFIG_APPUPDATETYPE enumAppUpdateType;
 
+@property (weak, nonatomic) id<GANAppManagerDelegate> delegate;
+
 + (instancetype) sharedInstance;
 
 - (void) initializeAppConfig;
-- (void) initializeManagersAfterLaunch;
 - (void) initializeManagersAfterAppConfig;
+- (void) initializeManagersAfterLaunch;
 - (void) initializeManagersAfterLogin;
+- (void) startProgressiveLoadAfterLogin;
 - (void) initializeManagersAfterLogout;
 - (void) logActivity: (NSString *) activity;
 

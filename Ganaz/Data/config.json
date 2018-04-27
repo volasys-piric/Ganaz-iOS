@@ -3,7 +3,7 @@
 	"config": {
         "production": {
             "status": "running",
-            "base_url": "http://35.160.103.25:8000",
+            "base_url": "http://50.112.48.14:8000",
             "backend_version": "1.11",
             "backend_build": "11100",
             "frontend_min_version": "1.9",
@@ -23,7 +23,7 @@
         },
         "staging": {
             "status": "running",
-            "base_url": "http://35.166.127.224:8000",
+            "base_url": "http://34.216.237.217:8000",
             "backend_version": "1.11",
             "backend_build": "11100",
             "frontend_min_version": "1.9",

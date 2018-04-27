@@ -104,10 +104,9 @@
 }
 
 - (void) initializeManagersAfterLogin{
-    GANUserManager *managerUser = [GANUserManager sharedInstance];
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    [mixpanel identify:managerUser.modelUser.szId];
+    [self initializeUtilsAfterLogin];
     
+    GANUserManager *managerUser = [GANUserManager sharedInstance];
     if ([managerUser isCompanyUser] == YES){
         [[GANJobManager sharedInstance] requestMyJobListWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetFacebookLeadsListWithCallback:nil];
@@ -115,7 +114,127 @@
         [[GANCompanyManager sharedInstance] requestGetCompanyUsersWithCallback:nil];
         [[GANCompanyManager sharedInstance] requestGetCrewsListWithCallback:nil];
         [[GANSurveyManager sharedInstance] requestGetSurveyListWithCallback:nil];
+    }
+    else {
+        [[GANJobManager sharedInstance] requestGetMyApplicationsWithCallback:nil];
+        [[GANSurveyManager sharedInstance] requestGetSurveyAnswerListByResponderId:managerUser.modelUser.szId Callback:nil];
+    }
+    [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
+    [[GANReviewManager sharedInstance] requestGetReviewsListWithCallback:nil];
+}
+
+- (void) startProgressiveLoadAfterLogin{
+    [self initializeUtilsAfterLogin];
+    
+    GANUserManager *managerUser = [GANUserManager sharedInstance];
+    if ([managerUser isCompanyUser] == YES){
+        __block int completedRequests = 0;
+        int totalRequests = 8;
+        dispatch_group_t group = dispatch_group_create();
         
+        // Define callback block variable
+        void (^callback) (void) = ^(void) {
+            dispatch_group_leave(group);
+            completedRequests++;
+            if (self.delegate && [self.delegate respondsToSelector:@selector(didFinishProgressiveLoadAfterLogin:)] == YES) {
+                [self.delegate didFinishProgressiveLoadAfterLogin:YES];
+            }
+        };
+        
+        dispatch_group_enter(group);
+        [[GANJobManager sharedInstance] requestMyJobListWithCallback:^(int status) {
+            if (callback) callback();
+        }];
+        
+        dispatch_group_enter(group);
+        [[GANCompanyManager sharedInstance] requestGetFacebookLeadsListWithCallback:^(int status) {
+            if (callback) callback();
+        }];
+        
+        dispatch_group_enter(group);
+        [[GANCompanyManager sharedInstance] requestGetMyWorkersListWithCallback:^(int status) {
+            if (callback) callback();
+        }];
+        
+        dispatch_group_enter(group);
+        [[GANCompanyManager sharedInstance] requestGetCompanyUsersWithCallback:^(int status) {
+            if (callback) callback();
+        }];
+        
+        dispatch_group_enter(group);
+        [[GANCompanyManager sharedInstance] requestGetCrewsListWithCallback:^(int status) {
+            if (callback) callback();
+        }];
+        
+        dispatch_group_enter(group);
+        [[GANSurveyManager sharedInstance] requestGetSurveyListWithCallback:^(int status) {
+            if (callback) callback();
+        }];
+        
+        dispatch_group_enter(group);
+        [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:^(int status) {
+            if (callback) callback();
+        }];
+        
+        dispatch_group_enter(group);
+        [[GANReviewManager sharedInstance] requestGetReviewsListWithCallback:^(int status) {
+            if (callback) callback();
+        }];
+        
+        dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+            if (self.delegate && [self.delegate respondsToSelector:@selector(didUpdateProgressiveLoadAfterLogin:)] == YES) {
+                [self.delegate didUpdateProgressiveLoadAfterLogin:(int) (100 * completedRequests / totalRequests)];
+            }
+        });
+    }
+    else {
+        __block int completedRequests = 0;
+        int totalRequests = 8;
+        dispatch_group_t group = dispatch_group_create();
+        
+        // Define callback block variable
+        void (^callback) (void) = ^(void) {
+            dispatch_group_leave(group);
+            completedRequests++;
+            if (self.delegate && [self.delegate respondsToSelector:@selector(didFinishProgressiveLoadAfterLogin:)] == YES) {
+                [self.delegate didFinishProgressiveLoadAfterLogin:YES];
+            }
+        };
+        
+        dispatch_group_enter(group);
+        [[GANJobManager sharedInstance] requestGetMyApplicationsWithCallback:^(int status) {
+            if (callback) callback();
+        }];
+        
+        dispatch_group_enter(group);
+        [[GANSurveyManager sharedInstance] requestGetSurveyAnswerListByResponderId:managerUser.modelUser.szId Callback:^(int status) {
+            if (callback) callback();
+        }];
+        
+        dispatch_group_enter(group);
+        [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:^(int status) {
+            if (callback) callback();
+        }];
+        
+        dispatch_group_enter(group);
+        [[GANReviewManager sharedInstance] requestGetReviewsListWithCallback:^(int status) {
+            if (callback) callback();
+        }];
+        
+        dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+            if (self.delegate && [self.delegate respondsToSelector:@selector(didUpdateProgressiveLoadAfterLogin:)] == YES) {
+                [self.delegate didUpdateProgressiveLoadAfterLogin:(int) (100 * completedRequests / totalRequests)];
+            }
+        });
+    }
+}
+
+- (void) initializeUtilsAfterLogin {
+    GANUserManager *managerUser = [GANUserManager sharedInstance];
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    [mixpanel identify:managerUser.modelUser.szId];
+    
+    if ([managerUser isCompanyUser] == YES){
         [mixpanel.people set:@{@"user_type": [GANUtils getStringFromUserType:managerUser.modelUser.enumType],
                                @"$email": managerUser.modelUser.szEmail,
                                @"$phone": [managerUser.modelUser.modelPhone getBeautifiedPhoneNumber],
@@ -134,9 +253,6 @@
                );
     }
     else {
-        [[GANJobManager sharedInstance] requestGetMyApplicationsWithCallback:nil];
-        [[GANSurveyManager sharedInstance] requestGetSurveyAnswerListByResponderId:managerUser.modelUser.szId Callback:nil];
-        
         [mixpanel.people set:@{@"$first_name": [managerUser.modelUser.modelPhone getBeautifiedPhoneNumber],
                                @"$last_name": @"",
                                @"user_type": [GANUtils getStringFromUserType:managerUser.modelUser.enumType],
@@ -150,9 +266,6 @@
                managerUser.modelUser.szPassword
                );
     }
-    [[GANMessageManager sharedInstance] requestGetMessageListWithCallback:nil];
-    [[GANReviewManager sharedInstance] requestGetReviewsListWithCallback:nil];
-    
     [CrashlyticsKit setUserIdentifier:managerUser.modelUser.szId];
     [CrashlyticsKit setUserEmail:managerUser.modelUser.szEmail];
     [CrashlyticsKit setUserName:[managerUser.modelUser.modelPhone getBeautifiedPhoneNumber]];
